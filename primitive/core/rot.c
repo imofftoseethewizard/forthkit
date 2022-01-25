@@ -1,10 +1,10 @@
-define_primitive("ROT", &&p1_rot);
+define_primitive("ROT", &&pr_rot);
 
 #define _rot() tmp0 = *sp, *sp = *(sp+2), *(sp+2) = *(sp+1), *(sp+1) = tmp0
 
 if (0)
   {
-  p1_rot:
+  pr_rot:
     _rot();
     _next();
   }

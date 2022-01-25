@@ -1,8 +1,8 @@
-define_immediate_primitive("else", &&p1_compile_else);
+define_immediate_primitive("else", &&pr_compile_else);
 
 if (0)
   {
-  p1_compile_else:
+  pr_compile_else:
     /* Jump from here -- the end of the consequent -- to the end of the
        conditional.
      */

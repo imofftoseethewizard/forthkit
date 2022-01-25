@@ -1,10 +1,10 @@
-define_primitive("/", &&p1_div);
+define_primitive("/", &&pr_div);
 
 #define _div() *++sp = *(sp+1) / *sp
 
 if (0)
   {
-  p1_div:
+  pr_div:
     _div();
     _next();
   }

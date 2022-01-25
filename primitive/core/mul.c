@@ -1,10 +1,10 @@
-define_primitive("*", &&p1_mul);
+define_primitive("*", &&pr_mul);
 
 #define _mul() *++sp = *(sp+1) * *sp
 
 if (0)
   {
-  p1_mul:
+  pr_mul:
     _mul();
     _next();
   }

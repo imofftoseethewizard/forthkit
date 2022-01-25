@@ -1,10 +1,10 @@
-define_primitive("EMIT", &&p1_emit);
+define_primitive("EMIT", &&pr_emit);
 
 #define _emit() putc(*sp++, stdout)
 
 if (0)
   {
-  p1_emit:
+  pr_emit:
     _emit();
     _next();
   }

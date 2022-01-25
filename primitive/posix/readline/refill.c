@@ -1,8 +1,8 @@
-define_primitive("REFILL", &&p1_refill);
+define_primitive("REFILL", &&pr_refill);
 
 if (0)
   {
-  p1_refill:
+  pr_refill:
     if (free) (source);
 
     extern char *readline(const char *prompt);

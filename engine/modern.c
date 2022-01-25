@@ -54,9 +54,8 @@ run_stack_machine(struct stack_machine *m)
 
     char *source        = m->source;
     int source_len      = m->source_len;
-    char *point         = m->point;
+    int point           = m->point;
 
-    char *word_point    = 0;
     char *word_buffer   = m->word_buffer;
     int word_buffer_len = m->word_buffer_len;
 

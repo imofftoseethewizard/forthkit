@@ -1,8 +1,8 @@
-define_parsing_primitive("CREATE", &&p1_do_create);
+define_parsing_primitive("CREATE", &&pr_do_create);
 
 if (0)
   {
-  p1_do_create:
+  pr_do_create:
 
     /* Indicates that this word can be inlined during compilation. */
     _word_header(c_inline);

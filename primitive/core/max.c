@@ -1,10 +1,10 @@
-define_primitive("MAX", &&p1_max);
+define_primitive("MAX", &&pr_max);
 
 #define _max() *++sp = *(sp+1) < *sp ? *sp : *(sp+1)
 
 if (0)
   {
-  p1_max:
+  pr_max:
     _max();
     _next();
   }

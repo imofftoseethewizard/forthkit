@@ -55,7 +55,7 @@
      {                                           \
           begin_define_word(s);                  \
           _word_header(c_primitive);             \
-          _store_data(&&p1_word);                \
+          _store_data(&&pr_word);                \
           _store_data(l);                        \
           _store_data(&&op_exit);                \
      }

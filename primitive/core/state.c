@@ -1,9 +1,9 @@
-define_primitive("STATE", &&p1_state);
+define_primitive("STATE", &&pr_state);
 
 #define _state() *--sp = (cell)state
 
 if (0) {
-  p1_state:
+  pr_state:
      _state();
      _next();
 }

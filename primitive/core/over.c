@@ -1,10 +1,10 @@
-define_primitive("OVER", &&p1_over);
+define_primitive("OVER", &&pr_over);
 
 #define _over() *--sp = *(sp+1)
 
 if (0)
   {
-  p1_over:
+  pr_over:
     _over();
     _next();
   }

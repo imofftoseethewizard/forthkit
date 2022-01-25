@@ -1,4 +1,4 @@
-define_parsing_primitive("FIND", &&p1_do_find);
+define_parsing_primitive("FIND", &&pr_do_find);
 
 #define _string_len(x)  *(length_type *)(x)
 #define _string_addr(x) (char *)((length_type *)(x) + 1)
@@ -14,7 +14,7 @@ define_parsing_primitive("FIND", &&p1_do_find);
 #define word_name_cp   cp1
 
 if (0) {
-  p1_do_find:
+  pr_do_find:
 
     /* Save the length of the target string into k. */
     name_len = _string_len(name);

@@ -1,10 +1,10 @@
-define_primitive("<", &&p1_lt);
+define_primitive("<", &&pr_lt);
 
 #define _lt() *++sp = *(sp+1) <  *sp
 
 if (0)
   {
-  p1_lt:
+  pr_lt:
     _lt();
     _next();
   }

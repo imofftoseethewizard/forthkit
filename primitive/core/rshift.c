@@ -1,10 +1,10 @@
-define_primitive(">>", &&p1_rshift);
+define_primitive(">>", &&pr_rshift);
 
 #define _rshift() *++sp = *(sp+1) >> *sp
 
 if (0)
   {
-  p1_rshift:
+  pr_rshift:
     _rshift();
     _next();
   }

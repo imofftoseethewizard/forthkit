@@ -1,10 +1,10 @@
-define_primitive(">IN", &&p1_to_in);
+define_primitive(">IN", &&pr_to_in);
 
 #define _to_in() *sp-- = (cell)point;
 
 if (0)
   {
-  p1_to_in:
+  pr_to_in:
     _to_in();
     _next();
   }
