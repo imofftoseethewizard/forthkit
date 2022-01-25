@@ -4,5 +4,5 @@ register_operator(ot_literal, &&op_literal);
 if (0) {
   op_literal:
      *--sp = (cell)*++ip;
-     next();
+     _next();
 }

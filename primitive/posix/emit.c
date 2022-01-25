@@ -6,5 +6,5 @@ if (0)
   {
   p1_emit:
     _emit();
-    next();
+    _next();
   }

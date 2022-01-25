@@ -6,5 +6,5 @@ if (0)
   {
   p1_nip:
       _nip();
-      next();
+      _next();
   }

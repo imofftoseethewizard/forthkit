@@ -6,5 +6,5 @@ if (0)
   {
   p1_key:
     _key();
-    next();
+    _next();
   }

@@ -6,5 +6,5 @@ if (0)
   {
   p1_tuck:
     _tuck();
-    next();
+    _next();
   }

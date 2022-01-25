@@ -9,5 +9,5 @@ if (0)
     source = readline(NULL);
 
     source_len = strlen(source);
-    next();
+    _next();
   }

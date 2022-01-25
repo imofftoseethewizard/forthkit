@@ -6,5 +6,5 @@ if (0)
   {
   p1_pick:
     _pick();
-    next();
+    _next();
   }

@@ -9,5 +9,5 @@ if (0)
   {
   p1_roll:
     _roll();
-    next();
+    _next();
   }

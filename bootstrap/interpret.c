@@ -16,7 +16,7 @@ if (1) {
                    if
                        do_compile
                    else
-                       execute
+                       drop execute
                    then
                else
                    do_literal
@@ -25,68 +25,69 @@ if (1) {
        ;
       */
 
-     /* : interpret               */
-     begin_define_primitive("interpret");
+     /* : interpret                 */
+     begin_define_word("interpret");
 
-     /*    begin                  */
+     /*    begin                    */
      exec(p1_compile_begin, __bootstrap_after_compile_begin);
   __bootstrap_after_compile_begin:
 
-     /*        32 word ?dup       */
+     /*        32 word ?dup         */
      _store_data(&&op_literal);
      _store_data(32);
      _store_data(&&p1_word);
      _store_data(&&p1_q_dup);
 
-     /*    while                  */
+     /*    while                    */
      exec(p1_compile_while, __bootstrap_after_compile_while);
   __bootstrap_after_compile_while:
 
-     /*        find ?dup          */
+     /*        find ?dup            */
      _store_data(&&p1_find);
      _store_data(&&p1_q_dup);
 
-     /*        if                 */
+     /*        if                   */
      exec(p1_compile_if, __bootstrap_after_find_compile_if);
   __bootstrap_outer_after_compile_if:
 
-     /*            state          */
+     /*            state            */
      _store_data(&&p1_state);
-     exec(p1_compile_if, __bootstrap_inner_after_compile_if);
 
-     /*            if             */
+     /*            if               */
+     exec(p1_compile_if, __bootstrap_inner_after_compile_if);
   __bootstrap_inner_after_compile_if:
 
-     /*                do_compile */
+     /*                do_compile   */
      _store_data(do_compile);
 
-     /*            else           */
+     /*            else             */
      exec(p1_compile_else, __bootstrap_inner_after_compile_else);
   __bootstrap_inner_after_compile_else:
 
-     /*                execute    */
+     /*                drop execute */
+     _store_data(&&p1_drop);
      _store_data(&&p1_execute);
 
-     /*            then           */
+     /*            then             */
      exec(p1_compile_then, __bootstrap_inner_after_compile_then);
   __bootstrap_inner_after_compile_then:
 
-     /*        else               */
+     /*        else                 */
      exec(p1_compile_else, __bootstrap_outer_after_compile_else);
   __bootstrap_outer_after_compile_else:
 
-     /*            do_literal     */
+     /*            do_literal       */
      _store_data(do_literal);
 
-     /*        then               */
+     /*        then                 */
      exec(p1_compile_then, __bootstrap_outer_after_compile_then);
   __bootstrap_outer_after_compile_then:
 
-     /*    repeat                 */
+     /*    repeat                   */
      exec(p1_compile_repeat, __bootstrap_compile_repeat);
   __bootstrap_after_compile_repeat:
 
-     /* ; */
+     /* ;                           */
      _store_data(&&op_exit);
 
   /*    _store_data(&&p1_dup); */

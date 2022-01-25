@@ -84,6 +84,8 @@ run_stack_machine(struct stack_machine *m)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
+    #define _is_primitive(x)  ((x) >= &&__first && (x) <= &&__last)
+    #define _execute(x)       (*--rp = (cell *)ip, ip = (void **)(x))
 
     #if (OPTIMIZE == time)
 
@@ -93,12 +95,12 @@ run_stack_machine(struct stack_machine *m)
        primitive over the space optimizing version below.
     */
 
-    #define next()                                      \
-        do {                                            \
-            while (*ip < &&__first || *ip > &&__last)   \
-                *--rp = (cell *)ip, ip = (void **)*ip;  \
-            goto *ip++;                                 \
-        }                                               \
+    #define _next()                                           \
+        do {                                                 \
+            while (ip && !_is_primitive(*ip)) _execute(*ip); \
+            if (ip) goto *ip++;                              \
+            goto __last;                                     \
+        }                                                    \
         while (0)
 
     #elif (OPTIMIZE == space)
@@ -115,7 +117,7 @@ run_stack_machine(struct stack_machine *m)
        time-optimized version above.
     */
 
-    #define next() goto __next
+    #define _next() goto __next
 
     #endif
 
@@ -130,12 +132,15 @@ run_stack_machine(struct stack_machine *m)
 
     #include "primitive/preamble.c"
 
+    /* Prerequisites for bootstrap */
     #include "primitive/core/compile_begin.c"
     #include "primitive/core/compile_else.c"
     #include "primitive/core/compile_if.c"
     #include "primitive/core/compile_then.c"
     #include "primitive/core/compile_repeat.c"
     #include "primitive/core/compile_while.c"
+
+    #include "primitive/core/execute.c"
 
     #include "bootstrap/interpret.c"
 
@@ -154,15 +159,13 @@ run_stack_machine(struct stack_machine *m)
 
     #if (OPTIMIZE == time)
 
-    if (ip) next();
+    if (ip) _next();
 
     #elif (OPTIMIZE == space)
 
     while (ip) {
-        while (*ip < &&__first || *ip > &&__last)
-            *--rp = (cell *)ip, ip = (void **)*ip;
-
-        goto *ip++;
+        while (ip && !_is_primitive(*ip)) _execute(*ip);
+        if (ip) goto *ip++;
       __next:
     }
 

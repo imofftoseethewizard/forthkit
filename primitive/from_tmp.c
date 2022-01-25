@@ -6,5 +6,5 @@ if (0)
   {
   p1_from_tmp:
     _from_tmp();
-    next();
+    _next();
   }

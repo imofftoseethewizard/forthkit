@@ -5,5 +5,5 @@ define_primitive(">t", &&p1_to_tmp);
 if (0) {
   p1_to_tmp:
     _to_tmp();
-    next();
+    _next();
  }

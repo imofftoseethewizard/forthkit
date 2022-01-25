@@ -6,6 +6,5 @@ register_operator(ot_exit, &&op_exit);
 if (0) {
   op_exit:
      ip = (void **)*rp++;
-     if (!ip) goto __last;
-     next();
+     _next();
 }
