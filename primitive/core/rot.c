@@ -6,5 +6,5 @@ if (0)
   {
   p1_rot:
     _rot();
-    next();
+    _next();
   }

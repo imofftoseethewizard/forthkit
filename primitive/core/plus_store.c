@@ -6,5 +6,5 @@ if (0)
   {
   p1_plus_store:
     _plus_store();
-    next();
+    _next();
   }

@@ -6,5 +6,5 @@ if (0)
   {
   p1_xor:
     _xor();
-    next();
+    _next();
   }

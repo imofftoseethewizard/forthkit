@@ -6,5 +6,5 @@ if (0)
   {
   p1_lshift:
     _lshift();
-    next();
+    _next();
   }

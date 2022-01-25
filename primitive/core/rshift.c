@@ -6,5 +6,5 @@ if (0)
   {
   p1_rshift:
     _rshift();
-    next();
+    _next();
   }

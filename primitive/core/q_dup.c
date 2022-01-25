@@ -4,5 +4,5 @@ if (0)
   {
   p1_q_dup:
     if (*sp): *--sp = *sp;
-    next();
+    _next();
   }

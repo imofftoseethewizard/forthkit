@@ -6,5 +6,5 @@ if (0)
   {
   p1_neq:
     _neq();
-    next();
+    _next();
   }

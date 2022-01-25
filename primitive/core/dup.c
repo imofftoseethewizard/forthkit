@@ -6,5 +6,5 @@ if (0)
   {
   p1_dup:
     _dup();
-    next();
+    _next();
   }

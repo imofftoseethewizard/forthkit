@@ -6,5 +6,5 @@ if (0)
   {
   p1_one_minus:
     _one_minus();
-    next();
+    _next();
   }

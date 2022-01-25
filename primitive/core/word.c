@@ -27,7 +27,7 @@ if (0) {
 
      *--sp = (cell)word_buffer;
 
-     next();
+     _next();
 }
 
 #undef source_end

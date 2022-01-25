@@ -6,5 +6,5 @@ if (0)
   {
   p1_min:
     _min();
-    next();
+    _next();
   }

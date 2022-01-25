@@ -6,5 +6,5 @@ if (0)
   {
   p1_swap:
     _swap();
-    next();
+    _next();
   }

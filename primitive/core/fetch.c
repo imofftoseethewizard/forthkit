@@ -6,6 +6,6 @@ if (0)
   {
   p1_fetch:
     _fetch();
-    next();
+    _next();
 
   }

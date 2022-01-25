@@ -44,8 +44,19 @@ if (0) {
           }
      }
 
-     *--sp = word;
-     next();
+     if (!word) {
+          *--sp = word;
+          /* name is now invalid */
+          /* stack contains ( name 0 ) */
+     } else {
+          sp++;
+          /* name is now invalid */
+          *--sp = _get_word_cfa(word);
+          *--sp = _get_word_flags(word, c_immediate) ? 1 : -1;
+          /* stack contains ( xt 1 ) or ( xt -1 ) */
+     }
+
+     _next();
 }
 
 #undef name

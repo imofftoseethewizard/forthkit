@@ -6,5 +6,5 @@ if (0)
   {
   p1_immediate:
     _immediate();
-    next();
+    _next();
   }

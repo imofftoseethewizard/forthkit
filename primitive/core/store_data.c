@@ -4,5 +4,5 @@ if (0)
   {
   p1_store_data:
     _store_data(*sp++);
-    next();
+    _next();
   }

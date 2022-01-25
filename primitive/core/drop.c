@@ -6,5 +6,5 @@ if (0)
   {
   p1_drop:
     _drop();
-    next();
+    _next();
   }

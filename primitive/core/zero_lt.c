@@ -6,5 +6,5 @@ if (0)
   {
   p1_zero_lt:
     _zero_lt();
-    next();
+    _next();
   }

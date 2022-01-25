@@ -6,5 +6,5 @@ if (0)
   {
   p1_to_in:
     _to_in();
-    next();
+    _next();
   }

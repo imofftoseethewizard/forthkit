@@ -14,5 +14,5 @@ if (0)
     _swap();
     _compile_jump_target();
 
-    next();
+    _next();
   }

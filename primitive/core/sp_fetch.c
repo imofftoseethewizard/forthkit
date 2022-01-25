@@ -6,5 +6,5 @@ if (0)
   {
   p1_sp_fetch:
     _sp_fetch();
-    next();
+    _next();
   }

@@ -4,5 +4,5 @@ if (0)
   {
   p1_compile_begin:
     *--sp = (cell)here;
-    next();
+    _next();
   }

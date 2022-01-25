@@ -14,5 +14,5 @@ if (0)
     *here++ = (cell)(here + 2);
     *here++ = (cell)&&op_exit;
 
-    next();
+    _next();
   }

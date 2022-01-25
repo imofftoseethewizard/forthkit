@@ -6,5 +6,5 @@ if (0)
   {
   p1_gt:
     _gt();
-    next();
+    _next();
   }

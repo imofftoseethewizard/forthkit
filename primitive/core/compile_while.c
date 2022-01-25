@@ -4,5 +4,5 @@ if (0) {
   p1_compile_while:
      _store_data(&&op_branch);
      _compile_jump_origin();
-     next();
+     _next();
 }

@@ -6,5 +6,5 @@ if (0)
   {
   p1_not:
     _not();
-    next();
+    _next();
   }

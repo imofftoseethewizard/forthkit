@@ -6,5 +6,5 @@ if (0)
   {
   p1_max:
     _max();
-    next();
+    _next();
   }

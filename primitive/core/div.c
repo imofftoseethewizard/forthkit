@@ -6,5 +6,5 @@ if (0)
   {
   p1_div:
     _div();
-    next();
+    _next();
   }

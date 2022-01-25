@@ -6,5 +6,5 @@ if (0)
   {
   p1_lt_eq:
     _lt_eq();
-    next();
+    _next();
   }

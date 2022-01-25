@@ -6,5 +6,5 @@ if (0)
   {
   p1_count:
     _count();
-    next();
+    _next();
   }

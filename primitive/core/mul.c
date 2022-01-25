@@ -6,5 +6,5 @@ if (0)
   {
   p1_mul:
     _mul();
-    next();
+    _next();
   }

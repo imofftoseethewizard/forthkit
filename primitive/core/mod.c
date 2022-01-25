@@ -6,5 +6,5 @@ if (0)
   {
   p1_mod:
     _mod();
-    next();
+    _next();
   }

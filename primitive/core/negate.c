@@ -6,5 +6,5 @@ if (0)
   {
   p1_negate:
     _negate();
-    next();
+    _next();
   }

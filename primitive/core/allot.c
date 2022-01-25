@@ -6,5 +6,5 @@ if (0)
   {
   p1_allot:
     _allot();
-    next();
+    _next();
   }
