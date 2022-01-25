@@ -1,8 +1,9 @@
-register_operator(op_type_abort, &&op_abort);
+register_operator(ot_abort, &&op_abort);
 
-if (0)
-  {
+/* Note that this abort is functionally distinct from the abort word.
+ */
+if (0) {
   op_abort:
-    reset_stack_machine_execution_state(m);
-    goto __last;
-  }
+     reset_stack_machine_execution_state(m);
+     goto __last;
+}

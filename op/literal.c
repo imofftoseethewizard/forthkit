@@ -1,8 +1,8 @@
+register_operator(ot_literal, &&op_literal);
 
 /* op_literal pushes the next location onto the stack */
-if (0)
-  {
+if (0) {
   op_literal:
-    *--sp = (cell)*++ip;
-    next();
-  }
+     *--sp = (cell)*++ip;
+     next();
+}

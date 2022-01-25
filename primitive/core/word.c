@@ -1,57 +1,35 @@
 define_primitive("word", &&p1_word);
 
-if (0)
-  {
+/* Aliases for some temporary variables to provide readability. */
+#define source_end cp0
+#define word_point cp1
+#define word_buffer_end cp2
+
+if (0) {
   p1_word:
-    /* Skip leading delimiters. */
-    do _key();
-    while (*sp == ' ');
+     /* Delimiter is on the top of the stack. */
+     k = *sp++;
 
-    /* Check if input is exhausted. */
-    if (!*sp)
-        *--sp = 0;
-    else
-      {
-        /* Newlines are tricky. They are word delimiters, but also a single
-           newline is a word. An initial newline will skip the loop body below,
-           so the length needs to be initialized to 1, otherwise a zero length
-           string would result.
-        */
-        i = *sp == '\n' ? 1 : 0;
+     source_end = source + source_len;
+     word_point = word_buffer + sizeof(length_type);
+     word_buffer_end = word_buffer + word_buffer_len;
 
-        /* intp0 the address of the string. The first byte is the
-           length.
-        */
-        intp0 = (int *)here;
+     /* Skip leading delimiters. */
+     while (point < source_end && *point == k)
+          point++;
 
-        /* chp0 is the pointer used to fill the characters of the string.
-         */
-        chp0 = (char *)(intp0 + 1);
+     /* Copy word from source to word buffer. */
+     while (point < source_end && word_point < word_buffer_end && *point != k)
+          *word_point++ = point++;
 
-        /* The word ends with the end of the input, a space, or a newline.
-         */
-        while (*sp && *sp != ' ' && *sp != '\n')
-          {
-            /* Copy character, increment length, get next character.
-             */
-            *chp0++ = (char)*sp++;
-            i++;
-            _key();
-          }
+     *(length_type *)word_buffer =
+       (length_type)(word_point - word_buffer - sizeof(length_type));
 
-        /* Copy the delimiting character, or single newline. */
-        *chp0++ = (char)*sp++;
+     *--sp = (cell)word_buffer;
 
-        /* Store the length of the string. */
-        *intp0 = i;
+     next();
+}
 
-        /* Advance here to include the length of the string, the characters of
-           the string, and the delimiting character */
-        here += (sizeof(int) + (i + 1) + sizeof(cell) - 1) / sizeof(cell);
-
-        /* Return the string address. */
-        *--sp = (cell)intp0;
-      }
-
-    next();
-  }
+#undef source_end
+#undef word_point
+#undef word_buffer_end
