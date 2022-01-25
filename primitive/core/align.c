@@ -1,4 +1,4 @@
-define_primitive("align", &&p1_align);
+define_primitive("ALIGN", &&p1_align);
 
 if (0) {
   p1_align:

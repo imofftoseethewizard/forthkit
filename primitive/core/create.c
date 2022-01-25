@@ -1,4 +1,4 @@
-define_parsing_primitive("create", &&p1_do_create);
+define_parsing_primitive("CREATE", &&p1_do_create);
 
 if (0)
   {

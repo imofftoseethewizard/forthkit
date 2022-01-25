@@ -1,4 +1,4 @@
-define_primitive("allot", &&p1_allot);
+define_primitive("ALLOT", &&p1_allot);
 
 #define _allot() here += *sp++
 

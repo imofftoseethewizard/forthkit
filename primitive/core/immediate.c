@@ -1,4 +1,4 @@
-define_primitive("immediate", &&p1_immediate);
+define_primitive("IMMEDIATE", &&p1_immediate);
 
 #define _immediate(flags) _set_word_flags(*current, c_immediate)
 

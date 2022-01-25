@@ -1,4 +1,4 @@
-define_primitive("nip", &&p1_nip);
+define_primitive("NIP", &&p1_nip);
 
 #define _nip() *++sp = *(sp-1)
 

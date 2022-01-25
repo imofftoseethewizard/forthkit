@@ -1,4 +1,4 @@
-define_primitive("count", &&p1_count);
+define_primitive("COUNT", &&p1_count);
 
 #define _count() l = *(char *)sp, (*sp)++, *--sp = l
 

@@ -1,4 +1,4 @@
-define_primitive("swap", &&p1_swap);
+define_primitive("SWAP", &&p1_swap);
 
 #define _swap() tmp0 = *sp, *sp = *(sp+1), *(sp+1) = tmp0
 

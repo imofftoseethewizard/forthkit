@@ -1,4 +1,4 @@
-define_primitive("state", &&p1_state);
+define_primitive("STATE", &&p1_state);
 
 #define _state() *--sp = (cell)state
 

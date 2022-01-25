@@ -1,4 +1,4 @@
-define_primitive("refill", &&p1_refill);
+define_primitive("REFILL", &&p1_refill);
 
 if (0)
   {

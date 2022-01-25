@@ -1,4 +1,4 @@
-define_primitive("dup", &&p1_dup);
+define_primitive("DUP", &&p1_dup);
 
 #define _dup() *--sp = *sp
 

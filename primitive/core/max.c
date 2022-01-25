@@ -1,4 +1,4 @@
-define_primitive("max", &&p1_max);
+define_primitive("MAX", &&p1_max);
 
 #define _max() *++sp = *(sp+1) < *sp ? *sp : *(sp+1)
 

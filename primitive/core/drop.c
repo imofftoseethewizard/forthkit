@@ -1,4 +1,4 @@
-define_primitive("drop", &&p1_drop);
+define_primitive("DROP", &&p1_drop);
 
 #define _drop() ++sp
 

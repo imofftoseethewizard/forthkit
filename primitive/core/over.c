@@ -1,4 +1,4 @@
-define_primitive("over", &&p1_over);
+define_primitive("OVER", &&p1_over);
 
 #define _over() *--sp = *(sp+1)
 

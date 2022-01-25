@@ -1,4 +1,4 @@
-define_primitive("t>", &&p1_from_tmp);
+define_primitive("T>", &&p1_from_tmp);
 
 #define _from_tmp() *--sp = *t_sp--
 

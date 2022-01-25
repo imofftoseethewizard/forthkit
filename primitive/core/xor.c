@@ -1,4 +1,4 @@
-define_primitive("xor", &&p1_xor);
+define_primitive("XOR", &&p1_xor);
 
 #define _xor() *++sp = *(sp+1) ^ *sp
 

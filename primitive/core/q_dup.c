@@ -1,4 +1,4 @@
-define_primitive("?dup", &&p1_q_dup);
+define_primitive("?DUP", &&p1_q_dup);
 
 if (0)
   {

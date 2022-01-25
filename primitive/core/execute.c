@@ -1,4 +1,4 @@
-define_primitive("execute", &&p1_execute);
+define_primitive("EXECUTE", &&p1_execute);
 
 /* _execute is defined in machine.c */
 

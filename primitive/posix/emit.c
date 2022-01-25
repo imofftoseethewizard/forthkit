@@ -1,4 +1,4 @@
-define_primitive("emit", &&p1_emit);
+define_primitive("EMIT", &&p1_emit);
 
 #define _emit() putc(*sp++, stdout)
 

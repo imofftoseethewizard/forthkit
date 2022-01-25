@@ -1,4 +1,4 @@
-define_primitive("key", &&p1_key);
+define_primitive("KEY", &&p1_key);
 
 #define _key() *--sp = getc(stdin)
 

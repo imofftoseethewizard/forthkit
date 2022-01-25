@@ -1,4 +1,4 @@
-define_parsing_primitive("find", &&p1_do_find);
+define_parsing_primitive("FIND", &&p1_do_find);
 
 #define _string_len(x)  *(length_type *)(x)
 #define _string_addr(x) (char *)((length_type *)(x) + 1)
@@ -16,47 +16,47 @@ define_parsing_primitive("find", &&p1_do_find);
 if (0) {
   p1_do_find:
 
-     /* Save the length of the target string into k. */
-     name_len = _string_len(name);
+    /* Save the length of the target string into k. */
+    name_len = _string_len(name);
 
-     /* word will hold the address of the word being checked for a matching
-        name.
-     */
-     word = context;
+    /* word will hold the address of the word being checked for a matching
+       name.
+    */
+    word = context;
 
-     while (word) {
+    while (word) {
 
-          word_name = *word;
+        word_name = *word;
 
-          if (_string_len(word_name) == name_len) {
+        if (_string_len(word_name) == name_len) {
 
-               name_cp = _string_addr(name);
-               word_name_cp = _string_addr(word_name);
+            name_cp = _string_addr(name);
+            word_name_cp = _string_addr(word_name);
 
-               for (i = 0; i < name_len; i++, name_cp++, word_name_cp++)
-                    if (_lowercase_ascii(*name_cp) != _lowercase_ascii(*word_name_cp))
-                         break;
-
-               if (i == name_len)
+            for (i = 0; i < name_len; i++, name_cp++, word_name_cp++)
+                if (_lowercase_ascii(*name_cp) != _lowercase_ascii(*word_name_cp))
                     break;
 
-               word = _next_word(word);
-          }
-     }
+            if (i == name_len)
+                break;
 
-     if (!word) {
-          *--sp = word;
-          /* name is now invalid */
-          /* stack contains ( name 0 ) */
-     } else {
-          sp++;
-          /* name is now invalid */
-          *--sp = _get_word_cfa(word);
-          *--sp = _get_word_flags(word, c_immediate) ? 1 : -1;
-          /* stack contains ( xt 1 ) or ( xt -1 ) */
-     }
+            word = _next_word(word);
+        }
+    }
 
-     _next();
+    if (!word) {
+        *--sp = word;
+        /* name is now invalid */
+        /* stack contains ( name 0 ) */
+    } else {
+        sp++;
+        /* name is now invalid */
+        *--sp = _get_word_cfa(word);
+        *--sp = _get_word_flags(word, c_immediate) ? 1 : -1;
+        /* stack contains ( xt 1 ) or ( xt -1 ) */
+    }
+
+    _next();
 }
 
 #undef name

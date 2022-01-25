@@ -1,4 +1,4 @@
-define_primitive(">t", &&p1_to_tmp);
+define_primitive(">T", &&p1_to_tmp);
 
 #define _to_tmp() *++t_sp = *sp++
 

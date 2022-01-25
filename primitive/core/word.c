@@ -1,4 +1,4 @@
-define_primitive("word", &&p1_word);
+define_primitive("WORD", &&p1_word);
 
 /* Aliases for some temporary variables to provide readability. */
 #define source_end cp0

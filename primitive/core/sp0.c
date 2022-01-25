@@ -1,4 +1,4 @@
-define_primitive("sp0", &&p1_sp0);
+define_primitive("SP0", &&p1_sp0);
 
 #define _sp0() *--sp = (cell)sp0
 
