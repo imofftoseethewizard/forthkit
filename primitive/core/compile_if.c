@@ -1,9 +1,8 @@
 define_immediate_primitive("if", &&pr_compile_if);
 
-if (0)
-  {
+if (0)  {
   pr_compile_if:
-    *here++ = (cell)&&op_branch;
+    _store_data(&&op_branch)
     _compile_jump_origin();
     _next();
-  }
+}

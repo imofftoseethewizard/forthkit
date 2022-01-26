@@ -1,31 +1,25 @@
 define_primitive("WORD", &&pr_word);
 
-/* Aliases for some temporary variables to provide readability. */
-#define delimiter  k
-#define word_point i
-
 if (0) {
   pr_word:
-     /* Delimiter is on the top of the stack. */
-     delimiter = *sp++;
 
-     word_point = sizeof(length_type);
+    /* Delimiter is on the top of the stack. */
+    register char delimiter = *sp++;
 
-     /* Skip leading delimiters. */
-     while (point < source_len && source[point] == delimiter)
-          point++;
+    word_point = sizeof(length_type);
 
-     /* Copy word from source to word buffer. */
-     while (point < source_len && word_point < word_buffer_len
-            && source[point] != delimiter)
-          word_buffer[word_point++] = source[point++];
+    /* Skip leading delimiters. */
+    while (point < source_len && source[point] == delimiter)
+        point++;
 
-     *(length_type *)word_buffer = (length_type)(word_point - sizeof(length_type));
+    /* Copy word from source to word buffer. */
+    while (point < source_len && word_point < word_buffer_len
+           && source[point] != delimiter)
+        word_buffer[word_point++] = source[point++];
 
-     *--sp = (cell)word_buffer;
+    *(length_type *)word_buffer = (length_type)(word_point - sizeof(length_type));
 
-     _next();
+    *--sp = (cell)word_buffer;
+
+    _next();
 }
-
-#undef delimiter
-#undef word_point

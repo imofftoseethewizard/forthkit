@@ -6,19 +6,7 @@
                    ( word flags )
                    drop execute
                else
-                   <inline flag> and
-                   if
-                       ?
-                       begin
-                           ?
-                           < op_exit > =
-                       while
-                           @ ,
-                           ?
-                       repeat
-                   else
-                       3 cells + ,
-                   then
+                 compile,
                then
                ;
       */

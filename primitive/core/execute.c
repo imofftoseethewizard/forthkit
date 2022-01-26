@@ -4,6 +4,6 @@ define_primitive("EXECUTE", &&pr_execute);
 
 if (0) {
   pr_execute:
-     _execute(*sp++);
-     _next();
+    _execute(*sp++);
+    _next();
 }

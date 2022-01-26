@@ -32,6 +32,9 @@
        /* Word flags.                         */ \
        _store_data(flags);                       \
                                                  \
+       /* Compilation semantics               */ \
+       _store_data(&&pr_store_compiled);         \
+                                                 \
        /* Return the address of the new word. */ \
        *--sp = (cell)xp
 
@@ -63,7 +66,9 @@
 #define define_primitive(s, l)           define_primitive_ext(s, l, 0)
 #define define_immediate_primitive(s, l) define_primitive_ext(s, l, c_immediate)
 
-#define _set_word_flags(x, flags)   *((cell *)(x) + 2) |= (flags)
-#define _clear_word_flags(x, flags) *((cell *)(x) + 2) &= ~(flags)
-#define _get_word_flags(x, flags)   *((cell *)(x) + 2) & ~(flags)
-#define _get_word_cfa(x)            *((cell *)(x) + 3)
+#define _set_word_flags(x, flags)               *((cell *)(x) + 2) |= (flags)
+#define _clear_word_flags(x, flags)             *((cell *)(x) + 2) &= ~(flags)
+#define _get_word_flags(x, flags)               *((cell *)(x) + 2) & ~(flags)
+
+#define _get_word_compilation_semantics(x)      *((cell *)(x) + 3)
+#define _get_word_interpretation_semantics(x)   ((cell *)(x) + 4)

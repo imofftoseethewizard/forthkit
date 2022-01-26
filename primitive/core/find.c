@@ -5,16 +5,15 @@ define_parsing_primitive("FIND", &&pr_do_find);
 
 #define _lowercase_ascii(x) ((x) < 'A' || (x) > 'Z' ? (x) : (x) - 'A' + 'a')
 
-/* Some aliases for readablilty. */
-#define name           *sp
-#define name_cp        cp0
-#define name_len       l0
-#define word           xp
-#define word_name      yp
-#define word_name_cp   cp1
-
 if (0) {
+
+    register cell *name, *word, *word_name;
+    register char *name_cp, *word_name_cp;
+    register int name_len;
+
   pr_do_find:
+
+    name = (cell *)*sp;
 
     /* Save the length of the target string into k. */
     name_len = _string_len(name);
@@ -26,7 +25,7 @@ if (0) {
 
     while (word) {
 
-        word_name = *word;
+        word_name = (cell *)*word;
 
         if (_string_len(word_name) == name_len) {
 
@@ -45,23 +44,13 @@ if (0) {
     }
 
     if (!word) {
-        *--sp = word;
-        /* name is now invalid */
+        *--sp = 0;
         /* stack contains ( name 0 ) */
     } else {
-        sp++;
-        /* name is now invalid */
-        *--sp = _get_word_cfa(word);
+        *sp = _get_word_interpretation_semantics(word);
         *--sp = _get_word_flags(word, c_immediate) ? 1 : -1;
         /* stack contains ( xt 1 ) or ( xt -1 ) */
     }
 
     _next();
 }
-
-#undef name
-#undef name_cp
-#undef name_len
-#undef word
-#undef word_name
-#undef word_name_cp
