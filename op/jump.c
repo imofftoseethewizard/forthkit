@@ -16,7 +16,7 @@ if (0) {
    Later, when the compiler reaches the destination of the jump, the address is
    taken from the stack to complete its compilation.
 */
-#define _compile_jump_origin() _store_data(&&op_jump), *--sp == (cell)here, _store_data(0)
+#define _compile_jump_origin() _store_data(&&op_jump), *--sp = (cell)here, _store_data(0)
 
 /* _compile_jump_target
  */

@@ -1,4 +1,4 @@
-define_immediate_primitive("while", &&pr_compile_while);
+define_immediate_primitive("WHILE", &&pr_compile_while);
 
 if (0) {
   pr_compile_while:

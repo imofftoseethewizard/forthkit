@@ -1,7 +1,4 @@
-define_parsing_primitive("FIND", &&pr_do_find);
-
-#define _string_len(x)  *(length_type *)(x)
-#define _string_addr(x) (char *)((length_type *)(x) + 1)
+define_parsing_primitive("FIND", &&pr_find);
 
 #define _lowercase_ascii(x) ((x) < 'A' || (x) > 'Z' ? (x) : (x) - 'A' + 'a')
 
@@ -9,15 +6,15 @@ if (0) {
 
     register cell *name, *word, *word_name;
     register char *name_cp, *word_name_cp;
-    register int name_len;
+    register int i, name_len;
 
-  pr_do_find:
-
+  pr_find:
     name = (cell *)*sp;
 
     /* Save the length of the target string into k. */
     name_len = _string_len(name);
 
+    _debug("name: %.*s\n", _string_len(name), _string_addr(name));
     /* word will hold the address of the word being checked for a matching
        name.
     */
@@ -39,15 +36,15 @@ if (0) {
             if (i == name_len)
                 break;
 
-            word = _next_word(word);
         }
+        word = _next_word(word);
     }
 
     if (!word) {
         *--sp = 0;
         /* stack contains ( name 0 ) */
     } else {
-        *sp = _get_word_interpretation_semantics(word);
+        *sp = (cell)_get_word_interpretation_semantics(word);
         *--sp = _get_word_flags(word, c_immediate) ? 1 : -1;
         /* stack contains ( xt 1 ) or ( xt -1 ) */
     }

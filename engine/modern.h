@@ -16,41 +16,54 @@ enum operator_type {
     operator_type_count
 };
 
-struct stack_machine {
-    cell **cp0;
-    cell **cp;
-    cell **rp0;
+struct engine {
+    int size;
+    void *user;
+
+    cell *data_stack;
+    cell *sp;
     cell *sp0;
-    cell *t_sp0;
+
+    cell **return_stack;
+    cell **rp;
+    cell **rp0;
 
     void **ip;
+
     char *here;
-    cell **rp;
-    cell *sp;
-    cell *t_sp;
+    char *top;
 
     int state;
+    int base;
 
-    int buffer_len;
-    int point;
-
-    char *token;
-    int token_len;
-
-    cell *current;
     cell *context;
+    cell *current;
+
+    const char *source;
+    int source_len;
+    int source_idx; /* >in */
+
+    void *interpret;
+    void *operators[operator_type_count];
 
     int result;
 
-    void *operators[operator_type_count];
-
-    char *buffer;
+    /* Currently unused.
+    cell *t_sp;
+    cell *t_sp0;
+    cell **cp0;
+    cell **cp;
     cell **context_stack;
-    cell *primary_stack;
-    cell **return_stack;
-    char data[DATA_SIZE];
+    */
+
+    char data[
+        RETURN_STACK_SIZE * sizeof(cell)
+        + DATA_STACK_SIZE  * sizeof(cell)
+        + DATA_AREA_SIZE
+        ];
 };
 
-extern int init_stack_machine(struct stack_machine *m);
-extern int run_stack_machine(struct stack_machine *m);
-extern void reset_stack_machine_execution_state(struct stack_machine *m);
+extern int init_engine(struct engine *e);
+extern int run_engine(struct engine *e);
+extern int engine_interpret_source(struct engine *e, const char *source);
+extern void reset_engine_execution_state(struct engine *e);

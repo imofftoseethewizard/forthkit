@@ -5,19 +5,19 @@ if (0) {
 
     /* Delimiter is on the top of the stack. */
     register char delimiter = *sp++;
-
-    word_point = sizeof(length_type);
+    register char *word_buffer = top - MAX_WORD_LENGTH;
+    register int word_idx = sizeof(length_type);
 
     /* Skip leading delimiters. */
-    while (point < source_len && source[point] == delimiter)
-        point++;
+    while (source_idx < source_len && source[source_idx] == delimiter)
+        source_idx++;
 
     /* Copy word from source to word buffer. */
-    while (point < source_len && word_point < word_buffer_len
-           && source[point] != delimiter)
-        word_buffer[word_point++] = source[point++];
+    while (source_idx < source_len && word_idx < MAX_WORD_LENGTH
+           && source[source_idx] != delimiter)
+        word_buffer[word_idx++] = source[source_idx++];
 
-    *(length_type *)word_buffer = (length_type)(word_point - sizeof(length_type));
+    *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
 
     *--sp = (cell)word_buffer;
 

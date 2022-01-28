@@ -4,6 +4,6 @@ register_operator(ot_abort, &&op_abort);
  */
 if (0) {
   op_abort:
-     reset_stack_machine_execution_state(m);
+     reset_engine_execution_state(e);
      goto __last;
 }
