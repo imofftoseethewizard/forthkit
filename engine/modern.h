@@ -33,8 +33,8 @@ struct engine {
     char *here;
     char *top;
 
-    int state;
-    int base;
+    cell state;
+    cell base;
 
     cell *context;
     cell *current;

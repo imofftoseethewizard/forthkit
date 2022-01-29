@@ -11,41 +11,38 @@
 
 #define _align(x) (cell *)((cell)(x) + sizeof(cell) - 1 & ~(sizeof(cell) - 1))
 
-#define _store_data(x)                           \
+#define _store_data(x)                                 \
      here = (char *)_align(here), *(cell *)here = (cell)(x), here += sizeof(cell)
 
-#define _word_header(flags)                      \
-       /* _word_header: ( n -- addr ) [xp]    */ \
-                                                 \
-       /* Align here to a cell boundary.      */ \
-       here = (char *)_align(here);              \
-                                                 \
-       /* Save address of new word.           */ \
-       *--rp = (cell *)here;                     \
-                                                 \
-       /* Copy name address to word entry.    */ \
-       _store_data(*sp++);                       \
-                                                 \
-       /* Vocabulary list link.               */ \
-       _store_data(current);                     \
-                                                 \
-       /* Add to current vocabulary.          */ \
-       current = *rp;                            \
-                                                 \
-       /* Word flags.                         */ \
-       _store_data(flags);                       \
-                                                 \
-       /* Compilation semantics               */ \
-       _store_data(&&pr_store_compiled);      /*    \ */
-       /*                                           \ */
-       /* /\* Return the address of the new word. *\/ \ */
-       /* *--sp = (cell)*rp++ */
+#define _word_header(flags)                            \
+       /* _word_header: ( n -- addr ) [xp]    */       \
+                                                       \
+       /* Align here to a cell boundary.      */       \
+       here = (char *)_align(here);                    \
+                                                       \
+       /* Save address of new word.           */       \
+       *--rp = (cell *)here;                           \
+                                                       \
+       /* Copy name address to word entry.    */       \
+       _store_data(*sp++);                             \
+                                                       \
+       /* Vocabulary list link.               */       \
+       _store_data(current);                           \
+                                                       \
+       /* Add to current vocabulary.          */       \
+       current = *rp;                                  \
+                                                       \
+       /* Word flags.                         */       \
+       _store_data(flags);                             \
+                                                       \
+       /* Compilation semantics               */       \
+       _store_data(&&pr_store_compiled)
 
 #define _next_word(x) (cell *)*((cell *)(x) + 1)
 
 #define begin_define_word(s, flags)                    \
-    *--sp = (cell)here;\
-    here = store_counted_string((s), here);                   \
+    *--sp = (cell)here;                                \
+    here = store_counted_string((s), here);            \
     _word_header(flags);
 
 #define define_primitive_ext(s, l, flags)              \

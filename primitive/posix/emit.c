@@ -4,7 +4,8 @@ define_primitive("EMIT", &&pr_emit);
 
 if (0) {
   pr_emit:
-    _debug("tos: %ld\n", *sp);
+    _debug("emit: ");
+    print_stack(sp0, sp);
     _emit();
     _next();
 }

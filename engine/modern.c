@@ -21,6 +21,9 @@ init_engine(struct engine *e)
 {
     char *data_end = e->data + sizeof(e->data);
 
+    /* Ensure stacks have cell-aligned addresses. */
+    data_end -= (cell)data_end & (sizeof(cell) - 1);
+
     e->return_stack = (cell **)data_end - RETURN_STACK_SIZE;
     e->rp = e->rp0 = e->return_stack + RETURN_STACK_SIZE;
 
@@ -90,17 +93,16 @@ run_engine(struct engine *e)
 
     cell *current       = e->current;
     cell *context       = e->context;
-    int state           = e->state;
-    int base            = e->base;
+    cell state          = e->state;
+    cell base           = e->base;
 
     int result          = e->result;
     void **operators    = e->operators;
 
     void *interpret     = e->interpret;
 
-    void *w;
     #define exec(target, resume) \
-        do { *--rp = (cell *)&&resume, ip = (void **)rp; goto target; } while (0)
+        do { *rp = (cell *)&&resume, ip = (void **)rp; goto target; } while (0)
 
     /* Below are some temporary variables for use in primitives. */
 
@@ -124,7 +126,7 @@ run_engine(struct engine *e)
 
     #define _next()                                           \
         do {                                                 \
-            _debug("1 ip: %lx; sp: %lx\n", (cell)ip, (cell)sp);   \
+            _debug("1 ip: %lx; sp: %lx\n", (cell)ip, (cell)sp);       \
             while (ip && !_is_primitive(*ip)) {_debug("*ip: %lx\n", (cell)*ip);_execute(*ip);} \
             _debug("2 ip: %lx; *ip: %lx, sp: %lx\n", (cell)ip, (cell)*ip, (cell)sp); \
             if (ip) goto **ip++;                             \
@@ -151,7 +153,14 @@ run_engine(struct engine *e)
 
     #endif
 
-    #define register_operator(x, y) operators[x] = y
+    #define QUOTE(x) #x
+    #define register_operator(x, y) \
+        do { \
+          if (!interpret) { \
+            _debug("operator %-10s %lx \n", QUOTE(x), (cell)y); \
+            operators[x] = y; \
+          } \
+        } while (0)
 
     #include "../op/abort.c"
     #include "../op/branch.c"
@@ -168,11 +177,11 @@ run_engine(struct engine *e)
     #include "../primitive/core/count.c"
     #include "../primitive/core/create.c"
     #include "../primitive/core/drop.c"
-    #include "../primitive/core/drop2.c"
     #include "../primitive/core/execute.c"
     #include "../primitive/core/fetch.c"
     #include "../primitive/core/find.c"
     #include "../primitive/core/literal.c"
+    #include "../primitive/core/nip.c"
     #include "../primitive/core/or.c"
     #include "../primitive/core/over.c"
     #include "../primitive/core/q_dup.c"
@@ -189,10 +198,12 @@ run_engine(struct engine *e)
     #include "../primitive/core/compile_else.c"
     #include "../primitive/core/compile_if.c"
     #include "../primitive/core/compile_then.c"
-    #include "../primitive/core/compile_repeat.c"
     #include "../primitive/core/compile_while.c"
+    #include "../primitive/core/compile_repeat.c"
 
     #include "../bootstrap/interpret.c"
+
+    _debug("break?\n");
 
     #include "../primitive/posix/emit.c"
     /* #include "../primitive/posix/key.c" */

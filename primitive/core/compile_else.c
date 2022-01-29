@@ -11,10 +11,7 @@ if (0)  {
        and point it here, at the begining of the alternate.
     */
     _swap();
-    print_stack(sp0, sp);
-    _debug("sp0: %lx, sp: %lx, here: %lx, *sp: %lx\n", (cell)sp0, (cell)sp, (cell)here, *sp);
     _compile_jump_target();
-    _debug("y\n");
 
     _next();
 }
