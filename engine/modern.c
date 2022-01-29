@@ -89,7 +89,7 @@ run_engine(struct engine *e)
 
     const char *source  = e->source;
     int source_len      = e->source_len;
-    int source_idx           = e->source_idx;
+    int source_idx      = e->source_idx;
 
     cell *current       = e->current;
     cell *context       = e->context;
@@ -100,9 +100,6 @@ run_engine(struct engine *e)
     void **operators    = e->operators;
 
     void *interpret     = e->interpret;
-
-    #define exec(target, resume) \
-        do { *rp = (cell *)&&resume, ip = (void **)rp; goto target; } while (0)
 
     /* Below are some temporary variables for use in primitives. */
 
@@ -198,18 +195,15 @@ run_engine(struct engine *e)
     #include "../primitive/core/compile_else.c"
     #include "../primitive/core/compile_if.c"
     #include "../primitive/core/compile_then.c"
-    #include "../primitive/core/compile_while.c"
     #include "../primitive/core/compile_repeat.c"
+    #include "../primitive/core/compile_while.c"
 
     #include "../bootstrap/interpret.c"
-
-    _debug("break?\n");
 
     #include "../primitive/posix/emit.c"
     /* #include "../primitive/posix/key.c" */
 
     /* #include "../primitive/core/posix/readline/refill.c" */
-    /* #include "../primitive/core/word.c" */
     /* #include "../primitive/core/immediate.c" */
 
     context = current;

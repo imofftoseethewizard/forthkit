@@ -66,8 +66,7 @@ if (!interpret) {
     _debug("defining interpret        (%lx)\n", (cell)interpret);
 
     /*      begin                                        */
-    exec(pr_compile_begin, __bootstrap_compile_begin);
-  __bootstrap_compile_begin:
+    _compile_begin();
 
     /*          32 word ?dup                             */
     _store_data(&&op_literal);
@@ -76,16 +75,14 @@ if (!interpret) {
     _store_data(&&pr_q_dup);
 
     /*      while                                        */
-    exec(pr_compile_while, __bootstrap_compile_while);
-  __bootstrap_compile_while:
+    _compile_while();
 
     /*          find ?dup                                */
     _store_data(&&pr_find);
     _store_data(&&pr_q_dup);
 
     /*          if                                       */
-    exec(pr_compile_if, __bootstrap_outer_compile_if);
-  __bootstrap_outer_compile_if:
+    _compile_if();
 
     /*              0> state @ 0= or                     */
     _store_data(&&pr_zero_gt);
@@ -95,18 +92,14 @@ if (!interpret) {
     _store_data(&&pr_or);
 
     /*              if execute else compile, then        */
-    exec(pr_compile_if, __bootstrap_inner_compile_if);
-  __bootstrap_inner_compile_if:
+    _compile_if();
     _store_data(&&pr_execute);
-    exec(pr_compile_else, __bootstrap_inner_compile_else);
-  __bootstrap_inner_compile_else:
+    _compile_else();
     _store_data(&&pr_store_compiled);
-    exec(pr_compile_then, __bootstrap_inner_compile_then);
-  __bootstrap_inner_compile_then:
+    _compile_then();
 
     /*          else                                     */
-    exec(pr_compile_else, __bootstrap_outer_compile_else);
-  __bootstrap_outer_compile_else:
+    _compile_else();
 
     /*              0 over count >number                 */
     _store_data(&&op_literal);
@@ -117,37 +110,31 @@ if (!interpret) {
 
     /*              0= if                                */
     _store_data(&&pr_zero_eq);
-    exec(pr_compile_if, __bootstrap_do_literal_compile_if);
-  __bootstrap_do_literal_compile_if:
+    _compile_if();
 
     /*                  drop nip state @ if literal then */
     _store_data(&&pr_drop);
     _store_data(&&pr_nip);
     _store_data(&&pr_state);
     _store_data(&&pr_fetch);
-    exec(pr_compile_if, __bootstrap_compile_literal_compile_if);
-  __bootstrap_compile_literal_compile_if:
+    _compile_if();
     _store_data(&&pr_literal);
-    exec(pr_compile_then, __bootstrap_compile_literal_compile_then);
-  __bootstrap_compile_literal_compile_then:
+    _compile_then();
 
     /*              else                                 */
-    exec(pr_compile_else, __bootstrap_do_literal_compile_else);
-  __bootstrap_do_literal_compile_else:
+    _compile_else();
 
     /*                   abort                           */
     _store_data(&&pr_abort);
 
-    exec(pr_compile_then, __bootstrap_do_literal_compile_then);
-  __bootstrap_do_literal_compile_then:
+    /*              then                                 */
+    _compile_then();
 
     /*          then                                     */
-    exec(pr_compile_then, __bootstrap_outer_compile_then);
-  __bootstrap_outer_compile_then:
+    _compile_then();
 
     /*      repeat                                       */
-    exec(pr_compile_repeat, __bootstrap_compile_repeat);
-  __bootstrap_compile_repeat:
+    _compile_repeat();
 
     /*  ;                                                */
     _store_data(&&op_exit);
