@@ -1,0 +1,30 @@
+at the following commit
+
+    commit aa13560ac0ff74c442cc978d80b12c1769452051 (HEAD -> main, origin/main)
+
+using gcc 11.2.0
+
+    gcc (Ubuntu 11.2.0-7ubuntu2) 11.2.0
+    Copyright (C) 2021 Free Software Foundation, Inc.
+    This is free software; see the source for copying conditions.  There is NO
+    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+simple optimizations cause a bus error
+
+    gcc -O -o modern modern.c && ./modern "65 EMIT"
+
+    ....
+    *ip: 3fb60f41fa1e0ff3
+    Bus error (core dumped)
+
+But all single and pairwise combinations of gcc's O1 flags work fine.
+
+    for f1 in `cat gcc-opt-flags.txt`;
+      do for f2 in `cat gcc-opt-flags.txt`;
+        do gcc $f1 $f2 -o modern modern.c && ./modern "65 EMIT" >/dev/null 2>&1 ;
+           echo $? $f1 $f2 ;
+    done ;
+    done | grep -v '^0 '
+
+where gcc-opt-flags.txt was created from the -O1 list in
+https://gcc.gnu.org/onlinedocs/gcc-11.2.0/gcc/Optimize-Options.html

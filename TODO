@@ -1,0 +1,5 @@
+1. discover which optimizations cause failures
+2. threading model: relative labels instead of absolute
+3. use relative threading to support cell size < machine word size
+4. subrouting threading
+5. indirect threading
