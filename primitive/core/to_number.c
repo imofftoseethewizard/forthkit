@@ -13,6 +13,7 @@ if (0) {
     register cell digit, len, result;
     register char *s;
 
+    print_stack(sp0, sp);
     len = *sp;
     s = (char *)*(sp+1);
     result = *(sp+2);

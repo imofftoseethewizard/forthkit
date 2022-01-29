@@ -163,14 +163,18 @@ run_engine(struct engine *e)
     #include "../primitive/preamble.c"
 
     /* Prerequisites for bootstrap */
+    #include "../primitive/core/abort.c"
     #include "../primitive/core/align.c"
     #include "../primitive/core/count.c"
     #include "../primitive/core/create.c"
     #include "../primitive/core/drop.c"
+    #include "../primitive/core/drop2.c"
     #include "../primitive/core/execute.c"
     #include "../primitive/core/fetch.c"
     #include "../primitive/core/find.c"
     #include "../primitive/core/literal.c"
+    #include "../primitive/core/or.c"
+    #include "../primitive/core/over.c"
     #include "../primitive/core/q_dup.c"
     #include "../primitive/core/state.c"
     #include "../primitive/core/store_compiled.c"
@@ -178,6 +182,7 @@ run_engine(struct engine *e)
     #include "../primitive/core/swap.c"
     #include "../primitive/core/to_number.c"
     #include "../primitive/core/word.c"
+    #include "../primitive/core/zero_eq.c"
     #include "../primitive/core/zero_gt.c"
 
     #include "../primitive/core/compile_begin.c"

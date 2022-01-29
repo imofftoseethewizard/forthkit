@@ -5,6 +5,6 @@ register_operator(ot_call, &&op_call);
 */
 if (0) {
   op_call:
-     ((native_word)*++ip)();
-     _next();
+    ((native_word)*ip++)();
+    _next();
 }

@@ -7,8 +7,10 @@ register_operator(ot_jump, &&op_jump);
 
 if (0) {
   op_jump:
-     ip += (long int)*++ip;
-     _next();
+    _debug("jump\n");
+    _debug("jump %ld\n", (long int)*ip);
+    ip += (long int)*ip - 1;
+    _next();
 }
 
 /* _compile_jump_origin is used to build control structures. It compiles a forward

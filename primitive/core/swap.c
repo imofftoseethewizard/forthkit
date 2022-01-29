@@ -4,6 +4,8 @@ define_primitive("SWAP", &&pr_swap);
 
 if (0) {
   pr_swap:
+    _debug("swap\n");
     _swap();
+    print_stack(sp0, sp);
     _next();
 }
