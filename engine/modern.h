@@ -16,6 +16,8 @@ enum operator_type {
     operator_type_count
 };
 
+void *operators[operator_type_count];
+
 enum engine_attribute {
     ea_size,
     ea_ip,
@@ -30,9 +32,11 @@ enum engine_attribute {
     ea_source_idx,
     ea_source_len,
     ea_sp0,
+    ea_state,
     ea_interpret,
     ea_result,
     ea_source_addr,
+    ea_top,
     engine_attribute_count
 };
 
@@ -83,7 +87,7 @@ struct engine {
         ];
 };
 
-extern int init_engine(struct engine *e);
-extern int run_engine(struct engine *e);
-extern int engine_interpret_source(struct engine *e, const char *source);
-extern void reset_engine_execution_state(struct engine *e);
+extern void init_engine(cell *e, cell size);
+extern int run_engine(cell *e);
+extern int engine_interpret_source(cell *e, const char *source);
+extern void reset_engine_execution_state(cell *e);

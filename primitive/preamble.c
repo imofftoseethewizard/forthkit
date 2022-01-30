@@ -61,7 +61,7 @@
     {                                                                     \
         _debug("defining %-16s %lx\n", s, (cell)_pr_addr(l));             \
         begin_define_word(s, c_primitive | (flags));                      \
-        _compile_pr(l);                                         \
+        _compile_pr(l);                             \
         _compile_pr(op_exit);                                   \
     }
 

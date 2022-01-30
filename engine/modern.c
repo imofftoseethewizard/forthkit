@@ -19,14 +19,14 @@ print_stack(cell *sp0, cell *sp)
 }
 
 void
-init_engine2(cell *data, cell size)
+init_engine(cell *data, cell size)
 {
     data[ea_size]        = size;
 
     /* registers */
     data[ea_ip]          = 0;
-    data[ea_rp]          = engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE;
-    data[ea_sp]          = data[ea_rp] + PARAMETER_STACK_SIZE;
+    data[ea_rp]          = (cell)&data[engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE];
+    data[ea_sp]          = (cell)((cell *)data[ea_rp] + PARAMETER_STACK_SIZE);
     data[ea_here]        = data[ea_sp];
 
     /* internal state */
@@ -38,19 +38,21 @@ init_engine2(cell *data, cell size)
     data[ea_source_idx]  = 0;
     data[ea_source_len]  = 0;
     data[ea_sp0]         = data[ea_sp];
+    data[ea_state]       = 0;
 
     /* external_state */
 
     data[ea_interpret]   = 0;
     data[ea_result]      = 0;
     data[ea_source_addr] = engine_attribute_count;
+    data[ea_top]         = (cell)((char *)data + ea_size * sizeof(cell));
 
     /* data[ea_] = 0; */
 }
 
 
 int
-init_engine(struct engine *e)
+init_engine_old(struct engine *e)
 {
     /* data layout:
          size
@@ -98,51 +100,53 @@ init_engine(struct engine *e)
 }
 
 void
-reset_engine_execution_state(struct engine *e)
+reset_engine_execution_state(cell *e)
 {
-    e->sp = e->sp0;
-    e->rp = e->rp0;
+    e[ea_sp] = e[ea_sp0];
+    e[ea_rp] = e[ea_rp0];
     /*
-    e->t_sp = e->t_sp0;
-    e->cp = e->cp0;
+    e[ea_t_sp] = e[ea_t_sp0];
+    e[ea_cp] = e[ea_cp0];
     */
-    e->ip = 0;
+    e[ea_ip] = 0;
 }
 
 int
-run_engine(struct engine *e)
+run_engine(cell *engine)
 {
+    register cell *e = engine;
+
     /* These are the most commonly referenced variables. */
-    register void **ip  = e->ip;
-    register cell *sp   = e->sp;
-    register cell **rp  = e->rp;
+    register void **ip  = (void **)e[ea_ip];
+    register cell *sp   = (cell *)e[ea_sp];
+    register cell **rp  = (cell **)e[ea_rp];
 
-    char *here          = e->here;
-    char *top           = e->top;
+    char *here          = (char *)e[ea_here];
 
-    cell **rp0          = e->rp0;
-    cell *sp0           = e->sp0;
+    cell **rp0          = (cell **)e[ea_rp0];
+    cell *sp0           = (cell *)e[ea_sp0];
 
     /* currently unused
-    cell *t_sp = e->t_sp;
-    cell **cp0          = e->cp0;
-    cell **cp           = e->cp;
-    cell *t_sp0         = e->t_sp0;
+    cell *t_sp = e[ea_t_sp];
+    cell **cp0          = e[ea_cp0];
+    cell **cp           = e[ea_cp];
+    cell *t_sp0         = e[ea_t_sp0];
     */
 
-    const char *source  = e->source;
-    int source_len      = e->source_len;
-    int source_idx      = e->source_idx;
+    const char *source  = (char *)&e[e[ea_source_addr]];
+    int source_len      = (int)e[ea_source_len];
+    int source_idx      = (int)e[ea_source_idx];
 
-    cell *current       = e->current;
-    cell *context       = e->context;
-    cell state          = e->state;
-    cell base           = e->base;
+    cell *current       = (cell *)e[ea_current];
+    cell *context       = (cell *)e[ea_context];
+    cell state          = e[ea_state];
+    cell base           = e[ea_base];
 
-    int result          = e->result;
-    void **operators    = e->operators;
+    char *top           = (char *)e[ea_top];
 
-    void *interpret     = e->interpret;
+    int result          = (int)e[ea_result];
+
+    void *interpret     = (void *)e[ea_interpret];
 
     /* Below are some temporary variables for use in primitives. */
 
@@ -153,8 +157,8 @@ run_engine(struct engine *e)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
-    /* #include "../threading/direct.c" */
-    #include "../threading/direct-relocatable.c"
+    #include "../threading/direct.c"
+    /* #include "../threading/direct-relocatable.c" */
     /* #include "../threading/direct-traced.c" */
 
     #include "../primitive/preamble.c"
@@ -212,49 +216,52 @@ run_engine(struct engine *e)
 
     /* Store state back in the engine structure. */
 
-    e->ip        = ip;
-    e->sp        = sp;
-    e->rp        = rp;
+    e[ea_ip]        = (cell)ip;
+    e[ea_sp]        = (cell)sp;
+    e[ea_rp]        = (cell)rp;
 
-    e->here      = here;
+    e[ea_here]      = (cell)here;
 
-    e->rp0       = rp0;
-    e->sp0       = sp0;
+    e[ea_rp0]       = (cell)rp0;
+    e[ea_sp0]       = (cell)sp0;
 
-    e->source_idx     = source_idx;
+    e[ea_source_idx]     = (cell)source_idx;
 
-    e->current   = current;
-    e->context   = context;
-    e->state     = state;
-    e->base      = base;
+    e[ea_current]   = (cell)current;
+    e[ea_context]   = (cell)context;
+    e[ea_state]     = state;
+    e[ea_base]      = base;
 
-    e->result    = result;
-    e->interpret = interpret;
+    e[ea_result]    = (cell)result;
+    e[ea_interpret] = (cell)interpret;
 
-    /* e->t_sp      = t_sp; */
-    /* e->cp0       = cp0; */
-    /* e->cp        = cp; */
-    /* e->t_sp0     = t_sp0; */
+    /* e[ea_t_sp]      = t_sp; */
+    /* e[ea_cp0]       = cp0; */
+    /* e[ea_cp]        = cp; */
+    /* e[ea_t_sp0]     = t_sp0; */
     _debug("done with run\n");
     return result;
 }
 
 int
-engine_interpret_source(struct engine *e, const char *source)
+engine_interpret_source(cell *e, const char *source)
 {
     _debug("interpreting source '%s'\n", source);
 
-    void *code[2] = { e->interpret, e->operators[ot_exit] };
-    _debug("interpret %lx \n", (cell)e->interpret);
+    void *code[2] = { (void *)e[ea_interpret], operators[ot_exit] };
+    // TODO
+    _debug("interpret %lx\n", e[ea_interpret]);
 
-    e->source = source;
-    e->source_len = strlen(source);
+    cell i = strlen(source);
+    e[ea_source_len] = i;
+    memcpy(&e[e[ea_source_addr]], source, i);
 
-    e->rp = e->rp0;
-    *--e->rp = (cell *)-1;
-    e->ip = code;
+    e[ea_rp] = e[ea_rp0];
+    *(cell *)e[ea_rp] = (cell)((cell *)-1);
+    e[ea_rp] -= sizeof(cell);
+    e[ea_ip] = (cell)code;
 
-    /* for (cell *p = (cell *)e->interpret; p < (cell *)e->here; p++) */
+    /* for (cell *p = &e[ea_interpret]; p < &e[ea_here]; p++) */
     /*     _debug("%lx: %lx\n", (cell)p, *p); */
 
     return run_engine(e);
@@ -274,19 +281,19 @@ store_counted_string(const char *s, char *here)
     return here + sizeof(cell) + n + 1;
 }
 
-struct engine m;
+cell engine[1 << 16];
 
 int
 main(int argc, char *argv[])
 {
     /* Clears structure. */
-    init_engine(&m);
+    init_engine(engine, sizeof(engine)/sizeof(cell));
     _debug("engine initialized.\n");
 
     /* Bootstrap. */
-    run_engine(&m);
+    run_engine(engine);
     _debug("bootstrap complete.\n");
 
     /* Actually do something. */
-    exit(engine_interpret_source(&m, argv[1]));
+    exit(engine_interpret_source(engine, argv[1]));
 }
