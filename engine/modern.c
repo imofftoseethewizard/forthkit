@@ -18,9 +18,50 @@ print_stack(cell *sp0, cell *sp)
     _debug("\n");
 }
 
+void
+init_engine2(cell *data, cell size)
+{
+    data[ea_size]        = size;
+
+    /* registers */
+    data[ea_ip]          = 0;
+    data[ea_rp]          = engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE;
+    data[ea_sp]          = data[ea_rp] + PARAMETER_STACK_SIZE;
+    data[ea_here]        = data[ea_sp];
+
+    /* internal state */
+    data[ea_base]        = 10;
+    data[ea_context]     = 0;
+    data[ea_current]     = 0;
+    data[ea_data]        = data[ea_here];
+    data[ea_rp0]         = data[ea_rp];
+    data[ea_source_idx]  = 0;
+    data[ea_source_len]  = 0;
+    data[ea_sp0]         = data[ea_sp];
+
+    /* external_state */
+
+    data[ea_interpret]   = 0;
+    data[ea_result]      = 0;
+    data[ea_source_addr] = engine_attribute_count;
+
+    /* data[ea_] = 0; */
+}
+
+
 int
 init_engine(struct engine *e)
 {
+    /* data layout:
+         size
+         engine hash
+         registers (ip, rp, sp, here)
+         engine state (base, state, current, context etc)
+         source
+         return stack
+         parameter stack
+         data
+     */
     char *data_end = e->data + sizeof(e->data);
 
     /* Ensure stacks have cell-aligned addresses. */
@@ -29,10 +70,10 @@ init_engine(struct engine *e)
     e->return_stack = (cell **)data_end - RETURN_STACK_SIZE;
     e->rp = e->rp0 = e->return_stack + RETURN_STACK_SIZE;
 
-    e->data_stack = (cell *)e->return_stack - DATA_STACK_SIZE;
-    e->sp = e->sp0 = e->data_stack + DATA_STACK_SIZE;
+    e->parameter_stack = (cell *)e->return_stack - PARAMETER_STACK_SIZE;
+    e->sp = e->sp0 = e->parameter_stack + PARAMETER_STACK_SIZE;
 
-    e->top = (char *)e->data_stack;
+    e->top = (char *)e->parameter_stack;
 
     e->ip = 0;
 
@@ -53,7 +94,7 @@ init_engine(struct engine *e)
     e->result = 0;
 
     /*e->cp = e->cp0 = e->context_stack;*/
-    /* e->t_sp = e->t_sp0 = e->data_stack; */
+    /* e->t_sp = e->t_sp0 = e->parameter_stack; */
 }
 
 void
@@ -112,8 +153,8 @@ run_engine(struct engine *e)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
-    #include "../threading/direct.c"
-    /* #include "../threading/direct-relocatable.c" */
+    /* #include "../threading/direct.c" */
+    #include "../threading/direct-relocatable.c"
     /* #include "../threading/direct-traced.c" */
 
     #include "../primitive/preamble.c"

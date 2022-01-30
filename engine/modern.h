@@ -16,11 +16,31 @@ enum operator_type {
     operator_type_count
 };
 
+enum engine_attribute {
+    ea_size,
+    ea_ip,
+    ea_rp,
+    ea_sp,
+    ea_here,
+    ea_base,
+    ea_context,
+    ea_current,
+    ea_data,
+    ea_rp0,
+    ea_source_idx,
+    ea_source_len,
+    ea_sp0,
+    ea_interpret,
+    ea_result,
+    ea_source_addr,
+    engine_attribute_count
+};
+
 struct engine {
     int size;
     void *user;
 
-    cell *data_stack;
+    cell *parameter_stack;
     cell *sp;
     cell *sp0; //
 
@@ -58,7 +78,7 @@ struct engine {
 
     char data[
         RETURN_STACK_SIZE * sizeof(cell)
-        + DATA_STACK_SIZE  * sizeof(cell)
+        + PARAMETER_STACK_SIZE  * sizeof(cell)
         + DATA_AREA_SIZE
         ];
 };
