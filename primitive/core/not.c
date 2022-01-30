@@ -1,4 +1,4 @@
-define_primitive("NOT", &&pr_not);
+define_primitive("NOT", pr_not);
 
 #define _not() *sp = ~*sp
 

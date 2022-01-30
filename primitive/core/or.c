@@ -1,4 +1,4 @@
-define_primitive("OR", &&pr_or);
+define_primitive("OR", pr_or);
 
 #define _or() *++sp = *(sp+1) | *sp
 

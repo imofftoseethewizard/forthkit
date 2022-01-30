@@ -1,4 +1,4 @@
-define_primitive("0>", &&pr_zero_gt);
+define_primitive("0>", pr_zero_gt);
 
 #define _zero_gt() *sp = *sp > 0
 

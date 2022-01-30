@@ -1,4 +1,4 @@
-define_primitive("0=", &&pr_zero_eq);
+define_primitive("0=", pr_zero_eq);
 
 #define _zero_eq() *sp = *sp == 0
 

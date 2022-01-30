@@ -1,4 +1,4 @@
-define_primitive("COMPILE,", &&pr_store_compiled);
+define_primitive("COMPILE,", pr_store_compiled);
 
 #define _store_compiled(x) _store_data(_get_word_interpretation_semantics(x));
 

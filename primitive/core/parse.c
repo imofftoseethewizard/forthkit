@@ -1,4 +1,4 @@
-define_primitive("PARSE", &&pr_parse);
+define_primitive("PARSE", pr_parse);
 
 /* Aliases for some temporary variables to provide readability. */
 

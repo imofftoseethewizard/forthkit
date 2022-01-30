@@ -22,24 +22,24 @@ struct engine {
 
     cell *data_stack;
     cell *sp;
-    cell *sp0;
+    cell *sp0; //
 
     cell **return_stack;
     cell **rp;
-    cell **rp0;
+    cell **rp0; //
 
     void **ip;
 
-    char *here;
+    char *here; //
     char *top;
 
-    cell state;
-    cell base;
+    cell state; //
+    cell base; ///
 
-    cell *context;
-    cell *current;
+    cell *context; //
+    cell *current; //
 
-    const char *source;
+    const char *source; //
     int source_len;
     int source_idx; /* >in */
 

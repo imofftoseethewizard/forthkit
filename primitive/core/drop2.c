@@ -1,4 +1,4 @@
-define_primitive("2DROP", &&pr_drop2);
+define_primitive("2DROP", pr_drop2);
 
 #define _drop2() sp += 2
 

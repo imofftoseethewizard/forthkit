@@ -1,4 +1,4 @@
-define_primitive("<<", &&pr_lshift);
+define_primitive("<<", pr_lshift);
 
 #define _lshift() *++sp = *(sp+1) << *sp
 

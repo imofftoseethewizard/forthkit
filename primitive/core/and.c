@@ -1,4 +1,4 @@
-define_primitive("AND", &&pr_and);
+define_primitive("AND", pr_and);
 
 #define _and() *++sp = *(sp+1) & *sp
 

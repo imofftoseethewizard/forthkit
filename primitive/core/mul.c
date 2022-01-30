@@ -1,4 +1,4 @@
-define_primitive("*", &&pr_mul);
+define_primitive("*", pr_mul);
 
 #define _mul() *++sp = *(sp+1) * *sp
 

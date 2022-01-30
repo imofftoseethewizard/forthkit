@@ -1,4 +1,4 @@
-define_primitive("PICK", &&pr_pick);
+define_primitive("PICK", pr_pick);
 
 #define _pick() *sp-- = *(sp + 1 + *(sp+1))
 

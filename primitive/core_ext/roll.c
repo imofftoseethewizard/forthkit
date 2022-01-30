@@ -1,4 +1,4 @@
-define_primitive("ROLL", &&pr_roll);
+define_primitive("ROLL", pr_roll);
 
 #define _roll()                                   \
   tmp0 = *sp, tmp1 = *(sp+tmp0);                  \

@@ -1,4 +1,4 @@
-register_operator(ot_branch, &&op_branch);
+register_operator(ot_branch, op_branch);
 
 /* op_branch expects that the next two words are op_jump and an offset
    to the alternate code path, and immediately following that is
@@ -6,8 +6,6 @@ register_operator(ot_branch, &&op_branch);
 */
 if (0) {
   op_branch:
-    _debug("branch: %lx\n", *sp);
     ip += *sp++ ? 2 : 0;
-    print_stack(sp0, sp);
     _next();
 }

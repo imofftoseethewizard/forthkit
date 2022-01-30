@@ -1,4 +1,4 @@
-define_primitive("<>", &&pr_neq);
+define_primitive("<>", pr_neq);
 
 #define _neq() *++sp = *(sp+1) != *sp
 

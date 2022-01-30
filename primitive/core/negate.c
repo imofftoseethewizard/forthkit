@@ -1,4 +1,4 @@
-define_primitive("NEGATE", &&pr_negate);
+define_primitive("NEGATE", pr_negate);
 
 #define _negate() *sp = ~*sp
 

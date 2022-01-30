@@ -1,4 +1,4 @@
-define_primitive(">>", &&pr_rshift);
+define_primitive(">>", pr_rshift);
 
 #define _rshift() *++sp = *(sp+1) >> *sp
 

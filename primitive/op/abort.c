@@ -1,4 +1,4 @@
-register_operator(ot_abort, &&op_abort);
+register_operator(ot_abort, op_abort);
 
 /* Note that this abort is functionally distinct from the abort word.
  */

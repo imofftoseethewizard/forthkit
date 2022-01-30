@@ -1,4 +1,4 @@
-register_operator(ot_call, &&op_call);
+register_operator(ot_call, op_call);
 
 /* op_call expects the next location to be a pointer to a native
    function that neither accepts arguments nor returns a value.

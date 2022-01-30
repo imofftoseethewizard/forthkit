@@ -1,4 +1,4 @@
-define_immediate_primitive("BEGIN", &&pr_compile_begin);
+define_immediate_primitive("BEGIN", pr_compile_begin);
 
 #define _compile_begin() *--sp = (cell)here
 

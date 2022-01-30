@@ -1,4 +1,4 @@
-define_primitive("!", &&pr_store);
+define_primitive("!", pr_store);
 
 #define _store() *(cell *)*sp = *(sp+1), sp += 2
 

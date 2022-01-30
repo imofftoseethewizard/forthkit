@@ -1,4 +1,4 @@
-define_primitive("WORD", &&pr_word);
+define_primitive("WORD", pr_word);
 
 if (0) {
   pr_word:
@@ -20,8 +20,6 @@ if (0) {
     *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
 
     *--sp = (cell)word_buffer;
-    _debug("word result: %.*s\n", (int)(word_idx - sizeof(length_type)), word_buffer + sizeof(length_type));
-    print_stack(sp0, sp);
 
     _next();
 }

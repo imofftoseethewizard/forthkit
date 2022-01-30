@@ -1,4 +1,4 @@
-define_primitive("+", &&pr_plus);
+define_primitive("+", pr_plus);
 
 #define _plus() *++sp = *(sp+1) + *sp
 

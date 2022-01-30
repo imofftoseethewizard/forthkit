@@ -1,4 +1,4 @@
-define_primitive(">NUMBER", &&pr_to_number);
+define_primitive(">NUMBER", pr_to_number);
 
 #define _parse_digit(c) \
         '0' <= c && c <= '9' ? (c - '0') \
@@ -13,7 +13,6 @@ if (0) {
     register cell digit, len, result;
     register char *s;
 
-    print_stack(sp0, sp);
     len = *sp;
     s = (char *)*(sp+1);
     result = *(sp+2);
@@ -31,6 +30,6 @@ if (0) {
     *(sp+2) = result;
     *(sp+1) = (cell)s;
     *sp = len;
-    _debug("to number %ld\n", *(sp+2));
+
     _next();
 }

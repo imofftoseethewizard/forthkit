@@ -63,69 +63,69 @@ if (!interpret) {
     /* : interpret                                       */
     begin_define_word("interpret", 0);
     interpret = (void *)here;
-    _debug("defining interpret        (%lx)\n", (cell)interpret);
+    _debug("defining interpret        %lx\n", (cell)interpret);
 
     /*      begin                                        */
     _compile_begin();
 
     /*          32 word ?dup                             */
-    _store_data(&&op_literal);
+    _compile_pr(op_literal);
     _store_data(32);
-    _store_data(&&pr_word);
-    _store_data(&&pr_q_dup);
+    _compile_pr(pr_word);
+    _compile_pr(pr_q_dup);
 
     /*      while                                        */
     _compile_while();
 
     /*          find ?dup                                */
-    _store_data(&&pr_find);
-    _store_data(&&pr_q_dup);
+    _compile_pr(pr_find);
+    _compile_pr(pr_q_dup);
 
     /*          if                                       */
     _compile_if();
 
     /*              0> state @ 0= or                     */
-    _store_data(&&pr_zero_gt);
-    _store_data(&&pr_state);
-    _store_data(&&pr_fetch);
-    _store_data(&&pr_zero_eq);
-    _store_data(&&pr_or);
+    _compile_pr(pr_zero_gt);
+    _compile_pr(pr_state);
+    _compile_pr(pr_fetch);
+    _compile_pr(pr_zero_eq);
+    _compile_pr(pr_or);
 
     /*              if execute else compile, then        */
     _compile_if();
-    _store_data(&&pr_execute);
+    _compile_pr(pr_execute);
     _compile_else();
-    _store_data(&&pr_store_compiled);
+    _compile_pr(pr_store_compiled);
     _compile_then();
 
     /*          else                                     */
     _compile_else();
 
     /*              0 over count >number                 */
-    _store_data(&&op_literal);
+    _compile_pr(op_literal);
     _store_data(0);
-    _store_data(&&pr_over);
-    _store_data(&&pr_count);
-    _store_data(&&pr_to_number);
+    _compile_pr(pr_over);
+    _compile_pr(pr_count);
+    _compile_pr(pr_to_number);
 
     /*              0= if                                */
-    _store_data(&&pr_zero_eq);
+    _compile_pr(pr_zero_eq);
     _compile_if();
 
     /*                  drop nip state @ if literal then */
-    _store_data(&&pr_drop);
-    _store_data(&&pr_nip);
-    _store_data(&&pr_state);
-    _store_data(&&pr_fetch);
+    _compile_pr(pr_drop);
+    _compile_pr(pr_nip);
+    _compile_pr(pr_state);
+    _compile_pr(pr_fetch);
     _compile_if();
-    _store_data(&&pr_literal);
+    _compile_pr(pr_literal);
     _compile_then();
 
     /*              else                                 */
     _compile_else();
 
     /*                   abort                           */
-    _store_data(&&pr_abort);
+    _compile_pr(pr_abort);
 
     /*              then                                 */
     _compile_then();
@@ -137,7 +137,7 @@ if (!interpret) {
     _compile_repeat();
 
     /*  ;                                                */
-    _store_data(&&op_exit);
+    _compile_pr(op_exit);
 
     sp = sp0;
     rp = rp0;

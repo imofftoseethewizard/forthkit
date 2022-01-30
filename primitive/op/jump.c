@@ -1,4 +1,4 @@
-register_operator(ot_jump, &&op_jump);
+register_operator(ot_jump, op_jump);
 
 /* op_jump expects the next location to be an offset. It is relative
    to where the ip would normally be next, hence the `+ 2` to account
@@ -7,8 +7,6 @@ register_operator(ot_jump, &&op_jump);
 
 if (0) {
   op_jump:
-    _debug("jump\n");
-    _debug("jump %ld\n", (long int)*ip);
     ip += (long int)*ip - 1;
     _next();
 }
@@ -18,7 +16,8 @@ if (0) {
    Later, when the compiler reaches the destination of the jump, the address is
    taken from the stack to complete its compilation.
 */
-#define _compile_jump_origin() _store_data(&&op_jump), *--sp = (cell)here, _store_data(0)
+#define _compile_jump_origin() \
+    _compile_pr(op_jump), *--sp = (cell)here, _store_data(0)
 
 /* _compile_jump_target
  */

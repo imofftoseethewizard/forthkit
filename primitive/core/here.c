@@ -1,4 +1,4 @@
-define_primitive("HERE", &&pr_here);
+define_primitive("HERE", pr_here);
 
 #define _here() *--sp = (cell)here
 

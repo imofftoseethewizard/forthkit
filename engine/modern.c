@@ -11,8 +11,10 @@ void
 print_stack(cell *sp0, cell *sp)
 {
     _debug("stack: ");
+#if VERBOSE
     while (sp < sp0)
         _debug("%lx ", *sp++);
+#endif
     _debug("\n");
 }
 
@@ -110,63 +112,18 @@ run_engine(struct engine *e)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
-    #define _is_primitive(x)  ((x) >= &&__first && (x) <= &&__last)
-    #define _execute(x)       (*--rp = (cell *)ip, ip = (void **)(x))
-
-    #if (OPTIMIZE == time)
-
-    /* This version of `next` consumes more memory, as each primitive
-       will have a small amount of machine code following it to handle
-       advancing through compiled words. This saves two jumps per
-       primitive over the space optimizing version below.
-    */
-
-    #define _next()                                           \
-        do {                                                 \
-            _debug("1 ip: %lx; sp: %lx\n", (cell)ip, (cell)sp);       \
-            while (ip && !_is_primitive(*ip)) {_debug("*ip: %lx\n", (cell)*ip);_execute(*ip);} \
-            _debug("2 ip: %lx; *ip: %lx, sp: %lx\n", (cell)ip, (cell)*ip, (cell)sp); \
-            if (ip) goto **ip++;                             \
-            _debug("next 3: going to __last\n"); \
-            goto __last;                                     \
-        }                                                    \
-        while (0)
-
-    #elif (OPTIMIZE == space)
-
-    /* Instead of handling the logic to transition to the next word or
-       primitive in each primitive, this version of `next` just jumps
-       back to a loop here in `run_engine`.
-
-       It may be that this version is also faster on some
-       architectures. Using fewer bytes per primitive means that fewer
-       cache lines are needed to keep the code in memory and L1 cache
-       misses are less likely. It also may be that superscalar
-       processors can retire the jumps just as quickly as the
-       time-optimized version above.
-    */
-
-    #define _next() goto __next
-
-    #endif
-
-    #define QUOTE(x) #x
-    #define register_operator(x, y) \
-        do { \
-          if (!interpret) { \
-            _debug("operator %-10s %lx \n", QUOTE(x), (cell)y); \
-            operators[x] = y; \
-          } \
-        } while (0)
-
-    #include "../op/abort.c"
-    #include "../op/branch.c"
-    #include "../op/call.c"
-    #include "../op/exit.c"
-    #include "../op/jump.c"
-    #include "../op/literal.c"
+    #include "../threading/direct.c"
+    /* #include "../threading/direct-relocatable.c" */
+    /* #include "../threading/direct-traced.c" */
 
     #include "../primitive/preamble.c"
+
+    #include "../primitive/op/abort.c"
+    #include "../primitive/op/branch.c"
+    #include "../primitive/op/call.c"
+    #include "../primitive/op/exit.c"
+    #include "../primitive/op/jump.c"
+    #include "../primitive/op/literal.c"
 
     /* Prerequisites for bootstrap */
     #include "../primitive/core/abort.c"
@@ -208,19 +165,7 @@ run_engine(struct engine *e)
 
     context = current;
 
-    #if (OPTIMIZE == time)
-
-    if (ip) _next();
-
-    #elif (OPTIMIZE == space)
-
-    while (ip) {
-        while (ip && !_is_primitive(*ip)) _execute(*ip);
-        if (ip) goto **ip++;
-      __next:
-    }
-
-    #endif
+    _next();
 
   __last:
 
@@ -268,8 +213,8 @@ engine_interpret_source(struct engine *e, const char *source)
     *--e->rp = (cell *)-1;
     e->ip = code;
 
-    for (cell *p = (cell *)e->interpret; p < (cell *)e->here; p++)
-        _debug("%lx: %lx\n", (cell)p, *p);
+    /* for (cell *p = (cell *)e->interpret; p < (cell *)e->here; p++) */
+    /*     _debug("%lx: %lx\n", (cell)p, *p); */
 
     return run_engine(e);
 }

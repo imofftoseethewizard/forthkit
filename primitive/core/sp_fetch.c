@@ -1,4 +1,4 @@
-define_primitive("SP@", &&pr_sp_fetch);
+define_primitive("SP@", pr_sp_fetch);
 
 #define _sp_fetch() *--sp = (cell)sp
 

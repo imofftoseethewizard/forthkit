@@ -1,4 +1,4 @@
-define_primitive("2+", &&pr_two_plus);
+define_primitive("2+", pr_two_plus);
 
 #define _two_plus() *sp += 2
 

@@ -1,4 +1,4 @@
-define_primitive("PARSE-NAME", &&pr_parse_name);
+define_primitive("PARSE-NAME", pr_parse_name);
 
 if (0) {
   pr_parse_name:

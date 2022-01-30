@@ -1,4 +1,4 @@
-define_primitive(">", &&pr_gt);
+define_primitive(">", pr_gt);
 
 #define _gt() *++sp = *(sp+1) >  *sp
 

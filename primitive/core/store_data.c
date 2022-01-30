@@ -1,4 +1,4 @@
-define_primitive(",", &&pr_store_data);
+define_primitive(",", pr_store_data);
 
 if (0) {
   pr_store_data:

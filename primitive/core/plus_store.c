@@ -1,4 +1,4 @@
-define_primitive("+!", &&pr_plus_store);
+define_primitive("+!", pr_plus_store);
 
 #define _plus_store() *(*sp++) += *(sp+1)
 

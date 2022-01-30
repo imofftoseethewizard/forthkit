@@ -1,4 +1,4 @@
-define_primitive("-", &&pr_minus);
+define_primitive("-", pr_minus);
 
 #define _minus() *++sp = *(sp+1) - *sp
 

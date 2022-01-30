@@ -1,4 +1,4 @@
-define_primitive("1-", &&pr_one_minus);
+define_primitive("1-", pr_one_minus);
 
 #define _one_minus() *sp -= 1
 

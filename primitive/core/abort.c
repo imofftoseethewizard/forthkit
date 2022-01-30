@@ -1,4 +1,4 @@
-define_primitive("ABORT", &&pr_abort)
+define_primitive("ABORT", pr_abort)
 
 if (0) {
   pr_abort:
