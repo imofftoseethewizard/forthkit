@@ -50,55 +50,6 @@ init_engine(cell *data, cell size)
     /* data[ea_] = 0; */
 }
 
-
-int
-init_engine_old(struct engine *e)
-{
-    /* data layout:
-         size
-         engine hash
-         registers (ip, rp, sp, here)
-         engine state (base, state, current, context etc)
-         source
-         return stack
-         parameter stack
-         data
-     */
-    char *data_end = e->data + sizeof(e->data);
-
-    /* Ensure stacks have cell-aligned addresses. */
-    data_end -= (cell)data_end & (sizeof(cell) - 1);
-
-    e->return_stack = (cell **)data_end - RETURN_STACK_SIZE;
-    e->rp = e->rp0 = e->return_stack + RETURN_STACK_SIZE;
-
-    e->parameter_stack = (cell *)e->return_stack - PARAMETER_STACK_SIZE;
-    e->sp = e->sp0 = e->parameter_stack + PARAMETER_STACK_SIZE;
-
-    e->top = (char *)e->parameter_stack;
-
-    e->ip = 0;
-
-    e->here = e->data;
-
-    e->state = 0;
-    e->base = 10;
-
-    e->context = 0;
-    e->current = 0;
-
-    e->source = NULL;
-    e->source_len = 0;
-    e->source_idx = 0;
-
-    e->interpret = 0;
-
-    e->result = 0;
-
-    /*e->cp = e->cp0 = e->context_stack;*/
-    /* e->t_sp = e->t_sp0 = e->parameter_stack; */
-}
-
 void
 reset_engine_execution_state(cell *e)
 {

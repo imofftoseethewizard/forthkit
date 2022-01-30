@@ -40,53 +40,6 @@ enum engine_attribute {
     engine_attribute_count
 };
 
-struct engine {
-    int size;
-    void *user;
-
-    cell *parameter_stack;
-    cell *sp;
-    cell *sp0; //
-
-    cell **return_stack;
-    cell **rp;
-    cell **rp0; //
-
-    void **ip;
-
-    char *here; //
-    char *top;
-
-    cell state; //
-    cell base; ///
-
-    cell *context; //
-    cell *current; //
-
-    const char *source; //
-    int source_len;
-    int source_idx; /* >in */
-
-    void *interpret;
-    void *operators[operator_type_count];
-
-    int result;
-
-    /* Currently unused.
-    cell *t_sp;
-    cell *t_sp0;
-    cell **cp0;
-    cell **cp;
-    cell **context_stack;
-    */
-
-    char data[
-        RETURN_STACK_SIZE * sizeof(cell)
-        + PARAMETER_STACK_SIZE  * sizeof(cell)
-        + DATA_AREA_SIZE
-        ];
-};
-
 extern void init_engine(cell *e, cell size);
 extern int run_engine(cell *e);
 extern int engine_interpret_source(cell *e, const char *source);
