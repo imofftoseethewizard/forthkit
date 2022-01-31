@@ -4,6 +4,9 @@
     #define _is_primitive(x)  (((size_t) x) & c_pr_addr_flag)
     #define _execute(x)       (*--rp = (cell *)ip, ip = (void **)(x))
 
+    #define _ref_engine_attr(x) ((x) * sizeof(cell))
+    #define _fetch_addr(x)      (cell)*((char *)e + (x))
+
     #define _next()                                           \
         do {                                                  \
             while (ip && !_is_primitive(*ip)) _execute(*ip);  \

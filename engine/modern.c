@@ -25,7 +25,7 @@ init_engine(cell *data, cell size)
 
     /* registers */
     data[ea_ip]          = 0;
-    data[ea_rp]          = (cell)&data[engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE];
+    data[ea_rp]          = (cell)data + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE) * sizeof(cell) ;
     data[ea_sp]          = (cell)((cell *)data[ea_rp] + PARAMETER_STACK_SIZE);
     data[ea_here]        = data[ea_sp];
 
@@ -108,8 +108,8 @@ run_engine(cell *engine)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
-    #include "../threading/direct.c"
-    /* #include "../threading/direct-relocatable.c" */
+    /* #include "../threading/direct.c" */
+    #include "../threading/direct-relocatable.c"
     /* #include "../threading/direct-traced.c" */
 
     #include "../primitive/preamble.c"
@@ -208,12 +208,19 @@ engine_interpret_source(cell *e, const char *source)
     memcpy(&e[e[ea_source_addr]], source, i);
 
     e[ea_rp] = e[ea_rp0];
-    *(cell *)e[ea_rp] = (cell)((cell *)-1);
     e[ea_rp] -= sizeof(cell);
-    e[ea_ip] = (cell)code;
+    *(cell *)e[ea_rp] = 0;
+    _debug("engine_interpret_source: rp: %lx *rp: %lx\n", e[ea_rp], *(cell *)e[ea_rp]);
+    e[ea_ip] = e[ea_interpret];
 
-    /* for (cell *p = &e[ea_interpret]; p < &e[ea_here]; p++) */
-    /*     _debug("%lx: %lx\n", (cell)p, *p); */
+    /*
+    e->rp = e->rp0;
+    *(--e->rp) = 0;//(cell *)-8;
+    e->ip = e->interpret;//code;
+    */
+
+    for (cell *p = (cell *)e[ea_interpret]; p < (cell *)e[ea_here]; p++)
+        _debug("%lx: %lx\n", (cell)p, *p);
 
     return run_engine(e);
 }

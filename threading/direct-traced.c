@@ -4,9 +4,10 @@
     #define _next()                                                                        \
         do {                                                                               \
             _debug("1 ip: %lx; sp: %lx\n", (cell)ip, (cell)sp);                            \
+            print_stack(sp0, sp);\
             while (ip && !_is_primitive(*ip)) {                                            \
                 _debug("*ip: %lx\n", (cell)*ip);                                           \
-                _execute(*ip);                                                             \
+                _execute(*ip);                                      \
             }                                                                              \
             _debug("2 ip: %lx; *ip: %lx, sp: %lx\n", (cell)ip, ip?(cell)*ip:0, (cell)sp);  \
             if (ip) goto **ip++;                                                           \
