@@ -1,7 +1,5 @@
-define_primitive("PARSE-NAME", pr_parse_name);
 
-if (0) {
-  pr_parse_name:
+_primitive(pr_parse_name) {
 
     /* ASCII space */
     register char delimiter = 32;
@@ -15,3 +13,4 @@ if (0) {
 }
 
 #undef delimiter
+define_primitive("PARSE-NAME", pr_parse_name);

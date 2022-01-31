@@ -5,8 +5,7 @@ register_operator(ot_jump, op_jump);
    for advancing past op_jump and the offset.
 */
 
-if (0) {
-  op_jump:
+_primitive(op_jump) {
     ip += (long int)*ip - 1;
     _next();
 }
@@ -22,3 +21,4 @@ if (0) {
 /* _compile_jump_target
  */
 #define _compile_jump_target() *(cell *)*sp++ = (cell)((cell *)here + 1 - (cell *)*sp)
+None

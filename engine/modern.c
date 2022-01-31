@@ -13,7 +13,7 @@ print_stack(cell *sp0, cell *sp)
     _debug("stack: ");
 #if VERBOSE
     while (sp < sp0)
-        _debug("%lx ", *sp++);
+        _debug("%lx ", *--sp0);
 #endif
     _debug("\n");
 }
@@ -69,9 +69,10 @@ reset_engine_execution_state(struct engine *e)
 }
 
 int
-run_engine(struct engine *e)
+run_engine(struct engine *engine)
 {
     /* These are the most commonly referenced variables. */
+    register struct engine *e = engine;
     register void **ip  = e->ip;
     register cell *sp   = e->sp;
     register cell **rp  = e->rp;
@@ -114,7 +115,8 @@ run_engine(struct engine *e)
   __first:
     /* #include "../threading/direct.c" */
     /* #include "../threading/direct-relocatable.c" */
-    #include "../threading/direct-traced.c"
+    /* #include "../threading/direct-traced.c" */
+    #include "../threading/subroutine.c"
 
     #include "../primitive/preamble.c"
 
@@ -165,7 +167,7 @@ run_engine(struct engine *e)
 
     context = current;
 
-    _next();
+    _dispatch();
 
   __last:
 

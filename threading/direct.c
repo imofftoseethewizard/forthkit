@@ -1,3 +1,4 @@
+    #define _primitive(name) if (0) name:
     #define _is_primitive(x)  ((x) >= &&__first && (x) <= &&__last)
     #define _execute(x)       (*--rp = (cell *)ip, ip = (void **)(x))
 
@@ -10,3 +11,4 @@
         while (0)
 
     #define _pr_addr(x) (&&x)
+    #define _dispatch() _next()

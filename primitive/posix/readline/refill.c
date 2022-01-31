@@ -1,4 +1,3 @@
-define_primitive("REFILL", pr_refill);
 
 if (0)
   {
@@ -11,3 +10,4 @@ if (0)
     source_len = strlen(source);
     _next();
   }
+define_primitive("REFILL", pr_refill);

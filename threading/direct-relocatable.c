@@ -1,3 +1,4 @@
+    #define _primitive(name) if (0) name:
     #define c_primitive_addr (1L << (sizeof(cell) * 8 - 1))
     register size_t primitive_base = (size_t)&&__first - c_primitive_addr;
 
@@ -13,3 +14,4 @@
         while (0)
 
     #define _pr_addr(x) ((&&x) - primitive_base)
+    #define _dispatch() _next()

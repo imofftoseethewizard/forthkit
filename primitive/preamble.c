@@ -84,3 +84,4 @@
 
 #define _get_word_compilation_semantics(x)      *((cell *)(x) + 3)
 #define _get_word_interpretation_semantics(x)   ((cell *)(x) + 4)
+None

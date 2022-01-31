@@ -1,4 +1,3 @@
-define_immediate_primitive("REPEAT", pr_compile_repeat);
 
 #define _compile_repeat()                          \
     do {                                           \
@@ -8,8 +7,8 @@ define_immediate_primitive("REPEAT", pr_compile_repeat);
     _compile_jump_target();                        \
 } while (0);
 
-if (0) {
-  pr_compile_repeat:
+_primitive(pr_compile_repeat) {
     _compile_repeat();
     _next();
 }
+define_immediate_primitive("REPEAT", pr_compile_repeat);

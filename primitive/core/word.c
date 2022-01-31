@@ -1,7 +1,5 @@
-define_primitive("WORD", pr_word);
 
-if (0) {
-  pr_word:
+_primitive(pr_word) {
 
     /* Delimiter is on the top of the stack. */
     register char delimiter = *sp++;
@@ -29,3 +27,4 @@ if (0) {
 
     _next();
 }
+define_primitive("WORD", pr_word);

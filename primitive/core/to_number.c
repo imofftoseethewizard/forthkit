@@ -1,4 +1,3 @@
-define_primitive(">NUMBER", pr_to_number);
 
 #define _parse_digit(c) \
         '0' <= c && c <= '9' ? (c - '0') \
@@ -7,8 +6,7 @@ define_primitive(">NUMBER", pr_to_number);
       : -1
 
 
-if (0) {
-  pr_to_number:
+_primitive(pr_to_number) {
 
     register cell digit, len, result;
     register char *s;
@@ -33,3 +31,4 @@ if (0) {
 
     _next();
 }
+define_primitive(">NUMBER", pr_to_number);

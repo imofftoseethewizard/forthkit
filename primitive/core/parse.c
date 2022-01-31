@@ -1,9 +1,7 @@
-define_primitive("PARSE", pr_parse);
 
 /* Aliases for some temporary variables to provide readability. */
 
-if (0) {
-  pr_parse:
+_primitive(pr_parse) {
 
     register char delimiter = *sp++;
     register int len = 0;
@@ -17,3 +15,4 @@ if (0) {
 
     _next();
 }
+define_primitive("PARSE", pr_parse);

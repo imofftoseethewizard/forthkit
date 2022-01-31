@@ -1,4 +1,3 @@
-define_immediate_primitive("ELSE", pr_compile_else);
 
 #define _compile_else()                                                 \
     do {                                                                \
@@ -19,3 +18,4 @@ if (0)  {
     _compile_else();
     _next();
 }
+define_immediate_primitive("ELSE", pr_compile_else);

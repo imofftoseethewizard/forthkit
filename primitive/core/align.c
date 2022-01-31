@@ -1,7 +1,6 @@
-define_primitive("ALIGN", pr_align);
 
-if (0) {
-  pr_align:
+_primitive(pr_align) {
     here = (char *)_align(here);
     _next();
 }
+define_primitive("ALIGN", pr_align);

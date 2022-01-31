@@ -1,14 +1,11 @@
-define_primitive("FIND", pr_find);
 
 #define _lowercase_ascii(x) ((x) < 'A' || (x) > 'Z' ? (x) : (x) - 'A' + 'a')
 
-if (0) {
-
+_primitive(pr_find) {
     register cell *name, *word, *word_name;
     register char *name_cp, *word_name_cp;
     register int i, name_len;
 
-  pr_find:
     name = (cell *)*sp;
 
     /* Save the length of the target string into k. */
@@ -49,3 +46,4 @@ if (0) {
 
     _next();
 }
+define_primitive("FIND", pr_find);

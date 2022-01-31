@@ -1,4 +1,3 @@
-define_primitive("KEY", pr_key);
 
 #define _key() *--sp = getc(stdin)
 
@@ -8,3 +7,4 @@ if (0)
     _key();
     _next();
   }
+define_primitive("KEY", pr_key);

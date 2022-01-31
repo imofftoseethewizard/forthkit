@@ -4,8 +4,8 @@ register_operator(ot_branch, op_branch);
    to the alternate code path, and immediately following that is
    the beginning of the consequent code path.
 */
-if (0) {
-  op_branch:
+_primitive(op_branch) {
     ip += *sp++ ? 2 : 0;
     _next();
 }
+None

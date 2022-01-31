@@ -1,9 +1,8 @@
-define_primitive("+", pr_plus);
 
 #define _plus() *++sp = *(sp+1) + *sp
 
-if (0) {
-  pr_plus:
+_primitive(pr_plus) {
     _plus();
     _next();
 }
+define_primitive("+", pr_plus);
