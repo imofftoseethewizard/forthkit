@@ -17,9 +17,15 @@ if (0) {
            && source[source_idx] != delimiter)
         word_buffer[word_idx++] = source[source_idx++];
 
-    *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
+    if (word_idx == sizeof(length_type)) {
+        _debug("word: <none>\n");
+        *--sp = 0;
 
-    *--sp = (cell)word_buffer;
+    } else {
+        _debug("word: %.*s\n", (int)(word_idx - sizeof(length_type)), word_buffer + 1);
+        *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
+        *--sp = (cell)word_buffer;
+    }
 
     _next();
 }

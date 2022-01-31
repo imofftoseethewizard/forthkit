@@ -112,9 +112,9 @@ run_engine(struct engine *e)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
-    #include "../threading/direct.c"
+    /* #include "../threading/direct.c" */
     /* #include "../threading/direct-relocatable.c" */
-    /* #include "../threading/direct-traced.c" */
+    #include "../threading/direct-traced.c"
 
     #include "../primitive/preamble.c"
 
@@ -203,15 +203,14 @@ engine_interpret_source(struct engine *e, const char *source)
 {
     _debug("interpreting source '%s'\n", source);
 
-    void *code[2] = { e->interpret, e->operators[ot_exit] };
     _debug("interpret %lx \n", (cell)e->interpret);
 
     e->source = source;
     e->source_len = strlen(source);
 
     e->rp = e->rp0;
-    *--e->rp = (cell *)-1;
-    e->ip = code;
+    *--e->rp = 0;
+    e->ip = e->interpret;
 
     /* for (cell *p = (cell *)e->interpret; p < (cell *)e->here; p++) */
     /*     _debug("%lx: %lx\n", (cell)p, *p); */
