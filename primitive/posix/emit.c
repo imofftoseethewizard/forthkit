@@ -4,6 +4,7 @@ define_primitive("EMIT", pr_emit);
 
 if (0) {
   pr_emit:
+    print_stack(sp0, sp);
     _emit();
     _next();
 }

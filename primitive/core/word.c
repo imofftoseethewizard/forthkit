@@ -4,9 +4,13 @@ if (0) {
   pr_word:
 
     /* Delimiter is on the top of the stack. */
-    register char delimiter = *sp++;
-    register char *word_buffer = top - MAX_WORD_LENGTH;
-    register int word_idx = sizeof(length_type);
+    register char delimiter    = *sp++;
+    register char *word_buffer = (char *)e[ea_top] - MAX_WORD_LENGTH;
+    register int word_idx      = sizeof(length_type);
+    register char *source      = (char *)&e[e[ea_source_addr]];
+    register cell source_len   = e[ea_source_len];
+    register cell source_idx   = e[ea_source_idx];
+
 
     /* Skip leading delimiters. */
     while (source_idx < source_len && source[source_idx] == delimiter)
@@ -30,6 +34,8 @@ if (0) {
         *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
         *--sp = (cell)word_buffer;
     }
+
+    e[ea_source_idx] = source_idx;
 
     _next();
 }

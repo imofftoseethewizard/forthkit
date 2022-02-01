@@ -6,6 +6,7 @@
 
     #define _ref_engine_attr(x) ((x) * sizeof(cell))
     #define _fetch_addr(x)      (cell)*((char *)e + (x))
+    #define _as_native_ptr(x) (cell *)((char *)e + (cell)(x))
 
     #define _next()                                           \
         do {                                                  \

@@ -6,6 +6,8 @@ register_operator(ot_branch, op_branch);
 */
 if (0) {
   op_branch:
+    _debug("branch: ");
+    print_stack(sp0, sp);
     ip += *sp++ ? 2 : 0;
     _next();
 }

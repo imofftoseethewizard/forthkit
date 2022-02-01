@@ -5,7 +5,7 @@
 #define QUOTE(x) #x
 #define register_operator(x, y)                                           \
     do {                                                                  \
-        if (!interpret) {                                                 \
+        if (!e[ea_interpret]) {                                           \
             _debug("operator %-16s %lx\n", QUOTE(y), (cell)_pr_addr(y));  \
             operators[x] = _pr_addr(y);                                   \
         }                                                                 \
@@ -38,10 +38,10 @@
        _store_data(*sp++);                                                \
                                                                           \
        /* Vocabulary list link.               */                          \
-       _store_data(current);                                              \
+       _store_data(e[ea_current]);                                              \
                                                                           \
        /* Add to current vocabulary.          */                          \
-       current = *rp;                                                     \
+       e[ea_current] = (cell)*rp;                                       \
                                                                           \
        /* Word flags.                         */                          \
        _store_data(flags);                                                \
@@ -57,22 +57,22 @@
     _word_header(flags);
 
 #define define_primitive_ext(s, l, flags)                                 \
-    if (!context)                                                         \
+    if (!e[ea_context])                                                         \
     {                                                                     \
         _debug("defining %-16s %lx\n", s, (cell)_pr_addr(l));             \
         begin_define_word(s, c_primitive | (flags));                      \
-        _compile_pr(l);                             \
-        _compile_pr(op_exit);                                   \
+        _compile_pr(l);                                                   \
+        _compile_pr(op_exit);                                             \
     }
 
 #define define_parsing_primitive(s, l)                                    \
-    if (!context)                                                         \
+    if (!e[ea_context])                                                         \
     {                                                                     \
         _debug("defining %-16s %lx\n", s, (cell)_pr_addr(l));             \
         begin_define_word(s, c_primitive);                                \
-        _compile_pr(pr_word);                                   \
-        _compile_pr(l);                                         \
-        _compile_pr(op_exit);                                   \
+        _compile_pr(pr_word);                                             \
+        _compile_pr(l);                                                   \
+        _compile_pr(op_exit);                                             \
     }
 
 #define define_primitive(s, l)           define_primitive_ext(s, l, 0)

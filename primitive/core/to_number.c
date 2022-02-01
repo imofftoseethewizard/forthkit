@@ -10,9 +10,10 @@ define_primitive(">NUMBER", pr_to_number);
 if (0) {
   pr_to_number:
 
-    register cell digit, len, result;
+    register cell base, digit, len, result;
     register char *s;
 
+    base = e[ea_base];
     len = *sp;
     s = (char *)*(sp+1);
     result = *(sp+2);

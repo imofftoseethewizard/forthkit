@@ -5,6 +5,8 @@ register_operator(ot_exit, op_exit);
 */
 if (0) {
   op_exit:
-    ip = (void **)*rp++;
+    print_return_stack(rp0, rp);
+    ip = *rp++;
+    _debug("ip: %lx\n", (cell)ip);
     _next();
 }

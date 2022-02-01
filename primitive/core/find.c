@@ -17,7 +17,7 @@ if (0) {
     /* word will hold the address of the word being checked for a matching
        name.
     */
-    word = context;
+    word = (cell *)e[ea_context];
 
     while (word) {
         word_name = (cell *)*word;

@@ -34,7 +34,6 @@ enum engine_attribute {
     ea_sp0,
     ea_state,
     ea_interpret,
-    ea_result,
     ea_source_addr,
     ea_top,
     engine_attribute_count
