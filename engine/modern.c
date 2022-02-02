@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 
+/* #include "../threading/direct.c" */
+/* #include "../threading/direct-relocatable.c" */
+#include "../threading/direct-relocatable-traced.c"
+/* #include "../threading/direct-traced.c" */
+
 #include "modern.h"
 #include "log.h"
 
@@ -13,51 +18,55 @@ print_stack(cell *sp0, cell *sp)
     _debug("stack: ");
 #if VERBOSE
     while (sp < sp0)
-        _debug("%lx ", *--sp0);
+        _debug("%lx ", (long)*--sp0);
 #endif
     _debug("\n");
 }
 
 void
-print_return_stack(cell **rp0, cell **rp)
+print_return_stack(cell *rp0, cell *rp)
 {
     _debug("return stack: ");
 #if VERBOSE
     while (rp < rp0)
-        _debug("%lx ", (cell)*--rp0);
+        _debug("%lx ", (long)*--rp0);
 #endif
     _debug("\n");
 }
 
 void
-init_engine(cell *data, cell size)
+init_engine(cell *e, cell size)
 {
-    data[ea_size]        = size;
+    cell *rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
+    cell *sp = rp + PARAMETER_STACK_SIZE;
+    cell *top = e + size / sizeof(cell);
+
+    e[ea_size]        = size;
 
     /* registers */
-    data[ea_ip]          = 0;
-    data[ea_rp]          = (cell)data + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE) * sizeof(cell) ;
-    data[ea_sp]          = (cell)((cell *)data[ea_rp] + PARAMETER_STACK_SIZE);
-    data[ea_here]        = data[ea_sp];
+    e[ea_ip]          = 0;
+    e[ea_rp]          = _from_native_ptr(rp);
+    e[ea_sp]          = _from_native_ptr(sp);
+    e[ea_here]        = e[ea_sp];
 
     /* internal state */
-    data[ea_base]        = 10;
-    data[ea_context]     = 0;
-    data[ea_current]     = 0;
-    data[ea_data]        = data[ea_here];
-    data[ea_rp0]         = data[ea_rp];
-    data[ea_source_idx]  = 0;
-    data[ea_source_len]  = 0;
-    data[ea_sp0]         = data[ea_sp];
-    data[ea_state]       = 0;
+    e[ea_base]        = 10;
+    e[ea_context]     = 0;
+    e[ea_current]     = 0;
+    e[ea_data]        = e[ea_here];
+    e[ea_rp0]         = e[ea_rp];
+    e[ea_source_idx]  = 0;
+    e[ea_source_len]  = 0;
+    e[ea_sp0]         = e[ea_sp];
+    e[ea_state]       = 0;
 
     /* external_state */
 
-    data[ea_interpret]   = 0;
-    data[ea_source_addr] = engine_attribute_count;
-    data[ea_top]         = (cell)((char *)data + ea_size * sizeof(cell));
+    e[ea_interpret]   = 0;
+    e[ea_source_addr] = engine_attribute_count * sizeof(cell);
+    e[ea_top]         = _from_native_ptr(top);
 
-    /* data[ea_] = 0; */
+    /* e[ea_] = 0; */
 }
 
 void
@@ -71,18 +80,19 @@ reset_engine_execution_state(cell *e)
 int
 run_engine(cell *engine)
 {
+
     /* These are the most commonly referenced variables. */
-    register cell *e   = engine;
-    register cell *ip  = (cell *)e[ea_ip];
-    register cell *sp  = (cell *)e[ea_sp];
-    register cell **rp = (cell **)e[ea_rp];
+    register cell *e  = engine;
+    register cell *ip = _to_native_ptr(e[ea_ip]);
+    register cell *sp = _to_native_ptr(e[ea_sp]);
+    register cell *rp = _to_native_ptr(e[ea_rp]);
 
     /* These are generally useful to have, but probably not worth putting
        in a register.
      */
-    char *here = (char *)e[ea_here];
-    cell **rp0 = (cell **)e[ea_rp0];
-    cell *sp0  = (cell *)e[ea_sp0];
+    char *here = (char *)_to_native_ptr(e[ea_here]);
+    cell *rp0  = (cell *)_to_native_ptr(e[ea_rp0]);
+    cell *sp0  = (cell *)_to_native_ptr(e[ea_sp0]);
 
     /* Not currently used, but reserved for uncaught exceptions. */
     cell result = 0;
@@ -95,16 +105,11 @@ run_engine(cell *engine)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
-    /* #include "../threading/direct.c" */
-    #include "../threading/direct-relocatable.c"
-    /* #include "../threading/direct-relocatable-traced.c" */
-    /* #include "../threading/direct-traced.c" */
 
     #include "../primitive/preamble.c"
 
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
-    #include "../primitive/op/call.c"
     #include "../primitive/op/exit.c"
     #include "../primitive/op/jump.c"
     #include "../primitive/op/literal.c"
@@ -159,10 +164,10 @@ run_engine(cell *engine)
   __last:
 
     /* Store state back in the engine structure. */
-    e[ea_ip]   = (cell)ip;
-    e[ea_sp]   = (cell)sp;
-    e[ea_rp]   = (cell)rp;
-    e[ea_here] = (cell)here;
+    e[ea_ip]   = _from_native_ptr(ip);
+    e[ea_sp]   = _from_native_ptr(sp);
+    e[ea_rp]   = _from_native_ptr(rp);
+    e[ea_here] = _from_native_ptr(here);
 
     _debug("done with run\n");
     return result;
@@ -174,20 +179,19 @@ engine_interpret_source(cell *e, const char *source)
     _debug("interpreting source '%s'\n", source);
 
     // TODO
-    _debug("interpret %lx\n", e[ea_interpret]);
+    _debug("interpret %lx\n", (long)e[ea_interpret]);
 
     cell i = strlen(source);
     e[ea_source_len] = i;
-    memcpy(&e[e[ea_source_addr]], source, i);
+    memcpy(_to_native_ptr(e[ea_source_addr]), source, i);
 
     e[ea_rp] = e[ea_rp0];
     e[ea_rp] -= sizeof(cell);
-    *(cell *)e[ea_rp] = 0;
-    _debug("engine_interpret_source: rp: %lx *rp: %lx\n", e[ea_rp], *(cell *)e[ea_rp]);
+    *_to_native_ptr(e[ea_rp]) = 0;
     e[ea_ip] = e[ea_interpret];
 
     for (cell p = e[ea_interpret]; p < e[ea_here]; p += sizeof(cell))
-        _debug("%lx: %lx\n", p, *(cell *)p);
+        _debug("%lx: %lx\n", (long)_to_native_ptr(p), (long)*_to_native_ptr(p));
 
     return run_engine(e);
 }
@@ -211,6 +215,7 @@ cell engine[1 << 16];
 int
 main(int argc, char *argv[])
 {
+    _debug("engine: %lx top: %lx\n", (long)engine, (long)((char *)engine + sizeof(engine)));
     /* Clears structure. */
     init_engine(engine, sizeof(engine)/sizeof(cell));
     _debug("engine initialized.\n");
@@ -220,5 +225,6 @@ main(int argc, char *argv[])
     _debug("bootstrap complete.\n");
 
     /* Actually do something. */
-    exit(engine_interpret_source(engine, argv[1]));
+    exit(engine_interpret_source(engine, "65 EMIT"));
+//    exit(engine_interpret_source(engine, argv[1]));
 }

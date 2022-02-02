@@ -4,6 +4,8 @@ define_primitive("EXECUTE", pr_execute);
 
 if (0) {
   pr_execute:
+    _debug("execute: ");
+    print_stack(sp0, sp);
     _execute(*sp++);
     _next();
 }

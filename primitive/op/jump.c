@@ -7,7 +7,9 @@ register_operator(ot_jump, op_jump);
 
 if (0) {
   op_jump:
-    ip += (long int)*ip - 1;
+    _debug("jump: *ip: %lx, %d\n", (long)*ip, (cell)*ip);
+    ip = (cell *)((char *)ip + (signed)*ip - sizeof(cell));
+    _debug("jump: *ip: %lx\n", (long)*ip);
     _next();
 }
 
@@ -17,8 +19,10 @@ if (0) {
    taken from the stack to complete its compilation.
 */
 #define _compile_jump_origin() \
-    _compile_pr(op_jump), *--sp = (cell)here, _store_data(0)
+    _compile_pr(op_jump), *--sp = _from_native_ptr(here), _store_data(0)
 
 /* _compile_jump_target
  */
-#define _compile_jump_target() *(cell *)*sp++ = (cell)((cell *)here + 1 - (cell *)*sp)
+#pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
+#define _compile_jump_target() \
+    *_to_native_ptr(*sp++) = (int)(here + sizeof(cell) - (char *)_to_native_ptr(*sp))

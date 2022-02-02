@@ -4,7 +4,8 @@ define_immediate_primitive("REPEAT", pr_compile_repeat);
     do {                                           \
     _swap();                                       \
     _compile_pr(op_jump);                \
-    _store_data((cell *)*sp++ - (cell *)here + 1); \
+    _debug("repeat: *sp: %lx\n", (long)*sp); \
+    _store_data(*sp++ - _from_native_ptr(here) + sizeof(cell)); \
     _compile_jump_target();                        \
 } while (0);
 

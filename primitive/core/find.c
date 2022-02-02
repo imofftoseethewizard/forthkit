@@ -4,12 +4,12 @@ define_primitive("FIND", pr_find);
 
 if (0) {
 
-    register cell *name, *word, *word_name;
+    register cell *name, word, *wordp, *word_name;
     register char *name_cp, *word_name_cp;
     register int i, name_len;
 
   pr_find:
-    name = (cell *)*sp;
+    name = _to_native_ptr(*sp);
 
     /* Save the length of the target string into k. */
     name_len = _string_len(name);
@@ -17,10 +17,11 @@ if (0) {
     /* word will hold the address of the word being checked for a matching
        name.
     */
-    word = (cell *)e[ea_context];
+    word = e[ea_context];
 
     while (word) {
-        word_name = (cell *)*word;
+        wordp = _to_native_ptr(word);
+        word_name = _to_native_ptr(*wordp);
 
         if (_string_len(word_name) == name_len) {
 
@@ -42,9 +43,10 @@ if (0) {
         *--sp = 0;
         /* stack contains ( name 0 ) */
     } else {
-        *sp = (cell)_get_word_interpretation_semantics(word);
-        *--sp = _get_word_flags(word, c_immediate) ? 1 : -1;
+        *sp = (cell)_get_word_interpretation_semantics(wordp);
+        *--sp = _get_word_flags(wordp, c_immediate) ? 1 : -1;
         /* stack contains ( xt 1 ) or ( xt -1 ) */
+        _debug("find: end: "); print_stack(sp0, sp);
     }
 
     _next();

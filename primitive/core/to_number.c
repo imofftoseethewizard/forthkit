@@ -9,13 +9,14 @@ define_primitive(">NUMBER", pr_to_number);
 
 if (0) {
   pr_to_number:
+    print_stack(sp0, sp);
 
     register cell base, digit, len, result;
     register char *s;
 
     base = e[ea_base];
     len = *sp;
-    s = (char *)*(sp+1);
+    s = (char *)_to_native_ptr(*(sp+1));
     result = *(sp+2);
 
     while (0 < len) {
@@ -29,7 +30,7 @@ if (0) {
     }
 
     *(sp+2) = result;
-    *(sp+1) = (cell)s;
+    *(sp+1) = _from_native_ptr(s);
     *sp = len;
 
     _next();
