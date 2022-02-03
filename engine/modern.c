@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 
-/* #include "../threading/direct.c" */
-/* #include "../threading/direct-relocatable.c" */
-#include "../threading/direct-relocatable-traced.c"
-/* #include "../threading/direct-traced.c" */
-/* #include "../threading/subroutine.c" */
+/* #include "../threading/direct.h" */
+/* #include "../threading/direct-relocatable.h" */
+#include "../threading/direct-relocatable-traced.h"
+/* #include "../threading/direct-traced.h" */
+/* #include "../threading/subroutine.h" */
 
-#include "../primitive/preamble.c"
+#include "../primitive/preamble.h"
 
 #include "modern.h"
 #include "log.h"
