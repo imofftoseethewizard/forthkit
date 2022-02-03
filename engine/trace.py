@@ -17,4 +17,4 @@ if __name__ == '__main__':
                     raise
             print(line, end='')
 
-    #pprint(symbols)
+    pprint(symbols)

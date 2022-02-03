@@ -3,8 +3,8 @@
 #include <string.h>
 
 /* #include "../threading/direct.c" */
-/* #include "../threading/direct-relocatable.c" */
-#include "../threading/direct-relocatable-traced.c"
+#include "../threading/direct-relocatable.c"
+/* #include "../threading/direct-relocatable-traced.c" */
 /* #include "../threading/direct-traced.c" */
 
 #include "modern.h"
@@ -63,7 +63,7 @@ init_engine(cell *e, cell size)
     /* external_state */
 
     e[ea_interpret]   = 0;
-    e[ea_source_addr] = engine_attribute_count * sizeof(cell);
+    e[ea_source_addr] = _from_native_ptr(&e[engine_attribute_count]);
     e[ea_top]         = _from_native_ptr(top);
 
     /* e[ea_] = 0; */

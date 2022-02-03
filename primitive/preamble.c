@@ -21,7 +21,7 @@
 #define _align(x) (cell *)((long)(x) + sizeof(cell) - 1 & ~(sizeof(cell) - 1))
 
 #pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
-#define _store_data(x)                                                  \
+#define _store_data(x)                                                    \
      here = (char *)_align(here), *(cell *)here = (cell)(x), here += sizeof(cell)
 
 #define _compile_pr(x) _store_data(_pr_addr(x))
@@ -36,7 +36,7 @@
        *--rp = _from_native_ptr(here);                                    \
        /* Copy name address to word entry.    */                          \
        _store_data(*sp++);                                                \
-\
+                                                                          \
        /* Vocabulary list link.               */                          \
        _store_data(e[ea_current]);                                        \
                                                                           \
