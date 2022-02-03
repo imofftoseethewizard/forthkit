@@ -5,4 +5,3 @@ _primitive(pr_literal) {
     _store_data(*sp++);
     _next();
 }
-None

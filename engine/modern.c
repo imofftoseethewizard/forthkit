@@ -3,10 +3,10 @@
 #include <string.h>
 
 /* #include "../threading/direct.c" */
-#include "../threading/direct-relocatable.c"
+/* #include "../threading/direct-relocatable.c" */
 /* #include "../threading/direct-relocatable-traced.c" */
 /* #include "../threading/direct-traced.c" */
-/* #include "../threading/subroutine.c" */
+#include "../threading/subroutine.c"
 
 #include "../primitive/preamble.c"
 
@@ -81,7 +81,7 @@ reset_engine_execution_state(cell *e)
 }
 
 int
-run_engine(cell *engine)
+run_engine(cell *engine) {
 
     /* These are the most commonly referenced variables. */
     register cell *e  = engine;

@@ -6,4 +6,3 @@ _primitive(op_abort) {
      reset_engine_execution_state(e);
      goto __last;
 }
-None

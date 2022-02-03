@@ -8,4 +8,3 @@ _primitive(op_call) {
     ((native_word)*ip++)();
     _next();
 }
-None

@@ -5,4 +5,3 @@ _primitive(op_literal) {
     *--sp = (cell)*ip++;
     _next();
 }
-None
