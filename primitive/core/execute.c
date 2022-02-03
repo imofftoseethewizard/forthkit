@@ -3,7 +3,7 @@
 
 _primitive(pr_execute) {
     _debug("execute: ");
-    print_stack(sp0, sp);
+    _print_stack();
     _execute(*sp++);
     _next();
 }

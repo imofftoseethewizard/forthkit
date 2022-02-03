@@ -4,7 +4,7 @@
 */
 _primitive(op_branch) {
     _debug("branch: ");
-    print_stack(sp0, sp);
+    _print_stack();
     ip += *sp++ ? 2 : 0;
     _next();
 }

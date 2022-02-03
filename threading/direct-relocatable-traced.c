@@ -18,7 +18,7 @@
             while (ip && !_is_primitive(*ip)) {                                            \
                 _debug("*ip: %lx\n", (long)*ip);                                           \
                 _execute(*ip);                                                             \
-                print_return_stack(rp0, rp); \
+                _print_return_stack(); \
             }                                                                              \
             _debug("2 ip: %lx; *ip: %lx, sp: %lx\n", (long)ip, ip?(long)*ip:0, (long)sp);  \
             if (ip) goto *(*ip++ + c_pr_addr_base);                                        \

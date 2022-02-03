@@ -12,7 +12,7 @@
     #define _next()                                                                        \
         do {                                                                               \
             _debug("1 ip: %lx; sp: %lx\n", (cell)ip, (cell)sp);                            \
-            print_stack(sp0, sp);\
+            _print_stack();\
             while (ip && !_is_primitive(*ip)) {                                            \
                 _debug("*ip: %lx\n", (cell)*ip);                                           \
                 _execute(*ip);                                      \

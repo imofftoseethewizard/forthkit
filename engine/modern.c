@@ -4,9 +4,9 @@
 
 /* #include "../threading/direct.c" */
 /* #include "../threading/direct-relocatable.c" */
-/* #include "../threading/direct-relocatable-traced.c" */
+#include "../threading/direct-relocatable-traced.c"
 /* #include "../threading/direct-traced.c" */
-#include "../threading/subroutine.c"
+/* #include "../threading/subroutine.c" */
 
 #include "../primitive/preamble.c"
 
@@ -14,28 +14,6 @@
 #include "log.h"
 
 char *store_counted_string(const char *s, char *here);
-
-void
-print_stack(cell *sp0, cell *sp)
-{
-    _debug("stack: ");
-#if VERBOSE
-    while (sp < sp0)
-        _debug("%lx ", (long)*--sp0);
-#endif
-    _debug("\n");
-}
-
-void
-print_return_stack(cell *rp0, cell *rp)
-{
-    _debug("return stack: ");
-#if VERBOSE
-    while (rp < rp0)
-        _debug("%lx ", (long)*--rp0);
-#endif
-    _debug("\n");
-}
 
 void
 init_engine(cell *e, cell size)
