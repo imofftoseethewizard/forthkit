@@ -1,8 +1,10 @@
-
-#define _count() *(sp-1) = *(length_type *)*sp, *sp-- = (cell)((length_type *)*sp + 1)
-
 _primitive(pr_count) {
-    _count();
+
+    register length_type *lenp = (length_type *)_to_native_ptr(*sp);
+
+    *sp = _from_native_ptr(lenp + 1);
+    *--sp = *lenp;
+
     _next();
 }
 define_primitive("COUNT", pr_count);

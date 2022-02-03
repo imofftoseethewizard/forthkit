@@ -1,5 +1,5 @@
 
-#define _state() *--sp = (cell)&state
+#define _state() *--sp = (cell)_ref_engine_attr(ea_state)
 
 _primitive(pr_state) {
     _state();

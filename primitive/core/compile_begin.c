@@ -1,5 +1,5 @@
 
-#define _compile_begin() *--sp = (cell)here
+#define _compile_begin() *--sp = _from_native_ptr(here)
 
 _primitive(pr_compile_begin) {
     _compile_begin();

@@ -1,5 +1,5 @@
 
-#define _fetch() *sp = *(cell *)(*sp)
+#define _fetch() *sp = _fetch_addr(*sp)
 
 _primitive(pr_fetch) {
     _fetch();

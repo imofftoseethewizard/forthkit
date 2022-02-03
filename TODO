@@ -1,5 +1,13 @@
 1. discover which optimizations cause failures
+   individually and pairwise for individual optimizations,
+   no segfaults/bus errors, but -O1 still fails
 2. threading model: relative labels instead of absolute
+   done
 3. use relative labels to support cell size < machine word size
-4. subrouting threading
+   problematic. Having a different cell size than machine word size forces
+   an abstraction everywhere a pointer is converted to a cell, or vv.
+   work paused for now in branch "relocatable"
+4. subroutine threading
+   partial work in branch "subroutine-threading", but introduces ordering
+   dependency in primitive definitions.
 5. indirect threading

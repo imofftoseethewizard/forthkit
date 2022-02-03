@@ -2,6 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 
+/* #include "../threading/direct.c" */
+#include "../threading/direct-relocatable.c"
+/* #include "../threading/direct-relocatable-traced.c" */
+/* #include "../threading/direct-traced.c" */
+/* #include "../threading/subroutine.c" */
+
+#include "../primitive/preamble.c"
+
 #include "modern.h"
 #include "log.h"
 
@@ -13,99 +21,85 @@ print_stack(cell *sp0, cell *sp)
     _debug("stack: ");
 #if VERBOSE
     while (sp < sp0)
-        _debug("%lx ", *--sp0);
+        _debug("%lx ", (long)*--sp0);
 #endif
     _debug("\n");
 }
 
-int
-init_engine(struct engine *e)
+void
+print_return_stack(cell *rp0, cell *rp)
 {
-    char *data_end = e->data + sizeof(e->data);
-
-    /* Ensure stacks have cell-aligned addresses. */
-    data_end -= (cell)data_end & (sizeof(cell) - 1);
-
-    e->return_stack = (cell **)data_end - RETURN_STACK_SIZE;
-    e->rp = e->rp0 = e->return_stack + RETURN_STACK_SIZE;
-
-    e->data_stack = (cell *)e->return_stack - DATA_STACK_SIZE;
-    e->sp = e->sp0 = e->data_stack + DATA_STACK_SIZE;
-
-    e->top = (char *)e->data_stack;
-
-    e->ip = 0;
-
-    e->here = e->data;
-
-    e->state = 0;
-    e->base = 10;
-
-    e->context = 0;
-    e->current = 0;
-
-    e->source = NULL;
-    e->source_len = 0;
-    e->source_idx = 0;
-
-    e->interpret = 0;
-
-    e->result = 0;
-
-    /*e->cp = e->cp0 = e->context_stack;*/
-    /* e->t_sp = e->t_sp0 = e->data_stack; */
+    _debug("return stack: ");
+#if VERBOSE
+    while (rp < rp0)
+        _debug("%lx ", (long)*--rp0);
+#endif
+    _debug("\n");
 }
 
 void
-reset_engine_execution_state(struct engine *e)
+init_engine(cell *e, cell size)
 {
-    e->sp = e->sp0;
-    e->rp = e->rp0;
-    /*
-    e->t_sp = e->t_sp0;
-    e->cp = e->cp0;
-    */
-    e->ip = 0;
+    cell *rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
+    cell *sp = rp + PARAMETER_STACK_SIZE;
+    cell *top = e + size / sizeof(cell);
+
+    e[ea_size]        = size;
+
+    /* registers */
+    e[ea_ip]          = 0;
+    e[ea_rp]          = _from_native_ptr(rp);
+    e[ea_sp]          = _from_native_ptr(sp);
+    e[ea_here]        = e[ea_sp];
+
+    /* internal state */
+    e[ea_base]        = 10;
+    e[ea_context]     = 0;
+    e[ea_current]     = 0;
+    e[ea_data]        = e[ea_here];
+    e[ea_rp0]         = e[ea_rp];
+    e[ea_source_idx]  = 0;
+    e[ea_source_len]  = 0;
+    e[ea_sp0]         = e[ea_sp];
+    e[ea_state]       = 0;
+
+    /* external_state */
+
+    e[ea_interpret]   = 0;
+    e[ea_source_addr] = _from_native_ptr(&e[engine_attribute_count]);
+    e[ea_top]         = _from_native_ptr(top);
+
+    /* e[ea_] = 0; */
+}
+
+void
+reset_engine_execution_state(cell *e)
+{
+    e[ea_sp] = e[ea_sp0];
+    e[ea_rp] = e[ea_rp0];
+    e[ea_ip] = 0;
 }
 
 int
-run_engine(struct engine *engine)
-{
+run_engine(cell *engine)
+
     /* These are the most commonly referenced variables. */
-    register struct engine *e = engine;
-    register void **ip  = e->ip;
-    register cell *sp   = e->sp;
-    register cell **rp  = e->rp;
+    register cell *e  = engine;
+    register cell *ip = _to_native_ptr(e[ea_ip]);
+    register cell *sp = _to_native_ptr(e[ea_sp]);
+    register cell *rp = _to_native_ptr(e[ea_rp]);
 
-    char *here          = e->here;
-    char *top           = e->top;
+    /* These are generally useful to have, but probably not worth putting
+       in a register.
+     */
+    char *here = (char *)_to_native_ptr(e[ea_here]);
+    cell *rp0  = (cell *)_to_native_ptr(e[ea_rp0]);
+    cell *sp0  = (cell *)_to_native_ptr(e[ea_sp0]);
 
-    cell **rp0          = e->rp0;
-    cell *sp0           = e->sp0;
+    /* Not currently used, but reserved for uncaught exceptions. */
+    cell result = 0;
 
-    /* currently unused
-    cell *t_sp = e->t_sp;
-    cell **cp0          = e->cp0;
-    cell **cp           = e->cp;
-    cell *t_sp0         = e->t_sp0;
-    */
-
-    const char *source  = e->source;
-    int source_len      = e->source_len;
-    int source_idx      = e->source_idx;
-
-    cell *current       = e->current;
-    cell *context       = e->context;
-    cell state          = e->state;
-    cell base           = e->base;
-
-    int result          = e->result;
-    void **operators    = e->operators;
-
-    void *interpret     = e->interpret;
-
-    /* Below are some temporary variables for use in primitives. */
-
+    /* Temporary variables for use in primitives (swap, roll, etc). */
     cell tmp0, tmp1;
 
     /* The label `__first` must appear before any labels used as a target
@@ -113,16 +107,9 @@ run_engine(struct engine *engine)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
-    /* #include "../threading/direct.c" */
-    /* #include "../threading/direct-relocatable.c" */
-    /* #include "../threading/direct-traced.c" */
-    #include "../threading/subroutine.c"
-
-    #include "../primitive/preamble.c"
 
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
-    #include "../primitive/op/call.c"
     #include "../primitive/op/exit.c"
     #include "../primitive/op/jump.c"
     #include "../primitive/op/literal.c"
@@ -158,6 +145,7 @@ run_engine(struct engine *engine)
     #include "../primitive/core/compile_while.c"
 
     #include "../bootstrap/interpret.c"
+    /* End of bootstrap */
 
     #include "../primitive/posix/emit.c"
     /* #include "../primitive/posix/key.c" */
@@ -165,57 +153,45 @@ run_engine(struct engine *engine)
     /* #include "../primitive/core/posix/readline/refill.c" */
     /* #include "../primitive/core/immediate.c" */
 
-    context = current;
+    /* The first run will have context == 0. The preamble detects that and
+       defines primitives and the bootstrap interpreter.
+     */
+    if (!e[ea_context])
+        e[ea_context] = e[ea_current];
 
     _dispatch();
 
   __last:
 
     /* Store state back in the engine structure. */
+    e[ea_ip]   = _from_native_ptr(ip);
+    e[ea_sp]   = _from_native_ptr(sp);
+    e[ea_rp]   = _from_native_ptr(rp);
+    e[ea_here] = _from_native_ptr(here);
 
-    e->ip        = ip;
-    e->sp        = sp;
-    e->rp        = rp;
-
-    e->here      = here;
-
-    e->rp0       = rp0;
-    e->sp0       = sp0;
-
-    e->source_idx     = source_idx;
-
-    e->current   = current;
-    e->context   = context;
-    e->state     = state;
-    e->base      = base;
-
-    e->result    = result;
-    e->interpret = interpret;
-
-    /* e->t_sp      = t_sp; */
-    /* e->cp0       = cp0; */
-    /* e->cp        = cp; */
-    /* e->t_sp0     = t_sp0; */
     _debug("done with run\n");
     return result;
 }
 
 int
-engine_interpret_source(struct engine *e, const char *source)
+engine_interpret_source(cell *e, const char *source)
 {
     _debug("interpreting source '%s'\n", source);
 
-    _debug("interpret %lx \n", (cell)e->interpret);
+    // TODO
+    _debug("interpret %lx\n", (long)e[ea_interpret]);
 
-    e->source = source;
-    e->source_len = strlen(source);
+    cell i = strlen(source);
+    e[ea_source_len] = i;
+    memcpy(_to_native_ptr(e[ea_source_addr]), source, i);
 
-    e->rp = e->rp0;
-    *--e->rp = 0;
-    e->ip = e->interpret;
+    e[ea_rp] = e[ea_rp0];
+    e[ea_rp] -= sizeof(cell);
+    *_to_native_ptr(e[ea_rp]) = 0;
+    e[ea_ip] = e[ea_interpret];
 
-    /* for (cell *p = (cell *)e->interpret; p < (cell *)e->here; p++) */
-    /*     _debug("%lx: %lx\n", (cell)p, *p); */
+    for (cell p = e[ea_interpret]; p < e[ea_here]; p += sizeof(cell))
+        _debug("%lx: %lx\n", (long)_to_native_ptr(p), (long)*_to_native_ptr(p));
 
     return run_engine(e);
 }
@@ -234,19 +210,21 @@ store_counted_string(const char *s, char *here)
     return here + sizeof(cell) + n + 1;
 }
 
-struct engine m;
+cell engine[1 << 16];
 
 int
 main(int argc, char *argv[])
 {
+    _debug("engine: %lx top: %lx\n", (long)engine, (long)((char *)engine + sizeof(engine)));
     /* Clears structure. */
-    init_engine(&m);
+    init_engine(engine, sizeof(engine)/sizeof(cell));
     _debug("engine initialized.\n");
 
     /* Bootstrap. */
-    run_engine(&m);
+    run_engine(engine);
     _debug("bootstrap complete.\n");
 
     /* Actually do something. */
-    exit(engine_interpret_source(&m, argv[1]));
+    exit(engine_interpret_source(engine, "65 EMIT"));
+//    exit(engine_interpret_source(engine, argv[1]));
 }

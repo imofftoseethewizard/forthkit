@@ -2,11 +2,12 @@
 #define _lowercase_ascii(x) ((x) < 'A' || (x) > 'Z' ? (x) : (x) - 'A' + 'a')
 
 _primitive(pr_find) {
-    register cell *name, *word, *word_name;
+
+    register cell *name, word, *wordp, *word_name;
     register char *name_cp, *word_name_cp;
     register int i, name_len;
 
-    name = (cell *)*sp;
+    name = _to_native_ptr(*sp);
 
     /* Save the length of the target string into k. */
     name_len = _string_len(name);
@@ -14,10 +15,11 @@ _primitive(pr_find) {
     /* word will hold the address of the word being checked for a matching
        name.
     */
-    word = context;
+    word = e[ea_context];
 
     while (word) {
-        word_name = (cell *)*word;
+        wordp = _to_native_ptr(word);
+        word_name = _to_native_ptr(*wordp);
 
         if (_string_len(word_name) == name_len) {
 
@@ -39,9 +41,10 @@ _primitive(pr_find) {
         *--sp = 0;
         /* stack contains ( name 0 ) */
     } else {
-        *sp = (cell)_get_word_interpretation_semantics(word);
-        *--sp = _get_word_flags(word, c_immediate) ? 1 : -1;
+        *sp = (cell)_get_word_interpretation_semantics(wordp);
+        *--sp = _get_word_flags(wordp, c_immediate) ? 1 : -1;
         /* stack contains ( xt 1 ) or ( xt -1 ) */
+        _debug("find: end: "); print_stack(sp0, sp);
     }
 
     _next();

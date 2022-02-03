@@ -1,4 +1,4 @@
-if (!interpret) {
+if (!e[ea_interpret]) {
      /*
        The following is a minimal text interpreter using word and find.
        It doesn't have any error reporting, and it only understands words
@@ -62,8 +62,10 @@ if (!interpret) {
 
     /* : interpret                                       */
     begin_define_word("interpret", 0);
-    interpret = (void *)here;
-    _debug("defining interpret        %lx\n", (cell)interpret);
+
+    e[ea_interpret] = _from_native_ptr(here);
+
+    _debug("defining interpret        %lx\n", (long)_to_native_ptr(e[ea_interpret]));
 
     /*      begin                                        */
     _compile_begin();
