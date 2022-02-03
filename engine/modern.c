@@ -7,6 +7,8 @@
 /* #include "../threading/direct-relocatable-traced.c" */
 /* #include "../threading/direct-traced.c" */
 
+#include "../primitive/preamble.c"
+
 #include "modern.h"
 #include "log.h"
 
@@ -105,8 +107,6 @@ run_engine(cell *engine)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
-
-    #include "../primitive/preamble.c"
 
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
