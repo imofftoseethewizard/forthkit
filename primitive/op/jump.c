@@ -6,8 +6,8 @@ register_operator(ot_jump, op_jump);
 */
 
 _primitive(op_jump) {
-    _debug("jump: *ip: %lx, %ld\n", (long)*ip, (cell)*ip);
-    ip = (cell *)((char *)ip + (signed)*ip - sizeof(cell));
+    _debug("jump: *ip: %lx, %ld\n", (long)*ip, (long)*ip);
+    ip = (cell *)((char *)ip + (cell_offset)*ip - sizeof(cell));
     _debug("jump: *ip: %lx\n", (long)*ip);
     _next();
 }

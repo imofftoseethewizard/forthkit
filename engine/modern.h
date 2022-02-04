@@ -1,6 +1,7 @@
 #include "config.h"
 
-typedef CELL_TYPE cell;
+typedef unsigned CELL_TYPE cell;
+typedef CELL_TYPE cell_offset;
 
 typedef LENGTH_TYPE length_type;
 
@@ -39,7 +40,7 @@ enum engine_attribute {
     engine_attribute_count
 };
 
-extern void init_engine(cell *e, cell size);
+extern void init_engine(cell *e, unsigned long size);
 extern int run_engine(cell *e);
 extern int engine_interpret_source(cell *e, const char *source);
 extern void reset_engine_execution_state(cell *e);

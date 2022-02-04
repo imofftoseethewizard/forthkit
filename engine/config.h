@@ -1,4 +1,4 @@
-#define CELL_TYPE                unsigned long
+#define CELL_TYPE                short
 #define CONTEXT_STACK_SIZE       32
 #define DATA_AREA_SIZE           1 << 20
 #define LENGTH_TYPE              char

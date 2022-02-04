@@ -3,8 +3,8 @@
 #include <string.h>
 
 /* #include "../threading/direct.h" */
-/* #include "../threading/direct-relocatable.h" */
-#include "../threading/direct-relocatable-traced.h"
+#include "../threading/direct-relocatable.h"
+/* #include "../threading/direct-relocatable-traced.h" */
 /* #include "../threading/direct-traced.h" */
 /* #include "../threading/subroutine.h" */
 
@@ -16,7 +16,7 @@
 char *store_counted_string(const char *s, char *here);
 
 void
-init_engine(cell *e, cell size)
+init_engine(cell *e, unsigned long size)
 {
     cell *rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
     cell *sp = rp + PARAMETER_STACK_SIZE;
@@ -188,14 +188,14 @@ store_counted_string(const char *s, char *here)
     return here + sizeof(cell) + n + 1;
 }
 
-cell engine[1 << 16];
+cell engine[1 << 15];
 
 int
 main(int argc, char *argv[])
 {
     _debug("engine: %lx top: %lx\n", (long)engine, (long)((char *)engine + sizeof(engine)));
     /* Clears structure. */
-    init_engine(engine, sizeof(engine)/sizeof(cell));
+    init_engine(engine, sizeof(engine));
     _debug("engine initialized.\n");
 
     /* Bootstrap. */

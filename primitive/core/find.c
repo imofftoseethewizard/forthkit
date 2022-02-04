@@ -44,8 +44,6 @@ _primitive(pr_find) {
         *sp = (cell)_get_word_interpretation_semantics(wordp);
         *--sp = _get_word_flags(wordp, c_immediate) ? 1 : -1;
         /* stack contains ( xt 1 ) or ( xt -1 ) */
-        _debug("find: end: ");
-        _print_stack();
     }
 
     _next();
