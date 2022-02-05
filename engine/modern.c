@@ -27,12 +27,8 @@ reset_engine_execution_state(cell *e)
 int
 run_engine(cell *engine, const char *source)
 {
-    /* #include "../threading/direct.c" */
-    #include "../threading/direct-relocatable.c"
-    /* #include "../threading/direct-relocatable-traced.c" */
-    /* #include "../threading/direct-traced.c" */
-    /* #include "../threading/subroutine.c" */
-    /* #include "../threading/subroutine-traced.c" */
+    #include "../address/absolute.c"
+    /* #include "../address/relocatable.c" */
 
     /* These are the most commonly referenced variables. */
     register cell *e = engine;
@@ -41,9 +37,9 @@ run_engine(cell *engine, const char *source)
     register cell *rp;
 
     if (e[ea_context]) {
-        ip = _to_native_ptr(e[ea_ip]);
-        sp = _to_native_ptr(e[ea_sp]);
-        rp = _to_native_ptr(e[ea_rp]);
+        ip = _to_ptr(e[ea_ip]);
+        sp = _to_ptr(e[ea_sp]);
+        rp = _to_ptr(e[ea_rp]);
 
     } else {
         rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
@@ -51,8 +47,8 @@ run_engine(cell *engine, const char *source)
 
         /* registers */
         e[ea_ip]          = 0;
-        e[ea_rp]          = _from_native_ptr(rp);
-        e[ea_sp]          = _from_native_ptr(sp);
+        e[ea_rp]          = _from_ptr(rp);
+        e[ea_sp]          = _from_ptr(sp);
         e[ea_here]        = e[ea_sp];
 
         /* internal state */
@@ -68,7 +64,7 @@ run_engine(cell *engine, const char *source)
 
         /* external_state */
         e[ea_interpret]   = 0;
-        e[ea_source_addr] = _from_native_ptr(&e[engine_attribute_count]);
+        e[ea_source_addr] = _from_ptr(&e[engine_attribute_count]);
 
         /* e[ea_] = 0; */
     }
@@ -76,9 +72,9 @@ run_engine(cell *engine, const char *source)
     /* These are generally useful to have, but probably not worth putting
        in a register.
      */
-    char *here = (char *)_to_native_ptr(e[ea_here]);
-    cell *rp0  = (cell *)_to_native_ptr(e[ea_rp0]);
-    cell *sp0  = (cell *)_to_native_ptr(e[ea_sp0]);
+    char *here = (char *)_to_ptr(e[ea_here]);
+    cell *rp0  = (cell *)_to_ptr(e[ea_rp0]);
+    cell *sp0  = (cell *)_to_ptr(e[ea_sp0]);
 
     /* Not currently used, but reserved for uncaught exceptions. */
     cell result = 0;
@@ -91,6 +87,10 @@ run_engine(cell *engine, const char *source)
        `__last` labels to distinguish primitives from compiled words.
     */
   __first:
+
+    #include "../threading/direct.c"
+    /* #include "../threading/subroutine.c" */
+    /* #include "../threading/subroutine-traced.c" */
 
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
@@ -147,15 +147,15 @@ run_engine(cell *engine, const char *source)
         _debug("interpreting source '%s'\n", source);
         _debug("interpret %lx\n", (long)e[ea_interpret]);
 
-        memcpy(_to_native_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
+        memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
 
         rp = rp0;
         rp -= sizeof(cell);
         *--rp = 0;
-        ip = _to_native_ptr(e[ea_interpret]);
+        ip = _to_ptr(e[ea_interpret]);
 
         for (cell p = e[ea_interpret]; p < e[ea_here]; p += sizeof(cell))
-            _debug("%lx: %lx\n", (long)_to_native_ptr(p), (long)*_to_native_ptr(p));
+            _debug("%lx: %lx\n", (long)_to_ptr(p), (long)*_to_ptr(p));
     }
 
     _dispatch();
@@ -163,10 +163,10 @@ run_engine(cell *engine, const char *source)
   __last:
 
     /* Store state back in the engine structure. */
-    e[ea_ip]   = _from_native_ptr(ip);
-    e[ea_sp]   = _from_native_ptr(sp);
-    e[ea_rp]   = _from_native_ptr(rp);
-    e[ea_here] = _from_native_ptr(here);
+    e[ea_ip]   = _from_ptr(ip);
+    e[ea_sp]   = _from_ptr(sp);
+    e[ea_rp]   = _from_ptr(rp);
+    e[ea_here] = _from_ptr(here);
 
     _debug("done with run\n");
     return result;

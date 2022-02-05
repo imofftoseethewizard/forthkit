@@ -2,13 +2,13 @@ typedef void (native_word)(void);
 
 #define _primitive(name) void name(void)
 
-#define _to_native_ptr(x)   ((cell *)(x))
-#define _from_native_ptr(x) ((cell)(x))
+#define _to_ptr(x)   ((cell *)(x))
+#define _from_ptr(x) ((cell)(x))
 
 void first_primitive(void) {};
 
 #define _is_primitive(x)  ((void *)(x) >= (void *)&first_primitive)
-#define _execute(x)       (*--rp = _from_native_ptr(ip), ip = _to_native_ptr(x))
+#define _execute(x)       (*--rp = _from_ptr(ip), ip = _to_ptr(x))
 
 #define _next()
 

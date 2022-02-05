@@ -7,7 +7,7 @@ _primitive(pr_find) {
     register char *name_cp, *word_name_cp;
     register int i, name_len;
 
-    name = _to_native_ptr(*sp);
+    name = _to_ptr(*sp);
 
     /* Save the length of the target string into k. */
     name_len = _string_len(name);
@@ -18,8 +18,8 @@ _primitive(pr_find) {
     word = e[ea_context];
 
     while (word) {
-        wordp = _to_native_ptr(word);
-        word_name = _to_native_ptr(*wordp);
+        wordp = _to_ptr(word);
+        word_name = _to_ptr(*wordp);
 
         if (_string_len(word_name) == name_len) {
 

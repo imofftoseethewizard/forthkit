@@ -3,7 +3,7 @@
 */
 _primitive(op_exit) {
     _print_return_stack();
-    ip = *rp ? _to_native_ptr(*rp) : 0;
+    ip = *rp ? _to_ptr(*rp) : 0;
     rp++;
     _next();
 }

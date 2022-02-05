@@ -33,7 +33,7 @@
        here = (char *)_align(here);                                       \
                                                                           \
        /* Save address of new word.           */                          \
-       *--rp = _from_native_ptr(here);                                    \
+       *--rp = _from_ptr(here);                                    \
        /* Copy name address to word entry.    */                          \
        _store_data(*sp++);                                                \
                                                                           \
@@ -49,11 +49,11 @@
        /* Compilation semantics               */                          \
        _compile_pr(pr_store_compiled)
 
-#define _next_word(x) *(_to_native_ptr(x) + 1)
+#define _next_word(x) *(_to_ptr(x) + 1)
 
 #define begin_define_word(s, flags)                                       \
     do {                                                                  \
-        *--sp = _from_native_ptr(here);                                   \
+        *--sp = _from_ptr(here);                                   \
         here = store_counted_string((s), here);                           \
         _word_header(flags);                                              \
     } while(0)
@@ -85,4 +85,4 @@
 #define _get_word_flags(x, flags)               *((cell *)(x) + 2) & ~(flags)
 
 #define _get_word_compilation_semantics(x)      *((cell *)(x) + 3)
-#define _get_word_interpretation_semantics(x)   _from_native_ptr((cell *)(x) + 4)
+#define _get_word_interpretation_semantics(x)   _from_ptr((cell *)(x) + 4)

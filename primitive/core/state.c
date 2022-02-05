@@ -1,4 +1,4 @@
-#define _state() *--sp = _from_native_ptr(&e[ea_state])
+#define _state() *--sp = _from_ptr(&e[ea_state])
 
 _primitive(pr_state) {
     _state();

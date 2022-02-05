@@ -16,13 +16,13 @@ _primitive(op_jump) {
    taken from the stack to complete its compilation.
 */
 #define _compile_jump_origin() \
-    _compile_pr(op_jump), *--sp = _from_native_ptr(here), _store_data(0)
+    _compile_pr(op_jump), *--sp = _from_ptr(here), _store_data(0)
 
 /* _compile_jump_target
  */
 
 #pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
 #define _compile_jump_target() \
-    *_to_native_ptr(*sp++) = (int)(here + sizeof(cell) - (char *)_to_native_ptr(*sp))
+    *_to_ptr(*sp++) = (int)(here + sizeof(cell) - (char *)_to_ptr(*sp))
 
 register_operator(ot_jump, op_jump);

@@ -4,7 +4,7 @@ _primitive(pr_word) {
     register char delimiter    = *sp++;
     register char *word_buffer = (char *)_align(here);
     register int word_idx      = sizeof(length_type);
-    register char *source      = (char *)_to_native_ptr(e[ea_source_addr]);
+    register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
     register cell source_idx   = e[ea_source_idx];
 
@@ -24,7 +24,7 @@ _primitive(pr_word) {
     } else {
         _debug("word: %.*s\n", (int)(word_idx - sizeof(length_type)), word_buffer + sizeof(length_type));
         *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
-        *--sp = _from_native_ptr(word_buffer);
+        *--sp = _from_ptr(word_buffer);
     }
 
     e[ea_source_idx] = source_idx;
