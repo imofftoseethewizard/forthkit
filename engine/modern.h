@@ -34,11 +34,9 @@ enum engine_attribute {
     ea_state,
     ea_interpret,
     ea_source_addr,
-    ea_top,
     engine_attribute_count
 };
 
 extern void init_engine(cell *e, unsigned long size);
-extern int run_engine(cell *e);
-extern int engine_interpret_source(cell *e, const char *source);
+extern int run_engine(cell *e, const char *source);
 extern void reset_engine_execution_state(cell *e);

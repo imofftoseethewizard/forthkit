@@ -25,10 +25,10 @@ reset_engine_execution_state(cell *e)
 }
 
 int
-run_engine(cell *engine) {
-
-    #include "../threading/direct.c"
-    /* #include "../threading/direct-relocatable.c" */
+run_engine(cell *engine, const char *source)
+{
+    /* #include "../threading/direct.c" */
+    #include "../threading/direct-relocatable.c"
     /* #include "../threading/direct-relocatable-traced.c" */
     /* #include "../threading/direct-traced.c" */
     /* #include "../threading/subroutine.c" */
@@ -69,7 +69,6 @@ run_engine(cell *engine) {
         /* external_state */
         e[ea_interpret]   = 0;
         e[ea_source_addr] = _from_native_ptr(&e[engine_attribute_count]);
-        e[ea_top]         = _from_native_ptr(e + e[ea_size] / sizeof(cell));
 
         /* e[ea_] = 0; */
     }
@@ -144,6 +143,21 @@ run_engine(cell *engine) {
     if (!e[ea_context])
         e[ea_context] = e[ea_current];
 
+    if (source) {
+        _debug("interpreting source '%s'\n", source);
+        _debug("interpret %lx\n", (long)e[ea_interpret]);
+
+        memcpy(_to_native_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
+
+        rp = rp0;
+        rp -= sizeof(cell);
+        *--rp = 0;
+        ip = _to_native_ptr(e[ea_interpret]);
+
+        for (cell p = e[ea_interpret]; p < e[ea_here]; p += sizeof(cell))
+            _debug("%lx: %lx\n", (long)_to_native_ptr(p), (long)*_to_native_ptr(p));
+    }
+
     _dispatch();
 
   __last:
@@ -156,29 +170,6 @@ run_engine(cell *engine) {
 
     _debug("done with run\n");
     return result;
-}
-
-int
-engine_interpret_source(cell *e, const char *source)
-{
-    _debug("interpreting source '%s'\n", source);
-
-    // TODO
-    _debug("interpret %lx\n", (long)e[ea_interpret]);
-
-    cell i = strlen(source);
-    e[ea_source_len] = i;
-    memcpy(_to_native_ptr(e[ea_source_addr]), source, i);
-
-    e[ea_rp] = e[ea_rp0];
-    e[ea_rp] -= sizeof(cell);
-    *_to_native_ptr(e[ea_rp]) = 0;
-    e[ea_ip] = e[ea_interpret];
-
-    for (cell p = e[ea_interpret]; p < e[ea_here]; p += sizeof(cell))
-        _debug("%lx: %lx\n", (long)_to_native_ptr(p), (long)*_to_native_ptr(p));
-
-    return run_engine(e);
 }
 
 char *
@@ -205,11 +196,5 @@ main(int argc, char *argv[])
     init_engine(engine, sizeof(engine));
     _debug("engine initialized.\n");
 
-    /* Bootstrap. */
-    run_engine(engine);
-    _debug("bootstrap complete.\n");
-
-    /* Actually do something. */
-    exit(engine_interpret_source(engine, "65 EMIT"));
-//    exit(engine_interpret_source(engine, argv[1]));
+    exit(run_engine(engine, "65 EMIT"));
 }
