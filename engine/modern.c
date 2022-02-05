@@ -27,8 +27,8 @@ reset_engine_execution_state(cell *e)
 int
 run_engine(cell *engine, const char *source)
 {
-    #include "../address/absolute.c"
-    /* #include "../address/relocatable.c" */
+    /* #include "../address/absolute.c" */
+    #include "../address/relocatable.c"
 
     /* These are the most commonly referenced variables. */
     register cell *e = engine;
@@ -82,15 +82,11 @@ run_engine(cell *engine, const char *source)
     /* Temporary variables for use in primitives (swap, roll, etc). */
     cell tmp0, tmp1;
 
-    /* The label `__first` must appear before any labels used as a target
-       of the `next()` macro immediately below. That uses the `__first` and
-       `__last` labels to distinguish primitives from compiled words.
-    */
-  __first:
-
+    /* The threading module must be included before any operators or
+       primitives.
+     */
     #include "../threading/direct.c"
     /* #include "../threading/subroutine.c" */
-    /* #include "../threading/subroutine-traced.c" */
 
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
@@ -159,8 +155,6 @@ run_engine(cell *engine, const char *source)
     }
 
     _dispatch();
-
-  __last:
 
     /* Store state back in the engine structure. */
     e[ea_ip]   = _from_ptr(ip);
