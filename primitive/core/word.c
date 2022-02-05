@@ -33,7 +33,7 @@ _primitive(pr_word) {
         *--sp = 0;
 
     } else {
-        _debug("word: %.*s\n", (int)(word_idx - sizeof(length_type)), word_buffer + 1);
+        _debug("word: %.*s\n", (int)(word_idx - sizeof(length_type)), word_buffer + sizeof(length_type));
         *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
         *--sp = _from_native_ptr(word_buffer);
     }

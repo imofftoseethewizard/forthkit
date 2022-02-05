@@ -5,8 +5,6 @@ typedef CELL_TYPE cell_offset;
 
 typedef LENGTH_TYPE length_type;
 
-typedef void (*native_word)(void);
-
 enum operator_type {
     ot_abort,
     ot_branch,

@@ -1,5 +1,3 @@
-register_operator(ot_jump, op_jump);
-
 /* op_jump expects the next location to be an offset. It is relative
    to where the ip would normally be next, hence the `+ 2` to account
    for advancing past op_jump and the offset.
@@ -26,3 +24,5 @@ _primitive(op_jump) {
 #pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
 #define _compile_jump_target() \
     *_to_native_ptr(*sp++) = (int)(here + sizeof(cell) - (char *)_to_native_ptr(*sp))
+
+register_operator(ot_jump, op_jump);

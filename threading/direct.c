@@ -1,4 +1,5 @@
-#define _primitive(name) if (0) name:
+#define _primitive(name)    if (0) name:
+
 #define _to_native_ptr(x)   ((cell *)(x))
 #define _from_native_ptr(x) ((cell)(x))
 

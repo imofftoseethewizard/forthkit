@@ -5,4 +5,5 @@ _primitive(pr_store_compiled) {
     _store_compiled(*sp++);
     _next();
 }
+
 define_primitive("COMPILE,", pr_store_compiled);

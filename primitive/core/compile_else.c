@@ -13,9 +13,9 @@
     _compile_jump_target();                                             \
 } while (0)
 
-if (0)  {
-  pr_compile_else:
+_primitive(pr_compile_else) {
     _compile_else();
     _next();
 }
+
 define_immediate_primitive("ELSE", pr_compile_else);

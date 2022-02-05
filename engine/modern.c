@@ -2,12 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-/* #include "../threading/direct.h" */
-#include "../threading/direct-relocatable.h"
-/* #include "../threading/direct-relocatable-traced.h" */
-/* #include "../threading/direct-traced.h" */
-/* #include "../threading/subroutine.h" */
-
 #include "../primitive/preamble.h"
 
 #include "modern.h"
@@ -18,36 +12,8 @@ char *store_counted_string(const char *s, char *here);
 void
 init_engine(cell *e, unsigned long size)
 {
-    cell *rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
-    cell *sp = rp + PARAMETER_STACK_SIZE;
-    cell *top = e + size / sizeof(cell);
-
-    e[ea_size]        = size;
-
-    /* registers */
-    e[ea_ip]          = 0;
-    e[ea_rp]          = _from_native_ptr(rp);
-    e[ea_sp]          = _from_native_ptr(sp);
-    e[ea_here]        = e[ea_sp];
-
-    /* internal state */
-    e[ea_base]        = 10;
-    e[ea_context]     = 0;
-    e[ea_current]     = 0;
-    e[ea_data]        = e[ea_here];
-    e[ea_rp0]         = e[ea_rp];
-    e[ea_source_idx]  = 0;
-    e[ea_source_len]  = 0;
-    e[ea_sp0]         = e[ea_sp];
-    e[ea_state]       = 0;
-
-    /* external_state */
-
-    e[ea_interpret]   = 0;
-    e[ea_source_addr] = _from_native_ptr(&e[engine_attribute_count]);
-    e[ea_top]         = _from_native_ptr(top);
-
-    /* e[ea_] = 0; */
+    e[ea_size]    = size;
+    e[ea_context] = 0;
 }
 
 void
@@ -61,11 +27,52 @@ reset_engine_execution_state(cell *e)
 int
 run_engine(cell *engine) {
 
+    #include "../threading/direct.c"
+    /* #include "../threading/direct-relocatable.c" */
+    /* #include "../threading/direct-relocatable-traced.c" */
+    /* #include "../threading/direct-traced.c" */
+    /* #include "../threading/subroutine.c" */
+    /* #include "../threading/subroutine-traced.c" */
+
     /* These are the most commonly referenced variables. */
-    register cell *e  = engine;
-    register cell *ip = _to_native_ptr(e[ea_ip]);
-    register cell *sp = _to_native_ptr(e[ea_sp]);
-    register cell *rp = _to_native_ptr(e[ea_rp]);
+    register cell *e = engine;
+    register cell *ip;
+    register cell *sp;
+    register cell *rp;
+
+    if (e[ea_context]) {
+        ip = _to_native_ptr(e[ea_ip]);
+        sp = _to_native_ptr(e[ea_sp]);
+        rp = _to_native_ptr(e[ea_rp]);
+
+    } else {
+        rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
+        sp = rp + PARAMETER_STACK_SIZE;
+
+        /* registers */
+        e[ea_ip]          = 0;
+        e[ea_rp]          = _from_native_ptr(rp);
+        e[ea_sp]          = _from_native_ptr(sp);
+        e[ea_here]        = e[ea_sp];
+
+        /* internal state */
+        e[ea_base]        = 10;
+        e[ea_context]     = 0;
+        e[ea_current]     = 0;
+        e[ea_data]        = e[ea_here];
+        e[ea_rp0]         = e[ea_rp];
+        e[ea_source_idx]  = 0;
+        e[ea_source_len]  = 0;
+        e[ea_sp0]         = e[ea_sp];
+        e[ea_state]       = 0;
+
+        /* external_state */
+        e[ea_interpret]   = 0;
+        e[ea_source_addr] = _from_native_ptr(&e[engine_attribute_count]);
+        e[ea_top]         = _from_native_ptr(e + e[ea_size] / sizeof(cell));
+
+        /* e[ea_] = 0; */
+    }
 
     /* These are generally useful to have, but probably not worth putting
        in a register.
@@ -93,6 +100,7 @@ run_engine(cell *engine) {
     #include "../primitive/op/literal.c"
 
     /* Prerequisites for bootstrap */
+    #include "../primitive/core/store_compiled.c"
     #include "../primitive/core/abort.c"
     #include "../primitive/core/align.c"
     #include "../primitive/core/count.c"
@@ -107,7 +115,6 @@ run_engine(cell *engine) {
     #include "../primitive/core/over.c"
     #include "../primitive/core/q_dup.c"
     #include "../primitive/core/state.c"
-    #include "../primitive/core/store_compiled.c"
     #include "../primitive/core/store_data.c"
     #include "../primitive/core/swap.c"
     #include "../primitive/core/to_number.c"

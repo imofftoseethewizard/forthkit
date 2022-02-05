@@ -52,9 +52,11 @@
 #define _next_word(x) *(_to_native_ptr(x) + 1)
 
 #define begin_define_word(s, flags)                                       \
-    *--sp = _from_native_ptr(here);                                       \
-       here = store_counted_string((s), here);                            \
-    _word_header(flags);
+    do {                                                                  \
+        *--sp = _from_native_ptr(here);                                   \
+        here = store_counted_string((s), here);                           \
+        _word_header(flags);                                              \
+    } while(0)
 
 #define define_primitive_ext(s, l, flags)                                 \
     if (!e[ea_context])                                                   \
