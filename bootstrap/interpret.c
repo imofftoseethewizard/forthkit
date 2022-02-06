@@ -127,7 +127,7 @@ if (!e[ea_interpret]) {
     _compile_else();
 
     /*                   abort                           */
-    _compile_pr(pr_abort);
+    _compile_pr(op_abort);
 
     /*              then                                 */
     _compile_then();

@@ -17,7 +17,7 @@ init_engine(cell *e, unsigned long size)
 }
 
 void
-reset_engine_execution_state(cell *e)
+reset_execution_state(cell *e)
 {
     e[ea_sp] = e[ea_sp0];
     e[ea_rp] = e[ea_rp0];
@@ -25,7 +25,7 @@ reset_engine_execution_state(cell *e)
 }
 
 int
-run_engine(cell *engine, const char *source)
+evaluate(cell *engine, const char *source)
 {
     /* #include "../address/absolute.c" */
     #include "../address/relocatable.c"
@@ -77,7 +77,7 @@ run_engine(cell *engine, const char *source)
     cell *sp0  = (cell *)_to_ptr(e[ea_sp0]);
 
     /* Not currently used, but reserved for uncaught exceptions. */
-    cell result = 0;
+    int result = 0;
 
     /* Temporary variables for use in primitives (swap, roll, etc). */
     cell tmp0, tmp1;
@@ -141,7 +141,6 @@ run_engine(cell *engine, const char *source)
 
     if (source) {
         _debug("interpreting source '%s'\n", source);
-        _debug("interpret %lx\n", (long)e[ea_interpret]);
 
         memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
 
@@ -162,7 +161,7 @@ run_engine(cell *engine, const char *source)
     e[ea_rp]   = _from_ptr(rp);
     e[ea_here] = _from_ptr(here);
 
-    _debug("done with run\n");
+    _debug("done with run: result: %d\n", result);
     return result;
 }
 
@@ -186,9 +185,11 @@ int
 main(int argc, char *argv[])
 {
     _debug("engine: %lx top: %lx\n", (long)engine, (long)((char *)engine + sizeof(engine)));
+
     /* Clears structure. */
     init_engine(engine, sizeof(engine));
+
     _debug("engine initialized.\n");
 
-    exit(run_engine(engine, "65 EMIT"));
+    exit(evaluate(engine, argv[argc-1]));
 }

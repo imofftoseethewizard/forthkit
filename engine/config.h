@@ -5,4 +5,4 @@
 #define RETURN_STACK_SIZE        128
 #define SOURCE_SIZE              1024
 #define TRACE                    0
-#define VERBOSE                  0
+#define VERBOSE                  1

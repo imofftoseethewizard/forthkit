@@ -38,5 +38,5 @@ enum engine_attribute {
 };
 
 extern void init_engine(cell *e, unsigned long size);
-extern int run_engine(cell *e, const char *source);
-extern void reset_engine_execution_state(cell *e);
+extern int evaluate(cell *e, const char *source);
+extern void reset_execution_state(cell *e);

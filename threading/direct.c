@@ -7,10 +7,11 @@ __first:
 #define _primitive(name) if (0) name:
 #define _execute(x)      (*--rp = _from_ptr(ip), ip = _to_ptr(x))
 #define _pr_ref(x)       ((void *)&&x)
+#define _pr_ref_base     (void *)&&__first
+#define _pr_ref_limit    (void *)&&__last
 
 #define _next()                                 \
     do {                                        \
-_debug("c_pr_addr_base: %lx\n", c_pr_addr_base); \
         _trace("start next:     ");             \
                                                 \
         while (ip && !_is_primitive(*ip)) {     \
