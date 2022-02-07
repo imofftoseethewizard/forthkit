@@ -5,4 +5,4 @@ _primitive(pr_compile_begin) {
     _compile_begin();
     _next();
 }
-define_immediate_primitive("BEGIN", pr_compile_begin);
+_define_immediate_primitive("BEGIN", pr_compile_begin);

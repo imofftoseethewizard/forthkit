@@ -5,4 +5,4 @@ _primitive(pr_fetch) {
     _fetch();
     _next();
 }
-define_primitive("@", pr_fetch);
+_define_primitive("@", pr_fetch);

@@ -5,4 +5,4 @@ _primitive(pr_drop) {
     _drop();
     _next();
 }
-define_primitive("DROP", pr_drop);
+_define_primitive("DROP", pr_drop);

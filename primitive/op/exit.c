@@ -2,10 +2,12 @@
    it past the call to the just completed word.
 */
 _primitive(op_exit) {
-    _print_return_stack();
+    _trace("start exit: ");
+//    ip = *rp ? _to_ptr(*rp) + 1 : 0;
     ip = *rp ? _to_ptr(*rp) : 0;
     rp++;
+    _trace("end exit: ");
     _next();
 }
 
-register_operator(ot_exit, op_exit);
+_register_operator(ot_exit, op_exit);

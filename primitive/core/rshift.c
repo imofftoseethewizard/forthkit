@@ -5,4 +5,4 @@ _primitive(pr_rshift) {
     _rshift();
     _next();
 }
-define_primitive(">>", pr_rshift);
+_define_primitive(">>", pr_rshift);

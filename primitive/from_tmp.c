@@ -5,4 +5,4 @@ _primitive(pr_from_tmp) {
     _from_tmp();
     _next();
 }
-define_primitive("T>", pr_from_tmp);
+_define_primitive("T>", pr_from_tmp);

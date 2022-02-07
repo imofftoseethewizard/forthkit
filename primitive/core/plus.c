@@ -5,4 +5,4 @@ _primitive(pr_plus) {
     _plus();
     _next();
 }
-define_primitive("+", pr_plus);
+_define_primitive("+", pr_plus);

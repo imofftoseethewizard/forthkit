@@ -1,8 +1,7 @@
-
-#define _allot() here += *sp++
+#define _allot() here += (length_type)*sp++
 
 _primitive(pr_allot) {
     _allot();
     _next();
 }
-define_primitive("ALLOT", pr_allot);
+_define_primitive("ALLOT", pr_allot);

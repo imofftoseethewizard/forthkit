@@ -5,4 +5,4 @@ _primitive(pr_nip) {
     _nip();
     _next();
 }
-define_primitive("NIP", pr_nip);
+_define_primitive("NIP", pr_nip);

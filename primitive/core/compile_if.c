@@ -6,4 +6,4 @@ _primitive(pr_compile_if) {
     _compile_if();
     _next();
 }
-define_immediate_primitive("IF", pr_compile_if);
+_define_immediate_primitive("IF", pr_compile_if);

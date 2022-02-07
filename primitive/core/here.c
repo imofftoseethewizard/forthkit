@@ -5,4 +5,4 @@ _primitive(pr_here) {
     _here();
     _next();
 }
-define_primitive("HERE", pr_here);
+_define_primitive("HERE", pr_here);

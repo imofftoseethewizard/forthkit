@@ -30,10 +30,11 @@ do {                                                                     \
 
 #define _print_registers()                                               \
 do {                                                                     \
-    _debug("ip: %lx; *ip: %lx, rp: %lx, *rp: %lx, sp: %lx, *sp: %lx\n",  \
-           (cell)ip, ip?(cell)*ip:0,                                     \
-           (cell)rp, rp?(cell)*rp:0,                                     \
-           (cell)sp, sp?(cell)*sp:0);                                    \
+    _debug("ip: %16lx; *ip: %16lx, rp: %16lx, *rp: %16lx, sp: %16lx, *sp: %16lx, here: %16lx\n",  \
+           (long)ip, ip?(long)*ip:0,                                     \
+           (long)rp, rp?(long)_to_ptr(*rp):0,                           \
+           (long)sp, sp?(long)*sp:0,                                    \
+           (long)here);                                    \
 } while (0)
 
 
@@ -48,9 +49,9 @@ do {                                                                     \
 
 #define _trace(label)                                                    \
     do {                                                                 \
-    _debug(label);                                                       \
-    _print_registers();                                                  \
-} while(0)
+        _debug("%40s", label);                                          \
+        _print_registers();                                             \
+    } while(0)
 
 #else
 

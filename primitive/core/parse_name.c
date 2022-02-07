@@ -13,4 +13,4 @@ _primitive(pr_parse_name) {
 }
 
 #undef delimiter
-define_primitive("PARSE-NAME", pr_parse_name);
+_define_primitive("PARSE-NAME", pr_parse_name);

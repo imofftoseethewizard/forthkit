@@ -6,8 +6,18 @@
 3. use relative labels to support cell size < machine word size
    problematic. Having a different cell size than machine word size forces
    an abstraction everywhere a pointer is converted to a cell, or vv.
-   work paused for now in branch "relocatable"
+   done
 4. subroutine threading
    partial work in branch "subroutine-threading", but introduces ordering
    dependency in primitive definitions.
+   done
+10. f79
+11. f83
+12. f94
+13. f2012
 5. indirect threading
+6. switch based dispatch
+14. other compilers: clang, bcc, tcc, pcc
+7. load/save images
+8. multi-threading
+9. local multi-process

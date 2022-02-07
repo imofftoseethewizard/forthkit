@@ -7,4 +7,4 @@ _primitive(op_abort) {
     _next();
 }
 
-register_operator(ot_abort, op_abort);
+_register_operator(ot_abort, op_abort);

@@ -15,4 +15,4 @@ _primitive(pr_parse) {
 
     _next();
 }
-define_primitive("PARSE", pr_parse);
+_define_primitive("PARSE", pr_parse);

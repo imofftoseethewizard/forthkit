@@ -1,8 +1,7 @@
-
-#define _plus_store() *(*sp++) += *(sp+1)
+#define _plus_store() *_to_ptr(*sp) += *(sp+1), sp += 2
 
 _primitive(pr_plus_store) {
     _plus_store();
     _next();
 }
-define_primitive("+!", pr_plus_store);
+_define_primitive("+!", pr_plus_store);

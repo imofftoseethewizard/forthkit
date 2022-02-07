@@ -5,4 +5,4 @@ _primitive(pr_rot) {
     _rot();
     _next();
 }
-define_primitive("ROT", pr_rot);
+_define_primitive("ROT", pr_rot);

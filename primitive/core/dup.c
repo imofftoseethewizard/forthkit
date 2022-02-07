@@ -5,4 +5,4 @@ _primitive(pr_dup) {
     _dup();
     _next();
 }
-define_primitive("DUP", pr_dup);
+_define_primitive("DUP", pr_dup);

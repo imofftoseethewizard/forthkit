@@ -8,4 +8,4 @@ _primitive(op_call) {
     _next();
 }
 
-register_operator(ot_call, op_call);
+_register_operator(ot_call, op_call);

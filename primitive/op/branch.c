@@ -9,4 +9,4 @@ _primitive(op_branch) {
     _next();
 }
 
-register_operator(ot_branch, op_branch);
+_register_operator(ot_branch, op_branch);

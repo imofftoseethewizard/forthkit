@@ -32,4 +32,4 @@ _primitive(pr_to_number) {
 
     _next();
 }
-define_primitive(">NUMBER", pr_to_number);
+_define_primitive(">NUMBER", pr_to_number);

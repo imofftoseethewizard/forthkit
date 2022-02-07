@@ -18,4 +18,4 @@ _primitive(pr_compile_else) {
     _next();
 }
 
-define_immediate_primitive("ELSE", pr_compile_else);
+_define_immediate_primitive("ELSE", pr_compile_else);

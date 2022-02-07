@@ -5,4 +5,4 @@ _primitive(pr_negate) {
     _negate();
     _next();
 }
-define_primitive("NEGATE", pr_negate);
+_define_primitive("NEGATE", pr_negate);

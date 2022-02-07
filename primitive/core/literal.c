@@ -6,4 +6,4 @@ _primitive(pr_literal) {
     _next();
 }
 
-define_primitive_ext("LITERAL", pr_literal, c_immediate);
+_define_primitive_ext("LITERAL", pr_literal, c_immediate);

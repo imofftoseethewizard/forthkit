@@ -5,4 +5,4 @@ _primitive(pr_two_plus) {
     _two_plus();
     _next();
 }
-define_primitive("2+", pr_two_plus);
+_define_primitive("2+", pr_two_plus);

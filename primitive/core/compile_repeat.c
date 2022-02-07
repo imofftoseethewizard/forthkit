@@ -11,4 +11,4 @@ _primitive(pr_compile_repeat) {
     _compile_repeat();
     _next();
 }
-define_immediate_primitive("REPEAT", pr_compile_repeat);
+_define_immediate_primitive("REPEAT", pr_compile_repeat);

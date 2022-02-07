@@ -6,4 +6,4 @@ _primitive(pr_compile_while) {
     _compile_while();
     _next();
 }
-define_immediate_primitive("WHILE", pr_compile_while);
+_define_immediate_primitive("WHILE", pr_compile_while);

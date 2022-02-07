@@ -31,4 +31,4 @@ _primitive(pr_word) {
 
     _next();
 }
-define_primitive("WORD", pr_word);
+_define_primitive("WORD", pr_word);

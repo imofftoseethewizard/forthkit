@@ -5,4 +5,4 @@ _primitive(pr_gt_eq) {
     _gt_eq();
     _next();
 }
-define_primitive(">=", pr_gt_eq);
+_define_primitive(">=", pr_gt_eq);

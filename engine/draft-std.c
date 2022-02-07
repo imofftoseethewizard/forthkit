@@ -4,7 +4,7 @@
 
 #include "../primitive/preamble.h"
 
-#include "modern.h"
+#include "draft-std.h"
 #include "log.h"
 
 char *store_counted_string(const char *s, char *here);
@@ -96,7 +96,6 @@ evaluate(cell *engine, const char *source)
 
     /* Prerequisites for bootstrap */
     #include "../primitive/core/store_compiled.c"
-    #include "../primitive/core/abort.c"
     #include "../primitive/core/align.c"
     #include "../primitive/core/count.c"
     #include "../primitive/core/create.c"

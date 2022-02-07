@@ -8,4 +8,4 @@ _primitive(pr_roll) {
     _roll();
     _next();
 }
-define_primitive("ROLL", pr_roll);
+_define_primitive("ROLL", pr_roll);

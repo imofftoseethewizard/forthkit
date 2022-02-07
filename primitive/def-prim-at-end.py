@@ -8,7 +8,7 @@ if __name__ == '__main__':
     for line in lines:
         if held:
             print(line, end='', file=f)
-        elif line.split('(', 1)[0] in ('define_primitive', 'define_immediate_primitive', 'define_parsing_primitive'):
+        elif line.split('(', 1)[0] in ('_define_primitive', '_define_immediate_primitive', '_define_parsing_primitive'):
             held = line
         else:
             print(line, end='', file=f)

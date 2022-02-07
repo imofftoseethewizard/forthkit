@@ -5,4 +5,4 @@ _primitive(pr_zero_lt) {
     _zero_lt();
     _next();
 }
-define_primitive("0<", pr_zero_lt);
+_define_primitive("0<", pr_zero_lt);

@@ -12,17 +12,17 @@ __first:
 
 #define _next()                                 \
     do {                                        \
-        _trace("start next:     ");             \
+        _trace("start next: ");             \
                                                 \
         while (ip && !_is_primitive(*ip)) {     \
-            _trace("next execute:   ");         \
+            _trace("next execute: ");         \
             _execute(*ip);                      \
         }                                       \
                                                 \
         _trace("next primitive: ");             \
         if (ip) goto *_pr_deref(*ip++);         \
                                                 \
-        _trace("next exiting:   ");             \
+        _trace("next exiting: ");             \
         goto __last;                            \
     }                                           \
     while (0)

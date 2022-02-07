@@ -5,4 +5,4 @@ _primitive(pr_sp0) {
     _sp0();
     _next();
 }
-define_primitive("SP0", pr_sp0);
+_define_primitive("SP0", pr_sp0);

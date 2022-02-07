@@ -1,10 +1,9 @@
-
 /* _execute is defined in machine.c */
 
 _primitive(pr_execute) {
-    _debug("execute: ");
-    _print_stack();
+    _trace("start execute: ");
     _execute(*sp++);
+    _trace("end execute: ");
     _next();
 }
-define_primitive("EXECUTE", pr_execute);
+_define_primitive("EXECUTE", pr_execute);

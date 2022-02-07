@@ -5,4 +5,4 @@ _primitive(pr_xor) {
     _xor();
     _next();
 }
-define_primitive("XOR", pr_xor);
+_define_primitive("XOR", pr_xor);

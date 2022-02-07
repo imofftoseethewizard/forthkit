@@ -5,4 +5,4 @@ _primitive(pr_min) {
     _min();
     _next();
 }
-define_primitive("MIN", pr_min);
+_define_primitive("MIN", pr_min);

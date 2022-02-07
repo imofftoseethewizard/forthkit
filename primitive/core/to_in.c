@@ -5,4 +5,4 @@ _primitive(pr_to_in) {
     _to_in();
     _next();
 }
-define_primitive(">IN", pr_to_in);
+_define_primitive(">IN", pr_to_in);

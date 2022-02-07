@@ -5,4 +5,4 @@ _primitive(pr_or) {
     _or();
     _next();
 }
-define_primitive("OR", pr_or);
+_define_primitive("OR", pr_or);

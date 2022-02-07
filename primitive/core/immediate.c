@@ -5,4 +5,4 @@ _primitive(pr_immediate) {
     _immediate();
     _next();
 }
-define_primitive("IMMEDIATE", pr_immediate);
+_define_primitive("IMMEDIATE", pr_immediate);

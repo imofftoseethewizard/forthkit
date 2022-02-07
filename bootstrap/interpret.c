@@ -61,11 +61,11 @@ if (!e[ea_interpret]) {
      */
 
     /* : interpret                                       */
-    begin_define_word("interpret", 0);
+    _begin_define_word("interpret", 0);
 
     e[ea_interpret] = _from_ptr(here);
 
-    _debug("defining interpret        %lx\n", (long)_to_ptr(e[ea_interpret]));
+    _debug("defining interpret        %lx\n", (long)e[ea_interpret]);
 
     /*      begin                                        */
     _compile_begin();

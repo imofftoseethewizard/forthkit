@@ -25,4 +25,4 @@ _primitive(op_jump) {
 #define _compile_jump_target() \
     *_to_ptr(*sp++) = (int)(here + sizeof(cell) - (char *)_to_ptr(*sp))
 
-register_operator(ot_jump, op_jump);
+_register_operator(ot_jump, op_jump);

@@ -48,4 +48,4 @@ _primitive(pr_find) {
 
     _next();
 }
-define_primitive("FIND", pr_find);
+_define_primitive("FIND", pr_find);

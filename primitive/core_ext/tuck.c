@@ -5,4 +5,4 @@ _primitive(pr_tuck) {
     _tuck();
     _next();
 }
-define_primitive("TUCK", pr_tuck);
+_define_primitive("TUCK", pr_tuck);

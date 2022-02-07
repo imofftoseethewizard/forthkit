@@ -5,4 +5,4 @@ _primitive(pr_max) {
     _max();
     _next();
 }
-define_primitive("MAX", pr_max);
+_define_primitive("MAX", pr_max);

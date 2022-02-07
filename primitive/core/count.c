@@ -7,4 +7,4 @@ _primitive(pr_count) {
 
     _next();
 }
-define_primitive("COUNT", pr_count);
+_define_primitive("COUNT", pr_count);

@@ -7,4 +7,4 @@ if (0)
     _key();
     _next();
   }
-define_primitive("KEY", pr_key);
+_define_primitive("KEY", pr_key);

@@ -10,4 +10,4 @@ if (0)
     source_len = strlen(source);
     _next();
   }
-define_primitive("REFILL", pr_refill);
+_define_primitive("REFILL", pr_refill);

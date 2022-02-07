@@ -5,4 +5,4 @@ _primitive(pr_not) {
     _not();
     _next();
 }
-define_primitive("NOT", pr_not);
+_define_primitive("NOT", pr_not);

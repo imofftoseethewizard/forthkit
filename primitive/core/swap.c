@@ -5,4 +5,4 @@ _primitive(pr_swap) {
     _swap();
     _next();
 }
-define_primitive("SWAP", pr_swap);
+_define_primitive("SWAP", pr_swap);

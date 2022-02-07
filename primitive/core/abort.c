@@ -3,4 +3,4 @@ _primitive(pr_abort) {
     _next();
 }
 
-define_primitive("ABORT", pr_abort)
+_define_primitive("ABORT", pr_abort)

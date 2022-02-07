@@ -4,4 +4,4 @@ _primitive(pr_state) {
     _state();
     _next();
 }
-define_primitive("STATE", pr_state);
+_define_primitive("STATE", pr_state);

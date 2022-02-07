@@ -5,4 +5,4 @@ _primitive(pr_gt) {
     _gt();
     _next();
 }
-define_primitive(">", pr_gt);
+_define_primitive(">", pr_gt);

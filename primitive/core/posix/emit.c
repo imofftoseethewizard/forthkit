@@ -5,4 +5,4 @@ _primitive(pr_emit) {
     _emit();
     _next();
 }
-define_primitive("EMIT", pr_emit);
+_define_primitive("EMIT", pr_emit);

@@ -4,4 +4,4 @@ _primitive(pr_over) {
     _over();
     _next();
 }
-define_primitive("OVER", pr_over);
+_define_primitive("OVER", pr_over);
