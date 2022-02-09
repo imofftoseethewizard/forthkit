@@ -37,14 +37,10 @@ _primitive(pr_find) {
         word = _next_word(word);
     }
 
-    if (!word) {
-        *--sp = 0;
-        /* stack contains ( name 0 ) */
-    } else {
-        *sp = (cell)_get_word_interpretation(wordp);
-        *--sp = _get_word_flags(wordp, c_immediate) ? 1 : -1;
-        /* stack contains ( xt 1 ) or ( xt -1 ) */
-    }
+    if (!word)
+        *sp = 0;
+    else
+        *sp = _get_word_interpretation(wordp);
 
     _next();
 }

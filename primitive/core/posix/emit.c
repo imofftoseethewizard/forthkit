@@ -1,4 +1,3 @@
-
 #define _emit() putc(*sp++, stdout)
 
 _primitive(pr_emit) {

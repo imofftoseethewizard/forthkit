@@ -1,5 +1,5 @@
 
-#define _store_compiled(x) _store_data(_get_word_interpretation_semantics(x));
+#define _store_compiled(x) _store_data(_get_word_interpretation(x));
 
 _primitive(pr_store_compiled) {
     _store_compiled(*sp++);

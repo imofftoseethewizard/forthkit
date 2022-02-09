@@ -1,6 +1,7 @@
 #include "config.h"
 
 typedef unsigned CELL_TYPE cell;
+typedef CELL_TYPE number;
 typedef CELL_TYPE cell_offset;
 
 typedef LENGTH_TYPE length_type;

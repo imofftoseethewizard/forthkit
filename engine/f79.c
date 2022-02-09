@@ -1,8 +1,9 @@
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "../primitive/preamble.h"
+#include "../primitive/preamble-79.h"
 
 #include "f79.h"
 #include "log.h"
@@ -27,8 +28,8 @@ reset_execution_state(cell *e)
 int
 evaluate(cell *engine, const char *source)
 {
-    #include "../address/absolute.c"
-    /* #include "../address/relocatable.c" */
+    /* #include "../address/absolute.c" */
+    #include "../address/relocatable.c"
 
     /* These are the most commonly referenced variables. */
     register cell *e = engine;
@@ -97,14 +98,16 @@ evaluate(cell *engine, const char *source)
     /* Prerequisites for bootstrap */
     #include "../primitive/core/store_compiled.c"
     #include "../primitive/core/align.c"
+    #include "../primitive/core/and.c"
     #include "../primitive/core/count.c"
     #include "../primitive/core/create.c"
     #include "../primitive/core/drop.c"
+    #include "../primitive/core/dup.c"
     #include "../primitive/core/execute.c"
     #include "../primitive/core/fetch.c"
-    #include "../primitive/core/find.c"
+    #include "../primitive/core/find-79.c"
     #include "../primitive/core/literal.c"
-    #include "../primitive/core/nip.c"
+    #include "../primitive/core/minus.c"
     #include "../primitive/core/or.c"
     #include "../primitive/core/over.c"
     #include "../primitive/core/q_dup.c"
@@ -123,27 +126,52 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/compile_repeat.c"
     #include "../primitive/core/compile_while.c"
 
-    #include "../bootstrap/interpret.c"
+    #include "../bootstrap/interpret-79.c"
     /* End of bootstrap */
 
     #include "../primitive/core/posix/emit.c"
     #include "../primitive/core/posix/key.c"
 
+    #include "../primitive/core/abs.c"
     #include "../primitive/core/allot.c"
+    #include "../primitive/core/base.c"
+    #include "../primitive/core/c_fetch.c"
+    #include "../primitive/core/c_move.c"
+    #include "../primitive/core/c_store.c"
+    #include "../primitive/core/compile.c"
+    #include "../primitive/core/compile_do.c"
     #include "../primitive/core/context.c"
+    #include "../primitive/core/cr.c"
     #include "../primitive/core/current.c"
+    #include "../primitive/core/decimal.c"
+    #include "../primitive/core/definitions.c"
+    #include "../primitive/core/depth.c"
     #include "../primitive/core/div.c"
+    #include "../primitive/core/does.c"
+    #include "../primitive/core/exit.c"
+    #include "../primitive/core/fill.c"
+    #include "../primitive/core/hold.c"
+    #include "../primitive/core/i.c"
     #include "../primitive/core/immediate.c"
+    #include "../primitive/core/j.c"
+    #include "../primitive/core/leave.c"
     #include "../primitive/core/left_bracket.c"
+    #include "../primitive/core/literal.c"
     #include "../primitive/core/num.c"
     #include "../primitive/core/num_end.c"
     #include "../primitive/core/num_start.c"
+    #include "../primitive/core/one_minus.c"
+    #include "../primitive/core/one_plus.c"
     #include "../primitive/core/plus_store.c"
+    #include "../primitive/core/posix/type.c"
+    #include "../primitive/core/r_fetch.c"
+    #include "../primitive/core/r_from.c"
     #include "../primitive/core/right_bracket.c"
     #include "../primitive/core/store.c"
-    #include "../primitive/core/times.c"
     #include "../primitive/core/times_div.c"
-    #include "../primitive/core/posix/type.c"
+    #include "../primitive/core/to_r.c"
+    #include "../primitive/core/two_minus.c"
+    #include "../primitive/core/two_plus.c"
 
     #include "../compiled/core/colon.c"
     #include "../compiled/core/num_s.c"
@@ -208,5 +236,6 @@ main(int argc, char *argv[])
     _debug("engine initialized.\n");
 
     exit(evaluate(engine, argv[argc-1]));
-    /* exit(evaluate(engine, "32 WORD HELLO COUNT TYPE")); */
+    /* exit(evaluate(engine, "32 <# #S #> type")); */
+
 }

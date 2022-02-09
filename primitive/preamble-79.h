@@ -30,9 +30,8 @@
 #define _clear_word_flags(x, flags)             *((cell *)(x) + 2) &= ~(flags)
 #define _get_word_flags(x, flags)               *((cell *)(x) + 2) & ~(flags)
 
-#define _get_word_compilation_semantics(x)      *((cell *)(x) + 3)
-#define _get_word_interpretation_ptr(x)         ((cell *)(x) + 4)
-#define _get_word_interpretation(x)             _from_ptr(_get_word_interpretation_ptr(x))
+#define _get_word_interpretation_ptr(x) ((cell *)(x) + 3)
+#define _get_word_interpretation(x)     _from_ptr(_get_word_interpretation_ptr(x))
 
 #define _word_header(flags)                                                \
        /* _word_header: ( n -- addr ) [xp]    */                           \
@@ -52,10 +51,7 @@
        e[ea_current] = *rp++;                                                \
                                                                            \
        /* Word flags.                         */                           \
-       _store_data(flags);                                                 \
-                                                                           \
-       /* Compilation semantics               */                           \
-       _compile_pr(pr_store_compiled)
+       _store_data(flags)
 
 #define _next_word(x) *(_to_ptr(x) + 1)
 
@@ -69,7 +65,7 @@
 #define _define_primitive_ext(s, l, flags)                                 \
     if (!e[ea_context])                                                    \
     {                                                                      \
-        _debug("defining %-16s %lx\n", s, (long)_pr_addr(l));              \
+        _info("defining %-16s %lx\n", s, (long)_pr_addr(l));              \
         _begin_define_word(s, c_primitive | (flags));                      \
         _compile_pr(l);                                                    \
         _compile_pr(op_exit);                                              \
@@ -78,7 +74,7 @@
 #define _define_parsing_primitive(s, l)                                    \
     if (!e[ea_context])                                                    \
     {                                                                      \
-        _debug("defining %-16s %lx\n", s, (long)_pr_addr(l));              \
+        _info("defining %-16s %lx\n", s, (long)_pr_addr(l));              \
         _begin_define_word(s, c_primitive);                                \
         _compile_pr(op_literal); \
         _store_data(32); \

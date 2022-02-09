@@ -12,21 +12,21 @@ __first:
 
 #define _next()                                 \
     do {                                        \
-        _trace("start next: ");             \
+        _trace("start next: ");                 \
                                                 \
         while (ip && !_is_primitive(*ip)) {     \
-            _trace("next execute: ");         \
+            _trace("execute next: ");           \
             _execute(*ip);                      \
         }                                       \
                                                 \
-        _trace("next primitive: ");             \
+        _trace("primitive next: ");             \
         if (ip) goto *_pr_deref(*ip++);         \
                                                 \
-        _trace("next exiting: ");             \
+        _trace("exiting next: ");               \
         goto __last;                            \
     }                                           \
     while (0)
 
-#define _dispatch() \
-    _next();        \
+#define _dispatch()                             \
+    _next();                                    \
 __last:

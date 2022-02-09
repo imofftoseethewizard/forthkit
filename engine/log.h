@@ -2,6 +2,7 @@
 
 #if VERBOSE
 
+#define _info(...) fprintf(stderr, __VA_ARGS__)
 #define _debug(...) fprintf(stderr, __VA_ARGS__)
 
 #define _print_stack()                                                   \
@@ -39,6 +40,12 @@ do {                                                                     \
 
 
 #else
+
+#if LOG
+#define _info(...) fprintf(stderr, __VA_ARGS__)
+#endif
+
+#define _info(...)
 #define _debug(...)
 #define _print_stack()
 #define _print_return_stack()

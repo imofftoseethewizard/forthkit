@@ -1,6 +1,7 @@
 _primitive(pr_num_end) {
-    register length_type *idx = (length_type *)here;
-    *sp = _from_ptr(here + *idx);
+    register length_type *idx = _number_pad_idx_addr();
+    register char *chp = _number_pad_buf_addr();
+    *sp = _from_ptr(chp + *idx);
     *--sp = _c_number_pad_size - *idx;
     _next();
 }

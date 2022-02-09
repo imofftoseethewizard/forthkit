@@ -21,3 +21,5 @@
 7. load/save images
 8. multi-threading
 9. local multi-process
+11. token-based dispatch (ie, op_X and pr_X are mapped to/from enum)
+    might be necessary if compiled code for relocatable 16-bit forth > 32kb.

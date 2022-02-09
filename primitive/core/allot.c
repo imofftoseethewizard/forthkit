@@ -1,4 +1,4 @@
-#define _allot() here += (length_type)*sp++
+#define _allot() here += (number)*sp++
 
 _primitive(pr_allot) {
     _allot();
