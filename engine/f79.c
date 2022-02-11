@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <readline/readline.h>
 
 #include "../primitive/preamble-79.h"
 
@@ -38,11 +39,13 @@ evaluate(cell *engine, const char *source)
     register cell *rp;
 
     if (e[ea_interpret]) {
+
         ip = _to_ptr(e[ea_ip]);
         sp = _to_ptr(e[ea_sp]);
         rp = _to_ptr(e[ea_rp]);
 
     } else {
+
         rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
         sp = rp + PARAMETER_STACK_SIZE;
 
@@ -91,9 +94,11 @@ evaluate(cell *engine, const char *source)
 
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
+    #include "../primitive/op/do.c"
     #include "../primitive/op/exit.c"
     #include "../primitive/op/jump.c"
     #include "../primitive/op/literal.c"
+    #include "../primitive/op/loop.c"
 
     /* Prerequisites for bootstrap */
     #include "../primitive/core/store_compiled.c"
@@ -140,6 +145,8 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/c_store.c"
     #include "../primitive/core/compile.c"
     #include "../primitive/core/compile_do.c"
+    #include "../primitive/core/compile_loop.c"
+    /* #include "../primitive/core/compile_plus_loop.c" */
     #include "../primitive/core/context.c"
     #include "../primitive/core/cr.c"
     #include "../primitive/core/current.c"
@@ -156,26 +163,42 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/j.c"
     #include "../primitive/core/leave.c"
     #include "../primitive/core/left_bracket.c"
-    #include "../primitive/core/literal.c"
+    #include "../primitive/core/max.c"
+    #include "../primitive/core/min.c"
+    #include "../primitive/core/mod.c"
+    #include "../primitive/core/move.c"
+    #include "../primitive/core/negate.c"
+    #include "../primitive/core/not.c"
     #include "../primitive/core/num.c"
     #include "../primitive/core/num_end.c"
     #include "../primitive/core/num_start.c"
     #include "../primitive/core/one_minus.c"
     #include "../primitive/core/one_plus.c"
+    /* #include "../primitive/core/paren.c" */
+    #include "../primitive/core/plus.c"
     #include "../primitive/core/plus_store.c"
     #include "../primitive/core/posix/type.c"
+    #include "../primitive/core/quit.c"
     #include "../primitive/core/r_fetch.c"
     #include "../primitive/core/r_from.c"
     #include "../primitive/core/right_bracket.c"
+    #include "../primitive/core/sign.c"
     #include "../primitive/core/store.c"
+    #include "../primitive/core/times.c"
     #include "../primitive/core/times_div.c"
     #include "../primitive/core/to_r.c"
     #include "../primitive/core/two_minus.c"
     #include "../primitive/core/two_plus.c"
+    #include "../primitive/core/xor.c"
+    #include "../primitive/core_ext/pick.c"
+    /* #include "../primitive/core_ext/roll.c" */
+
+    #include "../primitive/core/posix/dot.c"
 
     #include "../compiled/core/colon.c"
     #include "../compiled/core/num_s.c"
     #include "../compiled/core/semicolon.c"
+    /* #include "../compiled/core/tick_f79.c" */
     #include "../compiled/core/word.c"
 
     /* The first run will have context == 0. The preamble detects that and
@@ -188,13 +211,11 @@ evaluate(cell *engine, const char *source)
         _debug("interpreting source '%s'\n", source);
 
         memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
+        e[ea_source_idx] = 0;
 
         rp = rp0;
         *--rp = 0;
         ip = _to_ptr(e[ea_interpret]);
-
-        for (cell p = e[ea_interpret]; p < e[ea_here]; p += sizeof(cell))
-            _debug("%lx: %lx\n", (long)_to_ptr(p), (long)*_to_ptr(p));
     }
 
     _dispatch();
@@ -206,6 +227,7 @@ evaluate(cell *engine, const char *source)
     e[ea_here] = _from_ptr(here);
 
     _debug("done with run: result: %d\n", result);
+    _print_stack();
     return result;
 }
 
@@ -235,7 +257,10 @@ main(int argc, char *argv[])
 
     _debug("engine initialized.\n");
 
+    /* while (1) { */
+    /*     printf("result: %ld\n", (long)evaluate(engine, readline(NULL))); */
+    /* } */
     exit(evaluate(engine, argv[argc-1]));
-    /* exit(evaluate(engine, "32 <# #S #> type")); */
+    /* exit(evaluate(engine, "1 2 + .")); */
 
 }

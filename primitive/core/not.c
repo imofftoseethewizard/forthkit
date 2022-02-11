@@ -1,4 +1,3 @@
-
 #define _not() *sp = ~*sp
 
 _primitive(pr_not) {

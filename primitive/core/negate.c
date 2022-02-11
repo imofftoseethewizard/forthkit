@@ -1,4 +1,3 @@
-
 #define _negate() *sp = ~*sp
 
 _primitive(pr_negate) {

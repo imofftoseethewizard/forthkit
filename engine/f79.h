@@ -10,9 +10,14 @@ enum operator_type {
     ot_abort,
     ot_branch,
     ot_call,
+    ot_do,
     ot_exit,
     ot_jump,
     ot_literal,
+    ot_loop,
+    ot_plus_loop,
+
+    /* must be last */
     operator_type_count
 };
 
@@ -35,6 +40,8 @@ enum engine_attribute {
     ea_state,
     ea_interpret,
     ea_source_addr,
+
+    /* must be last */
     engine_attribute_count
 };
 

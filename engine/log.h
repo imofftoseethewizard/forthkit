@@ -43,9 +43,10 @@ do {                                                                     \
 
 #if LOG
 #define _info(...) fprintf(stderr, __VA_ARGS__)
+#else
+#define _info(...)
 #endif
 
-#define _info(...)
 #define _debug(...)
 #define _print_stack()
 #define _print_return_stack()
