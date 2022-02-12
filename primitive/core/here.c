@@ -1,5 +1,4 @@
-
-#define _here() *--sp = (cell)here
+#define _here() *--sp = _from_ptr(here)
 
 _primitive(pr_here) {
     _here();

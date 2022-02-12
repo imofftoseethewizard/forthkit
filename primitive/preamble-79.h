@@ -45,10 +45,10 @@
        _store_data(*sp++);                                                 \
                                                                            \
        /* Vocabulary list link.               */                           \
-       _store_data(e[ea_current]);                                         \
+       _store_data(e[e[ea_current]]);                                         \
                                                                            \
        /* Add to current vocabulary.          */                           \
-       e[ea_current] = *rp++;                                                \
+       e[e[ea_current]] = *rp++;                                                \
                                                                            \
        /* Word flags.                         */                           \
        _store_data(flags)

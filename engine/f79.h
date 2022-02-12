@@ -33,6 +33,7 @@ enum engine_attribute {
     ea_context,
     ea_current,
     ea_data,
+    ea_forth,
     ea_rp0,
     ea_source_idx,
     ea_source_len,

@@ -15,7 +15,7 @@ void
 init_engine(cell *e, unsigned long size)
 {
     e[ea_size]    = size;
-    e[ea_context] = 0;
+    e[ea_forth] = 0;
 }
 
 void
@@ -58,8 +58,9 @@ evaluate(cell *engine, const char *source)
         /* internal state */
         e[ea_base]        = 10;
         e[ea_context]     = 0;
-        e[ea_current]     = 0;
+        e[ea_current]     = ea_forth;
         e[ea_data]        = e[ea_here];
+        e[ea_forth]       = 0;
         e[ea_rp0]         = e[ea_rp];
         e[ea_source_idx]  = 0;
         e[ea_source_len]  = 0;
@@ -143,6 +144,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/c_fetch.c"
     #include "../primitive/core/c_move.c"
     #include "../primitive/core/c_store.c"
+    #include "../primitive/core/colon.c"
     #include "../primitive/core/compile.c"
     #include "../primitive/core/compile_do.c"
     #include "../primitive/core/compile_loop.c"
@@ -157,6 +159,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/does.c"
     #include "../primitive/core/exit.c"
     #include "../primitive/core/fill.c"
+    #include "../primitive/core/here.c"
     #include "../primitive/core/hold.c"
     #include "../primitive/core/i.c"
     #include "../primitive/core/immediate.c"
@@ -182,6 +185,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/r_fetch.c"
     #include "../primitive/core/r_from.c"
     #include "../primitive/core/right_bracket.c"
+    #include "../primitive/core/semicolon.c"
     #include "../primitive/core/sign.c"
     #include "../primitive/core/store.c"
     #include "../primitive/core/times.c"
@@ -195,9 +199,7 @@ evaluate(cell *engine, const char *source)
 
     #include "../primitive/core/posix/dot.c"
 
-    #include "../compiled/core/colon.c"
     #include "../compiled/core/num_s.c"
-    #include "../compiled/core/semicolon.c"
     /* #include "../compiled/core/tick_f79.c" */
     #include "../compiled/core/word.c"
 
@@ -205,7 +207,7 @@ evaluate(cell *engine, const char *source)
        defines primitives and the bootstrap interpreter.
      */
     if (!e[ea_context])
-        e[ea_context] = e[ea_current];
+        e[ea_context] = ea_forth;
 
     if (source) {
         _debug("interpreting source '%s'\n", source);

@@ -15,7 +15,7 @@ _primitive(pr_find) {
     /* word will hold the address of the word being checked for a matching
        name.
     */
-    word = e[ea_context];
+    word = e[e[ea_context]];
 
     while (word) {
         wordp = _to_ptr(word);
