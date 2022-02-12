@@ -1,5 +1,7 @@
 _primitive(pr_paren) {
-    /* Skip leading delimiters. */
+    register cell source_len   = e[ea_source_len];
+    register cell source_idx   = e[ea_source_idx];
+
     while (source_idx < source_len && source[source_idx] != ')')
         source_idx++;
 

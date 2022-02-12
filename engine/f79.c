@@ -157,6 +157,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/depth.c"
     #include "../primitive/core/div.c"
     #include "../primitive/core/does.c"
+    #include "../primitive/core/dot_quote.c"
     #include "../primitive/core/exit.c"
     #include "../primitive/core/fill.c"
     #include "../primitive/core/here.c"
