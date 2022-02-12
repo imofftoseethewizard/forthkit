@@ -66,7 +66,7 @@
     if (!e[ea_context])                                                    \
     {                                                                      \
         _info("defining %-16s %lx\n", s, (long)_pr_addr(l));              \
-        _begin_define_word(s, c_primitive | (flags));                      \
+        _begin_define_word(s, c_inline | c_primitive | (flags));                      \
         _compile_pr(l);                                                    \
         _compile_pr(op_exit);                                              \
     }

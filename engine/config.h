@@ -8,4 +8,4 @@
 /* Diagnostic output control */
 #define LOG                      1
 #define TRACE                    1
-#define VERBOSE                  0
+#define VERBOSE                  1
