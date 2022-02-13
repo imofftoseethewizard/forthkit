@@ -1,24 +1,13 @@
-1. discover which optimizations cause failures
+1. discover which optimizations cause failures in absolute addressing
    individually and pairwise for individual optimizations,
    no segfaults/bus errors, but -O1 still fails
-2. threading model: relative labels instead of absolute
-   done
-3. use relative labels to support cell size < machine word size
-   problematic. Having a different cell size than machine word size forces
-   an abstraction everywhere a pointer is converted to a cell, or vv.
-   done
-4. subroutine threading
-   partial work in branch "subroutine-threading", but introduces ordering
-   dependency in primitive definitions.
-   done
 10. f79
   remaining:
-    [compile]
     forget
-    unsigned words
-    -trailing
     expect
     query
+    unsigned words
+    -trailing
     block words
     double number words
     update #< #S # ># for double cell
@@ -26,7 +15,7 @@
     times-divide-mod
     divide-mod
     convert
-
+10. indirect primitives for 2 byte word size, or translate more primitives to compiled
 11. f83
 12. f94
 13. f2012

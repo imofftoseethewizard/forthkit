@@ -202,6 +202,7 @@ evaluate(cell *engine, const char *source)
 
     #include "../primitive/core/posix/dot.c"
 
+    #include "../compiled/core/bracket_compile.c"
     #include "../compiled/core/num_s.c"
     /* #include "../compiled/core/tick_f79.c" */
     #include "../compiled/core/word.c"
