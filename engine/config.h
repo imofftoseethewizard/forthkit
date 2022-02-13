@@ -7,5 +7,5 @@
 
 /* Diagnostic output control */
 #define LOG                      0
-#define TRACE                    0
+#define TRACE                    1
 #define VERBOSE                  0

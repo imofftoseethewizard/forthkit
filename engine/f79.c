@@ -266,6 +266,6 @@ main(int argc, char *argv[])
     /*     printf("result: %ld\n", (long)evaluate(engine, readline(NULL))); */
     /* } */
     exit(evaluate(engine, argv[argc-1]));
-    /* exit(evaluate(engine, "1 2 + .")); */
+    /* exit(evaluate(engine, ": foo .\" hello, world!\" ; foo ")); */
 
 }

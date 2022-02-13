@@ -18,7 +18,7 @@ _primitive(pr_dot_quote) {
         while (source_idx < source_len && source[source_idx] != '"')
             *s++ = source[source_idx++];
 
-        *jump_offset = (cell)(_align(s) + sizeof(cell) - jump_offset);
+        *jump_offset = (cell)((char *)_align(s) + sizeof(cell) - (char *)jump_offset);
 
         here = (char *)_align(s);
 
