@@ -1,6 +1,6 @@
 /* Note that this abort is functionally distinct from the abort word.
  */
-#define _abort() sp = sp0, rp = rp0, ip = 0, result = 1
+#define _abort() result = *sp, sp = sp0, rp = rp0, ip = 0
 
 _primitive(op_abort) {
     _abort();

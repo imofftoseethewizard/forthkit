@@ -51,11 +51,11 @@ if (!e[ea_interpret]) {
                        drop swap drop state @ if literal then
                    else
 
-                       \ This doesn't provide much in the way of error feedback,
-                       \ but this is also just the bootstrap interpreter. The caller
-                       \ can check source_idx against source_len.
+                       \ <abort> refers to the internal operator for abort, which is much like
+                       \ throw in later FORTH versions. -13 is the throw code for an
+                       \ unrecognized word. See https://forth-standard.org/standard/exception
 
-                       abort
+                       -13 <abort>
                    then
                then
            repeat
@@ -144,7 +144,9 @@ if (!e[ea_interpret]) {
     /*              else                                 */
     _compile_else();
 
-    /*                   abort                           */
+    /*                   -13 <abort>                     */
+    _compile_pr(op_literal);
+    _store_data(-13);
     _compile_pr(op_abort);
 
     /*              then                                 */

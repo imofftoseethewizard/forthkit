@@ -251,12 +251,23 @@ store_counted_string(const char *s, char *here)
     return here + sizeof(cell) + n + 1;
 }
 
+void
+show_error(const char *message, const char *line, cell n) {
+    fprintf(stderr, "%s:\n", message);
+    fprintf(stderr, "%s\n", line);
+    for (int i = 0; i < n; i++)
+        putc(' ', stderr);
+    putc('^', stderr);
+    putc('\n', stderr);
+}
+
 cell engine[1 << 15];
 
 int
 main(int argc, char *argv[])
 {
     int result;
+    char *line;
 
     _debug("engine: %lx top: %lx\n", (long)engine, (long)((char *)engine + sizeof(engine)));
 
@@ -267,9 +278,23 @@ main(int argc, char *argv[])
 
     printf("Forthkit FORTH-79\n");
     while (1) {
-        result = evaluate(engine, readline(NULL));
-        if (!result)
+        line = readline(NULL);
+        result = evaluate(engine, line);
+        switch (result) {
+        case 0:
             printf("ok\n");
+            break;
+        case -13:
+            show_error("unrecognized word", line, engine[ea_source_idx]);
+            break;
+        case -39:
+            show_error("unexpected end of input", line, engine[ea_source_idx]);
+            break;
+        default:
+            fprintf(stderr, "unknown throw code: %ld\n", (long)result);
+            show_error("error location", line, engine[ea_source_idx]);
+            break;
+        }
     }
     /* exit(evaluate(engine, argv[argc-1])); */
     /* exit(evaluate(engine, ": foo .\" hello, world!\" ; foo ")); */

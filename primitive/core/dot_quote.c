@@ -35,8 +35,11 @@ _primitive(pr_dot_quote) {
 
     }
 
-    if (source_idx == source_len)
+    if (source_idx == source_len) {
+        /* see https://forth-standard.org/standard/exception */
+        *--sp = -39; /* unexpected end of file */
         _abort();
+    }
 
     e[ea_source_idx] = source_idx + 1; /* skip final quote */
 

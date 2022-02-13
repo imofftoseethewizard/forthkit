@@ -3,8 +3,6 @@
    no segfaults/bus errors, but -O1 still fails
 10. f79
   remaining:
-    errors/abort
-    outer interpreter
     forget
     expect
     query
