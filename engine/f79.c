@@ -149,6 +149,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/compile_do.c"
     #include "../primitive/core/compile_loop.c"
     /* #include "../primitive/core/compile_plus_loop.c" */
+    #include "../primitive/core/constant.c"
     #include "../primitive/core/context.c"
     #include "../primitive/core/cr.c"
     #include "../primitive/core/current.c"
@@ -194,6 +195,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/to_r.c"
     #include "../primitive/core/two_minus.c"
     #include "../primitive/core/two_plus.c"
+    #include "../primitive/core/variable.c"
     #include "../primitive/core/xor.c"
     #include "../primitive/core_ext/pick.c"
     /* #include "../primitive/core_ext/roll.c" */
