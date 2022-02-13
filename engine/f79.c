@@ -256,6 +256,8 @@ cell engine[1 << 15];
 int
 main(int argc, char *argv[])
 {
+    int result;
+
     _debug("engine: %lx top: %lx\n", (long)engine, (long)((char *)engine + sizeof(engine)));
 
     /* Clears structure. */
@@ -263,10 +265,13 @@ main(int argc, char *argv[])
 
     _debug("engine initialized.\n");
 
-    /* while (1) { */
-    /*     printf("result: %ld\n", (long)evaluate(engine, readline(NULL))); */
-    /* } */
-    exit(evaluate(engine, argv[argc-1]));
+    printf("Forthkit FORTH-79\n");
+    while (1) {
+        result = evaluate(engine, readline(NULL));
+        if (!result)
+            printf("ok\n");
+    }
+    /* exit(evaluate(engine, argv[argc-1])); */
     /* exit(evaluate(engine, ": foo .\" hello, world!\" ; foo ")); */
 
 }

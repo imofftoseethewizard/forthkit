@@ -16,8 +16,6 @@ _primitive(pr_dot) {
     if ((number)*sp < 0)
         _hold('-');
 
-    sp++;
-
     _num_end();
     _type();
 
