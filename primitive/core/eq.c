@@ -1,5 +1,5 @@
 
-#define _eq() *++sp = *(sp+1) == *sp
+#define _eq() *++sp = *(sp-1) == *sp
 
 _primitive(pr_eq) {
     _eq();

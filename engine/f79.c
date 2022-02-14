@@ -125,6 +125,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/word.c"
     #include "../primitive/core/zero_eq.c"
     #include "../primitive/core/zero_gt.c"
+    #include "../primitive/core/zero_lt.c"
 
     #include "../primitive/core/compile_begin.c"
     #include "../primitive/core/compile_else.c"
@@ -139,6 +140,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/posix/emit.c"
     #include "../primitive/core/posix/key.c"
 
+    #include "../primitive/core/abort.c"
     #include "../primitive/core/abs.c"
     #include "../primitive/core/allot.c"
     #include "../primitive/core/base.c"
@@ -160,8 +162,10 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/div.c"
     #include "../primitive/core/does.c"
     #include "../primitive/core/dot_quote.c"
+    #include "../primitive/core/eq.c"
     #include "../primitive/core/exit.c"
     #include "../primitive/core/fill.c"
+    #include "../primitive/core/gt.c"
     #include "../primitive/core/here.c"
     #include "../primitive/core/hold.c"
     #include "../primitive/core/i.c"
@@ -169,6 +173,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/j.c"
     #include "../primitive/core/leave.c"
     #include "../primitive/core/left_bracket.c"
+    #include "../primitive/core/lt.c"
     #include "../primitive/core/max.c"
     #include "../primitive/core/min.c"
     #include "../primitive/core/mod.c"
@@ -193,6 +198,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/store.c"
     #include "../primitive/core/times.c"
     #include "../primitive/core/times_div.c"
+    #include "../primitive/core/to_in.c"
     #include "../primitive/core/to_r.c"
     #include "../primitive/core/two_minus.c"
     #include "../primitive/core/two_plus.c"
@@ -205,6 +211,7 @@ evaluate(cell *engine, const char *source)
 
     #include "../compiled/core/bracket_compile.c"
     #include "../compiled/core/num_s.c"
+    #include "../compiled/core/question_mark.c"
     /* #include "../compiled/core/tick_f79.c" */
     #include "../compiled/core/word.c"
 
@@ -284,6 +291,9 @@ main(int argc, char *argv[])
         switch (result) {
         case 0:
             printf("ok\n");
+            break;
+        case -1:
+            show_error("aborted", line, engine[ea_source_idx]);
             break;
         case -13:
             show_error("unrecognized word", line, engine[ea_source_idx]);
