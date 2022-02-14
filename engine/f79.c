@@ -193,6 +193,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/r_fetch.c"
     #include "../primitive/core/r_from.c"
     #include "../primitive/core/right_bracket.c"
+    #include "../primitive/core/rot.c"
     #include "../primitive/core/semicolon.c"
     #include "../primitive/core/sign.c"
     #include "../primitive/core/store.c"
@@ -205,7 +206,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/variable.c"
     #include "../primitive/core/xor.c"
     #include "../primitive/core_ext/pick.c"
-    /* #include "../primitive/core_ext/roll.c" */
+    #include "../primitive/core_ext/roll.c"
 
     #include "../primitive/core/posix/dot.c"
 
@@ -292,15 +293,23 @@ main(int argc, char *argv[])
         case 0:
             printf("ok\n");
             break;
+
         case -1:
             show_error("aborted", line, engine[ea_source_idx]);
             break;
+
+        case -10:
+            show_error("division by zero", line, engine[ea_source_idx]);
+            break;
+
         case -13:
             show_error("unrecognized word", line, engine[ea_source_idx]);
             break;
+
         case -39:
             show_error("unexpected end of input", line, engine[ea_source_idx]);
             break;
+
         default:
             fprintf(stderr, "unknown throw code: %ld\n", (long)result);
             show_error("error location", line, engine[ea_source_idx]);

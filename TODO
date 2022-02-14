@@ -3,6 +3,7 @@
    no segfaults/bus errors, but -O1 still fails
 10. f79
   remaining:
+    fix roll, space, spaces
     seg fault with create does>
     stack checking (spec)
     consistency checks (config option)
