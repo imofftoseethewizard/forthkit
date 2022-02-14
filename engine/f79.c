@@ -100,6 +100,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/op/jump.c"
     #include "../primitive/op/literal.c"
     #include "../primitive/op/loop.c"
+    #include "../primitive/op/plus_loop.c"
 
     /* Prerequisites for bootstrap */
     #include "../primitive/core/store_compiled.c"
@@ -148,7 +149,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core/compile.c"
     #include "../primitive/core/compile_do.c"
     #include "../primitive/core/compile_loop.c"
-    /* #include "../primitive/core/compile_plus_loop.c" */
+    #include "../primitive/core/compile_plus_loop.c"
     #include "../primitive/core/constant.c"
     #include "../primitive/core/context.c"
     #include "../primitive/core/cr.c"
@@ -297,6 +298,6 @@ main(int argc, char *argv[])
         }
     }
     /* exit(evaluate(engine, argv[argc-1])); */
-    /* exit(evaluate(engine, ": foo .\" hello, world!\" ; foo ")); */
+    /* exit(evaluate(engine, ": foo cr 10 0 do 97 emit loop cr ; foo")); */
 
 }

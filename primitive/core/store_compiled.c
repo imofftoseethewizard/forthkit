@@ -1,5 +1,5 @@
 _primitive(pr_store_compiled) {
-    register cell xt = *sp++;
+    register cell xt = *sp;
     register cell *code = _to_ptr(xt);
     register cell flags = *(code - 1);
 
