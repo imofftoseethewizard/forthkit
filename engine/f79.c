@@ -81,11 +81,8 @@ evaluate(cell *engine, const char *source)
     cell *rp0  = (cell *)_to_ptr(e[ea_rp0]);
     cell *sp0  = (cell *)_to_ptr(e[ea_sp0]);
 
-    /* Not currently used, but reserved for uncaught exceptions. */
+    /* Contains the throw code for uncaught exceptions. */
     int result = 0;
-
-    /* Temporary variables for use in primitives (swap, roll, etc). */
-    cell tmp0, tmp1;
 
     /* The threading module must be included before any operators or
        primitives.

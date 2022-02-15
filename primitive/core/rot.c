@@ -1,8 +1,6 @@
-
-#define _rot() tmp0 = *sp, *sp = *(sp+2), *(sp+2) = *(sp+1), *(sp+1) = tmp0
-
 _primitive(pr_rot) {
-    _rot();
+    register cell tmp = *sp;
+    *sp = *(sp+2), *(sp+2) = *(sp+1), *(sp+1) = tmp;
     _next();
 }
 _define_primitive("ROT", pr_rot);
