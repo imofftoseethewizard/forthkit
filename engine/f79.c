@@ -93,6 +93,7 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
     #include "../primitive/op/do.c"
+    #include "../primitive/op/does.c"
     #include "../primitive/op/exit.c"
     #include "../primitive/op/jump.c"
     #include "../primitive/op/literal.c"
@@ -211,6 +212,8 @@ evaluate(cell *engine, const char *source)
     #include "../compiled/core/num_s.c"
     #include "../compiled/core/question_mark.c"
     /* #include "../compiled/core/tick_f79.c" */
+    #include "../compiled/core/space.c"
+    #include "../compiled/core/spaces.c"
     #include "../compiled/core/word.c"
 
     /* The first run will have context == 0. The preamble detects that and
@@ -314,6 +317,6 @@ main(int argc, char *argv[])
         }
     }
     /* exit(evaluate(engine, argv[argc-1])); */
-    /* exit(evaluate(engine, ": foo cr 10 0 do 97 emit loop cr ; foo")); */
+    /* exit(evaluate(engine, "15 : cc create , does> @ dup . cr ; cc")); */
 
 }

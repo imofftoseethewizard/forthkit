@@ -3,22 +3,22 @@
    no segfaults/bus errors, but -O1 still fails
 10. f79
   remaining:
-    fix roll, space, spaces
-    seg fault with create does>
     stack checking (spec)
     consistency checks (config option)
+    block words
+    test suite
     forget
     expect
     query
     unsigned words
     -trailing
-    block words
     double number words
     update #< #S # ># for double cell
     times-divide
     times-divide-mod
     divide-mod
     convert
+
 10. indirect primitives for 2 byte word size, or translate more primitives to compiled
 11. f83
 12. f94
@@ -31,3 +31,7 @@
 9. local multi-process
 11. token-based dispatch (ie, op_X and pr_X are mapped to/from enum)
     might be necessary if compiled code for relocatable 16-bit forth > 32kb.
+
+    quit
+
+depth actual-depth @ = if depth start-depth @ > if depth start-depth @ - 0 do actual-results i cells + @ <> if ." incorrect result: " leave then loop then else ." wrong number of results: " then

@@ -1,4 +1,4 @@
-_primitive(pr_do_create) {
+_primitive(pr_create) {
 
     _store_word_name();
 
@@ -14,4 +14,4 @@ _primitive(pr_do_create) {
 
     _next();
 }
-_define_parsing_primitive("CREATE", pr_do_create);
+_define_parsing_primitive("CREATE", pr_create);
