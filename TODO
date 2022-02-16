@@ -3,10 +3,25 @@
    no segfaults/bus errors, but -O1 still fails
 10. f79
   remaining:
+    block words
+      block buffer empty-buffers list load save-buffers
+      scr update
+
+      buffer lru
+        idx, array of flagged block numbers
+        flags
+          msb -- empty (use -1)
+          msb-1 -- needs update (if not empty)
+          low bits give block number
+      ea_blk
+      buffer length 1024
+      per buffer modified flags
+      file for mass storage
+      config for # of blocks,
+
+    test suite
     stack checking (spec)
     consistency checks (config option)
-    block words
-    test suite
     forget
     expect
     query
@@ -31,7 +46,3 @@
 9. local multi-process
 11. token-based dispatch (ie, op_X and pr_X are mapped to/from enum)
     might be necessary if compiled code for relocatable 16-bit forth > 32kb.
-
-    quit
-
-depth actual-depth @ = if depth start-depth @ > if depth start-depth @ - 0 do actual-results i cells + @ <> if ." incorrect result: " leave then loop then else ." wrong number of results: " then

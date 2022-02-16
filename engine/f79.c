@@ -53,7 +53,7 @@ evaluate(cell *engine, const char *source)
         e[ea_ip]          = 0;
         e[ea_rp]          = _from_ptr(rp);
         e[ea_sp]          = _from_ptr(sp);
-        e[ea_here]        = e[ea_sp];
+        e[ea_here]        = e[ea_sp] + BLOCK_BUFFER_COUNT * sizeof(cell);
 
         /* internal state */
         e[ea_base]        = 10;
@@ -66,12 +66,10 @@ evaluate(cell *engine, const char *source)
         e[ea_source_len]  = 0;
         e[ea_sp0]         = e[ea_sp];
         e[ea_state]       = 0;
-
-        /* external_state */
         e[ea_interpret]   = 0;
         e[ea_source_addr] = _from_ptr(&e[engine_attribute_count]);
-
-        /* e[ea_] = 0; */
+        e[ea_blk]         = 0;
+        e[ea_buffers]     = e[ea_sp];
     }
 
     /* These are generally useful to have, but probably not worth putting
@@ -206,6 +204,8 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core_ext/pick.c"
     #include "../primitive/core_ext/roll.c"
 
+    #include "../primitive/block/blk.c"
+
     #include "../primitive/core/posix/dot.c"
 
     #include "../compiled/core/bracket_compile.c"
@@ -288,6 +288,8 @@ main(int argc, char *argv[])
     printf("Forthkit FORTH-79\n");
     while (1) {
         line = readline(NULL);
+        if (line == NULL)
+            break;
         result = evaluate(engine, line);
         switch (result) {
         case 0:

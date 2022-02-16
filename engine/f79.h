@@ -41,6 +41,8 @@ enum engine_attribute {
     ea_state,
     ea_interpret,
     ea_source_addr,
+    ea_blk,
+    ea_buffers,
 
     /* must be last */
     engine_attribute_count
