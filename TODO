@@ -4,8 +4,7 @@
 10. f79
   remaining:
     block words
-      block buffer empty-buffers list load save-buffers
-      scr update
+      save-buffers scr list load
 
       buffer lru
         idx, array of flagged block numbers
@@ -13,11 +12,7 @@
           msb -- empty (use -1)
           msb-1 -- needs update (if not empty)
           low bits give block number
-      ea_blk
-      buffer length 1024
       per buffer modified flags
-      file for mass storage
-      config for # of blocks,
 
     test suite
     stack checking (spec)

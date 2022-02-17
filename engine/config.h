@@ -1,4 +1,5 @@
-#define BLOCK_BUFFER_COUNT       32
+#define BUFFER_COUNT             32
+#define BUFFER_SIZE              1024
 #define CELL_TYPE                int
 #define LENGTH_TYPE              unsigned char
 #define MAX_WORD_LENGTH          64

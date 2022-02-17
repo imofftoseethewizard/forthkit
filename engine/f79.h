@@ -43,11 +43,12 @@ enum engine_attribute {
     ea_source_addr,
     ea_blk,
     ea_buffers,
+    ea_next_buffer,
 
     /* must be last */
     engine_attribute_count
 };
 
 extern void init_engine(cell *e, unsigned long size);
-extern int evaluate(cell *e, const char *source);
+extern int evaluate(cell *e, const char *source, int storage_fd);
 extern void reset_execution_state(cell *e);

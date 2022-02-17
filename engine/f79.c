@@ -1,8 +1,10 @@
-
+#include <errno.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <readline/readline.h>
+#include <unistd.h>
 
 #include "../primitive/preamble-79.h"
 
@@ -27,7 +29,7 @@ reset_execution_state(cell *e)
 }
 
 int
-evaluate(cell *engine, const char *source)
+evaluate(cell *engine, const char *source, int storage_fd)
 {
     /* #include "../address/absolute.c" */
     #include "../address/relocatable.c"
@@ -53,7 +55,7 @@ evaluate(cell *engine, const char *source)
         e[ea_ip]          = 0;
         e[ea_rp]          = _from_ptr(rp);
         e[ea_sp]          = _from_ptr(sp);
-        e[ea_here]        = e[ea_sp] + BLOCK_BUFFER_COUNT * sizeof(cell);
+        e[ea_here]        = e[ea_sp] + BUFFER_COUNT * sizeof(cell);
 
         /* internal state */
         e[ea_base]        = 10;
@@ -70,6 +72,10 @@ evaluate(cell *engine, const char *source)
         e[ea_source_addr] = _from_ptr(&e[engine_attribute_count]);
         e[ea_blk]         = 0;
         e[ea_buffers]     = e[ea_sp];
+        e[ea_next_buffer] = 0;
+
+        for (register int i = 0; i < BUFFER_COUNT; i++)
+            e[e[ea_buffers] + i] = -1;
     }
 
     /* These are generally useful to have, but probably not worth putting
@@ -205,6 +211,10 @@ evaluate(cell *engine, const char *source)
     #include "../primitive/core_ext/roll.c"
 
     #include "../primitive/block/blk.c"
+    #include "../primitive/block/block.c"
+    #include "../primitive/block/buffer.c"
+    #include "../primitive/block/empty-buffers.c"
+    #include "../primitive/block/update.c"
 
     #include "../primitive/core/posix/dot.c"
 
@@ -277,6 +287,7 @@ main(int argc, char *argv[])
 {
     int result;
     char *line;
+    int storage_fd = -1;
 
     _debug("engine: %lx top: %lx\n", (long)engine, (long)((char *)engine + sizeof(engine)));
 
@@ -286,11 +297,17 @@ main(int argc, char *argv[])
     _debug("engine initialized.\n");
 
     printf("Forthkit FORTH-79\n");
+
+    if (argc > 1)
+        storage_fd = open(argv[argc-1], O_RDWR);
+
     while (1) {
+
         line = readline(NULL);
-        if (line == NULL)
-            break;
-        result = evaluate(engine, line);
+
+        if (!line) break;
+
+        result = evaluate(engine, line, storage_fd);
         switch (result) {
         case 0:
             printf("ok\n");
@@ -308,6 +325,14 @@ main(int argc, char *argv[])
             show_error("unrecognized word", line, engine[ea_source_idx]);
             break;
 
+        case -33:
+            show_error("block read error", line, engine[ea_source_idx]);
+            break;
+
+        case -34:
+            show_error("block write error", line, engine[ea_source_idx]);
+            break;
+
         case -39:
             show_error("unexpected end of input", line, engine[ea_source_idx]);
             break;
@@ -318,7 +343,7 @@ main(int argc, char *argv[])
             break;
         }
     }
-    /* exit(evaluate(engine, argv[argc-1])); */
-    /* exit(evaluate(engine, "15 : cc create , does> @ dup . cr ; cc")); */
+    /* exit(evaluate(engine, argv[argc-1]), -1); */
+    /* exit(evaluate(engine, "15 : cc create , does> @ dup . cr ; cc"), -1); */
 
 }
