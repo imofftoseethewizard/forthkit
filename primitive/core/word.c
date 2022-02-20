@@ -9,12 +9,13 @@ _primitive(pr_word) {
     register cell source_idx   = e[ea_source_idx];
 
     /* Skip leading delimiters. */
-    while (source_idx < source_len && source[source_idx] == delimiter)
+    while (source_idx < source_len
+           && (source[source_idx] == delimiter || source[source_idx] < 32))
         source_idx++;
 
     /* Copy word from source to word buffer. */
     while (source_idx < source_len && word_idx < MAX_WORD_LENGTH
-           && source[source_idx] != delimiter)
+           && (source[source_idx] != delimiter && source[source_idx] > 32))
         word_buffer[word_idx++] = source[source_idx++];
 
     if (word_idx == sizeof(length_type)) {

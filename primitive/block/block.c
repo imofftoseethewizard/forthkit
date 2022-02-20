@@ -1,4 +1,5 @@
 _primitive(pr_read_block) {
+
     register char *buffer = (char *)_to_ptr(*sp++);
     register cell n = *sp++;
 
@@ -17,6 +18,7 @@ _primitive(pr_read_block) {
 }
 
 _compiled_word("BLOCK", 0) {
+    _compile_pr(pr_dup);
     _compile_pr(pr_buffer);
     _compile_pr(pr_read_block);
     _compile_pr(op_exit);

@@ -1,5 +1,6 @@
 _primitive(pr_dot_quote) {
 
+    register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
     register cell source_idx   = e[ea_source_idx] + 1; /* skip space after ." */
 

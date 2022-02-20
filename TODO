@@ -3,17 +3,6 @@
    no segfaults/bus errors, but -O1 still fails
 10. f79
   remaining:
-    block words
-      save-buffers scr list load
-
-      buffer lru
-        idx, array of flagged block numbers
-        flags
-          msb -- empty (use -1)
-          msb-1 -- needs update (if not empty)
-          low bits give block number
-      per buffer modified flags
-
     test suite
     stack checking (spec)
     consistency checks (config option)
@@ -29,15 +18,19 @@
     divide-mod
     convert
 
-10. indirect primitives for 2 byte word size, or translate more primitives to compiled
-11. f83
-12. f94
-13. f2012
+    selected (all?) items from reference word set
+
 5. indirect threading
 6. switch based dispatch
-14. other compilers: clang, bcc, tcc, pcc
 7. load/save images
 8. multi-threading
 9. local multi-process
+10. indirect primitives for 2 byte word size, or translate more primitives to compiled
 11. token-based dispatch (ie, op_X and pr_X are mapped to/from enum)
     might be necessary if compiled code for relocatable 16-bit forth > 32kb.
+14. other compilers: clang, bcc, tcc, pcc
+11. f83
+12. f94
+13. f2012
+
+12. investigate Joy and HVM.

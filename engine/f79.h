@@ -4,6 +4,8 @@ typedef unsigned CELL_TYPE cell;
 typedef CELL_TYPE number;
 typedef CELL_TYPE cell_offset;
 
+#define c_msb (1 << (sizeof(cell) * 8 - 1))
+
 typedef LENGTH_TYPE length_type;
 
 enum operator_type {
@@ -44,6 +46,7 @@ enum engine_attribute {
     ea_blk,
     ea_buffers,
     ea_next_buffer,
+    ea_scr,
 
     /* must be last */
     engine_attribute_count

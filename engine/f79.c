@@ -73,6 +73,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
         e[ea_blk]         = 0;
         e[ea_buffers]     = e[ea_sp];
         e[ea_next_buffer] = 0;
+        e[ea_scr]         = 0;
 
         for (register int i = 0; i < BUFFER_COUNT; i++)
             e[e[ea_buffers] + i] = -1;
@@ -214,6 +215,10 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/block/block.c"
     #include "../primitive/block/buffer.c"
     #include "../primitive/block/empty-buffers.c"
+    #include "../primitive/block/list.c"
+    #include "../primitive/block/load.c"
+    #include "../primitive/block/save-buffers.c"
+    #include "../primitive/block/scr.c"
     #include "../primitive/block/update.c"
 
     #include "../primitive/core/posix/dot.c"
