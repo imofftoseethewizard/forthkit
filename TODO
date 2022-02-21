@@ -4,6 +4,7 @@
 10. f79
   remaining:
     test suite
+      ...
     stack checking (spec)
     consistency checks (config option)
     forget

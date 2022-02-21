@@ -188,7 +188,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/core/num_start.c"
     #include "../primitive/core/one_minus.c"
     #include "../primitive/core/one_plus.c"
-    /* #include "../primitive/core/paren.c" */
+    #include "../primitive/core/paren.c"
     #include "../primitive/core/plus.c"
     #include "../primitive/core/plus_store.c"
     #include "../primitive/core/posix/type.c"
@@ -276,7 +276,9 @@ store_counted_string(const char *s, char *here)
 }
 
 void
-show_error(const char *message, const char *line, cell n) {
+show_error(cell *e, const char *message, cell n) {
+    const char *line;
+    line = (const char *)_to_ptr(e[ea_source_addr]);
     fprintf(stderr, "%s:\n", message);
     fprintf(stderr, "%s\n", line);
     for (int i = 0; i < n; i++)
@@ -319,32 +321,32 @@ main(int argc, char *argv[])
             break;
 
         case -1:
-            show_error("aborted", line, engine[ea_source_idx]);
+            show_error(engine, "aborted", engine[ea_source_idx]);
             break;
 
         case -10:
-            show_error("division by zero", line, engine[ea_source_idx]);
+            show_error(engine, "division by zero", engine[ea_source_idx]);
             break;
 
         case -13:
-            show_error("unrecognized word", line, engine[ea_source_idx]);
+            show_error(engine, "unrecognized word", engine[ea_source_idx]);
             break;
 
         case -33:
-            show_error("block read error", line, engine[ea_source_idx]);
+            show_error(engine, "block read error", engine[ea_source_idx]);
             break;
 
         case -34:
-            show_error("block write error", line, engine[ea_source_idx]);
+            show_error(engine, "block write error", engine[ea_source_idx]);
             break;
 
         case -39:
-            show_error("unexpected end of input", line, engine[ea_source_idx]);
+            show_error(engine, "unexpected end of input", engine[ea_source_idx]);
             break;
 
         default:
             fprintf(stderr, "unknown throw code: %ld\n", (long)result);
-            show_error("error location", line, engine[ea_source_idx]);
+            show_error(engine, "error location", engine[ea_source_idx]);
             break;
         }
     }
