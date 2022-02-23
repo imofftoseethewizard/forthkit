@@ -1,5 +1,4 @@
-
-#define _gt_eq() *++sp = *(sp+1) >= *sp
+#define _gt_eq() *++sp = (number)*(sp+1) >= (number)*sp
 
 _primitive(pr_gt_eq) {
     _gt_eq();

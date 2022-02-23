@@ -1,5 +1,4 @@
-
-#define _zero_gt() *sp = *sp > 0
+#define _zero_gt() *sp = (number)*sp > 0
 
 _primitive(pr_zero_gt) {
     _zero_gt();

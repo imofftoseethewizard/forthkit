@@ -8,7 +8,7 @@ _primitive(op_plus_loop) {
 
     *(number *)rp += n;
 
-    if ((n > 0 && *(number *)rp >= *(number *)(rp + 1))
+    if ((n >= 0 && *(number *)rp >= *(number *)(rp + 1))
         || (n < 0 && *(number *)rp < *(number *)(rp + 1))) {
 
         /* drop the loop limit and index from the return stack. */

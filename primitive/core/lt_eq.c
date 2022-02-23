@@ -1,5 +1,4 @@
-
-#define _lt_eq() *++sp = *(sp+1) <= *sp
+#define _lt_eq() *++sp = (number)*(sp+1) <= (number)*sp
 
 _primitive(pr_lt_eq) {
     _lt_eq();

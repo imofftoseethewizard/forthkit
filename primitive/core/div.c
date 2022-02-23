@@ -1,4 +1,4 @@
-#define _div() *++sp = *(sp+1) / *sp
+#define _div() *++sp = (number)*(sp+1) / (number)*sp
 
 _primitive(pr_div) {
     if (*sp)
