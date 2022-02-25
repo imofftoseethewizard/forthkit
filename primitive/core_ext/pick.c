@@ -1,5 +1,11 @@
 _primitive(pr_pick) {
-    *sp = *(sp + *sp + 1);
+    register number n = *sp;
+    if (n >= 1)
+        *sp = *(sp + n);
+    else {
+        *sp = -24; /* invalid numeric argument */
+        _abort();
+    }
     _next();
 }
 

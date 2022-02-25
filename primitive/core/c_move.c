@@ -1,6 +1,8 @@
 _primitive(pr_c_move) {
-    memcpy(_to_ptr(*(sp+1)), _to_ptr(*(sp+2)), *sp);
-    sp += 3;
+    register number n = *sp++;
+    register char *dest = (char *)_to_ptr(*sp++);
+    register char *src = (char *)_to_ptr(*sp++);
+    for (; n > 0; n--) *dest++ = *src++;
     _next();
 }
 _define_primitive("CMOVE", pr_c_move);

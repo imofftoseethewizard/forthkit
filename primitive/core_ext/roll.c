@@ -1,11 +1,21 @@
 _primitive(pr_roll) {
-    register cell tmp0 = *sp++, tmp1 = *(sp + tmp0);
-    register int i;
+    register number n = *sp++ - 1;
 
-    for (i = tmp0; i > 0; i--)
-        *(sp+i) = *(sp+i-1);
+    if (n >= 0) {
 
-    *sp = tmp1;
+        register cell tmp = *(sp+n);
+        register cell *src = sp + n - 1;
+        register cell *dest = sp + n;
+
+        for (; n > 0; n--)
+            *dest-- = *src--;
+
+        *sp = tmp;
+
+    } else {
+        *sp = -24;
+        _abort();
+    }
     _next();
 }
 _define_primitive("ROLL", pr_roll);

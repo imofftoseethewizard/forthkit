@@ -94,7 +94,13 @@ do {                                                                       \
         _begin_define_word(s, c_primitive);                                \
         _compile_pr(op_literal);                                           \
         _store_data(32);                                                   \
+        _compile_pr(op_literal);                                           \
+        _store_data(MAX_WORD_LENGTH);                                      \
+        _compile_pr(pr_allot);                                             \
         _compile_pr(pr_word);                                              \
+        _compile_pr(op_literal);                                           \
+        _store_data(-MAX_WORD_LENGTH);                                     \
+        _compile_pr(pr_allot);                                             \
         _compile_pr(l);                                                    \
         _compile_pr(op_exit);                                              \
     }

@@ -147,6 +147,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/core/abs.c"
     #include "../primitive/core/allot.c"
     #include "../primitive/core/base.c"
+    #include "../primitive/core/c_comma.c"
     #include "../primitive/core/c_fetch.c"
     #include "../primitive/core/c_move.c"
     #include "../primitive/core/c_store.c"
@@ -226,9 +227,9 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../compiled/core/bracket_compile.c"
     #include "../compiled/core/num_s.c"
     #include "../compiled/core/question_mark.c"
-    /* #include "../compiled/core/tick_f79.c" */
     #include "../compiled/core/space.c"
     #include "../compiled/core/spaces.c"
+    #include "../compiled/core/tick_f79.c"
     #include "../compiled/core/word.c"
 
     /* The first run will have context == 0. The preamble detects that and
@@ -280,7 +281,7 @@ show_error(cell *e, const char *message, cell n) {
     const char *line;
     line = (const char *)_to_ptr(e[ea_source_addr]);
     fprintf(stderr, "%s:\n", message);
-    fprintf(stderr, "%s\n", line);
+    fprintf(stderr, "%.*s\n", e[ea_source_len], line);
     for (int i = 0; i < n; i++)
         putc(' ', stderr);
     putc('^', stderr);
@@ -330,6 +331,10 @@ main(int argc, char *argv[])
 
         case -13:
             show_error(engine, "unrecognized word", engine[ea_source_idx]);
+            break;
+
+        case -24:
+            show_error(engine, "invalid numeric argument", engine[ea_source_idx]);
             break;
 
         case -33:
