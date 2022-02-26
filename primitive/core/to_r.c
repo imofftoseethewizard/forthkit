@@ -1,7 +1,5 @@
 _primitive(pr_to_r) {
-    *(rp-1) = *rp;
-    *rp = *sp++;
-    rp--;
+    *--rp = *sp++;
     _next();
 }
 _define_primitive(">R", pr_to_r);

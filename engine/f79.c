@@ -135,6 +135,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/core/compile_if.c"
     #include "../primitive/core/compile_then.c"
     #include "../primitive/core/compile_repeat.c"
+    #include "../primitive/core/compile_until.c"
     #include "../primitive/core/compile_while.c"
 
     #include "../bootstrap/interpret-79.c"
