@@ -8,6 +8,14 @@ typedef CELL_TYPE cell_offset;
 
 typedef LENGTH_TYPE length_type;
 
+typedef DOUBLE_TYPE double_number;
+typedef unsigned DOUBLE_TYPE double_cell;
+
+#define _from_high_word(x) ((x) >> (sizeof(number)*8))
+#define _from_low_word(x)  ((number)(x))
+#define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
+#define _to_low_word(x)    ((double_number)(x))
+
 enum operator_type {
     ot_abort,
     ot_branch,

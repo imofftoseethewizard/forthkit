@@ -1,5 +1,4 @@
-
-#define _mod() *++sp = *(sp+1) % *sp
+#define _mod() *++sp = (number)*(sp+1) % (number)*sp
 
 _primitive(pr_mod) {
     _mod();

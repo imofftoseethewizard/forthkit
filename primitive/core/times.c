@@ -1,4 +1,4 @@
-#define _times() *++sp = *(sp+1) * *sp
+#define _times() *++sp = (number)*(sp+1) * (number)*sp
 
 _primitive(pr_times) {
     _times();
