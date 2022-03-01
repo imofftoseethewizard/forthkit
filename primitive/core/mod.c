@@ -4,4 +4,4 @@ _primitive(pr_mod) {
     _mod();
     _next();
 }
-_define_primitive("%", pr_mod);
+_define_primitive("MOD", pr_mod);

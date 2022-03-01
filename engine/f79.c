@@ -165,6 +165,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/core/definitions.c"
     #include "../primitive/core/depth.c"
     #include "../primitive/core/div.c"
+    #include "../primitive/core/div_mod.c"
     #include "../primitive/core/does.c"
     #include "../primitive/core/dot_quote.c"
     #include "../primitive/core/d_lt.c"
