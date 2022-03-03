@@ -289,14 +289,22 @@ store_counted_string(const char *s, char *here)
 
 void
 show_error(cell *e, const char *message, cell n) {
-    const char *line;
-    line = (const char *)_to_ptr(e[ea_source_addr]);
-    fprintf(stderr, "%s:\n", message);
-    fprintf(stderr, "%.*s\n", e[ea_source_len], line);
-    for (int i = 0; i < n; i++)
-        putc(' ', stderr);
-    putc('^', stderr);
-    putc('\n', stderr);
+    const char *text = (const char *)_to_ptr(e[ea_source_addr]);
+    int i, col = 1;
+
+    printf("\n%s:\n", message);
+
+    for (i = 0; i < n; i++) {
+        putc(text[i], stdout);
+        col = text[i] == '\n' ? 1 : col+1;
+    }
+    putc('\n', stdout);
+
+    for (int i = 1; i < col; i++)
+        putc(' ', stdout);
+
+    putc('^', stdout);
+    putc('\n', stdout);
 }
 
 cell engine[1 << 15];

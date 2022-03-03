@@ -16,6 +16,8 @@ _primitive(pr_dot) {
     if ((number)*sp < 0)
         _hold('-');
 
+    /* _num_end expects a double number on the stack */
+    sp--;
     _num_end();
     _type();
 
