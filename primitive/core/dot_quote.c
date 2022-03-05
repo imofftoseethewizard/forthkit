@@ -1,3 +1,5 @@
+_declare_primitive(pr_type);
+
 _primitive(pr_dot_quote) {
 
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);

@@ -1,11 +1,10 @@
-#define _pr_ref_base  (void *)&engine
-#define _pr_ref_limit __builtin_frame_address(0)
-
-typedef void (native_word)(void);
-
 #define _primitive(name)  void name(void)
 #define _execute(x)       (*--rp = _from_ptr(ip), ip = _to_ptr(x))
 #define _pr_ref(x)        ((void *)&(x))
+#define _pr_ref_base      (void *)&engine
+#define _pr_ref_limit     __builtin_frame_address(0)
+
+typedef void (native_word)(void);
 
 #define _next()
 
@@ -15,7 +14,8 @@ typedef void (native_word)(void);
                                                         \
         while (ip && !_is_primitive(*ip)) {             \
             _trace("dispatch execute:   ");             \
-            _execute(*ip);                              \
+            *--rp = _from_ptr(ip+1);                    \
+            ip = _to_ptr(*ip);                          \
         }                                               \
                                                         \
         _trace("dispatch primitive: ");                 \
@@ -25,6 +25,6 @@ typedef void (native_word)(void);
                                                         \
     _trace("dispatch exited:   ");
 
-/* These are referenced in premable.c and need a declaration. */
-auto void pr_store_compiled(void);
-auto void pr_word(void);
+#define _declare_primitive(x) auto void x(void)
+_declare_primitive(pr_word);
+_declare_primitive(pr_allot);

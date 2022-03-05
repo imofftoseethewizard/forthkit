@@ -16,8 +16,8 @@ __first:
                                                 \
         while (ip && !_is_primitive(*ip)) {     \
             _trace("execute next: ");           \
-            *--rp = _from_ptr(ip+1); \
-            ip = _to_ptr(*ip); \
+            *--rp = _from_ptr(ip+1);            \
+            ip = _to_ptr(*ip);                  \
         }                                       \
                                                 \
         _trace("primitive next: ");             \

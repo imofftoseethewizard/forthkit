@@ -92,8 +92,8 @@ evaluate(cell *engine, const char *source, int storage_fd)
     /* The threading module must be included before any operators or
        primitives.
      */
-    #include "../threading/direct.c"
-    /* #include "../threading/subroutine.c" */
+    /* #include "../threading/direct.c" */
+    #include "../threading/subroutine.c"
 
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
@@ -159,6 +159,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/core/compile_plus_loop.c"
     #include "../primitive/core/constant.c"
     #include "../primitive/core/context.c"
+    #include "../primitive/core/convert.c"
     #include "../primitive/core/cr.c"
     #include "../primitive/core/current.c"
     #include "../primitive/core/decimal.c"
@@ -234,6 +235,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/block/update.c"
 
     #include "../primitive/core/posix/dot.c"
+    #include "../primitive/core/posix/u_dot.c"
 
     #include "../compiled/core/bracket_compile.c"
     #include "../compiled/core/num_s.c"
@@ -307,12 +309,12 @@ show_error(cell *e, const char *message, cell n) {
     putc('\n', stdout);
 }
 
-cell engine[1 << 15];
+cell engine[((1 << 16)-1)/sizeof(cell)];
 
 int
 main(int argc, char *argv[])
 {
-    int result;
+    number result;
     char *line;
     int storage_fd = -1;
 

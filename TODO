@@ -3,20 +3,13 @@
    no segfaults/bus errors, but -O1 still fails
 10. f79
   remaining:
-    test suite
-      update #< #S # ># for double cell
-      double number words
-
-    u.
-    stack checking (spec)
-    consistency checks (config option)
+    -trailing
     forget
     expect
     query
-    -trailing
-    convert
-
-    selected (all?) items from reference word set
+    stack checking (spec)
+    forth
+    79-standard
 
 5. indirect threading
 6. switch based dispatch
@@ -27,8 +20,15 @@
 11. token-based dispatch (ie, op_X and pr_X are mapped to/from enum)
     might be necessary if compiled code for relocatable 16-bit forth > 32kb.
 14. other compilers: clang, bcc, tcc, pcc, icc
+14.
+    consistency checks (config option)
+    test suite
+      double number words
+
+    selected (all?) items from reference word set
+    reorg test suite
+
 11. f83
 12. f94
 13. f2012
-
 12. investigate Joy and HVM.

@@ -1,7 +1,7 @@
 #define BUFFER_COUNT             32
 #define BUFFER_SIZE              1024
-#define CELL_TYPE                int
-#define DOUBLE_TYPE              long long
+#define CELL_TYPE                short
+#define DOUBLE_TYPE              int
 #define LENGTH_TYPE              unsigned char
 #define MAX_WORD_LENGTH          64
 #define PARAMETER_STACK_SIZE     128

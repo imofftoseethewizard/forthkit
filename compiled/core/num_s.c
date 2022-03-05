@@ -12,7 +12,5 @@ _compiled_word("#S", 0) {
     _compile_while();
     _compile_pr(pr_num);
     _compile_repeat();
-    _compile_pr(pr_drop);
-    _compile_pr(pr_drop);
     _compile_pr(op_exit);
 }

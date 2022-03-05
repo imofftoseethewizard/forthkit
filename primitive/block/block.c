@@ -1,3 +1,5 @@
+_declare_primitive(pr_buffer);
+
 _primitive(pr_read_block) {
 
     register char *buffer = (char *)_to_ptr(*sp++);

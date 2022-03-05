@@ -24,6 +24,7 @@ _primitive(pr_word) {
 
     } else {
         _debug("word: %.*s\n", (int)(word_idx - sizeof(length_type)), word_buffer + sizeof(length_type));
+        word_buffer[word_idx] = delimiter;
         *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
         *--sp = _from_ptr(word_buffer);
     }
