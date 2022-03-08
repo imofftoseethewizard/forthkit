@@ -1,6 +1,6 @@
 _declare_primitive(pr_scr);
 
-_compiled_word("LIST", 0) {
+_compiled_word("LIST", cw_list, 0) {
     /* : list
            dup scr !
            block

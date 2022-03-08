@@ -1,4 +1,4 @@
-_compiled_word("#S", 0) {
+_compiled_word("#S", cw_num_s, 0) {
     /*
        : #S ( ud -- 0 )
          # begin over over or while # repeat drop drop

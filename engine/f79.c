@@ -60,7 +60,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
         /* internal state */
         e[ea_base]        = 10;
         e[ea_context]     = 0;
-        e[ea_current]     = ea_forth;
+        e[ea_current]     = _from_ptr(&e[ea_forth]);
         e[ea_data]        = e[ea_here];
         e[ea_forth]       = 0;
         e[ea_rp0]         = e[ea_rp];
@@ -162,6 +162,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/core/convert.c"
     #include "../primitive/core/cr.c"
     #include "../primitive/core/current.c"
+    #include "../primitive/core/dash_trailing.c"
     #include "../primitive/core/decimal.c"
     #include "../primitive/core/definitions.c"
     #include "../primitive/core/depth.c"
@@ -244,12 +245,13 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../compiled/core/spaces.c"
     #include "../compiled/core/tick_f79.c"
     #include "../compiled/core/word.c"
+    #include "../compiled/core/forget.c"
 
     /* The first run will have context == 0. The preamble detects that and
        defines primitives and the bootstrap interpreter.
      */
     if (!e[ea_context])
-        e[ea_context] = ea_forth;
+        e[ea_context] = _from_ptr(&e[ea_forth]);
 
     if (source) {
         _debug("interpreting source '%s'\n", source);

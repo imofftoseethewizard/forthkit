@@ -1,4 +1,4 @@
-_compiled_word("'", c_immediate) {
+_compiled_word("'", cw_tick, c_immediate) {
     /*
        : '
          32 word find ?dup if

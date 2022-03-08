@@ -1,5 +1,5 @@
 _primitive(pr_do_does) {
-    register cell *word = _to_ptr(e[e[ea_current]]);
+    register cell *word = _to_ptr(*_to_ptr(e[ea_current]));
     register cell *origp = _get_word_interpretation_ptr(word);
     register cell *doesp = (cell *)here;
 

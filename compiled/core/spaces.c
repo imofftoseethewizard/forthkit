@@ -1,4 +1,4 @@
-_compiled_word("SPACES", 0) {
+_compiled_word("SPACES", cw_spaces, 0) {
     _compile_pr(op_literal);
     _store_data(0);
     _compile_pr(op_do);

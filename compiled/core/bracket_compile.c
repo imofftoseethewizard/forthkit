@@ -1,4 +1,4 @@
-_compiled_word("[COMPILE]", c_immediate) {
+_compiled_word("[COMPILE]", cw_bracket_compile, c_immediate) {
     _compile_pr(op_literal);
     _store_data(32);
     _compile_pr(pr_word);

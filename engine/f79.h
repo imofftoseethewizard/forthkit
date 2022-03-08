@@ -60,6 +60,20 @@ enum engine_attribute {
     engine_attribute_count
 };
 
+enum compiled_words {
+    cw_block,
+    cw_bracket_compile,
+    cw_forget,
+    cw_list,
+    cw_load,
+    cw_num_s,
+    cw_question_mark,
+    cw_space,
+    cw_spaces,
+    cw_tick,
+    cw_word
+};
+
 extern void init_engine(cell *e, unsigned long size);
 extern int evaluate(cell *e, const char *source, int storage_fd);
 extern void reset_execution_state(cell *e);

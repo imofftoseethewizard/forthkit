@@ -9,7 +9,7 @@
        r> >in !
    ;
  */
-_compiled_word("LOAD", 0) {
+_compiled_word("LOAD", cw_load, 0) {
     _compile_literal(_from_ptr(&e[ea_source_addr]));
     _compile_pr(pr_fetch);
     _compile_pr(pr_to_r);

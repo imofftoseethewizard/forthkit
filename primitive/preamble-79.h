@@ -26,6 +26,7 @@
      here = (char *)_align(here), *(cell *)here = (cell)(x), here += sizeof(cell)
 
 #define _compile_pr(x) _store_data(_pr_addr(x))
+#define _compile_cw(x) _store_data(e[ea_size - x - 1])
 
 #define _set_word_flags(x, flags)               *((cell *)(x) + 2) |= (flags)
 #define _clear_word_flags(x, flags)             *((cell *)(x) + 2) &= ~(flags)
@@ -61,10 +62,10 @@ do {                                                                       \
        _store_data(*sp++);                                                 \
                                                                            \
        /* Vocabulary list link.               */                           \
-       _store_data(e[e[ea_current]]);                                      \
+       _store_data(*_to_ptr(e[ea_current]));                            \
                                                                            \
        /* Add to current vocabulary.          */                           \
-       e[e[ea_current]] = *rp++;                                           \
+       *_to_ptr(e[ea_current]) = *rp++;                                 \
                                                                            \
        /* Word flags.                         */                           \
        _store_data(flags)
@@ -108,6 +109,7 @@ do {                                                                       \
 #define _define_primitive(s, l)           _define_primitive_ext(s, l, 0)
 #define _define_immediate_primitive(s, l) _define_primitive_ext(s, l, c_immediate)
 
-#define _compiled_word(s, flags)                                           \
+#define _compiled_word(s, l, flags)                                        \
     if (!e[ea_context]) _begin_define_word(s, flags);                      \
+    e[ea_size - l - 1] = _from_ptr(here);                                  \
     if (!e[ea_context])
