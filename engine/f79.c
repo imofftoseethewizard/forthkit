@@ -143,6 +143,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     #include "../primitive/core/posix/emit.c"
     #include "../primitive/core/posix/key.c"
+    #include "../primitive/core/posix/readline/expect.c"
 
     #include "../primitive/core/abort.c"
     #include "../primitive/core/abs.c"
@@ -377,6 +378,8 @@ main(int argc, char *argv[])
             show_error(engine, "error location", engine[ea_source_idx]);
             break;
         }
+
+        free(line);
     }
     /* exit(evaluate(engine, argv[argc-1]), -1); */
     /* exit(evaluate(engine, "15 : cc create , does> @ dup . cr ; cc"), -1); */
