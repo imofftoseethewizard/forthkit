@@ -67,6 +67,7 @@ enum compiled_words {
     cw_list,
     cw_load,
     cw_num_s,
+    cw_query,
     cw_question_mark,
     cw_space,
     cw_spaces,

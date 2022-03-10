@@ -241,6 +241,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     #include "../compiled/core/bracket_compile.c"
     #include "../compiled/core/num_s.c"
+    #include "../compiled/core/query.c"
     #include "../compiled/core/question_mark.c"
     #include "../compiled/core/space.c"
     #include "../compiled/core/spaces.c"
