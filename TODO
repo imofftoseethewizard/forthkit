@@ -1,16 +1,67 @@
 1. discover which optimizations cause failures in absolute addressing
    individually and pairwise for individual optimizations,
    no segfaults/bus errors, but -O1 still fails
-10. f79
-  remaining:
-    query
-    stack checking (spec)
-    forth
-    79-standard
+2. separate primitive impl from dictionary init
+4. interpreter structure test harness
+    f0
+    itemize functional pieces by execution model
+      primitive declaration
+        threaded: none
+        subroutine: local function declaration
+        switch: none
+      primitive implementations
+        threading: labeled block
+        subroutine: local function
+        switch: case block
+      primitive definition in dictionary
+      compiled word definition
+      _next
+      dispatch loop
+        threaded: none
+        subroutine: after local fn decls
+        switch: around prim impl
 
-5. indirect threading
+    single cli command to
+      compile all allowable address/threading combinations
+      exercise all state transitions
+
+    dimensions
+      word size: 16, 32, 64
+      compilation target: 32, 64
+      address mode: absolute, relative
+      reference model: direct, indirect
+      dispatch model: switched, subroutine, threaded
+    allowable region:
+      absolute address => word size = compilation target
+      word size <= compilation target
+    combinations
+      absolute addressing: 12 (compilation target * reference model * dispatch model)
+      relative addressing:
+        word size 16: 12 (compilation target * reference model * dispatch model)
+        word size 32: 12 (compilation target * reference model * dispatch model)
+        word size 64: 6 (reference model * dispatch model)
+      total: 42
+
+    operators
+      abort
+      branch
+      do
+      does
+      exit
+      jump
+      literal
+      loop
+      n-loop
+      (execute)
+
+    _is_primitive -- true if cell represents a primitive
+    _pr_deref     -- cell to (void *), referring to the implementation of a primitive
+    _from_ptr     -- translates a (cell *) to a cell, inverse of _to_ptr
+    _to_ptr       -- translates a cell which references another to (cell *), inverse of _from_ptr
+
 6. switch based dispatch
-7. load/save images
+5. indirect threading
+7. load/save relocatable images
 8. multi-threading
 9. local multi-process
 10. indirect primitives for 2 byte word size, or translate more primitives to compiled

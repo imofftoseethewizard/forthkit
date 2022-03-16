@@ -5,7 +5,6 @@
 __first:
 
 #define _primitive(name) if (0) name:
-#define _execute(x)      (*--rp = _from_ptr(ip), ip = _to_ptr(x))
 #define _pr_ref(x)       ((void *)&&x)
 #define _pr_ref_base     (void *)&&__first
 #define _pr_ref_limit    (void *)&&__last
@@ -31,3 +30,5 @@ __first:
 #define _dispatch()                             \
     _next();                                    \
 __last:
+
+#define _declare_primitive(x)

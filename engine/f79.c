@@ -92,8 +92,9 @@ evaluate(cell *engine, const char *source, int storage_fd)
     /* The threading module must be included before any operators or
        primitives.
      */
-    /* #include "../threading/direct.c" */
-    #include "../threading/subroutine.c"
+    #include "../threading/direct.c"
+    /* #include "../threading/subroutine.c" */
+    /* #include "../threading/switch.c" */
 
     #include "../primitive/op/abort.c"
     #include "../primitive/op/branch.c"
@@ -177,6 +178,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/core/eq.c"
     #include "../primitive/core/exit.c"
     #include "../primitive/core/fill.c"
+    #include "../primitive/core/forth.c"
     #include "../primitive/core/gt.c"
     #include "../primitive/core/here.c"
     #include "../primitive/core/hold.c"
@@ -239,6 +241,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     #include "../primitive/core/posix/dot.c"
     #include "../primitive/core/posix/u_dot.c"
 
+    #include "../compiled/core/79_standard.c"
     #include "../compiled/core/bracket_compile.c"
     #include "../compiled/core/num_s.c"
     #include "../compiled/core/query.c"

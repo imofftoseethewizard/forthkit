@@ -1,5 +1,4 @@
 #define _primitive(name)  void name(void)
-#define _execute(x)       (*--rp = _from_ptr(ip), ip = _to_ptr(x))
 #define _pr_ref(x)        ((void *)&(x))
 #define _pr_ref_base      (void *)&engine
 #define _pr_ref_limit     __builtin_frame_address(0)

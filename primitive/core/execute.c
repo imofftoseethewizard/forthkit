@@ -1,4 +1,4 @@
-/* _execute is defined in machine.c */
+#define _execute(x) (*--rp = _from_ptr(ip), ip = _to_ptr(x))
 
 _primitive(pr_execute) {
     _trace("start execute: ");
