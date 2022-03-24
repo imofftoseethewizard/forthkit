@@ -6,4 +6,3 @@ _primitive(pr_fill) {
     sp += 3;
     _next();
 }
-_define_primitive("FILL", pr_fill);

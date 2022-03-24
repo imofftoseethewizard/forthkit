@@ -1,3 +1,5 @@
+_define_primitive("EXPECT", pr_expect);
+/*
 _compiled_word("EXPECT", cw_expect, 0) {
     _compile_pr(pr_dup);
     _compile_pr(pr_to_r);
@@ -29,3 +31,4 @@ _compiled_word("EXPECT", cw_expect, 0) {
     _compile_pr(pr_c_store);
     _compile_pr(op_exit);
 }
+*/

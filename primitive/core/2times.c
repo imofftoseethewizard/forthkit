@@ -1,8 +1,4 @@
-#define _c_half_cell_bits (8 * sizeof(cell) / 2))
-
-#define _high_half(x) ((x) >> _c_half_cell_bits)
-#define _low_half(x)  ((x) & (1 << _c_half_cell_bits - 1)
-
+/* requires including double_number.h */
 _primitive(pr_2_times) {
     if (sizeof(cell) < sizeof(void *))
         *(sp+1) = (*sp * *(sp+1));

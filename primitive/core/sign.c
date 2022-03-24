@@ -5,4 +5,3 @@ _primitive(pr_sign) {
 
     _next();
 }
-_define_primitive("SIGN", pr_sign);

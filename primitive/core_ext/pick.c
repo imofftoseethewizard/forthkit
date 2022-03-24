@@ -8,5 +8,3 @@ _primitive(pr_pick) {
     }
     _next();
 }
-
-_define_primitive("PICK", pr_pick);

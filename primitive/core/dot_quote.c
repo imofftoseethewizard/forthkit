@@ -48,5 +48,3 @@ _primitive(pr_dot_quote) {
 
     _next();
 }
-
-_define_immediate_primitive(".\"", pr_dot_quote);

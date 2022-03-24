@@ -16,4 +16,3 @@ _primitive(pr_times_div_mod) {
     *--sp = _from_low_word((p-r)/q);
     _next();
 }
-_define_primitive("*/MOD", pr_times_div_mod);

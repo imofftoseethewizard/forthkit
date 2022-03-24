@@ -8,5 +8,3 @@ _primitive(pr_colon) {
 
     _next();
 }
-
-_define_parsing_primitive(":", pr_colon);

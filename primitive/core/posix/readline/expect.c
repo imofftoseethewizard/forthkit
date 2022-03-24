@@ -15,5 +15,3 @@ _primitive(pr_expect) {
     }
 
 }
-
-_define_primitive("EXPECT", pr_expect);

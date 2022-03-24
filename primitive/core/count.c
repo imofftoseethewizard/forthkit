@@ -7,4 +7,3 @@ _primitive(pr_count) {
 
     _next();
 }
-_define_primitive("COUNT", pr_count);

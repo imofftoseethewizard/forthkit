@@ -54,4 +54,3 @@ _primitive(pr_does) {
 
     _next();
 }
-_define_immediate_primitive("DOES>", pr_does);

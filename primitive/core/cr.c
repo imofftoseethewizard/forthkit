@@ -5,4 +5,3 @@ _primitive(pr_cr) {
     _emit();
     _next();
 }
-_define_primitive("CR", pr_cr);

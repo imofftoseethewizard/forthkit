@@ -18,5 +18,3 @@ _primitive(pr_paren) {
 
     _next();
 }
-
-_define_immediate_primitive("(", pr_paren);

@@ -18,4 +18,3 @@ _primitive(pr_roll) {
     }
     _next();
 }
-_define_primitive("ROLL", pr_roll);

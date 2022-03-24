@@ -10,4 +10,3 @@ _primitive(pr_u_times) {
 
     _next();
 }
-_define_primitive("U*", pr_u_times);

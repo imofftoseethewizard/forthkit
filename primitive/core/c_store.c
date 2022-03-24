@@ -3,4 +3,3 @@ _primitive(pr_c_store) {
     sp += 2;
     _next();
 }
-_define_primitive("C!", pr_c_store);

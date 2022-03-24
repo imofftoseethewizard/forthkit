@@ -1,10 +1,3 @@
-
-#define _parse_digit(c) \
-        '0' <= c && c <= '9' ? (c - '0') \
-      : 'A' <= c && c <= 'Z' ? (c - 'A' + 10) \
-      : 'a' <= c && c <= 'z' ? (c - 'a' + 10) \
-      : -1
-
 _primitive(pr_to_number) {
 
     register number base, digit, len, result;
@@ -37,4 +30,3 @@ _primitive(pr_to_number) {
 
     _next();
 }
-_define_primitive(">NUMBER", pr_to_number);

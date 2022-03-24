@@ -14,4 +14,3 @@ _primitive(pr_div_mod) {
     *--sp = (n-r)/q;
     _next();
 }
-_define_primitive("/MOD", pr_div_mod);

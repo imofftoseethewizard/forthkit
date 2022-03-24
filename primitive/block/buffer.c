@@ -1,5 +1,3 @@
-#define _buffer_addr(n) (char *)e + e[ea_size] - BUFFER_SIZE * ((n) + 1)
-
 _primitive(pr_buffer) {
     register cell new_block = *sp++;
     register cell n = e[ea_next_buffer];
@@ -24,5 +22,3 @@ _primitive(pr_buffer) {
   pr_buffer_exit:
     _next();
 }
-
-_define_primitive("BUFFER", pr_buffer);

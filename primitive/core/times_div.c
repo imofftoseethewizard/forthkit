@@ -6,4 +6,3 @@ _primitive(pr_times_div) {
     *--sp = _from_low_word(p/q);
     _next();
 }
-_define_primitive("*/", pr_times_div);

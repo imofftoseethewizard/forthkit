@@ -13,4 +13,3 @@ _primitive(pr_variable) {
 
     _next();
 }
-_define_parsing_primitive("VARIABLE", pr_variable);

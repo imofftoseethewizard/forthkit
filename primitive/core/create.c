@@ -14,4 +14,3 @@ _primitive(pr_create) {
 
     _next();
 }
-_define_parsing_primitive("CREATE", pr_create);

@@ -1,6 +1,3 @@
-
-#define _lowercase_ascii(x) ((x) < 'A' || (x) > 'Z' ? (x) : (x) - 'A' + 'a')
-
 _primitive(pr_find) {
 
     register cell *name, word, *wordp, *word_name_cs;
@@ -44,4 +41,3 @@ _primitive(pr_find) {
 
     _next();
 }
-_define_primitive("FIND", pr_find);

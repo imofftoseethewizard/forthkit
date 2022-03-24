@@ -12,4 +12,3 @@ _primitive(pr_constant) {
 
     _next();
 }
-_define_parsing_primitive("CONSTANT", pr_constant);

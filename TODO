@@ -1,6 +1,31 @@
+problem:
+  choose metaprogramming tools
+    bash
+    python
+    scheme
+  input
+    manifest (toml)
+    template (mustache)
+    operators and primitives
+    compiled words
+
+  define specification for
+    add to lexical context
+      include
+      globals
+      locals
+    primitive
+      dependencies
+      code block
+      lexical context
+        e dp ip rp sp
+    address model
+    execution method
+    word layout (including direct vs indirect)
 1. discover which optimizations cause failures in absolute addressing
    individually and pairwise for individual optimizations,
    no segfaults/bus errors, but -O1 still fails
+6. switch based dispatch
 2. separate primitive impl from dictionary init
 4. interpreter structure test harness
     f0
@@ -59,7 +84,6 @@
     _from_ptr     -- translates a (cell *) to a cell, inverse of _to_ptr
     _to_ptr       -- translates a cell which references another to (cell *), inverse of _from_ptr
 
-6. switch based dispatch
 5. indirect threading
 7. load/save relocatable images
 8. multi-threading

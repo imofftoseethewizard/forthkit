@@ -6,5 +6,3 @@ _primitive(pr_d_negate) {
 
     _next();
 }
-
-_define_primitive("DNEGATE", pr_d_negate);

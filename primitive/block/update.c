@@ -3,5 +3,3 @@ _primitive(pr_update) {
     e[ea_buffers + i] |= c_msb;
     _next();
 }
-
-_define_primitive("UPDATE", pr_update);

@@ -4,5 +4,3 @@ _primitive(pr_literal) {
     _store_data(*sp++);
     _next();
 }
-
-_define_primitive_ext("LITERAL", pr_literal, c_immediate);

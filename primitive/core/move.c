@@ -5,4 +5,3 @@ _primitive(pr_move) {
     for (; n > 0; n--) *dest++ = *src++;
     _next();
 }
-_define_primitive("MOVE", pr_move);

@@ -9,8 +9,7 @@ _compiled_word("'", cw_tick, c_immediate) {
        ; immediate
      */
 
-    _compile_pr(op_literal);
-    _store_data(32);
+    _compile_literal(32);
     _compile_pr(pr_word);
     _compile_pr(pr_find);
     _compile_pr(pr_q_dup);

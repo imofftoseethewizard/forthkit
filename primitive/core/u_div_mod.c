@@ -7,4 +7,3 @@ _primitive(pr_u_div_mod) {
 
     _next();
 }
-_define_primitive("U/MOD", pr_u_div_mod);

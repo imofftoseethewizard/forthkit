@@ -11,4 +11,3 @@ _primitive(pr_compile_plus_loop) {
 
     _next();
 }
-_define_immediate_primitive("+LOOP", pr_compile_plus_loop);

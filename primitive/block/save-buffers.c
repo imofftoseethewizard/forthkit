@@ -26,4 +26,3 @@ _primitive(pr_save_buffers) {
     }
     _next();
 }
-_define_primitive("SAVE-BUFFERS", pr_save_buffers);

@@ -3,5 +3,3 @@ _primitive(pr_semicolon) {
     e[ea_state] = 0;
     _next();
 }
-
-_define_immediate_primitive(";", pr_semicolon);

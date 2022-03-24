@@ -1,0 +1,14 @@
+buffer_count         = 32
+buffer_size          = 1024
+cell_type            = 'int'
+double_type          = 'long long'
+length_type          = 'unsigned char'
+max_word_length      = 64
+parameter_stack_size = 128
+return_stack_size    = 128
+source_size          = 1024
+
+[diagnostics]
+log     = 0
+trace   = 0
+verbose = 0

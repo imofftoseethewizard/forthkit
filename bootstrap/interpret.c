@@ -71,8 +71,7 @@ if (!e[ea_interpret]) {
     _compile_begin();
 
     /*          32 word ?dup                             */
-    _compile_pr(op_literal);
-    _store_data(32);
+    _compile_literal(32);
     _compile_pr(pr_word);
     _compile_pr(pr_q_dup);
 
@@ -104,8 +103,7 @@ if (!e[ea_interpret]) {
     _compile_else();
 
     /*              0 over count >number                 */
-    _compile_pr(op_literal);
-    _store_data(0);
+    _compile_literal(0);
     _compile_pr(pr_over);
     _compile_pr(pr_count);
     _compile_pr(pr_to_number);
@@ -127,8 +125,7 @@ if (!e[ea_interpret]) {
     _compile_else();
 
     /*                   -13 <abort>                     */
-    _compile_pr(op_literal);
-    _store_data(-13);
+    _compile_literal(-13);
     _compile_pr(op_abort);
 
     /*              then                                 */

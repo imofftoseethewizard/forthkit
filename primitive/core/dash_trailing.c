@@ -8,5 +8,3 @@ _primitive(pr_dash_trailing) {
     *sp = n;
     _next();
 }
-
-_define_primitive("-TRAILING", pr_dash_trailing);

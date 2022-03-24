@@ -17,5 +17,3 @@ _primitive(pr_store_compiled) {
     sp++;
     _next();
 }
-
-_define_primitive("COMPILE,", pr_store_compiled);
