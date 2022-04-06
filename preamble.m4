@@ -1,0 +1,9 @@
+define(`begin_primitives', `')dnl
+define(`include_primitive', `divert(3)include($1)')dnl
+define(`end_primitives', `divert')dnl
+define(`declare_primitives', `undivert(1)')dnl
+define(`define_macros', `undivert(3)')dnl
+define(`implement_primitives', `undivert(2)')dnl
+define(`ignore_macros', `divert(-1)undivert(3)')dnl
+define(`ignore_declarations', `divert(-1)undivert(1)')dnl
+define(`ignore_implementations', `divert(-1)undivert(2)')dnl

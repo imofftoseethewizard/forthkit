@@ -31,15 +31,15 @@ typedef unsigned DOUBLE_TYPE double_cell;
 #define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
 #define _to_low_word(x)    ((double_number)(x))
 
-/* The memory model defines _to_ptr, _from_ptr, _is_primitive, _pr_addr,
-   and _pr_deref
+/* The memory model defines _to_ptr, _from_ptr, _is_primitive, _from_pr,
+   and _to_pv
  */
 {{{memory_model}}}
 
 #define _primitive(name) if (0) name:
-#define _pr_ref(x)       ((void *)&&x)
-#define _pr_ref_base     (void *)&&__first
-#define _pr_ref_limit    (void *)&&__last
+#define _pr_value(x)       ((void *)&&x)
+#define _pr_value_base     (void *)&&__first
+#define _pr_value_limit    (void *)&&__last
 
 #define _next()                                 \
     do {                                        \
@@ -52,7 +52,7 @@ typedef unsigned DOUBLE_TYPE double_cell;
         }                                       \
                                                 \
         _trace("primitive next: ");             \
-        if (ip) goto *_pr_deref(*ip++);         \
+        if (ip) goto *_to_pv(*ip++);         \
                                                 \
         _trace("exiting next: ");               \
         goto __last;                            \

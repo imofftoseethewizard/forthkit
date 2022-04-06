@@ -31,15 +31,15 @@ typedef unsigned DOUBLE_TYPE double_cell;
 #define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
 #define _to_low_word(x)    ((double_number)(x))
 
-/* The memory model defines _to_ptr, _from_ptr, _is_primitive, _pr_addr,
-   and _pr_deref
+/* The memory model defines _to_ptr, _from_ptr, _is_primitive, _from_pr,
+   and _to_pv
  */
 {{{memory_model}}}
 
 #define _primitive(name)  void name(void)
-#define _pr_ref(x)        ((void *)&(x))
-#define _pr_ref_base      (void *)&engine
-#define _pr_ref_limit     __builtin_frame_address(0)
+#define _pr_value(x)        ((void *)&(x))
+#define _pr_value_base      (void *)&engine
+#define _pr_value_limit     __builtin_frame_address(0)
 
 typedef void (native_word)(void);
 
@@ -135,7 +135,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
         }
 
         _trace("dispatch primitive: ");
-        if (ip) ((native_word *)(_pr_deref(*ip++)))();
+        if (ip) ((native_word *)(_to_pv(*ip++)))();
     }
     while (ip);
 

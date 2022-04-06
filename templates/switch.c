@@ -31,8 +31,8 @@ typedef unsigned DOUBLE_TYPE double_cell;
 #define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
 #define _to_low_word(x)    ((double_number)(x))
 
-/* The memory model defines _to_ptr, _from_ptr, _is_primitive, _pr_addr,
-   and _pr_deref
+/* The memory model defines _to_ptr, _from_ptr, _is_primitive, _from_pr,
+   and _to_pv
  */
 {{{memory_model}}}
 

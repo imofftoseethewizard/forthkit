@@ -1,7 +1,7 @@
-#define _pr_ref(x)       ((cell)-x ## _token)
-#define _pr_ref_base     (-(number)pr_token_count + 1)
-#define _pr_ref_limit    -1
-#define _primitive(name) case _pr_ref(name):
+#define _pr_value(x)       ((cell)-x ## _token)
+#define _pr_value_base     (-(number)pr_token_count + 1)
+#define _pr_value_limit    -1
+#define _primitive(name) case _pr_value(name):
 
 #define _next()          break
 

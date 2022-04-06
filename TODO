@@ -1,11 +1,58 @@
+tools
+  rationale: ubiquitious and lightweight
+  a c compiler: bcc, clang, gcc, icc, pcc, tcc
+  m4
+  make
+  sh
+
+action
+  inputs: config, primitives, template
+  outputs: .h and .c files
+    <describe content of those files>
+
+m4
+  diversions
+    1: declarations
+    2: implementations
+
+
+1. enumerate types of references to primitives
+  3 aspects:
+    1. syntatic form
+      named "pr_%"
+      translate syntactic form to register repr ... rename _pr_value?
+    1. register representation (fn ptr, label, or enum for switch)
+      execute
+      translate to compiled rep ... _from_pv(x)
+      translate to syntatic form(?) ... TODO _pv_name(x)
+    2. compiled representation (can be stored in memory)
+      translate to register rep ... _to_pv(x)
+      store in memory
+      read from memory
+      test memory: primitive or compiled word?
+    3. native code
+
+  * pre-requisites ("#define"s)
+  * declare
+      direct -- n/a
+      subroutine -- auto
+      switch -- token enum
+  * implement
+      include primitive body
+  * compile
+      include reference in compiled word
+  * deref _load_pr
+      read compiled primitve into register
+  * execute
+      dispatch primitive from register
+
+
 problem:
   choose metaprogramming tools
-    bash
-    python
-    scheme
+    m4
   input
-    manifest (toml)
-    template (mustache)
+    m4 preamble
+    template (m4->c)
     operators and primitives
     compiled words
 

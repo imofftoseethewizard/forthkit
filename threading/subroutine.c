@@ -1,7 +1,7 @@
 #define _primitive(name)  void name(void)
-#define _pr_ref(x)        ((void *)&(x))
-#define _pr_ref_base      (void *)&engine
-#define _pr_ref_limit     __builtin_frame_address(0)
+#define _pr_value(x)        ((void *)&(x))
+#define _pr_value_base      (void *)&engine
+#define _pr_value_limit     __builtin_frame_address(0)
 
 typedef void (native_word)(void);
 
@@ -18,7 +18,7 @@ typedef void (native_word)(void);
         }                                               \
                                                         \
         _trace("dispatch primitive: ");                 \
-        if (ip) ((native_word *)(_pr_deref(*ip++)))();  \
+        if (ip) ((native_word *)(_to_pv(*ip++)))();  \
     }                                                   \
     while (ip);                                         \
                                                         \

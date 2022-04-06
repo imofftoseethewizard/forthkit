@@ -5,9 +5,9 @@
 __first:
 
 #define _primitive(name) if (0) name:
-#define _pr_ref(x)       ((void *)&&x)
-#define _pr_ref_base     (void *)&&__first
-#define _pr_ref_limit    (void *)&&__last
+#define _pr_value(x)       ((void *)&&x)
+#define _pr_value_base     (void *)&&__first
+#define _pr_value_limit    (void *)&&__last
 
 #define _next()                                 \
     do {                                        \
@@ -20,7 +20,7 @@ __first:
         }                                       \
                                                 \
         _trace("primitive next: ");             \
-        if (ip) goto *_pr_deref(*ip++);         \
+        if (ip) goto *_to_pv(*ip++);         \
                                                 \
         _trace("exiting next: ");               \
         goto __last;                            \

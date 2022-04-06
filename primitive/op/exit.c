@@ -2,8 +2,6 @@
    it past the call to the just completed word.
 */
 
-#define _exit() ip = *rp ? _to_ptr(*rp) : 0, rp++;
-
 _primitive(op_exit) {
     _trace("start exit: ");
     _exit();

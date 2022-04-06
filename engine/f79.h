@@ -2,7 +2,6 @@
 
 typedef unsigned CELL_TYPE cell;
 typedef CELL_TYPE number;
-typedef CELL_TYPE cell_offset;
 
 #define c_msb ((cell)1 << (sizeof(cell) * 8 - 1))
 
@@ -15,23 +14,6 @@ typedef unsigned DOUBLE_TYPE double_cell;
 #define _from_low_word(x)  ((number)(x))
 #define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
 #define _to_low_word(x)    ((double_number)(x))
-
-enum operator_type {
-    ot_abort,
-    ot_branch,
-    ot_call,
-    ot_do,
-    ot_exit,
-    ot_jump,
-    ot_literal,
-    ot_loop,
-    ot_plus_loop,
-
-    /* must be last */
-    operator_type_count
-};
-
-void *operators[operator_type_count];
 
 enum engine_attribute {
     ea_size,
