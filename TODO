@@ -1,3 +1,14 @@
+naming convention for executables
+  <f79|f83|f94|f-ansi|f12|f-std>-<cell bits>-<length bits>-<thr(eaded)|sw(itched)|sub(routine)>-<r(elocatable)|a(bsolute)>
+  eg
+    f79-32-16-thr-r:
+      * FORTH-79
+      * 32 bit cells
+      * 16 bit lengths (for counted strings)
+      * threaded execution
+      * relocatable image
+
+
 tools
   rationale: ubiquitious and lightweight
   a c compiler: bcc, clang, gcc, icc, pcc, tcc
@@ -48,8 +59,6 @@ m4
 
 
 problem:
-  choose metaprogramming tools
-    m4
   input
     m4 preamble
     template (m4->c)

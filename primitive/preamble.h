@@ -81,8 +81,7 @@
     {                                                                      \
         _debug("defining %-16s %lx\n", s, (long)_from_pr(l));              \
         _begin_define_word(s, c_primitive);                                \
-        _compile_pr(op_literal); \
-        _store_data(32); \
+        _compile_literal(32);                                              \
         _compile_pr(pr_word);                                              \
         _compile_pr(l);                                                    \
         _compile_pr(op_exit);                                              \

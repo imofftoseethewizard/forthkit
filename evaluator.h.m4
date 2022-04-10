@@ -1,3 +1,48 @@
+#include "config.h"
+#include "log.h"
+
+typedef unsigned CELL_TYPE cell;
+typedef CELL_TYPE number;
+
+#define c_msb ((cell)1 << (sizeof(cell) * 8 - 1))
+
+typedef LENGTH_TYPE length_type;
+
+typedef DOUBLE_TYPE double_number;
+typedef unsigned DOUBLE_TYPE double_cell;
+
+#define _from_high_word(x) ((x) >> (sizeof(number)*8))
+#define _from_low_word(x)  ((number)(x))
+#define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
+#define _to_low_word(x)    ((double_number)(x))
+
+enum engine_attribute {
+    ea_size,
+    ea_ip,
+    ea_rp,
+    ea_sp,
+    ea_here,
+    ea_base,
+    ea_context,
+    ea_current,
+    ea_data,
+    ea_forth,
+    ea_rp0,
+    ea_source_idx,
+    ea_source_len,
+    ea_sp0,
+    ea_state,
+    ea_interpret,
+    ea_source_addr,
+    ea_blk,
+    ea_buffers,
+    ea_next_buffer,
+    ea_scr,
+
+    /* must be last */
+    engine_attribute_count
+};
+
 #define c_immediate 0b0001
 #define c_inline    0b0010
 #define c_primitive 0b0100
@@ -109,3 +154,11 @@ do {                                                                       \
     if (!e[ea_context]) _begin_define_word(s, flags);                      \
     e[ea_size - l - 1] = _from_ptr(here);                                  \
     if (!e[ea_context])
+
+include(memory_model)    dnl
+include(execution_model) dnl
+include(primitives)      dnl
+
+define_macros()          dnl
+ignore_declarations()    dnl
+ignore_implementations() dnl

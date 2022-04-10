@@ -1,4 +1,4 @@
-define(`begin_primitives', `')dnl
+define(`begin_primitives', `divert')dnl
 define(`include_primitive', `divert(3)include($1)')dnl
 define(`end_primitives', `divert')dnl
 define(`declare_primitives', `undivert(1)')dnl
