@@ -1,9 +1,9 @@
-include(`preamble.m4')
-define(`primitive', `divert(1)$1,
-divert(2)case $1:')dnl
+include(`preamble.m4')dnl
+define(`primitive', `divert(primitive_declarations)$1,
+divert(primitive_implementations)case $1:')dnl
 define(`declare_primitives', `enum {
-        undivert(1)
-    };')
+        undivert(primitive_declarations)
+    };')dnl
 define(`implement_evaluator_core', `
     do {
         _trace("start dispatch:     ");
@@ -16,7 +16,7 @@ define(`implement_evaluator_core', `
 
         _trace("dispatch primitive: ");
         if (ip) switch (*ip++) {
-        implement_primitives()
+        undivert(primitive_implementations)
         default:
           ip = 0;
         break;
@@ -25,4 +25,4 @@ define(`implement_evaluator_core', `
     }
     while (ip);
 
-    _trace("dispatch exited:   ");')
+    _trace("dispatch exited:   ");')dnl

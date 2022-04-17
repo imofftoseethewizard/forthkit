@@ -1,9 +1,8 @@
-define(`begin_primitives', `divert')dnl
-define(`include_primitive', `divert(3)include($1)')dnl
-define(`end_primitives', `divert')dnl
-define(`declare_primitives', `undivert(1)')dnl
-define(`define_macros', `undivert(3)')dnl
-define(`implement_primitives', `undivert(2)')dnl
-define(`ignore_macros', `divert(-1)undivert(3)')dnl
-define(`ignore_declarations', `divert(-1)undivert(1)')dnl
-define(`ignore_implementations', `divert(-1)undivert(2)')dnl
+define(`header_definitions', 1)dnl
+define(`primitive_declarations', 2)dnl
+define(`primitive_implementations', 3)dnl
+define(`compiled_word_declarations', 4)dnl
+define(`compiled_word_definitions', 5)dnl
+define(`discard_diversion', `divert(-1)undivert($1)divert')dnl
+define(`discard_all_diversions', `divert(-1)undivert(1)undivert(2)undivert(4)undivert(4)undivert(5)divert')dnl
+define(`include_primitive', `divert(header_definitions)include(`$1')divert')dnl

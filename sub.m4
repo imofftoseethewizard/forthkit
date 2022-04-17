@@ -1,8 +1,8 @@
 include(`preamble.m4')
-define(`primitive', `divert(1)auto void $1(void);
-divert(2)void $1(void)')dnl
-define(`declare_primitives', `undivert(1)')dnl
-define(`implement_evaluator_core', `implement_primitives()
+define(`primitive', `divert(primitive_declarations)auto void $1(void);
+divert(primitive_implementations)void $1(void)')dnl
+define(`declare_primitives', `undivert(primitive_declarations)')dnl
+define(`implement_evaluator_core', `undivert(primitive_implementations)
     do {
         _trace("start dispatch:     ");
 

@@ -59,22 +59,12 @@ enum engine_attribute {
 #define _string_len(x)  *(length_type *)(x)
 #define _string_addr(x) (char *)((length_type *)(x) + 1)
 
-     /* Note that this assumes that a cell is an power of 2 number of bytes.
-        That seems like a safe assumption.
-     */
-
-#define _align(x) (cell *)((long)(x) + sizeof(cell) - 1 & ~(sizeof(cell) - 1))
-
-#pragma GCC diagnostic ignored "-Wpointer-to-int-cast"
-#define _store_data(x)                                                     \
-     here = (char *)_align(here), *(cell *)here = (cell)(x), here += sizeof(cell)
-
 #define _compile_pr(x) _store_data(_from_pr(x))
 #define _compile_cw(x) _store_data(e[ea_size - x - 1])
 
-#define _set_word_flags(x, flags)               *((cell *)(x) + 2) |= (flags)
-#define _clear_word_flags(x, flags)             *((cell *)(x) + 2) &= ~(flags)
-#define _get_word_flags(x, flags)               *((cell *)(x) + 2) & ~(flags)
+#define _set_word_flags(x, flags)       *((cell *)(x) + 2) |= (flags)
+#define _clear_word_flags(x, flags)     *((cell *)(x) + 2) &= ~(flags)
+#define _get_word_flags(x, flags)       *((cell *)(x) + 2) & ~(flags)
 
 #define _get_word_interpretation_ptr(x) ((cell *)(x) + 3)
 #define _get_word_interpretation(x)     _from_ptr(_get_word_interpretation_ptr(x))
@@ -116,6 +106,9 @@ do {                                                                       \
 
 #define _next_word(x) *(_to_ptr(x) + 1)
 
+#define _compiled_word_ref(e, l) e[e[ea_size] / sizeof(cell) - l - 1]
+#define _register_compiled_word(l) _compiled_word_ref(e, l) = _from_ptr(here);
+
 #define _begin_define_word(s, flags)                                       \
     do {                                                                   \
         *--sp = _from_ptr(here);                                           \
@@ -123,42 +116,54 @@ do {                                                                       \
         _word_header(flags);                                               \
     } while(0)
 
-#define _define_primitive_ext(s, l, flags)                                 \
-    if (!e[ea_context])                                                    \
-    {                                                                      \
+#define _define_primitive_ext(s, l, cw_l, flags)                                 \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));               \
         _begin_define_word(s, c_inline | c_primitive | (flags));           \
+        _register_compiled_word(cw_l);                           \
         _compile_pr(l);                                                    \
-        _compile_pr(op_exit);                                              \
-    }
+        _compile_pr(op_exit);
 
-#define _define_parsing_primitive(s, l)                                    \
-    if (!e[ea_context])                                                    \
-    {                                                                      \
+#define _define_parsing_primitive(s, l, cw_l)                                    \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));               \
         _begin_define_word(s, c_primitive);                                \
-        _compile_literal(32);                                              \
+        _register_compiled_word(cw_l);                           \
         _compile_literal(MAX_WORD_LENGTH);                                 \
         _compile_pr(pr_allot);                                             \
+        _compile_literal(32);                                              \
         _compile_pr(pr_word);                                              \
         _compile_literal(-MAX_WORD_LENGTH);                                \
         _compile_pr(pr_allot);                                             \
         _compile_pr(l);                                                    \
-        _compile_pr(op_exit);                                              \
-    }
+        _compile_pr(op_exit);
 
-#define _define_primitive(s, l)           _define_primitive_ext(s, l, 0)
-#define _define_immediate_primitive(s, l) _define_primitive_ext(s, l, c_immediate)
+#define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
+#define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
 
-#define _compiled_word(s, l, flags)                                        \
-    if (!e[ea_context]) _begin_define_word(s, flags);                      \
-    e[ea_size - l - 1] = _from_ptr(here);                                  \
-    if (!e[ea_context])
+define(`define_primitive_ext',`divert(compiled_word_declarations)    cw_$2,dnl
+divert(compiled_word_definitions)_define_primitive_ext($1, $2, cw_$2, $3)')dnl
 
-include(memory_model)    dnl
-include(execution_model) dnl
-include(primitives)      dnl
+define(`define_parsing_primitive',`divert(compiled_word_declarations)    cw_$2,dnl
+divert(compiled_word_definitions)_define_parsing_primitive($1, $2, cw_$2)')dnl
 
-define_macros()          dnl
-ignore_declarations()    dnl
-ignore_implementations() dnl
+define(`define_primitive',`divert(compiled_word_declarations)    cw_$2,dnl
+divert(compiled_word_definitions)_define_primitive($1, $2, cw_$2)')dnl
+
+define(`define_immediate_primitive',`divert(compiled_word_declarations)    cw_$2,dnl
+divert(compiled_word_definitions)_define_immediate_primitive($1, $2, cw_$2)')dnl
+
+define(`compiled_word',`divert(compiled_word_declarations)    $2,dnl
+divert(compiled_word_definitions)
+        _begin_define_word($1, $3);
+        _register_compiled_word($2);')dnl
+
+include(memory_model)dnl
+include(execution_model)dnl
+include(evaluator_primitives)dnl
+
+undivert(header_definitions)dnl
+
+enum compiled_word_labels {
+    undivert(compiled_word_declarations)dnl
+};
+
+discard_all_diversion()dnl

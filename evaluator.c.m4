@@ -88,15 +88,15 @@ evaluate(cell *engine, const char *source, int storage_fd)
     include(primitives)      dnl
     include(compiled_words)  dnl
 
-    ignore_macros()          dnl
-    declare_primitives()     dnl
-    define_compiled_words()  dnl
+    declare_primitives()dnl
 
     /* The first run will have context == 0. The preamble detects that and
        defines primitives and the bootstrap interpreter.
      */
-    if (!e[ea_context])
+    if (!e[ea_context]) {
+        undivert(compiled_word_definitions)dnl
         e[ea_context] = _from_ptr(&e[ea_forth]);
+    }
 
     if (source) {
         _debug("interpreting source '%s'\n", source);
@@ -110,6 +110,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     }
 
     implement_evaluator_core() dnl
+    discard_all_diversion()dnl
 
     /* Store state back in the engine structure. */
     e[ea_ip]   = _from_ptr(ip);

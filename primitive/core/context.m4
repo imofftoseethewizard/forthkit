@@ -1,0 +1,4 @@
+primitive(pr_context) {
+    *--sp = _from_ptr(&e[ea_context]);
+    _next();
+}
