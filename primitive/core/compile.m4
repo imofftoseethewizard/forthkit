@@ -1,4 +1,6 @@
-primitive(pr_compile) {
+__primitive(pr_compile)  
+{
     *(cell *)here = *ip++;
-    _next();
 }
+__end
+__define_primitive("COMPILE", pr_compile);

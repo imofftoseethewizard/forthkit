@@ -1,7 +1,9 @@
-primitive(pr_sign) {
+__primitive(pr_sign)  
+{
 
     if (*(number *)sp++ < 0)
         _hold('-');
 
-    _next();
 }
+__end
+__define_primitive("SIGN", pr_sign);

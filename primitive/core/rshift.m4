@@ -1,6 +1,8 @@
 #define _rshift() *++sp = *(sp+1) >> *sp
 
-primitive(pr_rshift) {
+__primitive(pr_rshift)  
+{
     _rshift();
-    _next();
 }
+__end
+__define_primitive("RSHIFT", pr_rshift);

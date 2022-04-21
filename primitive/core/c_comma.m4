@@ -1,4 +1,6 @@
-primitive(pr_c_comma) {
+__primitive(pr_c_comma)  
+{
     *here++ = (char)*sp++;
-    _next();
 }
+__end
+__define_primitive(`"C,"', pr_c_comma);

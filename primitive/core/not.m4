@@ -1,6 +1,8 @@
 #define _not() *sp = ~*sp
 
-primitive(pr_not) {
+__primitive(pr_not)  
+{
     _not();
-    _next();
 }
+__end
+__define_primitive("NOT", pr_not);

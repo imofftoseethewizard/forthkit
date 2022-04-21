@@ -1,4 +1,5 @@
-primitive(pr_roll) {
+__primitive(pr_roll)  
+{
     register number n = *sp++ - 1;
 
     if (n >= 0) {
@@ -16,5 +17,6 @@ primitive(pr_roll) {
         *sp = -24;
         _abort();
     }
-    _next();
 }
+__end
+__define_primitive("ROLL", pr_roll);

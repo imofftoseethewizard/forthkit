@@ -2,7 +2,9 @@
 #define _store_data(x)                                                     \
      here = (char *)_align(here), *(cell *)here = (cell)(x), here += sizeof(cell)
 
-primitive(pr_store_data) {
+__primitive(pr_store_data)  
+{
     _store_data(*sp++);
-    _next();
 }
+__end
+__define_primitive(`","', pr_store_data);

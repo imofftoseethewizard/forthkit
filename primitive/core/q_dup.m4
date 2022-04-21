@@ -1,4 +1,6 @@
-primitive(pr_q_dup) {
+__primitive(pr_q_dup)  
+{
     if (*sp) *--sp = *(sp+1);
-    _next();
 }
+__end
+__define_primitive("?DUP", pr_q_dup);

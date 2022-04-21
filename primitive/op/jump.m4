@@ -18,11 +18,10 @@
    for advancing past op_jump and the offset.
 */
 
-primitive(op_jump) {
+__primitive(op_jump)  
+{
     _debug("jump: *ip: %lx, %ld\n", (long)*ip, (long)*ip);
     ip = (cell *)((char *)ip + (number)*ip - sizeof(cell));
     _debug("jump: *ip: %lx\n", (long)*ip);
-    _next();
 }
-
-_register_operator(ot_jump, op_jump);
+__end

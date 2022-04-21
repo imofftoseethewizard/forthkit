@@ -1,4 +1,5 @@
-primitive(pr_paren) {
+__primitive(pr_paren)  
+{
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
     register cell source_idx   = e[ea_source_idx];
@@ -16,5 +17,6 @@ primitive(pr_paren) {
     }
 
 
-    _next();
 }
+__end
+__define_immediate_primitive(``"("'', pr_paren);

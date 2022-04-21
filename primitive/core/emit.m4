@@ -1,6 +1,8 @@
 #define _emit() putc(*sp++, stdout)
 
-primitive(pr_emit) {
+__primitive(pr_emit)  
+{
     _emit();
-    _next();
 }
+__end
+__define_primitive("EMIT", pr_emit);

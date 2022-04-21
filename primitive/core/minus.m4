@@ -1,6 +1,8 @@
 #define _minus() *++sp = *(sp+1) - *sp
 
-primitive(pr_minus) {
+__primitive(pr_minus)  
+{
     _minus();
-    _next();
 }
+__end
+__define_primitive("-", pr_minus);

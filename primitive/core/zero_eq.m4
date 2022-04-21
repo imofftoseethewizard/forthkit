@@ -1,6 +1,8 @@
 #define _zero_eq() *sp = *sp == 0
 
-primitive(pr_zero_eq) {
+__primitive(pr_zero_eq)  
+{
     _zero_eq();
-    _next();
 }
+__end
+__define_primitive("0=", pr_zero_eq);

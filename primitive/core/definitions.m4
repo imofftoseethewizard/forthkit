@@ -1,4 +1,6 @@
-primitive(pr_definitions) {
+__primitive(pr_definitions)  
+{
     e[ea_current] = e[ea_context];
-    _next();
 }
+__end
+__define_primitive("DEFINITIONS", pr_definitions);

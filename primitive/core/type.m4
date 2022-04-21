@@ -5,7 +5,9 @@
         sp += 2;                                                  \
     } while (0)
 
-primitive(pr_type) {
+__primitive(pr_type)  
+{
     _type();
-    _next();
 }
+__end
+__define_primitive("TYPE", pr_type);

@@ -1,4 +1,5 @@
-primitive(pr_u_dot) {
+__primitive(pr_u_dot)  
+{
     register cell u = *sp;
     register cell base = e[ea_base];
 
@@ -16,5 +17,6 @@ primitive(pr_u_dot) {
     _num_end();
     _type();
 
-    _next();
 }
+__end
+__define_primitive("u.", pr_u_dot);

@@ -1,8 +1,9 @@
 
 #define _neq() *++sp = *(sp+1) != *sp
 
-primitive(pr_neq) {
+__primitive(pr_neq)  
+{
     _neq();
-    _next();
 }
-_define_primitive("<>", pr_neq);
+__end
+__define_primitive("<>", pr_neq);

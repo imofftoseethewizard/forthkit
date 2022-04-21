@@ -6,7 +6,9 @@
 #define _hold(x) \
     *(_number_pad_buf_addr() + --(*_number_pad_idx_addr())) = (x)
 
-primitive(pr_hold) {
+__primitive(pr_hold)  
+{
     _hold(*sp++);
-    _next();
 }
+__end
+__define_primitive("HOLD", pr_hold);

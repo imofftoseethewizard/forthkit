@@ -1,4 +1,6 @@
-primitive(pr_leave) {
+__primitive(pr_leave)  
+{
     *(rp+1) = *rp;
-    _next();
 }
+__end
+__define_primitive("LEAVE", pr_leave);

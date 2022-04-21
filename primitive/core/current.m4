@@ -1,4 +1,6 @@
-primitive(pr_current) {
+__primitive(pr_current)  
+{
     *--sp = _from_ptr(&e[ea_current]);
-    _next();
 }
+__end
+__define_primitive("CURRENT", pr_current);

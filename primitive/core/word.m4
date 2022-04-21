@@ -1,4 +1,5 @@
-primitive(pr_word) {
+__primitive(pr_word)  
+{
 
     /* Delimiter is on the top of the stack. */
     register char delimiter    = *sp++;
@@ -31,5 +32,5 @@ primitive(pr_word) {
 
     e[ea_source_idx] = source_idx;
 
-    _next();
 }
+__end

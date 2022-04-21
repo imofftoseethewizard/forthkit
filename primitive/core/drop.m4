@@ -1,6 +1,8 @@
 #define _drop() ++sp
 
-primitive(pr_drop) {
+__primitive(pr_drop)  
+{
     _drop();
-    _next();
 }
+__end
+__define_primitive("DROP", pr_drop);

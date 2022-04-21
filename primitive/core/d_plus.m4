@@ -1,4 +1,5 @@
-primitive(pr_d_plus) {
+__primitive(pr_d_plus)  
+{
 
     register double_number
       x = _to_high_word(*sp++) | _to_low_word(*sp++),
@@ -8,5 +9,6 @@ primitive(pr_d_plus) {
     *--sp = _from_low_word(sum);
     *--sp = _from_high_word(sum);
 
-    _next();
 }
+__end
+__define_primitive("D+", pr_d_plus);

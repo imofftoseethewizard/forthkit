@@ -1,6 +1,8 @@
 #define _plus() *(number *)(sp+1) = (number)*(sp+1) + (number)*sp, sp++
 
-primitive(pr_plus) {
+__primitive(pr_plus)  
+{
     _plus();
-    _next();
 }
+__end
+__define_primitive("+", pr_plus);

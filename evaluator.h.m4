@@ -139,31 +139,15 @@ do {                                                                       \
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
 
-define(`define_primitive_ext',`divert(compiled_word_declarations)    cw_$2,dnl
-divert(compiled_word_definitions)_define_primitive_ext($1, $2, cw_$2, $3)')dnl
+include(__memory_model)dnl
+include(__execution_model)dnl
+include(__evaluator_primitives)dnl
+dnl include(__compiled_words)dnl
 
-define(`define_parsing_primitive',`divert(compiled_word_declarations)    cw_$2,dnl
-divert(compiled_word_definitions)_define_parsing_primitive($1, $2, cw_$2)')dnl
-
-define(`define_primitive',`divert(compiled_word_declarations)    cw_$2,dnl
-divert(compiled_word_definitions)_define_primitive($1, $2, cw_$2)')dnl
-
-define(`define_immediate_primitive',`divert(compiled_word_declarations)    cw_$2,dnl
-divert(compiled_word_definitions)_define_immediate_primitive($1, $2, cw_$2)')dnl
-
-define(`compiled_word',`divert(compiled_word_declarations)    $2,dnl
-divert(compiled_word_definitions)
-        _begin_define_word($1, $3);
-        _register_compiled_word($2);')dnl
-
-include(memory_model)dnl
-include(execution_model)dnl
-include(evaluator_primitives)dnl
-
-undivert(header_definitions)dnl
+undivert(__header_definitions)dnl
 
 enum compiled_word_labels {
-    undivert(compiled_word_declarations)dnl
+undivert(__compiled_word_declarations)dnl
 };
 
-discard_all_diversion()dnl
+__discard_all_diversions()dnl

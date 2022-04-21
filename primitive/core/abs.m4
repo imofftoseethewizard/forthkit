@@ -1,6 +1,8 @@
 #define _abs() if ((number)*sp < 0) *sp = -(number)*sp;
 
-primitive(pr_abs) {
+__primitive(pr_abs)  
+{
     _abs();
-    _next();
 }
+__end
+__define_primitive("ABS", pr_abs);

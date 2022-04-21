@@ -1,4 +1,6 @@
-primitive(pr_decimal) {
+__primitive(pr_decimal)  
+{
     e[ea_base] = 10;
-    _next();
 }
+__end
+__define_primitive("DECIMAL", pr_decimal);

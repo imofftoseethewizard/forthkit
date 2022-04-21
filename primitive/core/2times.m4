@@ -1,5 +1,6 @@
 /* requires including double_number.h */
-primitive(pr_2_times) {
+__primitive(pr_2_times)  
+{
     if (sizeof(cell) < sizeof(void *))
         *(sp+1) = (*sp * *(sp+1));
     else {
@@ -11,6 +12,6 @@ primitive(pr_2_times) {
         mid =
     }
     sp += 1;
-    _next();
 }
-_define_primitive("2*", pr_2_times);
+__end
+__define_primitive("2*", pr_2_times);

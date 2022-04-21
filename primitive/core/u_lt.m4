@@ -1,6 +1,8 @@
 #define _u_lt() *++sp = *(sp+1) < *sp
 
-primitive(pr_u_lt) {
+__primitive(pr_u_lt)  
+{
     _u_lt();
-    _next();
 }
+__end
+__define_primitive("U<", pr_u_lt);

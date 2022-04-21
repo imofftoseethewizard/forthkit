@@ -1,6 +1,8 @@
 #define _times() *++sp = (number)*(sp+1) * (number)*sp
 
-primitive(pr_times) {
+__primitive(pr_times)  
+{
     _times();
-    _next();
 }
+__end
+__define_primitive("*", pr_times);

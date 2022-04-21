@@ -1,4 +1,5 @@
-primitive(pr_times_div_mod) {
+__primitive(pr_times_div_mod)  
+{
     register double_number
       q = _to_low_word((number)*sp++),
       m = _to_low_word((number)*sp++),
@@ -14,5 +15,6 @@ primitive(pr_times_div_mod) {
 
     *--sp = _from_low_word(r);
     *--sp = _from_low_word((p-r)/q);
-    _next();
 }
+__end
+__define_primitive("*/MOD", pr_times_div_mod);

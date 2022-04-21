@@ -1,9 +1,10 @@
 include(`preamble.m4')
-define(`primitive', `divert(primitive_declarations)auto void $1(void);
-divert(primitive_implementations)void $1(void)')dnl
-define(`declare_primitives', `undivert(primitive_declarations)')dnl
-define(`implement_evaluator_core', `undivert(primitive_implementations)
-    do {
+define(`__primitive', `divert(__primitive_declarations)auto void $1(void);
+divert(__primitive_implementations)void $1(void)')dnl
+define(`__end', `')
+define(`__declare_primitives', `undivert(__primitive_declarations)')dnl
+define(`__implement_evaluator_core', `undivert(__primitive_implementations)
+do {
         _trace("start dispatch:     ");
 
         while (ip && !_is_primitive(*ip)) {
@@ -17,4 +18,5 @@ define(`implement_evaluator_core', `undivert(primitive_implementations)
     }
     while (ip);
 
-    _trace("dispatch exited:   ");')
+    _trace("dispatch exited:   ");
+')

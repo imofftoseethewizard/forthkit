@@ -3,9 +3,11 @@
     _compile_pr(op_jump);                                 \
     _store_data(*sp++ - _from_ptr(here) + sizeof(cell));  \
     _compile_jump_target();                               \
-} while (0);
+ while (0);
 
-primitive(pr_compile_repeat) {
+__primitive(pr_compile_repeat)  
+{
     _compile_repeat();
-    _next();
 }
+__end
+__define_immediate_primitive("REPEAT", pr_compile_repeat);

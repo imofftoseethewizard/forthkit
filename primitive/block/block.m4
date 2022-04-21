@@ -1,4 +1,5 @@
-primitive(pr_read_block) {
+__primitive(pr_read_block)  
+{
 
     register char *buffer = (char *)_to_ptr(*sp++);
     register cell n = *sp++;
@@ -14,5 +15,5 @@ primitive(pr_read_block) {
     } else
         *--sp = _from_ptr(buffer);
 
-    _next();
 }
+__end

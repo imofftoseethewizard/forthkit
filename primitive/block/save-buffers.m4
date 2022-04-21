@@ -1,4 +1,5 @@
-primitive(pr_save_buffers) {
+__primitive(pr_save_buffers)  
+{
     register cell n;
     register cell block;
 
@@ -24,5 +25,6 @@ primitive(pr_save_buffers) {
             break;
         }
     }
-    _next();
 }
+__end
+__define_primitive("SAVE-BUFFERS", pr_save_buffers);

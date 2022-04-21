@@ -83,18 +83,18 @@ evaluate(cell *engine, const char *source, int storage_fd)
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
 
-    include(memory_model)    dnl
-    include(execution_model) dnl
-    include(primitives)      dnl
-    include(compiled_words)  dnl
+    include(__memory_model)    dnl
+    include(__execution_model) dnl
+    include(__evaluator_primitives)      dnl
+dnl    include(__compiled_words)  dnl
 
-    declare_primitives()dnl
+    __declare_primitives()dnl
 
     /* The first run will have context == 0. The preamble detects that and
        defines primitives and the bootstrap interpreter.
      */
     if (!e[ea_context]) {
-        undivert(compiled_word_definitions)dnl
+undivert(__compiled_word_definitions)dnl
         e[ea_context] = _from_ptr(&e[ea_forth]);
     }
 
@@ -109,8 +109,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
         ip = _to_ptr(e[ea_interpret]);
     }
 
-    implement_evaluator_core() dnl
-    discard_all_diversion()dnl
+    __implement_evaluator_core() dnl
 
     /* Store state back in the engine structure. */
     e[ea_ip]   = _from_ptr(ip);
@@ -230,3 +229,4 @@ main(int argc, char *argv[])
     /* exit(evaluate(engine, "15 : cc create , does> @ dup . cr ; cc"), -1); */
 
 }
+__discard_all_diversions()dnl

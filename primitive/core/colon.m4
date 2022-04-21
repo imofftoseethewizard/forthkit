@@ -1,4 +1,5 @@
-primitive(pr_colon) {
+__primitive(pr_colon)  
+{
 
     e[ea_context] = e[ea_current];
     e[ea_state] = 1;
@@ -6,5 +7,6 @@ primitive(pr_colon) {
     _store_word_name();
     _word_header(0);
 
-    _next();
 }
+__end
+__define_parsing_primitive(":", pr_colon);

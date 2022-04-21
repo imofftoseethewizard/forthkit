@@ -1,4 +1,5 @@
-primitive(pr_create) {
+__primitive(pr_create)  
+{
 
     _store_word_name();
 
@@ -12,5 +13,6 @@ primitive(pr_create) {
     _store_data(_from_ptr((cell *)here + 2));
     _compile_pr(op_exit);
 
-    _next();
 }
+__end
+__define_parsing_primitive("CREATE", pr_create);

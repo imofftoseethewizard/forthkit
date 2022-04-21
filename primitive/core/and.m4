@@ -1,6 +1,8 @@
 #define _and() *++sp = *(sp+1) & *sp
 
-primitive(pr_and) {
+__primitive(pr_and)  
+{
     _and();
-    _next();
 }
+__end
+__define_primitive("AND", pr_and);

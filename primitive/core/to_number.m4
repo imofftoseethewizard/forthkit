@@ -5,7 +5,8 @@
       : 'a' <= c && c <= 'z' ? (c - 'a' + 10) \
       : -1
 
-primitive(pr_to_number) {
+__primitive(pr_to_number)  
+{
 
     register number base, digit, len, result;
     register char *s;
@@ -35,5 +36,6 @@ primitive(pr_to_number) {
     *(sp+1) = _from_ptr(s);
     *sp = len;
 
-    _next();
 }
+__end
+__define_primitive(">NUMBER", pr_to_number);

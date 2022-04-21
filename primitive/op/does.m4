@@ -1,14 +1,16 @@
-primitive(pr_do_does) {
+__primitive(pr_do_does)  
+{
     register cell *word = _to_ptr(*_to_ptr(e[ea_current]));
     register cell *origp = _get_word_interpretation_ptr(word);
 
     *origp = (cell)_from_pr(op_does);
     *(origp + 1) = *sp++;
 
-    _next();
 }
+__end
+__primitive(pr_does)  
+{
 
-primitive(pr_does) {
     /* At compile time, does> must capture the location of the code that
        follow does>. Keeping in mind that the compile-time context of does>
        is that we are compiling a new compiling word, and the address of the
@@ -52,5 +54,5 @@ primitive(pr_does) {
     _compile_pr(pr_do_does);
     _compile_pr(op_exit);
 
-    _next();
 }
+__end

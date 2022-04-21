@@ -1,4 +1,5 @@
-primitive(pr_dot_quote) {
+__primitive(pr_dot_quote)  
+{
 
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
@@ -44,5 +45,6 @@ primitive(pr_dot_quote) {
 
     e[ea_source_idx] = source_idx + 1; /* skip final quote */
 
-    _next();
 }
+__end
+__define_immediate_primitive(".\"", pr_dot_quote);

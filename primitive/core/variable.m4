@@ -1,4 +1,5 @@
-primitive(pr_variable) {
+__primitive(pr_variable)  
+{
 
     _store_word_name();
 
@@ -11,5 +12,6 @@ primitive(pr_variable) {
     _compile_pr(op_exit);
     here += sizeof(cell);
 
-    _next();
 }
+__end
+__define_parsing_primitive("VARIABLE", pr_variable);

@@ -1,4 +1,6 @@
-primitive(pr_j) {
+__primitive(pr_j)  
+{
     *--sp = *(rp+2);
-    _next();
 }
+__end
+__define_primitive("J", pr_j);

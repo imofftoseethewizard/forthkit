@@ -1,4 +1,6 @@
-primitive(pr_left_bracket) {
+__primitive(pr_left_bracket)  
+{
     e[ea_state] = 0;
-    _next();
 }
+__end
+__define_immediate_primitive("[", pr_left_bracket);

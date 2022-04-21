@@ -4,7 +4,9 @@
 
 #define _align(x) (cell *)((long)(x) + sizeof(cell) - 1 & ~(sizeof(cell) - 1))
 
-primitive(pr_align) {
+__primitive(pr_align)  
+{
     here = (char *)_align(here);
-    _next();
 }
+__end
+__define_primitive("ALIGN", pr_align);

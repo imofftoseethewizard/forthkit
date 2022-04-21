@@ -1,7 +1,9 @@
 #define _two_plus() *sp += 2
 
 
-primitive(pr_two_plus) {
+__primitive(pr_two_plus)  
+{
     _two_plus();
-    _next();
 }
+__end
+__define_primitive("2+", pr_two_plus);

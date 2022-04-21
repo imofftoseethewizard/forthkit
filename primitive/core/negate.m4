@@ -1,6 +1,8 @@
 #define _negate() *sp = -(number)*sp
 
-primitive(pr_negate) {
+__primitive(pr_negate)  
+{
     _negate();
-    _next();
 }
+__end
+__define_primitive("NEGATE", pr_negate);

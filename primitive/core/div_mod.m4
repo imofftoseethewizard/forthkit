@@ -1,4 +1,5 @@
-primitive(pr_div_mod) {
+__primitive(pr_div_mod)  
+{
     register number
       q = (number)*sp++,
       n = (number)*sp++,
@@ -12,5 +13,6 @@ primitive(pr_div_mod) {
 
     *--sp = r;
     *--sp = (n-r)/q;
-    _next();
 }
+__end
+__define_primitive("/MOD", pr_div_mod);

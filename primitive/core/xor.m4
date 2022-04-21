@@ -1,6 +1,8 @@
 #define _xor() *++sp = *(sp+1) ^ *sp
 
-primitive(pr_xor) {
+__primitive(pr_xor)  
+{
     _xor();
-    _next();
 }
+__end
+__define_primitive("XOR", pr_xor);

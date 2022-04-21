@@ -1,4 +1,5 @@
-primitive(pr_constant) {
+__primitive(pr_constant)  
+{
 
     _store_word_name();
 
@@ -10,5 +11,6 @@ primitive(pr_constant) {
     _store_data(*sp++);
     _compile_pr(op_exit);
 
-    _next();
 }
+__end
+__define_parsing_primitive("CONSTANT", pr_constant);

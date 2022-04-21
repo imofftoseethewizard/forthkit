@@ -1,6 +1,8 @@
 #define _allot() here += (number)*sp++
 
-primitive(pr_allot) {
+__primitive(pr_allot)  
+{
     _allot();
-    _next();
 }
+__end
+__define_primitive("ALLOT", pr_allot);

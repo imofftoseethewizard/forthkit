@@ -1,6 +1,8 @@
 #define _max() *++sp = (number)*(sp+1) < (number)*sp ? *sp : *(sp+1)
 
-primitive(pr_max) {
+__primitive(pr_max)  
+{
     _max();
-    _next();
 }
+__end
+__define_primitive("MAX", pr_max);

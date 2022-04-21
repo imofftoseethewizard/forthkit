@@ -4,9 +4,11 @@ do {                                                     \
     register char *chp = _number_pad_buf_addr();         \
     *(sp+1) = _from_ptr(chp + *idx);                     \
     *sp = _c_number_pad_size - *idx;                     \
-} while (0)
+ while (0)
 
-primitive(pr_num_end) {
+__primitive(pr_num_end)  
+{
     _num_end();
-    _next();
 }
+__end
+__define_primitive(`"#>"', pr_num_end);

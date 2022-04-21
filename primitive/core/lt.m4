@@ -1,6 +1,8 @@
 #define _lt() *++sp = (number)*(sp+1) < (number)*sp
 
-primitive(pr_lt) {
+__primitive(pr_lt)  
+{
     _lt();
-    _next();
 }
+__end
+__define_primitive("<", pr_lt);

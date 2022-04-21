@@ -1,6 +1,8 @@
 #define _compile_begin() *--sp = _from_ptr(here)
 
-primitive(pr_compile_begin) {
+__primitive(pr_compile_begin)  
+{
     _compile_begin();
-    _next();
 }
+__end
+__define_immediate_primitive("BEGIN", pr_compile_begin);

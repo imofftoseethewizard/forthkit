@@ -1,4 +1,5 @@
-primitive(pr_store_compiled) {
+__primitive(pr_store_compiled)  
+{
     register cell xt = *sp;
     register cell *code = _to_ptr(xt);
     register cell flags = *(code - 1);
@@ -15,5 +16,6 @@ primitive(pr_store_compiled) {
         _store_data(xt);
 
     sp++;
-    _next();
 }
+__end
+__define_primitive(`"COMPILE,"', pr_store_compiled);

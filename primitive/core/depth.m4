@@ -1,4 +1,6 @@
-primitive(pr_depth) {
+__primitive(pr_depth)  
+{
     *--sp = sp0 - sp;
-    _next();
 }
+__end
+__define_primitive("DEPTH", pr_depth);

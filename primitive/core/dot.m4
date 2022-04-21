@@ -1,4 +1,5 @@
-primitive(pr_dot) {
+__primitive(pr_dot)  
+{
     register number n = (number)*sp;
     register cell base = e[ea_base];
 
@@ -21,5 +22,6 @@ primitive(pr_dot) {
     _num_end();
     _type();
 
-    _next();
 }
+__end
+__define_primitive(".", pr_dot);

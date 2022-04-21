@@ -1,4 +1,6 @@
-primitive(pr_blk) {
+__primitive(pr_blk)  
+{
     *--sp = _from_ptr(&e[ea_blk]);
-    _next();
 }
+__end
+__define_primitive("BLK", pr_blk);

@@ -1,4 +1,5 @@
-primitive(pr_pick) {
+__primitive(pr_pick)  
+{
     register number n = *sp;
     if (n >= 1)
         *sp = *(sp + n);
@@ -6,5 +7,6 @@ primitive(pr_pick) {
         *sp = -24; /* invalid numeric argument */
         _abort();
     }
-    _next();
 }
+__end
+__define_primitive("PICK", pr_pick);

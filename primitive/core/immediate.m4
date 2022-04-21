@@ -1,6 +1,8 @@
 #define _immediate(flags) _set_word_flags(_to_ptr(*_to_ptr(e[ea_current])), c_immediate)
 
-primitive(pr_immediate) {
+__primitive(pr_immediate)  
+{
     _immediate();
-    _next();
 }
+__end
+__define_primitive("IMMEDIATE", pr_immediate);

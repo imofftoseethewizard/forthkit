@@ -1,4 +1,6 @@
-primitive(pr_context) {
+__primitive(pr_context)  
+{
     *--sp = _from_ptr(&e[ea_context]);
-    _next();
 }
+__end
+__define_primitive("CONTEXT", pr_context);

@@ -1,6 +1,8 @@
 #define _fetch() *sp = *_to_ptr(*sp)
 
-primitive(pr_fetch) {
+__primitive(pr_fetch)  
+{
     _fetch();
-    _next();
 }
+__end
+__define_primitive("@", pr_fetch);

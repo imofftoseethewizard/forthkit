@@ -1,6 +1,8 @@
 #define _base() *--sp = _from_ptr(&e[ea_base])
 
-primitive(pr_base) {
+__primitive(pr_base) 
+{
     _base();
-    _next();
 }
+__end
+__define_primitive("BASE", pr_base);

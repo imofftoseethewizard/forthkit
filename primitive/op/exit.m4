@@ -4,11 +4,11 @@
    it past the call to the just completed word.
 */
 
-primitive(op_exit) {
+__primitive(op_exit)  
+{
     _trace("start exit: ");
     _exit();
     _trace("end exit: ");
-    _next();
 }
-
-_register_operator(ot_exit, op_exit);
+__end
+__define_primitive("EXIT", op_exit);

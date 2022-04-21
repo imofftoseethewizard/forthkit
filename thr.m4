@@ -1,8 +1,10 @@
 include(`preamble.m4')dnl
-define(`primitive', `divert(primitive_implementations)if (0) $1:')dnl
-define(`declare_primitives', `')dnl
+define(`__primitive', `divert(__primitive_implementations)    $1:')dnl
+define(`__end', `_next();
+')dnl
+define(`__declare_primitives', `')dnl
 
-divert(header_definitions)dnl
+divert(__header_definitions)dnl
 
 #define _pr_value(x)       ((void *)&&x)
 #define _pr_value_base     (void *)&&__first
@@ -28,8 +30,12 @@ divert(header_definitions)dnl
 
 divert
 
-define(`implement_evaluator_core', `
+define(`__implement_evaluator_core', `
 __first:
-    undivert(primitive_implementations)
+    if (0) {
+        undivert(__primitive_implementations)
+    }
+__last:
+
     _next();
-__last:')dnl
+')dnl

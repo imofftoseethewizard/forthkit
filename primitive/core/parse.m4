@@ -1,7 +1,8 @@
 
 /* Aliases for some temporary variables to provide readability. */
 
-primitive(pr_parse) {
+__primitive(pr_parse)  
+{
 
     register char delimiter = *sp++;
     register int len = 0;
@@ -13,6 +14,6 @@ primitive(pr_parse) {
 
     *--sp = len;
 
-    _next();
 }
-_define_primitive("PARSE", pr_parse);
+__end
+__define_primitive("PARSE", pr_parse);

@@ -10,9 +10,11 @@
     */                                                                  \
     _swap();                                                            \
     _compile_jump_target();                                             \
-} while (0)
+ while (0)
 
-primitive(pr_compile_else) {
+__primitive(pr_compile_else)  
+{
     _compile_else();
-    _next();
 }
+__end
+__define_immediate_primitive("ELSE", pr_compile_else);

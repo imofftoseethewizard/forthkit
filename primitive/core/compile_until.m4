@@ -5,7 +5,9 @@
         _store_data(*sp++ - _from_ptr(here) + sizeof(cell));  \
     } while (0);
 
-primitive(pr_compile_until) {
+__primitive(pr_compile_until)  
+{
     _compile_until();
-    _next();
 }
+__end
+__define_immediate_primitive("UNTIL", pr_compile_until);

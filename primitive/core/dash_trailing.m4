@@ -1,4 +1,5 @@
-primitive(pr_dash_trailing) {
+__primitive(pr_dash_trailing)  
+{
     register number n = (number)*sp;
     register char *s = (char *)_to_ptr(*(sp+1));
 
@@ -6,5 +7,6 @@ primitive(pr_dash_trailing) {
         n--;
 
     *sp = n;
-    _next();
 }
+__end
+__define_primitive("-TRAILING", pr_dash_trailing);

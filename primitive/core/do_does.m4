@@ -1,4 +1,5 @@
-primitive(pr_do_does) {
+__primitive(pr_do_does)
+{
     register cell *word = _to_ptr(*_to_ptr(e[ea_current]));
     register cell *origp = _get_word_interpretation_ptr(word);
     register cell *doesp = (cell *)here;
@@ -10,3 +11,4 @@ primitive(pr_do_does) {
     *origp = (cell)_from_pr(op_jump);
     *(origp+1) = (doesp - origp + 1) * sizeof(cell);
 }
+__end

@@ -1,4 +1,6 @@
-primitive(pr_forth) {
+__primitive(pr_forth)  
+{
     e[ea_context] = _from_ptr(&e[ea_forth]);
-    _next();
 }
+__end
+__define_primitive("FORTH", pr_forth);

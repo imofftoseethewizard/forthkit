@@ -8,8 +8,10 @@
         _store_data((char *)_to_ptr(*sp++) - here + sizeof(cell));  \
     } while (0)
 
-primitive(pr_compile_loop) {
+__primitive(pr_compile_loop)  
+{
 
     _compile_loop();
-    _next();
 }
+__end
+__define_immediate_primitive("LOOP", pr_compile_loop);

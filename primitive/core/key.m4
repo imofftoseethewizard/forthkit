@@ -1,6 +1,8 @@
 #define _key() *--sp = getc(stdin)
 
-primitive(pr_key) {
+__primitive(pr_key)  
+{
     _key();
-    _next();
 }
+__end
+__define_primitive("KEY", pr_key);

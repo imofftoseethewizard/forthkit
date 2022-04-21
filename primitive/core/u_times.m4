@@ -1,4 +1,5 @@
-primitive(pr_u_times) {
+__primitive(pr_u_times)  
+{
 
     register double_cell
       x = _to_low_word(*sp++),
@@ -8,5 +9,6 @@ primitive(pr_u_times) {
     *--sp = _from_low_word(p);
     *--sp = _from_high_word(p);
 
-    _next();
 }
+__end
+__define_primitive("U*", pr_u_times);

@@ -1,6 +1,8 @@
 #define _compile_then() _compile_jump_target()
 
-primitive(pr_compile_then) {
+__primitive(pr_compile_then)  
+{
     _compile_then();
-    _next();
 }
+__end
+__define_immediate_primitive("THEN", pr_compile_then);

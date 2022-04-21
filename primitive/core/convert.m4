@@ -4,7 +4,8 @@
       : 'a' <= c && c <= 'z' ? (c - 'a' + 10) \
       : -1
 
-primitive(pr_convert) {
+__primitive(pr_convert)  
+{
 
     register number base, digit;
     register double_number result;
@@ -34,5 +35,6 @@ primitive(pr_convert) {
     *(sp+1) = _from_high_word(result);
     *sp = _from_ptr(s);
 
-    _next();
 }
+__end
+__define_primitive("CONVERT", pr_convert);

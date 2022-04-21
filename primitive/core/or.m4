@@ -1,6 +1,8 @@
 #define _or() *++sp = *(sp+1) | *sp
 
-primitive(pr_or) {
+__primitive(pr_or)  
+{
     _or();
-    _next();
 }
+__end
+__define_primitive("OR", pr_or);
