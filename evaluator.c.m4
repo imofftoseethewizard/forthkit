@@ -82,14 +82,10 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
-
-    include(__memory_model)    dnl
-    include(__execution_model) dnl
-    include(__evaluator_primitives)      dnl
-dnl    include(__compiled_words)  dnl
-
+    include(__execution_model)dnl
+    include(__evaluator_primitives)dnl
+    include(__compiled_words)dnl
     __declare_primitives()dnl
-
     /* The first run will have context == 0. The preamble detects that and
        defines primitives and the bootstrap interpreter.
      */

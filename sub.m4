@@ -1,8 +1,10 @@
+divert(`-1')
 include(`preamble.m4')
 define(`__primitive', `divert(__primitive_declarations)auto void $1(void);
-divert(__primitive_implementations)void $1(void)')dnl
+divert(__primitive_implementations)void $1(void)')
 define(`__end', `')
-define(`__declare_primitives', `undivert(__primitive_declarations)')dnl
+define(`__declare_primitives', `undivert(__primitive_declarations)
+')
 define(`__implement_evaluator_core', `undivert(__primitive_implementations)
 do {
         _trace("start dispatch:     ");
@@ -20,3 +22,4 @@ do {
 
     _trace("dispatch exited:   ");
 ')
+divert`'dnl

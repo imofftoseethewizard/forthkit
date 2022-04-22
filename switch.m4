@@ -1,11 +1,13 @@
-include(`preamble.m4')dnl
+divert(`-1')
+include(`preamble.m4')
 define(`__primitive', `divert(__primitive_declarations)$1,
-divert(__primitive_implementations)case $1:')dnl
+divert(__primitive_implementations)case $1:')
 define(`__end', `break;
 ')
 define(`__declare_primitives', `enum {
-        undivert(__primitive_declarations)
-    };')dnl
+undivert(__primitive_declarations) };
+
+')
 define(`__implement_evaluator_core', `
     do {
         _trace("start dispatch:     ");
@@ -28,4 +30,5 @@ define(`__implement_evaluator_core', `
     while (ip);
 
     _trace("dispatch exited:   ");
-')dnl
+')
+divert`'dnl

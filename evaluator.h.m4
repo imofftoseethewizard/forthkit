@@ -142,7 +142,7 @@ do {                                                                       \
 include(__memory_model)dnl
 include(__execution_model)dnl
 include(__evaluator_primitives)dnl
-dnl include(__compiled_words)dnl
+include(__compiled_words)dnl
 
 undivert(__header_definitions)dnl
 
