@@ -90,6 +90,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
        defines primitives and the bootstrap interpreter.
      */
     if (!e[ea_context]) {
+undivert(__primitive_word_definitions)
 undivert(__compiled_word_definitions)dnl
         e[ea_context] = _from_ptr(&e[ea_forth]);
     }

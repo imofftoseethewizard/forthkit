@@ -108,6 +108,9 @@ do {                                                                       \
 
 #define _compiled_word_ref(e, l) e[e[ea_size] / sizeof(cell) - l - 1]
 #define _register_compiled_word(l) _compiled_word_ref(e, l) = _from_ptr(here);
+#define _compiled_word(s, l, flags) \
+        _begin_define_word(s, flags); \
+        _register_compiled_word(l)
 
 #define _begin_define_word(s, flags)                                       \
     do {                                                                   \
