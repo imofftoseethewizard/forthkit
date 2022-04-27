@@ -6,7 +6,7 @@ define(`__primitive_implementations', 4)
 define(`__compiled_word_declarations', 5)
 define(`__compiled_word_definitions', 6)
 define(`__discard_diversion', `divert(-1)undivert($1)divert')
-define(`__discard_all_diversions', `divert(-1)undivert(1)undivert(2)undivert(3)undivert(4)undivert(5)divert')
+define(`__discard_all_diversions', `divert(-1)undivert(1)undivert(2)undivert(3)undivert(4)undivert(5)undivert(6)divert')
 define(`__include_primitive', `divert(__header_definitions)include(`$1')divert`'dnl')
 define(`__include_compiled_word', `divert(__compiled_word_definitions)include(`$1')divert`'dnl')
 

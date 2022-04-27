@@ -1,5 +1,5 @@
-#include "config.h"
-#include "log.h"
+#include "engine/config.h"
+#include "engine/log.h"
 
 typedef unsigned CELL_TYPE cell;
 typedef CELL_TYPE number;

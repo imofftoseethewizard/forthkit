@@ -5,6 +5,11 @@ divert(__primitive_implementations)void $1(void)')
 define(`__end', `')
 define(`__declare_primitives', `undivert(__primitive_declarations)
 ')
+
+#define _pr_value(x)        ((void *)&(x))
+#define _pr_value_base      (void *)&engine
+#define _pr_value_limit     __builtin_frame_address(0)
+
 define(`__implement_evaluator_core', `undivert(__primitive_implementations)
 do {
         _trace("start dispatch:     ");
