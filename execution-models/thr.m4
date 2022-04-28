@@ -1,5 +1,4 @@
 divert(-1)
-include(`preamble.m4')
 define(`__primitive', `divert(__primitive_implementations)    $1:')
 define(`__end', `_next();
 ')

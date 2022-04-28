@@ -82,6 +82,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
+    include(__preamble)dnl
     include(__execution_model)dnl
     include(__evaluator_primitives)dnl
     include(__compiled_words)dnl

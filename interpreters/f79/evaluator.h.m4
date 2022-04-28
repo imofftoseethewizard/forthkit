@@ -142,6 +142,7 @@ do {                                                                       \
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
 
+include(__preamble)dnl
 include(__memory_model)dnl
 include(__execution_model)dnl
 include(__evaluator_primitives)dnl

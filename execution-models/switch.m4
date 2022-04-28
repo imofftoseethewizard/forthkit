@@ -1,5 +1,4 @@
 divert(`-1')
-include(`preamble.m4')
 define(`__primitive', `divert(__primitive_declarations)$1,
 divert(__primitive_implementations)case $1:')
 define(`__end', `break;

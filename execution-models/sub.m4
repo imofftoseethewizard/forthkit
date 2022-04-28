@@ -1,5 +1,4 @@
 divert(`-1')
-include(`preamble.m4')
 define(`__primitive', `divert(__primitive_declarations)auto void $1(void);
 divert(__primitive_implementations)void $1(void)')
 define(`__end', `')
