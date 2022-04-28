@@ -1,5 +1,5 @@
 #define _compile_else()                                                 \
-    do {                                                                \
+do {                                                                    \
     /* Jump from here -- the end of the consequent -- to the end of the \
        conditional.                                                     \
     */                                                                  \
@@ -10,9 +10,9 @@
     */                                                                  \
     _swap();                                                            \
     _compile_jump_target();                                             \
- while (0)
+} while (0)
 
-__primitive(pr_compile_else)  
+__primitive(pr_compile_else)
 {
     _compile_else();
 }

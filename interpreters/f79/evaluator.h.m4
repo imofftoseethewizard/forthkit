@@ -1,5 +1,5 @@
-#include "engine/config.h"
-#include "engine/log.h"
+#include "config.h"
+#include "log.h"
 
 typedef unsigned CELL_TYPE cell;
 typedef CELL_TYPE number;
@@ -50,11 +50,6 @@ enum engine_attribute {
 
 #define _quote(x) #x
 #define _from_pr(x) _from_pv(_pr_value(x))
-#define _register_operator(x, y)                                           \
-    do {                                                                   \
-        if (!e[ea_context])                                                \
-            _debug("operator %-16s %lx\n", _quote(y), (long)_from_pr(y));  \
-    } while (0)
 
 #define _string_len(x)  *(length_type *)(x)
 #define _string_addr(x) (char *)((length_type *)(x) + 1)
