@@ -1,9 +1,8 @@
 #define _compile_literal(x) do { _compile_pr(op_literal); _store_data(x); } while (0)
 
-__primitive(pr_literal)  
+__primitive(op_literal)
 {
-    _debug("literal: "); _print_stack();
-    _compile_pr(op_literal);
-    _store_data(*sp++);
+    *--sp = (cell)*ip++;
+    _next();
 }
 __end

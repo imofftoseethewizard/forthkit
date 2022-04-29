@@ -30,11 +30,13 @@ divert(__header_definitions)
 
 define(`__implement_evaluator_core', `
 __first:
+
     if (0) {
         undivert(__primitive_implementations)
     }
-__last:
 
     _next();
+
+__last:
 ')
 divert`'dnl
