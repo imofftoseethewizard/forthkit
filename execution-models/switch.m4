@@ -6,7 +6,9 @@ define(`__end', `break;
 define(`__declare_primitives', `enum {
 undivert(__primitive_declarations)
 primitive_count
-};
+};')
+
+divert(__header_definitions)
 
 #define _pr_value(x)       ((cell)-x)
 #define _pr_value_base     (-(number)primitive_count + 1)
@@ -14,7 +16,6 @@ primitive_count
 
 #define _next()
 
-')
 define(`__implement_evaluator_core', `
     do {
         _trace("start dispatch:     ");
