@@ -10,8 +10,8 @@ primitive_count
 
 divert(__header_definitions)
 
-#define _pr_value(x)       ((cell)-x)
-#define _pr_value_base     (-(number)primitive_count + 1)
+#define _pr_value(x)       x
+#define _pr_value_base     0
 #define _pr_value_limit    -1
 
 define(`__implement_evaluator_core', `
@@ -25,7 +25,7 @@ define(`__implement_evaluator_core', `
         }
 
         _trace("dispatch primitive: ");
-        if (ip) switch (*ip++) {
+        if (ip) switch (_to_pv(*ip++)) {
         undivert(__primitive_implementations)
         default:
           ip = 0;
