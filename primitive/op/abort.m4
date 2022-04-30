@@ -3,6 +3,5 @@
 __primitive(op_abort)
 {
     _abort();
-    _next();
 }
 __end

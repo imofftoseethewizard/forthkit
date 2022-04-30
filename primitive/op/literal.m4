@@ -3,6 +3,5 @@
 __primitive(op_literal)
 {
     *--sp = (cell)*ip++;
-    _next();
 }
 __end

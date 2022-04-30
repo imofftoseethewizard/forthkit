@@ -14,8 +14,6 @@ divert(__header_definitions)
 #define _pr_value_base     (-(number)primitive_count + 1)
 #define _pr_value_limit    -1
 
-#define _next()
-
 define(`__implement_evaluator_core', `
     do {
         _trace("start dispatch:     ");
