@@ -4,11 +4,15 @@ divert(__primitive_implementations)case $1:')
 define(`__end', `break;
 ')
 define(`__declare_primitives', `enum {
-undivert(__primitive_declarations) };
+undivert(__primitive_declarations)
+primitive_count
+};
 
-#define _pr_value(x)       ((cell)-x ## _token)
-#define _pr_value_base     (-(number)pr_token_count + 1)
+#define _pr_value(x)       ((cell)-x)
+#define _pr_value_base     (-(number)primitive_count + 1)
 #define _pr_value_limit    -1
+
+#define _next()
 
 ')
 define(`__implement_evaluator_core', `
