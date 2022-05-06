@@ -1,11 +1,11 @@
-__primitive(pr_save_buffers)  
+__primitive(pr_save_buffers)
 {
     register cell n;
     register cell block;
 
     for (n = 0; n < BUFFER_COUNT; n++) {
 
-        block = e[ea_buffers + n];
+        block = e[e[ea_buffers] + n];
 
         /* empty */
         if (block == -1)
