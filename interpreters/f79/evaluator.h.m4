@@ -21,7 +21,7 @@ enum engine_attribute {
     ea_ip,
     ea_rp,
     ea_sp,
-    ea_here,
+    ea_dp,
     ea_base,
     ea_context,
     ea_current,
@@ -66,12 +66,12 @@ enum engine_attribute {
 
 #define _store_word_name()                                                 \
 do {                                                                       \
-    register cell name = _from_ptr(here);                                  \
+    register cell name = _from_ptr(dp);                                  \
     register cell *string_addr = _to_ptr(*sp);                             \
     register length_type n = *(length_type *)string_addr;                  \
                                                                            \
-    memcpy(here, string_addr, n + sizeof(length_type));                    \
-    here += n + sizeof(length_type);                                       \
+    memcpy(dp, string_addr, n + sizeof(length_type));                    \
+    dp += n + sizeof(length_type);                                       \
                                                                            \
     *sp = name;                                                            \
                                                                            \
@@ -81,11 +81,11 @@ do {                                                                       \
 #define _word_header(flags)                                                \
        /* _word_header: ( n -- addr ) [xp]    */                           \
                                                                            \
-       /* Align here to a cell boundary.      */                           \
-       here = (char *)_align(here);                                        \
+       /* Align dp to a cell boundary.      */                           \
+       dp = (char *)_align(dp);                                        \
                                                                            \
        /* Save address of new word.           */                           \
-       *--rp = _from_ptr(here);                                            \
+       *--rp = _from_ptr(dp);                                            \
                                                                            \
        /* Copy name address to word entry.    */                           \
        _store_data(*sp++);                                                 \
@@ -102,15 +102,15 @@ do {                                                                       \
 #define _next_word(x) *(_to_ptr(x) + 1)
 
 #define _compiled_word_ref(e, l) e[e[ea_size] / sizeof(cell) - l - 1]
-#define _register_compiled_word(l) _compiled_word_ref(e, l) = _from_ptr(here);
+#define _register_compiled_word(l) _compiled_word_ref(e, l) = _from_ptr(dp);
 #define _compiled_word(s, l, flags) \
         _begin_define_word(s, flags); \
         _register_compiled_word(l)
 
 #define _begin_define_word(s, flags)                                       \
     do {                                                                   \
-        *--sp = _from_ptr(here);                                           \
-        here = store_counted_string((s), here);                            \
+        *--sp = _from_ptr(dp);                                           \
+        dp = store_counted_string((s), dp);                            \
         _word_header(flags);                                               \
     } while(0)
 

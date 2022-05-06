@@ -3,7 +3,7 @@ __primitive(pr_word)
 
     /* Delimiter is on the top of the stack. */
     register char delimiter    = *sp++;
-    register char *word_buffer = (char *)_align(here);
+    register char *word_buffer = (char *)_align(dp);
     register int word_idx      = sizeof(length_type);
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];

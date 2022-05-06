@@ -5,7 +5,7 @@
     do {                                                            \
         _compile_pr(op_loop);                                       \
         _compile_pr(op_jump);                                       \
-        _store_data((char *)_to_ptr(*sp++) - here + sizeof(cell));  \
+        _store_data((char *)_to_ptr(*sp++) - dp + sizeof(cell));  \
     } while (0)
 
 __primitive(pr_compile_loop)  

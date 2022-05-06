@@ -1,4 +1,4 @@
-#define _compile_begin() *--sp = _from_ptr(here)
+#define _compile_begin() *--sp = _from_ptr(dp)
 
 __primitive(pr_compile_begin)  
 {

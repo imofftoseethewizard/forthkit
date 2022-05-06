@@ -7,8 +7,8 @@ __primitive(pr_dot_quote)
 
     if (e[ea_state]) {
 
-        register cell *jump_offset = (cell *)here + 3;
-        register char *s, *s0 = here + 4*sizeof(cell);
+        register cell *jump_offset = (cell *)dp + 3;
+        register char *s, *s0 = dp + 4*sizeof(cell);
 
         _compile_pr(op_literal);
         _store_data(_from_ptr(s0));
@@ -22,7 +22,7 @@ __primitive(pr_dot_quote)
 
         *jump_offset = (cell)((char *)_align(s) + sizeof(cell) - (char *)jump_offset);
 
-        here = (char *)_align(s);
+        dp = (char *)_align(s);
 
         _compile_pr(op_literal);
         _store_data(s - s0);

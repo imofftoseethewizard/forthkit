@@ -8,7 +8,7 @@ __primitive(pr_compile_plus_loop)
     _compile_pr(op_plus_loop);
 
     _compile_pr(op_jump);
-    _store_data((char *)_to_ptr(*sp++) - here + sizeof(cell));
+    _store_data((char *)_to_ptr(*sp++) - dp + sizeof(cell));
 
 }
 __end

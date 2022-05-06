@@ -1,4 +1,4 @@
-#define _here() *--sp = _from_ptr(here)
+#define _here() *--sp = _from_ptr(dp)
 
 __primitive(pr_here)  
 {

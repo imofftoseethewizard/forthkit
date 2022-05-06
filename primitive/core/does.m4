@@ -50,7 +50,7 @@ __primitive(pr_does)
     */
 
     _compile_pr(op_literal);
-    _store_data(_from_ptr((cell *)here + 3));
+    _store_data(_from_ptr((cell *)dp + 3));
     _compile_pr(pr_do_does);
     _compile_pr(op_exit);
 

@@ -1,6 +1,6 @@
 __primitive(pr_num_s)  
 {
-    register length_type *idx = (length_type *)here;
+    register length_type *idx = (length_type *)dp;
     *idx = _c_number_pad_size;
 }
 __end

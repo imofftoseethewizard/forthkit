@@ -8,7 +8,7 @@
 
 #include "evaluator.h"
 
-char *store_counted_string(const char *s, char *here);
+char *store_counted_string(const char *s, char *dp);
 
 void
 init_engine(cell *e, unsigned long size)
@@ -46,10 +46,10 @@ evaluate(cell *engine, const char *source, int storage_fd)
         sp = rp + PARAMETER_STACK_SIZE;
 
         /* registers */
-        e[ea_ip]          = 0;
-        e[ea_rp]          = _from_ptr(rp);
-        e[ea_sp]          = _from_ptr(sp);
-        e[ea_here]        = e[ea_sp] + BUFFER_COUNT * sizeof(cell);
+        e[ea_ip] = 0;
+        e[ea_rp] = _from_ptr(rp);
+        e[ea_sp] = _from_ptr(sp);
+        e[ea_dp] = e[ea_sp] + BUFFER_COUNT * sizeof(cell);
 
         /* internal state */
         e[ea_base]        = 10;
@@ -76,7 +76,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     /* These are generally useful to have, but probably not worth putting
        in a register.
      */
-    char *here = (char *)_to_ptr(e[ea_here]);
+    char *dp = (char *)_to_ptr(e[ea_dp]);
     cell *rp0  = (cell *)_to_ptr(e[ea_rp0]);
     cell *sp0  = (cell *)_to_ptr(e[ea_sp0]);
 
@@ -110,10 +110,10 @@ undivert(__compiled_word_definitions)dnl
     __implement_evaluator_core() dnl
 
     /* Store state back in the engine structure. */
-    e[ea_ip]   = _from_ptr(ip);
-    e[ea_sp]   = _from_ptr(sp);
-    e[ea_rp]   = _from_ptr(rp);
-    e[ea_here] = _from_ptr(here);
+    e[ea_ip] = _from_ptr(ip);
+    e[ea_sp] = _from_ptr(sp);
+    e[ea_rp] = _from_ptr(rp);
+    e[ea_dp] = _from_ptr(dp);
 
     _debug("done with run: result: %d\n", result);
     _print_stack();
@@ -121,17 +121,17 @@ undivert(__compiled_word_definitions)dnl
 }
 
 char *
-store_counted_string(const char *s, char *here)
+store_counted_string(const char *s, char *dp)
 {
     cell n = strlen(s);
 
-    here = (char *)_align(here);
+    dp = (char *)_align(dp);
 
-    *(length_type *)here = n;
+    *(length_type *)dp = n;
 
-    strncpy((char *)((length_type *)here + 1), s, n);
+    strncpy((char *)((length_type *)dp + 1), s, n);
 
-    return here + sizeof(cell) + n + 1;
+    return dp + sizeof(cell) + n + 1;
 }
 
 void
@@ -159,6 +159,34 @@ cell engine[((1 << 16)-1)/sizeof(cell)];
 int
 main(int argc, char *argv[])
 {
+    printf("ea_size: %d\n", ea_size);
+    printf("ea_source_addr: %d\n", ea_source_addr);
+    printf("ea_source_idx: %d\n", ea_source_idx);
+    printf("ea_source_len: %d\n", ea_source_len);
+    printf("ea_blk: %d\n", ea_blk);
+    printf("ea_buffers: %d\n", ea_buffers);
+    printf("ea_next_buffer: %d\n", ea_next_buffer);
+    printf("ea_scr: %d\n", ea_scr);
+    printf("ea_fp: %d\n", ea_fp);
+    printf("ea_fp0: %d\n", ea_fp0);
+    printf("ea_tp: %d\n", ea_tp);
+    printf("engine_fiber_start: %d\n", engine_fiber_start);
+    printf("ea_ip: %d\n", ea_ip);
+    printf("ea_rp: %d\n", ea_rp);
+    printf("ea_rp0: %d\n", ea_rp0);
+    printf("ea_rp_stop: %d\n", ea_rp_stop);
+    printf("ea_steps: %d\n", ea_steps);
+    printf("engine_task_start: %d\n", engine_task_start);
+    printf("ea_dp: %d\n", ea_dp);
+    printf("ea_sp: %d\n", ea_sp);
+    printf("ea_sp0: %d\n", ea_sp0);
+    printf("ea_base: %d\n", ea_base);
+    printf("ea_context: %d\n", ea_context);
+    printf("ea_current: %d\n", ea_current);
+    printf("ea_state: %d\n", ea_state);
+    printf("ea_interpret: %d\n", ea_interpret);
+    printf("ea_forth: %d\n", ea_forth);
+
     number result;
     char *line;
     int storage_fd = -1;

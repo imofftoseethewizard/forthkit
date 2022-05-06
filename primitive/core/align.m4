@@ -6,7 +6,7 @@
 
 __primitive(pr_align)  
 {
-    here = (char *)_align(here);
+    dp = (char *)_align(dp);
 }
 __end
 __define_primitive("ALIGN", pr_align);
