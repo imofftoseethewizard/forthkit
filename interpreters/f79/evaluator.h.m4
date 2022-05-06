@@ -1,4 +1,5 @@
 #include "config.h"
+#include "debug.h"
 #include "log.h"
 
 typedef unsigned CELL_TYPE cell;

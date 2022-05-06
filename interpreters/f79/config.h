@@ -12,3 +12,5 @@
 #define LOG                      0
 #define TRACE                    0
 #define VERBOSE                  0
+
+#define DEBUG 0
