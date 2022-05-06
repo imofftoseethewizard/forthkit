@@ -55,7 +55,6 @@ evaluate(cell *engine, const char *source, int storage_fd)
         e[ea_base]        = 10;
         e[ea_context]     = 0;
         e[ea_current]     = _from_ptr(&e[ea_forth]);
-        e[ea_data]        = e[ea_here];
         e[ea_forth]       = 0;
         e[ea_rp0]         = e[ea_rp];
         e[ea_source_idx]  = 0;
