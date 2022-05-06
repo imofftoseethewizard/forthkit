@@ -15,26 +15,29 @@ divert(__header_definitions)
 #define _pr_value_limit    -1
 
 define(`__implement_evaluator_core', `
-    do {
-        _trace("start dispatch:     ");
 
-        while (ip && !_is_primitive(*ip)) {
-            _trace("dispatch execute:   ");
-            *--rp = _from_ptr(ip+1);
-            ip = _to_ptr(*ip);
+    /*while (fp < fp0) {*/
+
+        while (ip && !_debug_break()) {
+            _trace("start dispatch:     ");
+
+            _debug_count_step();
+
+            if (!_is_primitive(*ip))
+                _nest();
+            else {
+                _trace("dispatch primitive: ");
+                switch (_to_pv(*ip++)) {
+                undivert(__primitive_implementations)
+                default:
+                    ip = 0;
+                    break;
+                    /* illegal operator */
+                }
+            }
         }
-
-        _trace("dispatch primitive: ");
-        if (ip) switch (_to_pv(*ip++)) {
-        undivert(__primitive_implementations)
-        default:
-          ip = 0;
-        break;
-          /* illegal operator */
-        }
-    }
-    while (ip);
-
+/*        _join();
+    }*/
     _trace("dispatch exited:   ");
 ')
 divert`'dnl
