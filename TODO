@@ -1,3 +1,130 @@
+fiber migration
+  order
+    indirection for task
+    interpreter task
+    fiber/task primitives/words/tests
+    fiber in eval loop?
+
+  think about how to define/describe fiber/task/word structures
+  indirection for task attributes
+  identify/define task/fiber words
+    snip ( -- ) f1 f0 -> f0
+    twist ( -- ) f1 f0 -> f0 f1
+    braid ( n -- ) ; fn ... f1 f0 --> fn-1 ... f1 fn f0
+    join ( -- ) ; f1 f0 -> f1
+    start (f -- ) ; f0 -> f0 f
+    #f ( -- n )
+    f@ ( n -- f )
+    f>ip ( f -- a )
+    f>rp ( f -- a )
+    f>rp0 ( f -- a )
+    f>rp-stop ( f -- a )
+    f>steps ( f -- n )
+    f<ip!
+    f<rp!
+    f<rp0!
+
+
+
+types of concurrency
+  - f0: ip/rp/rp_stop/step -- useful for debugging, profiling
+  - f1: ip/rp/rp_stop/sp/step -- some types of concurrency -- coop or step-based -- limited
+      dict changes
+  - f2: full state, same address space -- full dict changes, sync primitives,
+      e[...] will need abstraction
+  - t0: full state, same address space with processor threads -- stdlib thread prims,
+      full dict changes, sync primitives
+      e[...] will need abstraction
+  - t1: separate address space in same process, processor threads -- stdlib thread, sync prims,
+  - m0: separate process, local -- POSIX mp primitives
+  - m1: separate process, remote -- POSIX mp primitives, network
+
+fiber
+    ip
+    rp
+    rp0
+    rp_stop
+    steps
+    taskp
+
+task
+  each task has a primary fiber
+    bp
+    dp
+    sp
+    sp0
+
+  ip/rp/rp0/steps/rp_stop
+  fiber (xt -- ) creates fiber, pushes to top of fiber stack
+  twist ( -- )
+    store ip/rp/rp0 in fiber on top of fiber stack,
+    swap top of fiber stack,
+    load ip/rp/rp0 from fiber on top of fiber stack
+
+  braid ( n -- ) n > 0
+    1 braid is a no-op
+    2 braid swaps the second and third items in the fiber stack
+    3 braid moves the 4th item to the 2nd position, and moves the 2nd and 3rd each
+      down one spot
+  join
+    drop top of fiber stack
+    load ip/rp/rp0 from fiber on top of fiber stack
+
+debugging use of fiber
+
+  debug evaluator changes
+    implement step, next, out
+    on break, set run, debug-fiber twist
+
+  xt debug -- sets up a fiber
+  ss --  <set single step> _twist
+
+thread
+  context
+    fp/fp0
+    ip
+    rp/rp0/rp_stop
+    sp/sp0
+    steps
+
+
+  current context
+    on switch/push/pop copy regs into current context
+
+  switch ( ctx -- ) switch context, set regs into current, set current to ctx, read regs
+
+
+debugging
+  requires debug build
+    before prim check
+      check for breakpoint
+      check for steps == 0 (ss/ms)
+      check for ip == <> (nx)
+      check for rp == <> (so)
+    check
+
+
+  <xt> debug.. sets up a debug context
+  stack of stacks (say 4 stacks of 64 cells each) impl dependent parameters
+
+  : debug' 32 word find ?dup if debug else ... then ;
+  \s (single step)
+  \o (step out)
+  \w (next word)
+  n \m (multistep)
+  \r (run)
+  \b (break)
+  \bt backtrace
+  bp
+
+  debug context:
+    ip
+    rp
+    <space for rp>
+    break points
+
+  breakpoint
+
 naming convention for executables
   <f79|f83|f94|f-ansi|f12|f-std>-<cell bits>-<length bits>-<thr(eaded)|sw(itched)|sub(routine)>-<r(elocatable)|a(bsolute)>
   eg
@@ -16,16 +143,9 @@ tools
   make
   sh
 
-action
-  inputs: config, primitives, template
-  outputs: .h and .c files
-    <describe content of those files>
-
 1. discover which optimizations cause failures in absolute addressing
    individually and pairwise for individual optimizations,
    no segfaults/bus errors, but -O1 still fails
-6. switch based dispatch
-2. separate primitive impl from dictionary init
 4. interpreter structure test harness
     f0
     itemize functional pieces by execution model
