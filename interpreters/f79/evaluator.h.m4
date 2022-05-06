@@ -177,6 +177,36 @@ do {                                                              \
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
 
+#define _save_fiber_state()                                       \
+do {                                                              \
+    register cell *fiber = _to_ptr(*fp);                          \
+    fiber[fa_ip]  = _from_ptr(ip);                                \
+    fiber[fa_rp]  = _from_ptr(rp);                                \
+    fiber[fa_rp0] = _from_ptr(rp0);                               \
+    _debug_save_fiber_state();                                    \
+} while (0)
+
+#define _load_fiber_state()                                       \
+do {                                                              \
+    register cell *fiber = _to_ptr(*fp);                          \
+    ip  = _to_ptr(fiber[fa_ip]);                                  \
+    rp  = _to_ptr(fiber[fa_rp]);                                  \
+    rp0 = _to_ptr(fiber[fa_rp0]);                                 \
+    _debug_load_fiber_state();                                    \
+} while (0)
+
+#define _join()                                                   \
+do {                                                              \
+    _save_fiber_state();                                          \
+    fp++;                                                         \
+} while (0)
+
+#define _nest()                                                   \
+do {                                                              \
+    *--rp = _from_ptr(ip+1);                                      \
+    ip = _to_ptr(*ip);                                            \
+} while (0)
+
 include(__preamble)dnl
 include(__memory_model)dnl
 include(__execution_model)dnl

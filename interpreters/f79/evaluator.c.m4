@@ -34,6 +34,12 @@ evaluate(cell *engine, const char *source, int storage_fd)
     register cell *sp;
     register cell *rp;
 
+    /* _declare_fiber_variables(); */
+    cell *fp;
+    cell *fp0;
+
+    _declare_debug_variables();
+
     if (e[ea_interpret]) {
 
         ip = _to_ptr(e[ea_ip]);
@@ -46,10 +52,10 @@ evaluate(cell *engine, const char *source, int storage_fd)
         sp = rp + PARAMETER_STACK_SIZE;
 
         /* registers */
-        e[ea_ip] = 0;
-        e[ea_rp] = _from_ptr(rp);
-        e[ea_sp] = _from_ptr(sp);
-        e[ea_dp] = e[ea_sp] + BUFFER_COUNT * sizeof(cell);
+        e[ea_ip]          = 0;
+        e[ea_rp]          = _from_ptr(rp);
+        e[ea_sp]          = _from_ptr(sp);
+        e[ea_dp]          = e[ea_sp] + BUFFER_COUNT * sizeof(cell);
 
         /* internal state */
         e[ea_base]        = 10;
@@ -68,6 +74,11 @@ evaluate(cell *engine, const char *source, int storage_fd)
         e[ea_next_buffer] = 0;
         e[ea_scr]         = 0;
 
+        _initialize_debug_variables();
+
+        /* e[ea_rp_stop]     = 0; */
+        /* e[ea_steps]       = -1; /\* negative numbers indicate no limit *\/ */
+
         for (register int i = 0; i < BUFFER_COUNT; i++)
             e[e[ea_buffers] + i] = -1;
     }
@@ -76,8 +87,14 @@ evaluate(cell *engine, const char *source, int storage_fd)
        in a register.
      */
     char *dp = (char *)_to_ptr(e[ea_dp]);
-    cell *rp0  = (cell *)_to_ptr(e[ea_rp0]);
-    cell *sp0  = (cell *)_to_ptr(e[ea_sp0]);
+    cell *rp0  = _to_ptr(e[ea_rp0]);
+    cell *sp0  = _to_ptr(e[ea_sp0]);
+
+    _load_debug_variables();
+
+    /* _load_fiber_variables(); */
+    fp  = _to_ptr(e[ea_fp]);
+    fp0 = _to_ptr(e[ea_fp0]);
 
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
@@ -90,8 +107,8 @@ evaluate(cell *engine, const char *source, int storage_fd)
        defines primitives and the bootstrap interpreter.
      */
     if (!e[ea_context]) {
-undivert(__primitive_word_definitions)
-undivert(__compiled_word_definitions)dnl
+        undivert(__primitive_word_definitions)
+        undivert(__compiled_word_definitions)dnl
         e[ea_context] = _from_ptr(&e[ea_forth]);
     }
 
@@ -113,6 +130,12 @@ undivert(__compiled_word_definitions)dnl
     e[ea_sp] = _from_ptr(sp);
     e[ea_rp] = _from_ptr(rp);
     e[ea_dp] = _from_ptr(dp);
+
+    _store_debug_variables();
+
+    /* _store_fiber_variables(); */
+    e[ea_fp]  = _from_ptr(fp) ;
+    e[ea_fp0] = _from_ptr(fp0);
 
     _debug("done with run: result: %d\n", result);
     _print_stack();

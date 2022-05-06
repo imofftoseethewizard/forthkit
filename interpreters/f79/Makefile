@@ -15,7 +15,7 @@ evaluator.c evaluator.h : ${m4_deps} evaluator.c.m4 evaluator.h.m4
 	  --define __compiled_words=${compiled_words} \
 	  $@.m4 | indent -kr -l96 >$@
 
-f79 : evaluator.c evaluator.h config.h log.h
+f79 : evaluator.c evaluator.h config.h debug.h log.h
 	gcc -E evaluator.c >evaluator.pp.c
 	gcc -m32 -o f79 evaluator.c -lreadline
 
