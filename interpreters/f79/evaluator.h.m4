@@ -52,18 +52,31 @@ enum engine_attribute {
     ea_buffers,
     ea_next_buffer,
     ea_scr,
-    ea_ip,
-    ea_rp,
-    ea_rp0,
-    ea_dp,
-    ea_sp,
-    ea_sp0,
-    ea_base,
-    ea_context,
-    ea_current,
-    ea_state,
-    ea_interpret,
-    ea_forth,
+    ea_fp,
+    ea_fp0,
+    ea_tp,
+
+    /* attributes of the current fiber */
+    engine_fiber_start,
+
+    ea_ip      = engine_fiber_start + fa_ip,
+    ea_rp      = engine_fiber_start + fa_rp,
+    ea_rp0     = engine_fiber_start + fa_rp0,
+    ea_rp_stop = engine_fiber_start + fa_rp_stop,
+    ea_steps   = engine_fiber_start + fa_steps,
+
+    /* attributes of the primary task */
+    engine_task_start,
+
+    ea_dp        = engine_task_start + ta_dp,
+    ea_sp        = engine_task_start + ta_sp,
+    ea_sp0       = engine_task_start + ta_sp0,
+    ea_base      = engine_task_start + ta_base,
+    ea_context   = engine_task_start + ta_context,
+    ea_current   = engine_task_start + ta_current,
+    ea_state     = engine_task_start + ta_state,
+    ea_interpret = engine_task_start + ta_interpret,
+    ea_forth     = engine_task_start + ta_forth,
 
     /* must be last */
     engine_attribute_count
