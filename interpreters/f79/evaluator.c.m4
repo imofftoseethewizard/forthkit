@@ -158,34 +158,6 @@ cell engine[((1 << 16)-1)/sizeof(cell)];
 int
 main(int argc, char *argv[])
 {
-    printf("ea_size: %d\n", ea_size);
-    printf("ea_source_addr: %d\n", ea_source_addr);
-    printf("ea_source_idx: %d\n", ea_source_idx);
-    printf("ea_source_len: %d\n", ea_source_len);
-    printf("ea_blk: %d\n", ea_blk);
-    printf("ea_buffers: %d\n", ea_buffers);
-    printf("ea_next_buffer: %d\n", ea_next_buffer);
-    printf("ea_scr: %d\n", ea_scr);
-    printf("ea_fp: %d\n", ea_fp);
-    printf("ea_fp0: %d\n", ea_fp0);
-    printf("ea_tp: %d\n", ea_tp);
-    printf("engine_fiber_start: %d\n", engine_fiber_start);
-    printf("ea_ip: %d\n", ea_ip);
-    printf("ea_rp: %d\n", ea_rp);
-    printf("ea_rp0: %d\n", ea_rp0);
-    printf("ea_rp_stop: %d\n", ea_rp_stop);
-    printf("ea_steps: %d\n", ea_steps);
-    printf("engine_task_start: %d\n", engine_task_start);
-    printf("ea_dp: %d\n", ea_dp);
-    printf("ea_sp: %d\n", ea_sp);
-    printf("ea_sp0: %d\n", ea_sp0);
-    printf("ea_base: %d\n", ea_base);
-    printf("ea_context: %d\n", ea_context);
-    printf("ea_current: %d\n", ea_current);
-    printf("ea_state: %d\n", ea_state);
-    printf("ea_interpret: %d\n", ea_interpret);
-    printf("ea_forth: %d\n", ea_forth);
-
     number result;
     char *line;
     int storage_fd = -1;

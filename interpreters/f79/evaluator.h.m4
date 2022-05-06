@@ -16,27 +16,54 @@ typedef unsigned DOUBLE_TYPE double_cell;
 #define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
 #define _to_low_word(x)    ((double_number)(x))
 
+enum fiber_attribute {
+    fa_ip,
+    fa_rp,
+    fa_rp0,
+    fa_rp_stop,
+    fa_steps,
+
+    /* must be last */
+    fiber_attribute_count
+};
+
+enum task_attribute {
+    ta_dp,
+    ta_sp,
+    ta_sp0,
+    ta_base,
+    ta_context,
+    ta_current,
+    ta_state,
+    ta_interpret,
+    ta_forth,
+
+    /* must be last */
+    task_attribute_count
+};
+
 enum engine_attribute {
+    /* attributes common to all tasks */
     ea_size,
-    ea_ip,
-    ea_rp,
-    ea_sp,
-    ea_dp,
-    ea_base,
-    ea_context,
-    ea_current,
-    ea_forth,
-    ea_rp0,
+    ea_source_addr,
     ea_source_idx,
     ea_source_len,
-    ea_sp0,
-    ea_state,
-    ea_interpret,
-    ea_source_addr,
     ea_blk,
     ea_buffers,
     ea_next_buffer,
     ea_scr,
+    ea_ip,
+    ea_rp,
+    ea_rp0,
+    ea_dp,
+    ea_sp,
+    ea_sp0,
+    ea_base,
+    ea_context,
+    ea_current,
+    ea_state,
+    ea_interpret,
+    ea_forth,
 
     /* must be last */
     engine_attribute_count
