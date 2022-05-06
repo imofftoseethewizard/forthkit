@@ -14,19 +14,19 @@ typedef void (native_word)(void);
 #define _pr_value_limit     __builtin_frame_address(0)
 
 define(`__implement_evaluator_core', `undivert(__primitive_implementations)
-do {
-        _trace("start dispatch:     ");
+while (ip) {
+    _trace("start dispatch:     ");
 
-        while (ip && !_is_primitive(*ip)) {
-            _trace("dispatch execute:   ");
-            *--rp = _from_ptr(ip+1);
-            ip = _to_ptr(*ip);
-        }
-
+    if (_is_primitive(*ip)) {
         _trace("dispatch primitive: ");
-        if (ip) ((native_word *)(_to_pv(*ip++)))();
+        ((native_word *)(_to_pv(*ip++)))();
+
+    } else {
+        _trace("dispatch execute:   ");
+        *--rp = _from_ptr(ip+1);
+        ip = _to_ptr(*ip);
     }
-    while (ip);
+}
 
     _trace("dispatch exited:   ");
 ')
