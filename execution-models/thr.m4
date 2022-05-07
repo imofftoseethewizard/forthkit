@@ -13,12 +13,12 @@ divert(__header_definitions)
 #define _next()                     \
     do {                            \
         if (!ip || _debug_break())  \
-            goto op_join;           \
+            goto op_end_fiber;      \
                                     \
         _debug_count_step();        \
                                     \
         if (!_is_primitive(*ip))    \
-            goto op_nest;           \
+            goto op_enter;           \
         else                        \
             goto *_to_pv(*ip++);    \
     }                               \
@@ -30,18 +30,19 @@ __first:
     if (0) {
         undivert(__primitive_implementations)
 
-      op_join:
+      op_end_fiber:
         {
-            _join();
+            _save_fiber_state();
+            fp++;
 
             if (fp == fp0)
                 goto __last;
         }
         _next();
 
-      op_nest:
+      op_enter:
         {
-            _nest();
+            _enter();
         }
         _next();
     }
