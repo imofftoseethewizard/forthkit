@@ -58,26 +58,26 @@ enum engine_attribute {
     ea_tp,
 
     /* attributes of the current fiber */
-    engine_fiber_start,
+    ea_primary_fiber,
 
-    ea_ip      = engine_fiber_start + fa_ip,
-    ea_rp      = engine_fiber_start + fa_rp,
-    ea_rp0     = engine_fiber_start + fa_rp0,
-    ea_rp_stop = engine_fiber_start + fa_rp_stop,
-    ea_steps   = engine_fiber_start + fa_steps,
+    ea_ip      = ea_primary_fiber + fa_ip,
+    ea_rp      = ea_primary_fiber + fa_rp,
+    ea_rp0     = ea_primary_fiber + fa_rp0,
+    ea_rp_stop = ea_primary_fiber + fa_rp_stop,
+    ea_steps   = ea_primary_fiber + fa_steps,
 
     /* attributes of the primary task */
-    engine_task_start,
+    ea_primary_task,
 
-    ea_dp        = engine_task_start + ta_dp,
-    ea_sp        = engine_task_start + ta_sp,
-    ea_sp0       = engine_task_start + ta_sp0,
-    ea_base      = engine_task_start + ta_base,
-    ea_context   = engine_task_start + ta_context,
-    ea_current   = engine_task_start + ta_current,
-    ea_state     = engine_task_start + ta_state,
-    ea_interpret = engine_task_start + ta_interpret,
-    ea_forth     = engine_task_start + ta_forth,
+    ea_dp        = ea_primary_task + ta_dp,
+    ea_sp        = ea_primary_task + ta_sp,
+    ea_sp0       = ea_primary_task + ta_sp0,
+    ea_base      = ea_primary_task + ta_base,
+    ea_context   = ea_primary_task + ta_context,
+    ea_current   = ea_primary_task + ta_current,
+    ea_state     = ea_primary_task + ta_state,
+    ea_interpret = ea_primary_task + ta_interpret,
+    ea_forth     = ea_primary_task + ta_forth,
 
     /* must be last */
     engine_attribute_count
@@ -195,13 +195,13 @@ do {                                                              \
     _debug_load_fiber_state();                                    \
 } while (0)
 
-#define _join()                                                   \
+#define _end_fiber()                                              \
 do {                                                              \
     _save_fiber_state();                                          \
     fp++;                                                         \
 } while (0)
 
-#define _nest()                                                   \
+#define _enter()                                                  \
 do {                                                              \
     *--rp = _from_ptr(ip+1);                                      \
     ip = _to_ptr(*ip);                                            \

@@ -34,7 +34,6 @@ evaluate(cell *engine, const char *source, int storage_fd)
     register cell *sp;
     register cell *rp;
 
-    /* _declare_fiber_variables(); */
     cell *fp;
     cell *fp0;
 
@@ -42,13 +41,16 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     if (e[ea_interpret]) {
 
-        ip = _to_ptr(e[ea_ip]);
-        sp = _to_ptr(e[ea_sp]);
-        rp = _to_ptr(e[ea_rp]);
+        fp  = _to_ptr(e[ea_fp]);
+        fp0 = _to_ptr(e[ea_fp0]);
+        ip  = _to_ptr(e[ea_ip]);
+        sp  = _to_ptr(e[ea_sp]);
+        rp  = _to_ptr(e[ea_rp]);
 
     } else {
 
-        rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
+        fp0 = fp = e + (engine_attribute_count + SOURCE_SIZE + FIBER_STACK_SIZE);
+        rp = fp + RETURN_STACK_SIZE;
         sp = rp + PARAMETER_STACK_SIZE;
 
         /* registers */
@@ -62,6 +64,8 @@ evaluate(cell *engine, const char *source, int storage_fd)
         e[ea_context]     = 0;
         e[ea_current]     = _from_ptr(&e[ea_forth]);
         e[ea_forth]       = 0;
+        e[ea_fp]          = _from_ptr(fp);
+        e[ea_fp0]         = e[ea_fp];
         e[ea_rp0]         = e[ea_rp];
         e[ea_source_idx]  = 0;
         e[ea_source_len]  = 0;
@@ -76,9 +80,6 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
         _initialize_debug_variables();
 
-        /* e[ea_rp_stop]     = 0; */
-        /* e[ea_steps]       = -1; /\* negative numbers indicate no limit *\/ */
-
         for (register int i = 0; i < BUFFER_COUNT; i++)
             e[e[ea_buffers] + i] = -1;
     }
@@ -91,10 +92,6 @@ evaluate(cell *engine, const char *source, int storage_fd)
     cell *sp0  = _to_ptr(e[ea_sp0]);
 
     _load_debug_variables();
-
-    /* _load_fiber_variables(); */
-    fp  = _to_ptr(e[ea_fp]);
-    fp0 = _to_ptr(e[ea_fp0]);
 
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
@@ -118,6 +115,10 @@ evaluate(cell *engine, const char *source, int storage_fd)
         memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
         e[ea_source_idx] = 0;
 
+        /* push new fiber for the interpreter task onto fiber stack */
+
+        *--fp = ea_primary_fiber;
+
         rp = rp0;
         *--rp = 0;
         ip = _to_ptr(e[ea_interpret]);
@@ -126,16 +127,13 @@ evaluate(cell *engine, const char *source, int storage_fd)
     __implement_evaluator_core() dnl
 
     /* Store state back in the engine structure. */
-    e[ea_ip] = _from_ptr(ip);
+    /* _save_task_state(); */
     e[ea_sp] = _from_ptr(sp);
-    e[ea_rp] = _from_ptr(rp);
     e[ea_dp] = _from_ptr(dp);
 
-    _store_debug_variables();
+    e[ea_fp] = _from_ptr(fp);
 
-    /* _store_fiber_variables(); */
-    e[ea_fp]  = _from_ptr(fp) ;
-    e[ea_fp0] = _from_ptr(fp0);
+    _store_debug_variables();
 
     _debug("done with run: result: %d\n", result);
     _print_stack();

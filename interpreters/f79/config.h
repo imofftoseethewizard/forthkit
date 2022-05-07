@@ -2,6 +2,7 @@
 #define BUFFER_SIZE              1024
 #define CELL_TYPE                int
 #define DOUBLE_TYPE              long long
+#define FIBER_STACK_SIZE         16
 #define LENGTH_TYPE              unsigned char
 #define MAX_WORD_LENGTH          64
 #define PARAMETER_STACK_SIZE     128
@@ -13,4 +14,4 @@
 #define TRACE                    0
 #define VERBOSE                  0
 
-#define DEBUG 0
+#define DEBUG 1
