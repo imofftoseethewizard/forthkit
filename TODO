@@ -1,29 +1,56 @@
 fiber migration
+  objective
+    support debugger
+
+  1. execute a word in a separate fiber, same task
+    a. allocate and initialize a fiber
+      buffer style? or in the dictionary?
+      : ?? ( xt -- f )
+        fiber dup >r
+        0 r@ >f-rp
+        r@ f-ip !
+        r>
+      ;
+    b. push onto fiber stack
+      xt fiber start
+    c. demonstrate that it ran on a separate return stack
+    d. end/clean up
+
+  2. step through a word in a separate fiber
+    a. set f-steps to 1 for each step
+    b. display ip each step.
+
+  3. execute a word in a separate fiver, new task
+    a. allocate and initialize task
+    b. proceed as in item 1.
+
   order
     indirection for task
     interpreter task
     fiber/task primitives/words/tests
-    fiber in eval loop?
 
-  think about how to define/describe fiber/task/word structures
   indirection for task attributes
   identify/define task/fiber words
-    snip ( -- ) f1 f0 -> f0
+    fiber ( -- f ) gets next empty fiber
+    snip ( -- ) f1 f0 -> f0 (clear f1)
     twist ( -- ) f1 f0 -> f0 f1
     braid ( n -- ) ; fn ... f1 f0 --> fn-1 ... f1 fn f0
-    join ( -- ) ; f1 f0 -> f1
+    end ( -- ) ; f1 f0 -> f1 (clear f0)
     start (f -- ) ; f0 -> f0 f
     #f ( -- n )
     f@ ( n -- f )
-    f>ip ( f -- a )
-    f>rp ( f -- a )
-    f>rp0 ( f -- a )
-    f>rp-stop ( f -- a )
-    f>steps ( f -- n )
-    f<ip!
-    f<rp!
-    f<rp0!
-
+    f-ip ( f -- addr )
+    f-rp ( f -- addr )
+    >f-rp
+    f-rp>
+    f-rp0 ( f -- addr )
+    f-rp-stop ( f -- addr )
+    f-steps ( f -- addr )
+    t-dp
+    t-sp
+    t-sp0
+    >t-sp
+    t-sp>
 
 
 types of concurrency
