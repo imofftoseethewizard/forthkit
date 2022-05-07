@@ -16,17 +16,16 @@ divert(__header_definitions)
 
 define(`__implement_evaluator_core', `
 
-    /*while (fp < fp0) {*/
+    while (fp < fp0) {
 
         while (ip && !_debug_break()) {
-            _trace("start dispatch:     ");
 
             _debug_count_step();
 
             if (!_is_primitive(*ip))
-                _nest();
+                _enter();
+
             else {
-                _trace("dispatch primitive: ");
                 switch (_to_pv(*ip++)) {
                 undivert(__primitive_implementations)
                 default:
@@ -36,8 +35,8 @@ define(`__implement_evaluator_core', `
                 }
             }
         }
-/*        _join();
-    }*/
-    _trace("dispatch exited:   ");
+       _save_fiber_state();
+       fp++;
+    }
 ')
 divert`'dnl
