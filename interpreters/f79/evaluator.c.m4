@@ -50,8 +50,8 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     } else {
 
-        fp0 = fp = e + (engine_attribute_count + SOURCE_SIZE + FIBER_STACK_SIZE);
-        rp = fp + RETURN_STACK_SIZE;
+        fp0 = fp = &e[ea_end_fiber_stack];
+        rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
         sp = rp + PARAMETER_STACK_SIZE;
 
         /* registers */
