@@ -23,6 +23,7 @@ enum fiber_attribute {
     fa_rp0,
     fa_rp_stop,
     fa_steps,
+    fa_tp,
 
     /* must be last */
     fiber_attribute_count
@@ -55,19 +56,24 @@ enum engine_attribute {
     ea_scr,
     ea_fp,
     ea_fp0,
-    ea_tp,
 
-    /* attributes of the current fiber */
-    ea_primary_fiber,
+    ea_fiber_stack = ea_fp0,
+    ea_end_fiber_stack = ea_fiber_stack + FIBER_COUNT,
+
+    /* attributes of the primary fiber */
+    ea_primary_fiber = ea_end_fiber_stack,
 
     ea_ip      = ea_primary_fiber + fa_ip,
     ea_rp      = ea_primary_fiber + fa_rp,
     ea_rp0     = ea_primary_fiber + fa_rp0,
+    ea_tp      = ea_primary_fiber + fa_tp,
     ea_rp_stop = ea_primary_fiber + fa_rp_stop,
     ea_steps   = ea_primary_fiber + fa_steps,
 
+    ea_end_fibers = ea_primary_fiber + (fiber_attribute_count + RETURN_STACK_SIZE) * FIBER_COUNT,
+
     /* attributes of the primary task */
-    ea_primary_task,
+    ea_primary_task = ea_end_fibers,
 
     ea_dp        = ea_primary_task + ta_dp,
     ea_sp        = ea_primary_task + ta_sp,
@@ -78,6 +84,8 @@ enum engine_attribute {
     ea_state     = ea_primary_task + ta_state,
     ea_interpret = ea_primary_task + ta_interpret,
     ea_forth     = ea_primary_task + ta_forth,
+
+    ea_end_tasks = ea_primary_task + (task_attribute_count + PARAMETER_STACK_SIZE) * TASK_COUNT,
 
     /* must be last */
     engine_attribute_count

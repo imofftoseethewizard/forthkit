@@ -34,6 +34,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
     register cell *sp;
     register cell *rp;
 
+    /* fiber stack */
     cell *fp;
     cell *fp0;
 
