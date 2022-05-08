@@ -118,7 +118,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
         /* push new fiber for the interpreter task onto fiber stack */
 
-        *--fp = ea_primary_fiber;
+        *--fp = _from_ptr(&e[ea_primary_fiber]);
 
         rp = rp0;
         *--rp = 0;
