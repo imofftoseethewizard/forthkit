@@ -1,4 +1,16 @@
 checks
+  bounds.h
+  _check_fiber_stack_bounds(()
+  _check_parameter_stack_bounds()
+  _check_loader_context_stack_bounds()
+  _check_return_stack_bounds()
+  _check_fiber_address()
+  _check_task_address()
+  _check_dictionary_bounds()
+  _check_buffer_address()
+  _check_task_memory()
+  _check_thread_memory()
+
   fiber, parameter, return stack underflow and overflow
   dictionary underflow and overflow
   initialization memory
