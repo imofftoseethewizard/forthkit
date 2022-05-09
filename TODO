@@ -1,3 +1,10 @@
+checks
+  fiber, parameter, return stack underflow and overflow
+  dictionary underflow and overflow
+  initialization memory
+
+move loader context stack out of return stack
+
 fiber migration
   objective
     support debugger

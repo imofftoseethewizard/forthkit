@@ -29,6 +29,7 @@ define(`__implement_evaluator_core', `
                 switch (_to_pv(*ip++)) {
                 undivert(__primitive_implementations)
                 default:
+                    printf("illegal operator.\n");
                     ip = 0;
                     break;
                     /* illegal operator */

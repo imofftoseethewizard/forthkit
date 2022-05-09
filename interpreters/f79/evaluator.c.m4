@@ -51,14 +51,15 @@ evaluate(cell *engine, const char *source, int storage_fd)
     } else {
 
         fp0 = fp = &e[ea_end_fiber_stack];
-        rp = e + (engine_attribute_count + SOURCE_SIZE + RETURN_STACK_SIZE);
-        sp = rp + PARAMETER_STACK_SIZE;
+        rp = &e[ea_primary_fiber + fiber_attribute_count + RETURN_STACK_SIZE];
+        /* TODO sp = &e[ea_primary_task + task_attribute_count + PARAMETER_STACK_SIZE];*/
+        sp = e + (engine_attribute_count + SOURCE_SIZE + PARAMETER_STACK_SIZE + RETURN_STACK_SIZE);
 
         /* registers */
         e[ea_ip]          = 0;
         e[ea_rp]          = _from_ptr(rp);
         e[ea_sp]          = _from_ptr(sp);
-        e[ea_dp]          = e[ea_sp] + BUFFER_COUNT * sizeof(cell);
+        e[ea_dp]          = e[ea_sp] + BUFFER_COUNT * sizeof(cell); /* TODO */
 
         /* internal state */
         e[ea_base]        = 10;
