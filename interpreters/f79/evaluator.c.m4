@@ -52,14 +52,13 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
         fp0 = fp = &e[ea_end_fiber_stack];
         rp = &e[ea_primary_fiber + fiber_attribute_count + RETURN_STACK_SIZE];
-        /* TODO sp = &e[ea_primary_task + task_attribute_count + PARAMETER_STACK_SIZE];*/
-        sp = e + (engine_attribute_count + SOURCE_SIZE + PARAMETER_STACK_SIZE + RETURN_STACK_SIZE);
+        sp = &e[ea_primary_task + task_attribute_count + PARAMETER_STACK_SIZE];
 
         /* registers */
         e[ea_ip]          = 0;
         e[ea_rp]          = _from_ptr(rp);
         e[ea_sp]          = _from_ptr(sp);
-        e[ea_dp]          = e[ea_sp] + BUFFER_COUNT * sizeof(cell); /* TODO */
+        e[ea_dp]          = _from_ptr(&e[ea_end_tasks]);
 
         /* internal state */
         e[ea_base]        = 10;
@@ -74,9 +73,9 @@ evaluate(cell *engine, const char *source, int storage_fd)
         e[ea_sp0]         = e[ea_sp];
         e[ea_state]       = 0;
         e[ea_interpret]   = 0;
-        e[ea_source_addr] = _from_ptr(&e[engine_attribute_count]);
+        e[ea_source_addr] = _from_ptr(&e[ea_source_buffer]);
         e[ea_blk]         = 0;
-        e[ea_buffers]     = e[ea_sp];
+        e[ea_buffers]     = _from_ptr(&e[ea_buffer_map]);
         e[ea_next_buffer] = 0;
         e[ea_scr]         = 0;
 

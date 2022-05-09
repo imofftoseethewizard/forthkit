@@ -60,8 +60,14 @@ enum engine_attribute {
     ea_fiber_stack = ea_fp0,
     ea_end_fiber_stack = ea_fiber_stack + FIBER_COUNT,
 
+    ea_buffer_map = ea_end_fiber_stack,
+    ea_end_buffer_map = ea_buffer_map + BUFFER_COUNT,
+
+    ea_source_buffer = ea_end_buffer_map,
+    ea_end_source_buffer = ea_source_buffer + SOURCE_SIZE / sizeof(cell),
+
     /* attributes of the primary fiber */
-    ea_primary_fiber = ea_end_fiber_stack,
+    ea_primary_fiber = ea_end_source_buffer,
 
     ea_ip      = ea_primary_fiber + fa_ip,
     ea_rp      = ea_primary_fiber + fa_rp,
