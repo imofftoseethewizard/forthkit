@@ -20,8 +20,7 @@ __primitive(pr_save_buffers)
                || write(storage_fd, _buffer_addr(n), BUFFER_SIZE) == -1
             ) {
 
-            *--sp = -34;
-            _abort();
+            _abort(-34);
             break;
         }
     }

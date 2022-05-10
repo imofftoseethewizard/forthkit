@@ -12,11 +12,8 @@ __primitive(pr_paren)
         e[ea_source_idx] = source_idx+1;
     else {
         e[ea_source_idx] = source_idx;
-        *--sp = -39;
-        _abort();
+        _abort(-39);
     }
-
-
 }
 __end
 __define_immediate_primitive(``"("'', pr_paren);

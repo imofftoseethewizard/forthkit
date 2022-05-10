@@ -7,12 +7,11 @@ __primitive(pr_read_block)
     if (   storage_fd < 0
         || lseek(storage_fd, n*BUFFER_SIZE, SEEK_SET) == -1
         || read(storage_fd, buffer, BUFFER_SIZE) == -1
-        ) {
+        )
 
-        *--sp = -33;
-        _abort();
+        _abort(-33);
 
-    } else
+    else
         *--sp = _from_ptr(buffer);
 
 }
