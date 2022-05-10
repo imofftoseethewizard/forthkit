@@ -217,11 +217,27 @@ main(int argc, char *argv[])
             printf("ok\n");
             break;
 
-        case -1:
+        case err_abort:
             show_error(engine, "aborted", engine[ea_source_idx]);
             break;
 
-        case -10:
+        case err_parameter_stack_overflow:
+            show_error(engine, "stack overflow", engine[ea_source_idx]);
+            break;
+
+        case err_parameter_stack_underflow:
+            show_error(engine, "stack underflow", engine[ea_source_idx]);
+            break;
+
+        case err_return_stack_overflow:
+            show_error(engine, "return stack overflow", engine[ea_source_idx]);
+            break;
+
+        case err_return_stack_underflow:
+            show_error(engine, "return stack underflow", engine[ea_source_idx]);
+            break;
+
+        case err_division_by_zero:
             show_error(engine, "division by zero", engine[ea_source_idx]);
             break;
 

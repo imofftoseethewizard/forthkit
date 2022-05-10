@@ -10,7 +10,7 @@ enum standard_exception_code {
     err_do_loops_nested_too_deeply_during_execution   = -7,
     err_dictionary_overflow                           = -8,
     err_invalid_memory_address                        = -9,
-    err_division_by_zero                              = -1,
+    err_division_by_zero                              = -10,
     err_result_out_of_range                           = -11,
     err_argument_type_mismatch                        = -12,
     err_undefined_word                                = -13,
