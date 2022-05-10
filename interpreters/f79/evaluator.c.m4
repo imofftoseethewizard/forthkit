@@ -40,6 +40,9 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     _declare_debug_variables();
 
+    /* Contains the throw code for uncaught exceptions. */
+    int result = 0;
+
     if (e[ea_interpret]) {
 
         fp  = _to_ptr(e[ea_fp]);
@@ -81,6 +84,8 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
         _initialize_debug_variables();
 
+        /*_check_thread_memory();*/
+
         for (register int i = 0; i < BUFFER_COUNT; i++)
             e[e[ea_buffers] + i] = -1;
     }
@@ -92,10 +97,14 @@ evaluate(cell *engine, const char *source, int storage_fd)
     cell *rp0  = _to_ptr(e[ea_rp0]);
     cell *sp0  = _to_ptr(e[ea_sp0]);
 
+    /*_check_fiber_stack_bounds();
+    _check_fiber_address(*fp);
+    _check_parameter_stack_bounds();
+    _check_return_stack_bounds();
+    _check_task_memory();*/
+
     _load_debug_variables();
 
-    /* Contains the throw code for uncaught exceptions. */
-    int result = 0;
     include(__preamble)dnl
     include(__execution_model)dnl
     include(__evaluator_primitives)dnl

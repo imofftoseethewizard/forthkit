@@ -8,6 +8,7 @@ __primitive(op_exit)
 {
     _trace("start exit: ");
     _exit();
+    _check_return_stack_bounds();
     _trace("end exit: ");
 }
 __end

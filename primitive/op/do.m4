@@ -3,10 +3,11 @@
    this as a primitive operation simplifies a common operation. Otherwise, this would be SWAP >R
    >R. That's the overhead of two additional _next() transitions.
 */
-__primitive(op_do)  
+__primitive(op_do)
 {
     *--rp = *(sp+1);
     *--rp = *sp;
     sp += 2;
+    _check_return_stack_bounds();
 }
 __end

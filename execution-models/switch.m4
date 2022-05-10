@@ -16,9 +16,9 @@ divert(__header_definitions)
 
 define(`__implement_evaluator_core', `
 
-    while (fp < fp0) {
+    while (!result && fp < fp0) {
 
-        while (ip && !_debug_break()) {
+        while (!result && ip && !_debug_break()) {
 
             _debug_count_step();
 
@@ -35,6 +35,7 @@ define(`__implement_evaluator_core', `
                     /* illegal operator */
                 }
             }
+            _check_parameter_stack_bounds();
         }
        _save_fiber_state();
        fp++;

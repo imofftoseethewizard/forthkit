@@ -20,6 +20,7 @@ move loader context stack out of return stack
 fiber migration
   objective
     support debugger
+    support step-based round-robin multi-fiber threads
 
   1. execute a word in a separate fiber, same task
     a. allocate and initialize a fiber
@@ -53,7 +54,7 @@ fiber migration
     fiber ( -- f ) gets next empty fiber
     snip ( -- ) f1 f0 -> f0 (clear f1)
     twist ( -- ) f1 f0 -> f0 f1
-    braid ( n -- ) ; fn ... f1 f0 --> fn-1 ... f1 fn f0
+    braid ( n -- ) ; fn ... f1 f0 --> f1 ... fn f0
     end ( -- ) ; f1 f0 -> f1 (clear f0)
     start (f -- ) ; f0 -> f0 f
     #f ( -- n )
@@ -254,8 +255,6 @@ tools
 8. multi-threading
 9. local multi-process
 10. indirect primitives for 2 byte word size, or translate more primitives to compiled
-11. token-based dispatch (ie, op_X and pr_X are mapped to/from enum)
-    might be necessary if compiled code for relocatable 16-bit forth > 32kb.
 14. other compilers: clang, bcc, tcc, pcc, icc
 14.
     consistency checks (config option)
@@ -269,3 +268,4 @@ tools
 12. f94
 13. f2012
 12. investigate Joy and HVM.
+15. posix signal handling

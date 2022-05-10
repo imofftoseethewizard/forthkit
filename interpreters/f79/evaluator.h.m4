@@ -1,5 +1,8 @@
 #include "config.h"
+
+#include "bounds.h"
 #include "debug.h"
+#include "errors.h"
 #include "log.h"
 
 typedef unsigned CELL_TYPE cell;
@@ -219,6 +222,7 @@ do {                                                              \
 do {                                                              \
     *--rp = _from_ptr(ip+1);                                      \
     ip = _to_ptr(*ip);                                            \
+    _check_return_stack_bounds();                                 \
 } while (0)
 
 include(__preamble)dnl
