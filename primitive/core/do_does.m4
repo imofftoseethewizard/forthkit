@@ -10,5 +10,7 @@ __primitive(pr_do_does)
     _debug("origp: %lx %x\n", (long)origp, _from_ptr(origp));
     *origp = (cell)_from_pr(op_jump);
     *(origp+1) = (doesp - origp + 1) * sizeof(cell);
+
+    _check_dictionary_bounds();
 }
 __end

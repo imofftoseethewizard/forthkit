@@ -117,6 +117,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
         undivert(__primitive_word_definitions)
         undivert(__compiled_word_definitions)dnl
         e[ea_context] = _from_ptr(&e[ea_forth]);
+        _check_dictionary_bounds();
     }
 
     if (source) {

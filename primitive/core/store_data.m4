@@ -4,6 +4,7 @@
 __primitive(pr_store_data)
 {
     _store_data(*sp++);
+    _check_dictionary_bounds();
 }
 __end
 __define_primitive(`","', pr_store_data);

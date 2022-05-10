@@ -1,4 +1,4 @@
-__primitive(pr_constant)  
+__primitive(pr_constant)
 {
 
     _store_word_name();
@@ -10,7 +10,7 @@ __primitive(pr_constant)
     _compile_pr(op_literal);
     _store_data(*sp++);
     _compile_pr(op_exit);
-
+    _check_dictionary_bounds();
 }
 __end
 __define_parsing_primitive("CONSTANT", pr_constant);

@@ -2,12 +2,10 @@
 
 #define _check_buffer_address(x)
 
-#define _check_dictionary_bounds()         \
-do {                                       \
-    if (dp < &e[engine_attribute_count])   \
-        _abort(err_dictionary_underflow);  \
-    else if (dp >= _buffer_addr(0))        \
-        _abort(err_dictionary_overflow);   \
+#define _check_dictionary_bounds()        \
+do {                                      \
+    if (dp >= _buffer_addr(0))            \
+        _abort(err_dictionary_overflow);  \
 } while (0)
 
 #define _check_fiber_address(f) \

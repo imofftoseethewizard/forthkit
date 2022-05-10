@@ -1,4 +1,4 @@
-__primitive(pr_do_does)  
+__primitive(pr_do_does)
 {
     register cell *word = _to_ptr(*_to_ptr(e[ea_current]));
     register cell *origp = _get_word_interpretation_ptr(word);
@@ -8,7 +8,7 @@ __primitive(pr_do_does)
 
 }
 __end
-__primitive(pr_does)  
+__primitive(pr_does)
 {
 
     /* At compile time, does> must capture the location of the code that
@@ -54,6 +54,7 @@ __primitive(pr_does)
     _compile_pr(pr_do_does);
     _compile_pr(op_exit);
 
+    _check_dictionary_bounds();
 }
 __end
 __define_immediate_primitive("DOES>", pr_does);

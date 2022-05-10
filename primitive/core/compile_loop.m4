@@ -8,10 +8,10 @@
         _store_data((char *)_to_ptr(*sp++) - dp + sizeof(cell));  \
     } while (0)
 
-__primitive(pr_compile_loop)  
+__primitive(pr_compile_loop)
 {
-
     _compile_loop();
+    _check_dictionary_bounds();
 }
 __end
 __define_immediate_primitive("LOOP", pr_compile_loop);

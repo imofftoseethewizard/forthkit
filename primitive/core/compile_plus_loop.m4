@@ -1,4 +1,4 @@
-__primitive(pr_compile_plus_loop)  
+__primitive(pr_compile_plus_loop)
 {
 
     /* op_plus_loop tests the limit condition, and if met, skips over the next
@@ -10,6 +10,7 @@ __primitive(pr_compile_plus_loop)
     _compile_pr(op_jump);
     _store_data((char *)_to_ptr(*sp++) - dp + sizeof(cell));
 
+    _check_dictionary_bounds();
 }
 __end
 __define_immediate_primitive("+LOOP", pr_compile_plus_loop);

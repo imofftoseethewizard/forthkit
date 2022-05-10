@@ -1,6 +1,5 @@
-__primitive(pr_dot_quote)  
+__primitive(pr_dot_quote)
 {
-
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
     register cell source_idx   = e[ea_source_idx] + 1; /* skip space after ." */
@@ -27,6 +26,8 @@ __primitive(pr_dot_quote)
         _compile_pr(op_literal);
         _store_data(s - s0);
         _compile_pr(pr_type);
+
+        _check_dictionary_bounds();
 
      } else {
 
