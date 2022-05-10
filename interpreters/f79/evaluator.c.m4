@@ -184,6 +184,8 @@ show_error(cell *e, const char *message, cell n) {
     putc('\n', stdout);
 }
 
+_define_result_messages();
+
 cell engine[((1 << 16)-1)/sizeof(cell)];
 
 int
@@ -213,57 +215,16 @@ main(int argc, char *argv[])
 
         result = evaluate(engine, line, storage_fd);
         switch (result) {
-        case 0:
-            printf("ok\n");
+        case result_ok:
+            printf("%s\n", result_messages[result]);
             break;
 
-        case err_abort:
-            show_error(engine, "aborted", engine[ea_source_idx]);
-            break;
-
-        case err_parameter_stack_overflow:
-            show_error(engine, "stack overflow", engine[ea_source_idx]);
-            break;
-
-        case err_parameter_stack_underflow:
-            show_error(engine, "stack underflow", engine[ea_source_idx]);
-            break;
-
-        case err_return_stack_overflow:
-            show_error(engine, "return stack overflow", engine[ea_source_idx]);
-            break;
-
-        case err_return_stack_underflow:
-            show_error(engine, "return stack underflow", engine[ea_source_idx]);
-            break;
-
-        case err_division_by_zero:
-            show_error(engine, "division by zero", engine[ea_source_idx]);
-            break;
-
-        case -13:
-            show_error(engine, "unrecognized word", engine[ea_source_idx]);
-            break;
-
-        case -24:
-            show_error(engine, "invalid numeric argument", engine[ea_source_idx]);
-            break;
-
-        case -33:
-            show_error(engine, "block read error", engine[ea_source_idx]);
-            break;
-
-        case -34:
-            show_error(engine, "block write error", engine[ea_source_idx]);
-            break;
-
-        case -39:
-            show_error(engine, "unexpected end of input", engine[ea_source_idx]);
-            break;
-
+        case err_abort_message:
         default:
-            fprintf(stderr, "unknown throw code: %ld\n", (long)result);
-            show_error(engine, "error location", engine[ea_source_idx]);
+            show_error(
+                engine,
+                (result <= next_error_code) ? "unknown_error" : result_messages[-result],
+                engine[ea_source_idx]);
             break;
         }
 

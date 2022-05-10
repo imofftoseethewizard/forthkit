@@ -1,90 +1,173 @@
 /* https://forth-standard.org/standard/exception */
 
-enum standard_exception_code {
-    err_abort                                         = -1,
-    err_abort_message                                 = -2,
-    err_parameter_stack_overflow                      = -3,
-    err_parameter_stack_underflow                     = -4,
-    err_return_stack_overflow                         = -5,
-    err_return_stack_underflow                        = -6,
-    err_do_loops_nested_too_deeply_during_execution   = -7,
-    err_dictionary_overflow                           = -8,
-    err_invalid_memory_address                        = -9,
-    err_division_by_zero                              = -10,
-    err_result_out_of_range                           = -11,
-    err_argument_type_mismatch                        = -12,
-    err_undefined_word                                = -13,
-    err_interpreting_a_compile_only_word              = -14,
-    err_invalid_forget                                = -15,
-    err_attempt_to_use_zero_length_string_as_a_name   = -16,
-    err_pictured_numeric_output_string_overflow       = -17,
-    err_parsed_string_overflow                        = -18,
-    err_definition_name_too_long                      = -19,
-    err_write_to_a_read_only_location                 = -20,
-    err_unsupported_operation                         = -21,
-    err_control_structure_mismatch                    = -22,
-    err_address_alignment_exception                   = -23,
-    err_invalid_numeric_argument                      = -24,
-    err_return_stack_imbalance                        = -25,
-    err_loop_parameters_unavailable                   = -26,
-    err_invalid_recursion                             = -27,
-    err_user_interrupt                                = -28,
-    err_compiler_nesting                              = -29,
-    err_obsolescent_feature                           = -30,
-    err_body_used_on_non_created_definition           = -31,
-    err_invalid_name_argument                         = -32,
-    err_block_read_exception                          = -33,
-    err_block_write_exception                         = -34,
-    err_invalid_block_number                          = -35,
-    err_invalid_file_position                         = -36,
-    err_file_io_exception                             = -37,
-    err_non_existent_file                             = -38,
-    err_unexpected_end_of_file                        = -39,
-    err_invalid_base_for_floating_point_conversion    = -40,
-    err_loss_of_precision                             = -41,
-    err_floating_point_divide_by_zero                 = -42,
-    err_floating_point_result_out_of_range            = -43,
-    err_floating_point_stack_overflow                 = -44,
-    err_floating_point_stack_underflow                = -45,
-    err_floating_point_invalid_argument               = -46,
-    err_compilation_word_list_deleted                 = -47,
-    err_invalid_postpone                              = -48,
-    err_search_order_overflow                         = -49,
-    err_search_order_underflow                        = -50,
-    err_compilation_word_list_changed                 = -51,
-    err_control_flow_stack_overflow                   = -52,
-    err_exception_stack_overflow                      = -53,
-    err_floating_point_underflow                      = -54,
-    err_floating_point_unidentified_fault             = -55,
-    err_quit                                          = -56,
-    err_exception_in_sending_or_receiving_a_character = -57,
-    err_compile_if_else_or_then_exception             = -58,
-    err_allocate                                      = -59,
-    err_free                                          = -60,
-    err_resize                                        = -61,
-    err_close_file                                    = -62,
-    err_create_file                                   = -63,
-    err_delete_file                                   = -64,
-    err_file_position                                 = -65,
-    err_file_size                                     = -66,
-    err_file_status                                   = -67,
-    err_flush_file                                    = -68,
-    err_open_file                                     = -69,
-    err_read_file                                     = -70,
-    err_read_line                                     = -71,
-    err_rename_file                                   = -72,
-    err_reposition_file                               = -73,
-    err_resize_file                                   = -74,
-    err_write_file                                    = -75,
-    err_write_line                                    = -76,
-    err_malformed_xchar                               = -77,
-    err_substitute                                    = -78,
-    err_replaces                                      = -79,
-    last_standard_exception_code                      = -79
+enum standard_result_code {
+    next_error_code = -82,
+    err_fiber_stack_underflow,
+    err_fiber_stack_overflow,
+    err_replaces,
+    err_substitute,
+    err_malformed_xchar,
+    err_write_line,
+    err_write_file,
+    err_resize_file,
+    err_reposition_file,
+    err_rename_file,
+    err_read_line,
+    err_read_file,
+    err_open_file,
+    err_flush_file,
+    err_file_status,
+    err_file_size,
+    err_file_position,
+    err_delete_file,
+    err_create_file,
+    err_close_file,
+    err_resize,
+    err_free,
+    err_allocate,
+    err_compile_if_else_or_then_exception,
+    err_exception_in_sending_or_receiving_a_character,
+    err_quit,
+    err_floating_point_unidentified_fault,
+    err_floating_point_underflow,
+    err_exception_stack_overflow,
+    err_control_flow_stack_overflow,
+    err_compilation_word_list_changed,
+    err_search_order_underflow,
+    err_search_order_overflow,
+    err_invalid_postpone,
+    err_compilation_word_list_deleted,
+    err_floating_point_invalid_argument,
+    err_floating_point_stack_underflow,
+    err_floating_point_stack_overflow,
+    err_floating_point_result_out_of_range,
+    err_floating_point_divide_by_zero,
+    err_loss_of_precision,
+    err_invalid_base_for_floating_point_conversion,
+    err_unexpected_end_of_file,
+    err_non_existent_file,
+    err_file_io_exception,
+    err_invalid_file_position,
+    err_invalid_block_number,
+    err_block_write_exception,
+    err_block_read_exception,
+    err_invalid_name_argument,
+    err_body_used_on_non_created_definition,
+    err_obsolescent_feature,
+    err_compiler_nesting,
+    err_user_interrupt,
+    err_invalid_recursion,
+    err_loop_parameters_unavailable,
+    err_return_stack_imbalance,
+    err_invalid_numeric_argument,
+    err_address_alignment_exception,
+    err_control_structure_mismatch,
+    err_unsupported_operation,
+    err_write_to_a_read_only_location,
+    err_definition_name_too_long,
+    err_parsed_string_overflow,
+    err_pictured_numeric_output_string_overflow,
+    err_attempt_to_use_zero_length_string_as_a_name,
+    err_invalid_forget,
+    err_interpreting_a_compile_only_word,
+    err_undefined_word,
+    err_argument_type_mismatch,
+    err_result_out_of_range,
+    err_division_by_zero,
+    err_invalid_memory_address,
+    err_dictionary_overflow,
+    err_do_loops_nested_too_deeply_during_execution,
+    err_return_stack_underflow,
+    err_return_stack_overflow,
+    err_parameter_stack_underflow,
+    err_parameter_stack_overflow,
+    err_abort_message,
+    err_abort,
+    result_ok
 };
 
-enum extended_exception_code {
-    err_fiber_stack_overflow                          = last_standard_exception_code - 1,
-    err_fiber_stack_underflow                         = last_standard_exception_code - 2,
-    err_dictionary_underflow                          = last_standard_exception_code - 3,
-};
+#define _define_result_messages()                     \
+static char *result_messages[] = {                    \
+    "ok",                                             \
+    "abort",                                          \
+    "abort message",                                  \
+    "stack overflow",                                 \
+    "stack underflow",                                \
+    "return stack overflow",                          \
+    "return stack underflow",                         \
+    "do loops nested too deeply during execution",    \
+    "dictionary overflow",                            \
+    "invalid memory address",                         \
+    "division by zero",                               \
+    "result out of range",                            \
+    "argument type mismatch",                         \
+    "undefined word",                                 \
+    "interpreting a compile only word",               \
+    "invalid forget",                                 \
+    "attempt to use zero length string as a name",    \
+    "pictured numeric output string overflow",        \
+    "parsed string overflow",                         \
+    "definition name too long",                       \
+    "write to a read only location",                  \
+    "unsupported operation",                          \
+    "control structure mismatch",                     \
+    "address alignment exception",                    \
+    "invalid numeric argument",                       \
+    "return stack imbalance",                         \
+    "loop parameters unavailable",                    \
+    "invalid recursion",                              \
+    "user interrupt",                                 \
+    "compiler nesting",                               \
+    "obsolescent feature",                            \
+    "body used on non created definition",            \
+    "invalid name argument",                          \
+    "block read exception",                           \
+    "block write exception",                          \
+    "invalid block number",                           \
+    "invalid file position",                          \
+    "file io exception",                              \
+    "non existent file",                              \
+    "unexpected end of file",                         \
+    "invalid base for floating point conversion",     \
+    "loss of precision",                              \
+    "floating point divide by zero",                  \
+    "floating point result out of range",             \
+    "floating point stack overflow",                  \
+    "floating point stack underflow",                 \
+    "floating point invalid argument",                \
+    "compilation word list deleted",                  \
+    "invalid postpone",                               \
+    "search order overflow",                          \
+    "search order underflow",                         \
+    "compilation word list changed",                  \
+    "control flow stack overflow",                    \
+    "exception stack overflow",                       \
+    "floating point underflow",                       \
+    "floating point unidentified fault",              \
+    "quit",                                           \
+    "exception in sending or receiving a character",  \
+    "compile if else or then exception",              \
+    "allocate",                                       \
+    "free",                                           \
+    "resize",                                         \
+    "close file",                                     \
+    "create file",                                    \
+    "delete file",                                    \
+    "file position",                                  \
+    "file size",                                      \
+    "file status",                                    \
+    "flush file",                                     \
+    "open file",                                      \
+    "read file",                                      \
+    "read line",                                      \
+    "rename file",                                    \
+    "reposition file",                                \
+    "resize file",                                    \
+    "write file",                                     \
+    "write line",                                     \
+    "malformed xchar",                                \
+    "substitute",                                     \
+    "replaces",                                       \
+    "fiber stack overflow",                           \
+    "fiber stack underflow",                          \
+}
