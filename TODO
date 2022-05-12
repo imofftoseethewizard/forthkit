@@ -1,30 +1,15 @@
-checks
-  bounds.h
-  _check_fiber_stack_bounds(()
-  _check_parameter_stack_bounds()
-  _check_loader_context_stack_bounds()
-  _check_return_stack_bounds()
-  _check_fiber_address()
-  _check_task_address()
-  _check_dictionary_bounds()
-  _check_buffer_address()
-  _check_task_memory()
-  _check_thread_memory()
-
-  fiber, parameter, return stack underflow and overflow
-  dictionary underflow and overflow
-  initialization memory
-
 move loader context stack out of return stack
+
+slab tooling for buffers, fibers, and tasks.
 
 fiber migration
   objective
     support debugger
     support step-based round-robin multi-fiber threads
+    support "async" model ala js, Python
 
   1. execute a word in a separate fiber, same task
     a. allocate and initialize a fiber
-      buffer style? or in the dictionary?
       : ?? ( xt -- f )
         fiber dup >r
         0 r@ >f-rp
@@ -49,9 +34,12 @@ fiber migration
     interpreter task
     fiber/task primitives/words/tests
 
+  change *fp, *tp values to be indicies, rather than ptrs
+
   indirection for task attributes
   identify/define task/fiber words
-    fiber ( -- f ) gets next empty fiber
+    fiber ( xt -- f ) gets next empty fiber
+      initialize ip = xt, rp, rp0 in fiber
     snip ( -- ) f1 f0 -> f0 (clear f1)
     twist ( -- ) f1 f0 -> f0 f1
     braid ( n -- ) ; fn ... f1 f0 --> f1 ... fn f0

@@ -26,11 +26,13 @@ enum fiber_attribute {
     fa_rp0,
     fa_rp_stop,
     fa_steps,
-    fa_tp,
+    fa_task,
 
     /* must be last */
     fiber_attribute_count
 };
+
+#define _fiber_size (fiber_attribute_count + RETURN_STACK_SIZE)
 
 enum task_attribute {
     ta_dp,
@@ -46,6 +48,8 @@ enum task_attribute {
     /* must be last */
     task_attribute_count
 };
+
+#define _task_size (task_attribute_count + PARAMETER_STACK_SIZE)
 
 enum engine_attribute {
     /* attributes common to all tasks */
@@ -75,11 +79,11 @@ enum engine_attribute {
     ea_ip      = ea_primary_fiber + fa_ip,
     ea_rp      = ea_primary_fiber + fa_rp,
     ea_rp0     = ea_primary_fiber + fa_rp0,
-    ea_tp      = ea_primary_fiber + fa_tp,
+    ea_task    = ea_primary_fiber + fa_task,
     ea_rp_stop = ea_primary_fiber + fa_rp_stop,
     ea_steps   = ea_primary_fiber + fa_steps,
 
-    ea_end_fibers = ea_primary_fiber + (fiber_attribute_count + RETURN_STACK_SIZE) * FIBER_COUNT,
+    ea_end_fibers = ea_primary_fiber + _fiber_size * FIBER_COUNT,
 
     /* attributes of the primary task */
     ea_primary_task = ea_end_fibers,
@@ -194,22 +198,28 @@ do {                                                              \
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
 
+#define _to_fiber_ptr(n) (&e[ea_primary_fiber] + _fiber_size * (n))
+#define _to_task_ptr(n)  (&e[ea_primary_task]  + _task_size  * (n))
+
 #define _save_fiber_state()                                       \
 do {                                                              \
-    register cell *fiber = _to_ptr(*fp);                          \
-    fiber[fa_ip]  = _from_ptr(ip);                                \
+    register cell *fiber = _to_fiber_ptr(*fp);                    \
+    fiber[fa_ip]  = rp == rp0 ? 0 : _from_ptr(ip);                \
     fiber[fa_rp]  = _from_ptr(rp);                                \
     fiber[fa_rp0] = _from_ptr(rp0);                               \
-    _debug_save_fiber_state();                                    \
+    fiber[fa_rp_stop] = _from_ptr(rp_stop);                       \
+    fiber[fa_steps] = steps;                                      \
 } while (0)
 
 #define _load_fiber_state()                                       \
 do {                                                              \
-    register cell *fiber = _to_ptr(*fp);                          \
-    ip  = _to_ptr(fiber[fa_ip]);                                  \
-    rp  = _to_ptr(fiber[fa_rp]);                                  \
-    rp0 = _to_ptr(fiber[fa_rp0]);                                 \
-    _debug_load_fiber_state();                                    \
+    register cell *fiber = _to_fiber_ptr(*fp);                    \
+                                                                  \
+    ip      = fiber[fa_ip] ? _to_ptr(fiber[fa_ip]) : 0;           \
+    rp      = _to_ptr(fiber[fa_rp]);                              \
+    rp0     = _to_ptr(fiber[fa_rp0]);                             \
+    rp_stop = _to_ptr(fiber[fa_rp_stop]);                         \
+    steps   = fiber[fa_steps];                                    \
 } while (0)
 
 #define _end_fiber()                                              \

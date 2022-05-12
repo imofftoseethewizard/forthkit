@@ -1,7 +1,9 @@
 /* https://forth-standard.org/standard/exception */
 
 enum standard_result_code {
-    next_error_code = -82,
+    next_error_code = -84,
+    err_invalid_fiber_number,
+    err_no_fibers_available,
     err_fiber_stack_underflow,
     err_fiber_stack_overflow,
     err_replaces,
@@ -170,4 +172,6 @@ static char *result_messages[] = {                    \
     "replaces",                                       \
     "fiber stack overflow",                           \
     "fiber stack underflow",                          \
+    "no fibers available",                            \
+    "invalid fiber number",                           \
 }

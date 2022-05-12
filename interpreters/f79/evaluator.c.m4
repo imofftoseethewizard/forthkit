@@ -31,14 +31,15 @@ evaluate(cell *engine, const char *source, int storage_fd)
     /* These are the most commonly referenced variables. */
     register cell *e = engine;
     register cell *ip;
-    register cell *sp;
     register cell *rp;
+    register cell *sp;
+    register cell *tp;
+    register cell *rp_stop;
+    register number steps;
 
     /* fiber stack */
     cell *fp;
     cell *fp0;
-
-    _declare_debug_variables();
 
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
@@ -50,6 +51,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
         ip  = _to_ptr(e[ea_ip]);
         sp  = _to_ptr(e[ea_sp]);
         rp  = _to_ptr(e[ea_rp]);
+        tp  = _to_task_ptr(e[ea_task]);
 
     } else {
 
@@ -82,7 +84,8 @@ evaluate(cell *engine, const char *source, int storage_fd)
         e[ea_next_buffer] = 0;
         e[ea_scr]         = 0;
 
-        _initialize_debug_variables();
+        e[ea_rp_stop]     = 0;
+        e[ea_steps]       = -1; /* negative numbers indicate no limit */
 
         /*_check_thread_memory();*/
 
@@ -98,12 +101,10 @@ evaluate(cell *engine, const char *source, int storage_fd)
     cell *sp0  = _to_ptr(e[ea_sp0]);
 
     /*_check_fiber_stack_bounds();
-    _check_fiber_address(*fp);
-    _check_parameter_stack_bounds();
-    _check_return_stack_bounds();
     _check_task_memory();*/
 
-    _load_debug_variables();
+    rp_stop = _to_ptr(e[ea_rp_stop]);
+    steps = e[ea_steps];
 
     include(__preamble)dnl
     include(__execution_model)dnl
@@ -128,7 +129,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
         /* push new fiber for the interpreter task onto fiber stack */
 
-        *--fp = _from_ptr(&e[ea_primary_fiber]);
+        *--fp = 0; /* use the primary fiber at idx 0 */
 
         rp = rp0;
         *--rp = 0;
@@ -144,7 +145,8 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     e[ea_fp] = _from_ptr(fp);
 
-    _store_debug_variables();
+    e[ea_rp_stop] = _from_ptr(rp_stop);
+    e[ea_steps] = steps;
 
     _debug("done with run: result: %d\n", result);
     _print_stack();

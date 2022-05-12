@@ -18,9 +18,9 @@ define(`__implement_evaluator_core', `
 
     while (fp < fp0 && !result) {
 
-        while (ip && !result && !_debug_break()) {
+        while (ip && steps && !result) {
 
-            _debug_count_step();
+            if (steps > 0) steps -= 1;
 
             if (!_is_primitive(*ip))
                 _enter();
@@ -29,7 +29,6 @@ define(`__implement_evaluator_core', `
                 switch (_to_pv(*ip++)) {
                 undivert(__primitive_implementations)
                 default:
-                    printf("illegal operator.\n");
                     ip = 0;
                     break;
                     /* illegal operator */
