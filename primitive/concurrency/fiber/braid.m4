@@ -3,9 +3,11 @@ __primitive(pr_braid)
     register cell f_tmp;
     register cell n = *sp++;
 
-    if ((fp0 - fp) / sizeof(cell) < (n < 2 ? 2 : n))
+    if (fp >= fp0 - n)
         _abort(err_fiber_stack_underflow);
-    else {
+
+    else if (fp < fp0 - 1) {
+
         if (n == 0)
             _save_fiber_state();
 
