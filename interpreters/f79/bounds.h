@@ -2,16 +2,10 @@
 
 #define _check_buffer_address(x)
 
-#define _check_dictionary_bounds()        \
-do {                                      \
-    if (dp >= _buffer_addr(0))            \
-        _abort(err_dictionary_overflow);  \
-} while (0)
-
-#define _check_fiber_address(f) \
-do { \
-    if ((char *)(f) < (char *)&e[ea_primary_fiber] || (char *)(f) >= (char *)&e[ea_end_fibers]) return err_illegal_fiber_address; \
-    if (((char *)(f) - (char *)&e[ea_primary_fiber]) % (fiber_attribute_count * sizeof(cell))) return err_misaligned_fiber_address; \
+#define _check_dictionary_bounds()              \
+do {                                            \
+    if (dp >= _buffer_addr(0))                  \
+        _abort(err_dictionary_overflow);        \
 } while (0)
 
 #define _check_fiber_stack_bounds()             \
@@ -48,7 +42,6 @@ do {                                            \
 
 #define _check_buffer_address()
 #define _check_dictionary_bounds()
-#define _check_fiber_address()
 #define _check_fiber_stack_bounds()
 #define _check_loader_context_stack_bounds()
 #define _check_parameter_stack_bounds()

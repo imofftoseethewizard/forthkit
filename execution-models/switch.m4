@@ -39,8 +39,10 @@ define(`__implement_evaluator_core', `
             _check_parameter_stack_bounds();
         }
 
-       _save_fiber_state();
-       fp++;
+       if (fp < fp0) {
+           _save_fiber_state();
+           fp++;
+       }
     }
 ')
 divert`'dnl

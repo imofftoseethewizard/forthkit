@@ -72,6 +72,8 @@ evaluate(cell *engine, const char *source, int storage_fd)
         e[ea_rp]          = _from_ptr(rp);
         e[ea_sp]          = _from_ptr(sp);
         e[ea_dp]          = _from_ptr(dp);
+        e[ea_rp_stop]     = 0;
+        e[ea_steps]       = -1; /* negative numbers indicate no limit */
 
         /* internal state */
         e[ea_base]        = 10;
@@ -91,9 +93,6 @@ evaluate(cell *engine, const char *source, int storage_fd)
         e[ea_buffers]     = _from_ptr(&e[ea_buffer_map]);
         e[ea_next_buffer] = 0;
         e[ea_scr]         = 0;
-
-        e[ea_rp_stop]     = 0;
-        e[ea_steps]       = -1; /* negative numbers indicate no limit */
 
         /*_check_thread_memory();*/
 
@@ -120,6 +119,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
         tp  = _to_task_ptr(e[ea_task]);
 
         dp = (char *)_to_ptr(e[ea_dp]);
+        fp0 = _to_ptr(e[ea_fp0]);
         rp0 = _to_ptr(e[ea_rp0]);
         sp0  = _to_ptr(e[ea_sp0]);
 
@@ -131,7 +131,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
         /* push new fiber for the interpreter task onto fiber stack */
 
         fp = fp0;
-        *--fp = 0; /* use the primary fiber at idx 0 */
+        *--fp = _primary_fiber;
 
         rp = rp0;
         *--rp = 0;

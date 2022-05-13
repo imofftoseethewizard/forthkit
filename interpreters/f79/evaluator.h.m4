@@ -198,6 +198,8 @@ do {                                                              \
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
 
+#define _primary_fiber 0
+
 #define _to_fiber_ptr(n) (&e[ea_primary_fiber] + _fiber_size * (n))
 #define _to_task_ptr(n)  (&e[ea_primary_task]  + _task_size  * (n))
 
