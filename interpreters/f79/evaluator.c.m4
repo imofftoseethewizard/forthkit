@@ -1,3 +1,8 @@
+include(__preamble)dnl
+include(__execution_model)dnl
+include(__evaluator_primitives)dnl
+include(__compiled_words)dnl
+
 #include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -28,7 +33,11 @@ reset_execution_state(cell *e)
 int
 evaluate(cell *engine, const char *source, int storage_fd)
 {
-    /* These are the most commonly referenced variables. */
+    __declare_primitives()dnl
+
+    /* These are the most commonly referenced variables, generally every
+       iteration of the interpreter loop. */
+
     register cell *e = engine;
     register cell *ip;
     register cell *rp;
@@ -37,6 +46,9 @@ evaluate(cell *engine, const char *source, int storage_fd)
     register cell *rp_stop;
     register number steps;
 
+    /* These are useful to have, but probably not worth putting in a register.
+     */
+
     /* fiber stack */
     cell *fp;
     cell *fp0;
@@ -44,26 +56,22 @@ evaluate(cell *engine, const char *source, int storage_fd)
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
 
-    if (e[ea_interpret]) {
+    char *dp;
+    cell *rp0;
+    cell *sp0;
 
-        fp  = _to_ptr(e[ea_fp]);
-        fp0 = _to_ptr(e[ea_fp0]);
-        ip  = _to_ptr(e[ea_ip]);
-        sp  = _to_ptr(e[ea_sp]);
-        rp  = _to_ptr(e[ea_rp]);
-        tp  = _to_task_ptr(e[ea_task]);
-
-    } else {
+    if (!e[ea_interpret]) {
 
         fp0 = fp = &e[ea_end_fiber_stack];
-        rp = &e[ea_primary_fiber + fiber_attribute_count + RETURN_STACK_SIZE];
-        sp = &e[ea_primary_task + task_attribute_count + PARAMETER_STACK_SIZE];
+        rp0 = rp = &e[ea_primary_fiber + fiber_attribute_count + RETURN_STACK_SIZE];
+        sp0 = sp = &e[ea_primary_task + task_attribute_count + PARAMETER_STACK_SIZE];
+        dp = (char *)&e[ea_end_tasks];
 
         /* registers */
         e[ea_ip]          = 0;
         e[ea_rp]          = _from_ptr(rp);
         e[ea_sp]          = _from_ptr(sp);
-        e[ea_dp]          = _from_ptr(&e[ea_end_tasks]);
+        e[ea_dp]          = _from_ptr(dp);
 
         /* internal state */
         e[ea_base]        = 10;
@@ -91,37 +99,30 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
         for (register int i = 0; i < BUFFER_COUNT; i++)
             e[e[ea_buffers] + i] = -1;
-    }
 
-    /* These are generally useful to have, but probably not worth putting
-       in a register.
-     */
-    char *dp = (char *)_to_ptr(e[ea_dp]);
-    cell *rp0  = _to_ptr(e[ea_rp0]);
-    cell *sp0  = _to_ptr(e[ea_sp0]);
-
-    /*_check_fiber_stack_bounds();
-    _check_task_memory();*/
-
-    rp_stop = _to_ptr(e[ea_rp_stop]);
-    steps = e[ea_steps];
-
-    include(__preamble)dnl
-    include(__execution_model)dnl
-    include(__evaluator_primitives)dnl
-    include(__compiled_words)dnl
-    __declare_primitives()dnl
-    /* The first run will have context == 0. The preamble detects that and
-       defines primitives and the bootstrap interpreter.
-     */
-    if (!e[ea_context]) {
         undivert(__primitive_word_definitions)
         undivert(__compiled_word_definitions)dnl
         e[ea_context] = _from_ptr(&e[ea_forth]);
         _check_dictionary_bounds();
+        e[ea_dp] = _from_ptr(dp);
     }
 
+    /*_check_fiber_stack_bounds();
+    _check_task_memory();*/
+
+    /* The first run will have context == 0. The preamble detects that and
+       defines primitives and the bootstrap interpreter.
+     */
     if (source) {
+
+        sp  = _to_ptr(e[ea_sp]);
+        rp  = _to_ptr(e[ea_rp]);
+        tp  = _to_task_ptr(e[ea_task]);
+
+        dp = (char *)_to_ptr(e[ea_dp]);
+        rp0 = _to_ptr(e[ea_rp0]);
+        sp0  = _to_ptr(e[ea_sp0]);
+
         _debug("interpreting source '%s'\n", source);
 
         memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
@@ -129,11 +130,27 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
         /* push new fiber for the interpreter task onto fiber stack */
 
+        fp = fp0;
         *--fp = 0; /* use the primary fiber at idx 0 */
 
         rp = rp0;
         *--rp = 0;
         ip = _to_ptr(e[ea_interpret]);
+
+        _save_fiber_state();
+
+    } else {
+
+        fp  = _to_ptr(e[ea_fp]);
+        fp0 = _to_ptr(e[ea_fp0]);
+        ip  = _to_ptr(e[ea_ip]);
+        sp  = _to_ptr(e[ea_sp]);
+        rp  = _to_ptr(e[ea_rp]);
+        tp  = _to_task_ptr(e[ea_task]);
+
+        dp = (char *)_to_ptr(e[ea_dp]);
+        rp0 = _to_ptr(e[ea_rp0]);
+        sp0  = _to_ptr(e[ea_sp0]);
     }
 
     __implement_evaluator_core() dnl
@@ -144,9 +161,6 @@ evaluate(cell *engine, const char *source, int storage_fd)
     e[ea_dp] = _from_ptr(dp);
 
     e[ea_fp] = _from_ptr(fp);
-
-    e[ea_rp_stop] = _from_ptr(rp_stop);
-    e[ea_steps] = steps;
 
     _debug("done with run: result: %d\n", result);
     _print_stack();

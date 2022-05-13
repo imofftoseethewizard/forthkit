@@ -31,11 +31,11 @@ do {                                                                     \
 
 #define _print_registers()                                               \
 do {                                                                     \
-    _debug("ip: %16lx; *ip: %16lx, rp: %16lx, *rp: %16lx, sp: %16lx, *sp: %16lx, here: %16lx\n",  \
+    _debug("ip: %16lx; *ip: %16lx, rp: %16lx, *rp: %16lx, sp: %16lx, *sp: %16lx, dp: %16lx\n",  \
            (long)ip, ip?(long)*ip:0,                                     \
            (long)rp, rp?(long)_to_ptr(*rp):0,                           \
            (long)sp, sp?(long)*sp:0,                                    \
-           (long)here);                                    \
+           (long)dp);                                    \
 } while (0)
 
 

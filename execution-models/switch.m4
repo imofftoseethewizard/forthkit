@@ -18,6 +18,8 @@ define(`__implement_evaluator_core', `
 
     while (fp < fp0 && !result) {
 
+        _load_fiber_state();
+
         while (ip && steps && !result) {
 
             if (steps > 0) steps -= 1;

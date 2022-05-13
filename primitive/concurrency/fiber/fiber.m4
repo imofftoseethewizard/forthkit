@@ -2,8 +2,7 @@ __primitive(pr_fiber)
 {
     register int idx;
 
-    /* start at 1 since 0 is the primary fiber */
-    for (idx = 1; idx < FIBER_COUNT; idx++)
+    for (idx = 0; idx < FIBER_COUNT; idx++)
         if (_to_fiber_ptr(idx)[fa_ip] == 0)
             break;
 
