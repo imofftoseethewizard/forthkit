@@ -64,7 +64,6 @@ evaluate_file(char *path)
         exit(3);
     }
 
-    printf("result: %d\n", result);
     return result;
 }
 
