@@ -1,4 +1,22 @@
+test harness
+  separate evaluate.c into evaluate.c and interepreter.c
+  create test.c parallel to interperter.c
+    accepts test file name from cmd line, returns 0 if tests pass
+    handles verifying non-zero result codes
+
+    f79-test [-r symbol/number] test-file
+
+core fiber test suite
+  braid
+  end
+  fiber
+  lay
+  snip
+  start
+  twist
+
 move loader context stack out of return stack
+move fibers and tasks up to buffer memory
 
 slab tooling for buffers, fibers, and tasks.
 
@@ -25,7 +43,7 @@ fiber migration
     a. set f-steps to 1 for each step
     b. display ip each step.
 
-  3. execute a word in a separate fiver, new task
+  3. execute a word in a separate fiber, new task
     a. allocate and initialize task
     b. proceed as in item 1.
 

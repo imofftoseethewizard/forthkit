@@ -1,0 +1,1 @@
+#define TEST_EVALUATOR_SIZE_BYTES (1 << 20)
