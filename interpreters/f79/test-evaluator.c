@@ -56,14 +56,15 @@ evaluate_file(char *path)
         exit(2);
     }
 
-    /* while (!result && fgets(line, SOURCE_SIZE, file)) */
-    /*     result = evaluate(evaluator, line, NULL); */
+    while (!result && fgets(line, SOURCE_SIZE, file))
+        result = evaluate(evaluator, line, 0);
 
     if (fclose(file)) {
         fprintf(stderr, "failed to close file \"%s\" with errno %d\n", path, errno);
         exit(3);
     }
 
+    printf("result: %d\n", result);
     return result;
 }
 
@@ -72,9 +73,9 @@ main(int argc, char **argv)
 {
     int c;
     int idx;
-    int result;
+    int result = 0;
 
-    /* init_evauator(evaluator, sizeof(evaluator)); */
+    init_evaluator(evaluator, sizeof(evaluator));
 
     while (1) {
 
@@ -100,10 +101,8 @@ main(int argc, char **argv)
         }
     }
 
-    for (idx = optind; idx < argc; idx++) {
+    for (idx = optind; !result && idx < argc; idx++)
         result = evaluate_file(argv[idx]);
-        if (result) break;
-    }
 
     exit(!(result == expected_result && idx == argc));
 }

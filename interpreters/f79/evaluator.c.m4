@@ -16,14 +16,14 @@ include(__compiled_words)dnl
 char *store_counted_string(const char *s, char *dp);
 
 void
-init_engine(cell *e, unsigned long size)
+init_evaluator(cell *e, unsigned long size)
 {
     e[ea_size]    = size;
     e[ea_forth] = 0;
 }
 
 void
-reset_execution_state(cell *e)
+reset_evaluator_execution_state(cell *e)
 {
     e[ea_sp] = e[ea_sp0];
     e[ea_rp] = e[ea_rp0];
@@ -31,14 +31,14 @@ reset_execution_state(cell *e)
 }
 
 int
-evaluate(cell *engine, const char *source, int storage_fd)
+evaluate(cell *evaluator, const char *source, int storage_fd)
 {
     __declare_primitives()dnl
 
     /* These are the most commonly referenced variables, generally every
        iteration of the interpreter loop. */
 
-    register cell *e = engine;
+    register cell *e = evaluator;
     register cell *ip;
     register cell *rp;
     register cell *sp;
@@ -155,7 +155,7 @@ evaluate(cell *engine, const char *source, int storage_fd)
 
     __implement_evaluator_core() dnl
 
-    /* Store state back in the engine structure. */
+    /* Store state back in the evaluator structure. */
     /* _save_task_state(); */
     e[ea_sp] = _from_ptr(sp);
     e[ea_dp] = _from_ptr(dp);
@@ -181,74 +181,4 @@ store_counted_string(const char *s, char *dp)
     return dp + sizeof(cell) + n + 1;
 }
 
-void
-show_error(cell *e, const char *message, cell n) {
-    const char *text = (const char *)_to_ptr(e[ea_source_addr]);
-    int i, col = 1;
-
-    printf("\n%s:\n", message);
-
-    for (i = 0; i < n; i++) {
-        putc(text[i], stdout);
-        col = text[i] == '\n' ? 1 : col+1;
-    }
-    putc('\n', stdout);
-
-    for (int i = 1; i < col; i++)
-        putc(' ', stdout);
-
-    putc('^', stdout);
-    putc('\n', stdout);
-}
-
-_define_result_messages();
-
-cell engine[((1 << 16)-1)/sizeof(cell)];
-
-int
-main(int argc, char *argv[])
-{
-    number result;
-    char *line;
-    int storage_fd = -1;
-
-    _debug("engine: %lx top: %lx\n", (long)engine, (long)((char *)engine + sizeof(engine)));
-
-    /* Clears structure. */
-    init_engine(engine, sizeof(engine));
-
-    _debug("engine initialized.\n");
-
-    printf("Forthkit FORTH-79\n");
-
-    if (argc > 1)
-        storage_fd = open(argv[argc-1], O_RDWR);
-
-    while (1) {
-
-        line = readline(NULL);
-
-        if (!line) break;
-
-        result = evaluate(engine, line, storage_fd);
-        switch (result) {
-        case result_ok:
-            printf("%s\n", result_messages[result]);
-            break;
-
-        case err_abort_message:
-        default:
-            show_error(
-                engine,
-                (result <= next_error_code) ? "unknown_error" : result_messages[-result],
-                engine[ea_source_idx]);
-            break;
-        }
-
-        free(line);
-    }
-    /* exit(evaluate(engine, argv[argc-1]), -1); */
-    /* exit(evaluate(engine, "15 : cc create , does> @ dup . cr ; cc"), -1); */
-
-}
 __discard_all_diversions()dnl
