@@ -1,5 +1,3 @@
-#include "config.h"
-
 #include "bounds.h"
 #include "debug.h"
 #include "errors.h"

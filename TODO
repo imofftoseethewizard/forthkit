@@ -1,3 +1,31 @@
+inputs to make
+  common
+    PREAMBLE
+    EXECUTION_MODEL
+    EVALUATOR_PRIMITIVES
+  variable
+    MEMORY_MODEL
+    COMPILED_WORDS
+    CONFIG_H
+    EVALUATOR
+    TEST_RUNNER
+
+  source $config && make all
+
+test system
+  watch files
+  on change
+    record commit hash, git diff
+    for each config spec (in some list in a file)
+      make
+      if make successful
+        run make, tests, record any failing tests
+  parameterize make for target name
+  create list of configs
+
+  parameterized make
+    CFLAGS = -D config or -D <config>=<value>
+
 test harness
   separate evaluate.c into evaluate.c and interepreter.c
   create test.c parallel to interperter.c
