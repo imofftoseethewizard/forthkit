@@ -7,6 +7,7 @@
 #   EVALUATOR_PRIMITIVES
 #   EXECUTION_MODEL
 #   FORTHKIT
+#   SOURCE
 #
 # Usage
 #   $ export FORTHKIT=~/src/forthkit
@@ -15,13 +16,20 @@
 #   $ cd interpreters/f79
 #   $ source spec/$VERSION_TAG.rc && make all
 
-EVALUATOR_C = ${FORTHKIT}/build/src/evaluator-${VERSION_TAG}.c
-EVALUATOR_H = ${FORTHKIT}/build/include/evaluator-${VERSION_TAG}.h
-EVALUATOR_O = ${FORTHKIT}/build/lib/evaluator-${VERSION_TAG}.o
-INTERPRETER = ${FORTHKIT}/build/bin/interpreter-${VERSION_TAG}
-TEST_RUNNER = ${FORTHKIT}/build/bin/test_runner-${VERSION_TAG}
+BUILD   = ${FORTHKIT}/build/${VERSION_TAG}
 
-CFLAGS += -include ${CONFIG_H} -include ${EVALUATOR_H}
+BIN	= ${BUILD}/bin
+INCLUDE = ${BUILD}/include
+LIB	= ${BUILD}/lib
+SRC     = ${BUILD}/src
+
+EVALUATOR_C = ${SRC}/evaluator.c
+EVALUATOR_H = ${INCLUDE}/evaluator.h
+EVALUATOR_O = ${LIB}/evaluator.o
+INTERPRETER = ${BIN}/interpreter
+TEST_RUNNER = ${BIN}/test_runner
+
+CFLAGS += -include ${CONFIG_H} -I${SOURCE} -I${INCLUDE}
 
 m4_deps =											 \
 	${PREAMBLE} ${MEMORY_MODEL} ${EXECUTION_MODEL}						 \
@@ -29,7 +37,10 @@ m4_deps =											 \
 	$(shell m4 ${FORTHKIT}/interpreters/primitive-dependencies.m4 ${EVALUATOR_PRIMITIVES})	 \
 	$(shell m4 ${FORTHKIT}/interpreters/compiled-dependencies.m4 ${COMPILED_WORDS})
 
-${EVALUATOR_C} : ${m4_deps} evaluator.c.m4
+${BIN} ${INCLUDE} ${LIB} ${SRC} :
+	mkdir -p $@
+
+${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
 	m4								 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
@@ -38,7 +49,7 @@ ${EVALUATOR_C} : ${m4_deps} evaluator.c.m4
 	  --define __compiled_words=${COMPILED_WORDS}			 \
 	  evaluator.c.m4 | indent -kr -l96 >$@
 
-${EVALUATOR_H} : ${m4_deps} evaluator.h.m4
+${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE}
 	m4								 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
@@ -47,13 +58,13 @@ ${EVALUATOR_H} : ${m4_deps} evaluator.h.m4
 	  --define __compiled_words=${COMPILED_WORDS}			 \
 	  evaluator.h.m4 | indent -kr -l96 >$@
 
-${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} bounds.h ${CONFIG_H} debug.h errors.h log.h
+${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} bounds.h ${CONFIG_H} debug.h errors.h log.h ${LIB}
 	gcc ${CFLAGS} -o ${EVALUATOR_O} -c ${EVALUATOR_C}
 
-${INTERPRETER} : ${EVALUATOR_H} bounds.h ${CONFIG_H} debug.h errors.h log.h
+${INTERPRETER} : ${EVALUATOR_H} ${CONFIG_H} ${BIN}
 	gcc ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
-${TEST_RUNNER} : ${EVALUATOR_O} test-runner.c ${CONFIG_H}
+${TEST_RUNNER} : ${EVALUATOR_O} test-runner.c ${CONFIG_H} ${BIN}
 	gcc ${CFLAGS} -o ${TEST_RUNNER} test-runner.c ${EVALUATOR_O} ${LDFLAGS}
 
 test_runner : ${TEST_RUNNER}

@@ -1,7 +1,7 @@
-#include "bounds.h"
-#include "debug.h"
-#include "errors.h"
-#include "log.h"
+include(`bounds.h')
+include(`debug.h')
+include(`errors.h')
+include(`log.h')
 
 typedef unsigned CELL_TYPE cell;
 typedef CELL_TYPE number;
