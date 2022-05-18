@@ -1,19 +1,21 @@
 # Required variable definitions:
-#   VERSION_TAG
-#   CONFIG_H
-#   PREAMBLE
-#   MEMORY_MODEL
-#   EXECUTION_MODEL
-#   EVALUATOR_PRIMITIVES
-#   EXECUTION_MODEL
-#   FORTHKIT
-#   SOURCE
+#   from shell env (generally)
+#     FORTHKIT
+#     SOURCE
+#     VERSION_TAG
+#   from spec file
+#     CONFIG_H
+#     PREAMBLE
+#     MEMORY_MODEL
+#     EXECUTION_MODEL
+#     EVALUATOR_PRIMITIVES
+#     EXECUTION_MODEL
 #
 # Usage
 #   $ export FORTHKIT=~/src/forthkit
-#   $ cd $FORTHKIT
-#   $ export VERSION_TAG=rel-switch-a32-c4-f4-t2-small
-#   $ cd interpreters/f79
+#   $ export SOURCE=$FORTHKIT/interpreters/f79
+#   $ export VERSION_TAG=rel-switch-a32-c4
+#   $ cd $SOURCE
 #   $ source spec/$VERSION_TAG.rc && make all
 
 BUILD   = ${FORTHKIT}/build/${VERSION_TAG}

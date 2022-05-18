@@ -1,3 +1,47 @@
+move memory layout config to runtime parameters (init_evaluator)
+    #define BUFFER_COUNT             32   /* move to runtime */
+    #define BUFFER_SIZE              1024 /* move to runtime */
+    #define FIBER_STACK_SIZE         4    /* move to runtime */
+    #define FIBER_COUNT              4    /* move to runtime */
+    #define MAX_WORD_LENGTH          64   /* move to runtime */
+    #define PARAMETER_STACK_SIZE     128  /* move to runtime */
+    #define RETURN_STACK_SIZE        256  /* move to runtime */
+    #define SOURCE_SIZE              1024 /* move to runtime */
+    #define TASK_COUNT               2    /* move to runtime */
+
+    ex. BUFFER_COUNT
+      add ea_buffer_count
+      sed -i 's/BUFFER_COUNT/e[ea_buffer_count]/'
+      add cell buffer_count parameter to init_evaluator and initialize e[ea_buffer_count] = buffer_count
+      change init_evaluator call sites to have new parameter
+      add cli option for --buffer-count/-b in interpreter and test-runner
+      add DEFAULT_BUFFER_COUNT to ?
+      also MIN_BUFFER_SIZE, MAX_BUFFER_SIZE
+
+    list of options              allowed range
+      -b/--buffer-count          0-N
+      -B/--buffer-size           1-N
+      -F/--fiber-stack-size      1-N
+      -f/--fiber-count           1-N
+      -w/--max-word-length       16-N
+      -P/--parameter-stack-size  16-N
+      -R/--return-stack-size     16-N
+      -S/--source-size           16-N
+      -t/--task-count            1-N
+
+     return result as process exit code for testing
+     read and evaluate additional arguments as files
+     other options
+
+       -i/--interactive
+       -q/--quiet
+       -c/--command <text>
+       -E/--evaluator-size
+
+
+
+
+
 inputs to make
   common
     PREAMBLE
