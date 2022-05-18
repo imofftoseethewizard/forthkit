@@ -16,9 +16,30 @@ include(__compiled_words)dnl
 char *store_counted_string(const char *s, char *dp);
 
 void
-init_evaluator(cell *e, unsigned long size)
+init_evaluator(
+    cell *evaluator,
+    cell buffer_count,
+    cell buffer_size,
+    cell evaluator_size,
+    cell fiber_count,
+    cell fiber_stack_size,
+    cell max_word_length,
+    cell parameter_stack_size,
+    cell return_stack_size,
+    cell source_size,
+    cell task_count);
 {
-    e[ea_size]    = size;
+    BUFFER_COUNT         = buffer_count
+    e[ea_buffer_size]          = buffer_size
+    FIBER_COUNT          = fiber_count
+    e[ea_fiber_stack_size]     = fiber_stack_size
+    e[ea_max_word_length]      = max_word_length
+    e[ea_parameter_stack_size] = parameter_stack_size
+    e[ea_return_stack_size]    = return_stack_size
+    e[ea_size]                 = evaluator_size;
+    e[ea_source_size]          = source_size
+    e[ea_task_count]           = task_count
+
     e[ea_forth] = 0;
 }
 
