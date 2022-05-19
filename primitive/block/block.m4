@@ -5,8 +5,8 @@ __primitive(pr_read_block)
     register cell n = *sp++;
 
     if (   storage_fd < 0
-        || lseek(storage_fd, n*BUFFER_SIZE, SEEK_SET) == -1
-        || read(storage_fd, buffer, BUFFER_SIZE) == -1
+        || lseek(storage_fd, n*e[ea_buffer_size], SEEK_SET) == -1
+        || read(storage_fd, buffer, e[ea_buffer_size]) == -1
         )
 
         _abort(-33);

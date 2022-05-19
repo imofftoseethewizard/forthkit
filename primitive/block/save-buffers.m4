@@ -16,8 +16,8 @@ __primitive(pr_save_buffers)
             continue;
 
         if (   storage_fd < 0
-               || lseek(storage_fd, (block ^ c_msb)*BUFFER_SIZE, SEEK_SET) == -1
-               || write(storage_fd, _buffer_addr(n), BUFFER_SIZE) == -1
+               || lseek(storage_fd, (block ^ c_msb)*e[ea_buffer_size], SEEK_SET) == -1
+               || write(storage_fd, _buffer_addr(n), e[ea_buffer_size]) == -1
             ) {
 
             _abort(-34);

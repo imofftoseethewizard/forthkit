@@ -17,7 +17,7 @@ char *store_counted_string(const char *s, char *dp);
 
 void
 init_evaluator(
-    cell *evaluator,
+    cell *e,
     cell buffer_count,
     cell buffer_size,
     cell evaluator_size,
@@ -27,18 +27,18 @@ init_evaluator(
     cell parameter_stack_size,
     cell return_stack_size,
     cell source_size,
-    cell task_count);
+    cell task_count)
 {
-    BUFFER_COUNT         = buffer_count
-    e[ea_buffer_size]          = buffer_size
-    FIBER_COUNT          = fiber_count
-    e[ea_fiber_stack_size]     = fiber_stack_size
-    e[ea_max_word_length]      = max_word_length
-    e[ea_parameter_stack_size] = parameter_stack_size
-    e[ea_return_stack_size]    = return_stack_size
+    e[ea_buffer_count]         = buffer_count;
+    e[ea_buffer_size]          = buffer_size;
+    e[ea_fiber_count]          = fiber_count;
+    e[ea_fiber_stack_size]     = fiber_stack_size;
+    e[ea_max_word_length]      = max_word_length;
+    e[ea_parameter_stack_size] = parameter_stack_size;
+    e[ea_return_stack_size]    = return_stack_size;
     e[ea_size]                 = evaluator_size;
-    e[ea_source_size]          = source_size
-    e[ea_task_count]           = task_count
+    e[ea_source_size]          = source_size;
+    e[ea_task_count]           = task_count;
 
     e[ea_forth] = 0;
 }

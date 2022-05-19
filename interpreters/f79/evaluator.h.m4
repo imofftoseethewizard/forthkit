@@ -13,7 +13,19 @@ typedef LENGTH_TYPE length_type;
 typedef DOUBLE_TYPE double_number;
 typedef unsigned DOUBLE_TYPE double_cell;
 
-extern void init_evaluator(cell *evaluator, unsigned long size);
+extern void init_evaluator(
+    cell *evaluator,
+    cell buffer_count,
+    cell buffer_size,
+    cell evaluator_size,
+    cell fiber_count,
+    cell fiber_stack_size,
+    cell max_word_length,
+    cell parameter_stack_size,
+    cell return_stack_size,
+    cell source_size,
+    cell task_count);
+
 extern void reset_evaluator_execution_state(cell *evaluator);
 extern int evaluate(cell *evaluator, const char *source, int storage_fd);
 
@@ -56,6 +68,15 @@ enum task_attribute {
 enum engine_attribute {
     /* attributes common to all tasks */
     ea_size,
+    ea_buffer_size,
+    ea_buffer_count,
+    ea_fiber_count,
+    ea_fiber_stack_size,
+    ea_max_word_length,
+    ea_parameter_stack_size,
+    ea_return_stack_size,
+    ea_source_size,
+    ea_task_count,
     ea_source_addr,
     ea_source_idx,
     ea_source_len,

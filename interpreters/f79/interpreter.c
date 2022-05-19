@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <fcntl.h>
+#include <getopt.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -11,7 +12,8 @@
 #define INTERPRETER_NAME    "forth-79"
 #define VERSION_DESCRIPTION "<version TODO>"
 
-#define DEFAULT_COMMAND NULL
+#define DEFAULT_COMMAND      NULL
+#define DEFAULT_STORAGE_PATH NULL
 
 #define DEFAULT_BUFFER_COUNT         32
 #define DEFAULT_BUFFER_SIZE          1024
@@ -28,6 +30,7 @@ static cell *evaluator = NULL;
 
 /* string options */
 static char *command            = DEFAULT_COMMAND;
+static char *storage_path       = DEFAULT_STORAGE_PATH;
 
 /* integer options */
 static int buffer_count         = DEFAULT_BUFFER_COUNT;
@@ -47,6 +50,9 @@ static int quiet        = 0;
 static int show_help    = 0;
 static int show_version = 0;
 
+/* file descriptor of unstructured binary storage */
+static int storage_fd = -1;
+
 static struct option long_options[] = {
     {"buffer-count",         required_argument, NULL,          'b'},
     {"buffer-size",          required_argument, NULL,          'B'},
@@ -58,16 +64,21 @@ static struct option long_options[] = {
     {"parameter-stack-size", required_argument, NULL,          'P'},
     {"return-stack-size",    required_argument, NULL,          'R'},
     {"source-size",          required_argument, NULL,          'S'},
+    {"storage",              required_argument, NULL,          's'},
     {"task-count",           required_argument, NULL,          't'},
     {"help",                 no_argument,       &show_help,    1},
-    {"interactive",          no_argument,       &interative,   1},
+    {"interactive",          no_argument,       &interactive,  1},
     {"quiet",                no_argument,       &quiet,        1},
     {"version",              no_argument,       &show_version, 1},
     {0, 0, 0, 0}
 };
 
+/* defined in evaluator.h */
+_define_result_messages();
+
 int evaluate_file(char *path);
 int is_valid_non_negative_integer(char *s);
+void print_error(cell *e, const char *message, cell n);
 void print_version(void);
 void process_options(int argc, char *argv[]);
 void repl(void);
@@ -82,7 +93,7 @@ print_help(char *message)
 
     if (message) {
         printf("\n");
-        printf("%s %s\n", optstring, message);
+        printf("%s\n", message);
     }
 
     printf("\n");
@@ -93,7 +104,6 @@ main(int argc, char *argv[])
 {
     int idx;
     number result = 0;
-    /* int storage_fd = -1; */
 
     process_options(argc, argv);
 
@@ -123,13 +133,19 @@ main(int argc, char *argv[])
         /* print_help also calls print_version, so only call it here if show_help is false */
         print_version();
 
-    /* TODO
-    if (argc > 1)
-        storage_fd = open(argv[argc-1], O_RDWR);
-    */
+    if (storage_path)
+        storage_fd = open(storage_path, O_RDWR);
 
     for (idx = optind; !result && idx < argc; idx++)
         result = evaluate_file(argv[idx]);
+
+    if (result)
+        exit(result);
+
+    if (command) {
+        printf("command to execute: %s\n", command);
+        result = evaluate(evaluator, command, -1);
+    }
 
     if (result)
         exit(result);
@@ -184,7 +200,7 @@ evaluate_file(char *path)
     }
 
     while (!result && fgets(line, source_size, file))
-        result = evaluate(evaluator, line, 0);
+        result = evaluate(evaluator, line, storage_fd);
 
     if (fclose(file)) {
         fprintf(stderr, "failed to close file \"%s\" with errno %d\n", path, errno);
@@ -195,9 +211,6 @@ evaluate_file(char *path)
 
     return result;
 }
-
-/* defined in evaluator.h */
-_define_result_messages();
 
 void
 print_error(cell *e, const char *message, cell n) {
@@ -247,7 +260,7 @@ process_options(int argc, char *argv[])
 
     while (1) {
 
-        c = getopt_long(argc, argv, "b:B:c:E:F:f:hiP:qR:S:t:vw:", long_options, NULL);
+        c = getopt_long(argc, argv, "b:B:c:E:F:f:hiP:qR:S:s:t:vw:", long_options, NULL);
 
         if (c == -1) break;
 
@@ -261,7 +274,7 @@ process_options(int argc, char *argv[])
         case 'b':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-b/--buffer-count must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -271,7 +284,7 @@ process_options(int argc, char *argv[])
         case 'B':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-B/--buffer-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -285,7 +298,7 @@ process_options(int argc, char *argv[])
         case 'E':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-E/--evaluator-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -295,7 +308,7 @@ process_options(int argc, char *argv[])
         case 'F':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-F/--fiber-stack-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -305,7 +318,7 @@ process_options(int argc, char *argv[])
         case 'f':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-f/--fiber-count must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -323,7 +336,7 @@ process_options(int argc, char *argv[])
         case 'P':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-P/--parameter-stack-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -337,7 +350,7 @@ process_options(int argc, char *argv[])
         case 'R':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-R/--return-stack-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -347,17 +360,21 @@ process_options(int argc, char *argv[])
         case 'S':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-S/--source-size must have a non-negative integer argument.");
                 exit(1);
             }
 
             source_size = atoi(optarg);
             break;
 
+        case 's':
+            storage_path = optarg;
+            break;
+
         case 't':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("must have a non-negative integer argument.");
+                print_help("-t/--task-count must have a non-negative integer argument.");
                 exit(1);
             }
 

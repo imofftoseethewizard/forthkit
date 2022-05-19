@@ -33,7 +33,8 @@
     _compile_pr(pr_read_block);
     _compile_literal(_from_ptr(&e[ea_source_addr]));
     _compile_pr(pr_store);
-    _compile_literal(BUFFER_SIZE);
+    _compile_literal(_from_ptr(&e[ea_buffer_size]));
+    _compile_pr(pr_fetch);
     _compile_literal(_from_ptr(&e[ea_source_len]));
     _compile_pr(pr_store);
     _store_data(e[ea_interpret]);

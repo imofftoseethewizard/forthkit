@@ -1,4 +1,4 @@
-#define _buffer_addr(n) (char *)e + e[ea_size] - BUFFER_SIZE * ((n) + 1)
+#define _buffer_addr(n) (char *)e + e[ea_size] - e[ea_buffer_size] * ((n) + 1)
 
 __primitive(pr_buffer)
 {
@@ -8,8 +8,8 @@ __primitive(pr_buffer)
 
     if (old_block != -1 && old_block & c_msb) {
         if (   storage_fd < 0
-               || lseek(storage_fd, (old_block ^ c_msb)*BUFFER_SIZE, SEEK_SET) == -1
-               || write(storage_fd, _buffer_addr(n), BUFFER_SIZE) == -1
+               || lseek(storage_fd, (old_block ^ c_msb)*e[ea_buffer_size], SEEK_SET) == -1
+               || write(storage_fd, _buffer_addr(n), e[ea_buffer_size]) == -1
             ) {
 
             _abort(-34);
