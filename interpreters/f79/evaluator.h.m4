@@ -139,8 +139,8 @@ enum engine_attribute {
 #define _string_addr(x) (char *)((length_type *)(x) + 1)
 
 #define _compile_pr(x) _store_data(_from_pr(x))
-#define _compile_cw(x) _store_data(e[ea_size - x - 1])
-/* #define _compile_cw(x) _store_data(e[ea_size] / sizeof(cell) - x - 1) */
+/* #define _compile_cw(x) _store_data(e[ea_size - x - 1]) */
+#define _compile_cw(x) _store_data(e[ea_size] / sizeof(cell) - x - 1)
 
 #define _set_word_flags(x, flags)       *((cell *)(x) + 2) |= (flags)
 #define _clear_word_flags(x, flags)     *((cell *)(x) + 2) &= ~(flags)
@@ -187,7 +187,7 @@ do {                                                              \
 #define _next_word(x) *(_to_ptr(x) + 1)
 
 #define _compiled_word_ref(e, l) e[e[ea_size] / sizeof(cell) - l - 1]
-#define _register_compiled_word(l) _compiled_word_ref(e, l) = _from_ptr(dp);
+#define _register_compiled_word(l) _compiled_word_ref(e, l) = _from_ptr(dp)
 #define _compiled_word(s, l, flags)                               \
         _begin_define_word(s, flags);                             \
         _register_compiled_word(l)
