@@ -18,6 +18,7 @@
 #define DEFAULT_BUFFER_COUNT         32
 #define DEFAULT_BUFFER_SIZE          1024
 #define DEFAULT_EVALUATOR_SIZE       1<<20
+#define DEFAULT_EXPECTED_RESULT      0
 #define DEFAULT_FIBER_COUNT          4
 #define DEFAULT_FIBER_STACK_SIZE     4
 #define DEFAULT_MAX_WORD_LENGTH      64
@@ -36,6 +37,7 @@ static char *storage_path       = DEFAULT_STORAGE_PATH;
 static int buffer_count         = DEFAULT_BUFFER_COUNT;
 static int buffer_size          = DEFAULT_BUFFER_SIZE;
 static int evaluator_size       = DEFAULT_EVALUATOR_SIZE;
+static int expected_result      = DEFAULT_EXPECTED_RESULT;
 static int fiber_count          = DEFAULT_FIBER_COUNT;
 static int fiber_stack_size     = DEFAULT_FIBER_STACK_SIZE;
 static int max_word_length      = DEFAULT_MAX_WORD_LENGTH;
@@ -63,6 +65,7 @@ static struct option long_options[] = {
     {"max-word-length",      required_argument, NULL,          'w'},
     {"parameter-stack-size", required_argument, NULL,          'P'},
     {"return-stack-size",    required_argument, NULL,          'R'},
+    {"expected-result",      required_argument, NULL,          'r'},
     {"source-size",          required_argument, NULL,          'S'},
     {"storage",              required_argument, NULL,          's'},
     {"task-count",           required_argument, NULL,          't'},
@@ -76,8 +79,12 @@ static struct option long_options[] = {
 /* defined in evaluator.h */
 _define_result_messages();
 
+/* used for composing error in response to getopt_long errors; see process_options() */
+static char message_buffer[100];
+
 int evaluate_file(char *path);
 int is_valid_non_negative_integer(char *s);
+int is_valid_integer(char *s);
 void print_error(cell *e, const char *message, cell n);
 void print_version(void);
 void process_options(int argc, char *argv[]);
@@ -89,6 +96,24 @@ print_help(char *message)
     print_version();
 
     printf("usage: %s [options] [file ...]\n", INTERPRETER_NAME);
+
+    printf("  -B, --buffer-size           size of block buffers in bytes, default %d\n", DEFAULT_BUFFER_SIZE);
+    printf("  -b, --buffer-count          number of block buffers, default %d\n", DEFAULT_BUFFER_COUNT);
+    printf("  -c, --command               command to execute, suppresses repl\n");
+    printf("  -E, --evaluator-size        size of memory area for evaluator in bytes, default %d\n", DEFAULT_EVALUATOR_SIZE);
+    printf("  -F, --fiber-stack-size      maximum depth of fiber stack, default %d\n", DEFAULT_FIBER_STACK_SIZE);
+    printf("  -f, --fiber-count           number of fibers to reserve space for, default %d\n", DEFAULT_FIBER_COUNT);
+    printf("  -h, --help                  show this message\n");
+    printf("  -i, --interactive           start repl regardless of other options\n");
+    printf("  -P, --parameter-stack-size  maximum depth of parameter stack, default %d\n", DEFAULT_PARAMETER_STACK_SIZE);
+    printf("  -q, --quiet                 suppress greeting\n");
+    printf("  -R, --return-stack-size     maximum depth of return stack, default %d\n", DEFAULT_RETURN_STACK_SIZE);
+    printf("  -r, --expected-result       expected result from evaluation, default %d\n", DEFAULT_EXPECTED_RESULT);
+    printf("  -S, --source-size           size of parsing buffer in bytes, default %d\n", DEFAULT_SOURCE_SIZE);
+    printf("  -s, --storage               path to block storage\n");
+    printf("  -t, --task-count            number of tasks to reserve space for, default %d\n", DEFAULT_TASK_COUNT);
+    printf("  -v, --version               print version\n");
+    printf("  -w, --max-word-length       maximum length of parsed word, default %d\n", DEFAULT_MAX_WORD_LENGTH);
     printf("\n");
 
     if (message) {
@@ -123,7 +148,7 @@ main(int argc, char *argv[])
         source_size,
         task_count);
 
-    if (!quiet)
+    if (!quiet && !show_help && !show_version)
         printf("Forthkit %s\n", INTERPRETER_NAME);
 
     if (show_help)
@@ -140,25 +165,25 @@ main(int argc, char *argv[])
         result = evaluate_file(argv[idx]);
 
     if (result)
-        exit(result);
+        exit(result == expected_result ? 0 : 3);
 
-    if (command) {
-        printf("command to execute: %s\n", command);
-        result = evaluate(evaluator, command, -1);
-    }
+    if (command)
+        result = evaluate(evaluator, command, storage_fd);
 
     if (result)
-        exit(result);
+        exit(result == expected_result ? 0 : 3);
 
     if (!command && !show_help && !show_version && optind == argc || interactive)
         repl();
+
+    exit(0);
 }
 
 void
 repl(void)
 {
     char *line;
-    int result;
+    number result;
 
     while (1) {
 
@@ -213,7 +238,8 @@ evaluate_file(char *path)
 }
 
 void
-print_error(cell *e, const char *message, cell n) {
+print_error(cell *e, const char *message, cell n)
+{
     const char *text = (const char *)_to_ptr(e[ea_source_addr]);
     int i, col = 1;
 
@@ -235,7 +261,7 @@ print_error(cell *e, const char *message, cell n) {
 void
 print_version(void)
 {
-    printf("%s %s\n", INTERPRETER_NAME, VERSION_DESCRIPTION);
+    printf("Forthkit %s %s\n", INTERPRETER_NAME, VERSION_DESCRIPTION);
 }
 
 int
@@ -253,6 +279,15 @@ is_valid_non_negative_integer(char *s)
     return *s == 0;
 }
 
+int
+is_valid_integer(char *s)
+{
+    if (*s == '-')
+        s++;
+
+    return is_valid_non_negative_integer(s);
+}
+
 void
 process_options(int argc, char *argv[])
 {
@@ -260,7 +295,7 @@ process_options(int argc, char *argv[])
 
     while (1) {
 
-        c = getopt_long(argc, argv, "b:B:c:E:F:f:hiP:qR:S:s:t:vw:", long_options, NULL);
+        c = getopt_long(argc, argv, ":b:B:c:E:F:f:hiP:qR:r:S:s:t:vw:", long_options, NULL);
 
         if (c == -1) break;
 
@@ -274,7 +309,7 @@ process_options(int argc, char *argv[])
         case 'b':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-b/--buffer-count must have a non-negative integer argument.");
+                print_help("-b, --buffer-count must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -284,7 +319,7 @@ process_options(int argc, char *argv[])
         case 'B':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-B/--buffer-size must have a non-negative integer argument.");
+                print_help("-B, --buffer-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -298,7 +333,7 @@ process_options(int argc, char *argv[])
         case 'E':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-E/--evaluator-size must have a non-negative integer argument.");
+                print_help("-E, --evaluator-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -308,7 +343,7 @@ process_options(int argc, char *argv[])
         case 'F':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-F/--fiber-stack-size must have a non-negative integer argument.");
+                print_help("-F, --fiber-stack-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -318,7 +353,7 @@ process_options(int argc, char *argv[])
         case 'f':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-f/--fiber-count must have a non-negative integer argument.");
+                print_help("-f, --fiber-count must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -336,7 +371,7 @@ process_options(int argc, char *argv[])
         case 'P':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-P/--parameter-stack-size must have a non-negative integer argument.");
+                print_help("-P, --parameter-stack-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -350,17 +385,27 @@ process_options(int argc, char *argv[])
         case 'R':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-R/--return-stack-size must have a non-negative integer argument.");
+                print_help("-R, --return-stack-size must have a non-negative integer argument.");
                 exit(1);
             }
 
             return_stack_size = atoi(optarg);
             break;
 
+        case 'r':
+
+            if (!is_valid_integer(optarg)) {
+                print_help("-r, --expected-result must have an integer argument.");
+                exit(1);
+            }
+
+            expected_result = atoi(optarg);
+            break;
+
         case 'S':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-S/--source-size must have a non-negative integer argument.");
+                print_help("-S, --source-size must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -374,7 +419,7 @@ process_options(int argc, char *argv[])
         case 't':
 
             if (!is_valid_non_negative_integer(optarg)) {
-                print_help("-t/--task-count must have a non-negative integer argument.");
+                print_help("-t, --task-count must have a non-negative integer argument.");
                 exit(1);
             }
 
@@ -386,13 +431,13 @@ process_options(int argc, char *argv[])
             break;
 
         case ':':
-            /* missing value */
-            print_help("requires an argument.");
+            sprintf(message_buffer, "-%c requires an argument.", optopt);
+            print_help(message_buffer);
             exit(1);
 
         case '?':
-            /* unknown option */
-            print_help("is not a recognized option.");
+            sprintf(message_buffer, "-%c is not a recognized option.", optopt);
+            print_help(message_buffer);
             exit(1);
         }
     }
