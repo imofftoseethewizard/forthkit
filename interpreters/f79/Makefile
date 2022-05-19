@@ -63,7 +63,7 @@ ${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE}
 ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} bounds.h ${CONFIG_H} debug.h errors.h log.h ${LIB}
 	gcc ${CFLAGS} -o ${EVALUATOR_O} -c ${EVALUATOR_C}
 
-${INTERPRETER} : ${EVALUATOR_H} ${CONFIG_H} ${BIN} interpreter.c
+${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
 	gcc ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
 ${TEST_RUNNER} : ${EVALUATOR_O} test-runner.c ${CONFIG_H} ${BIN}
