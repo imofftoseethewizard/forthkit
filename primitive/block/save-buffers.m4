@@ -5,7 +5,7 @@ __primitive(pr_save_buffers)
 
     for (n = 0; n < e[ea_buffer_count]; n++) {
 
-        block = e[e[ea_buffers] + n];
+        block = *(_to_ptr(e[ea_buffers]) + n);
 
         /* empty */
         if (block == -1)
