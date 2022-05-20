@@ -5,3 +5,5 @@ __primitive(op_abort)
     _abort(*sp);
 }
 __end
+
+__define_operator("abort", op_abort);

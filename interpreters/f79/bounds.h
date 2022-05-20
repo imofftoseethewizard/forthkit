@@ -4,7 +4,7 @@
 
 #define _check_dictionary_bounds()              \
 do {                                            \
-    if (dp >= _buffer_addr(0))                  \
+    if (dp >= (char *)_to_ptr(e[ea_top]))       \
         _abort(err_dictionary_overflow);        \
 } while (0)
 

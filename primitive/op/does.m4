@@ -9,3 +9,5 @@ __primitive(op_does)
     ip = _to_ptr(*ip);
 }
 __end
+
+__define_operator("does", op_does);

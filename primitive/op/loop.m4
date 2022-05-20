@@ -17,3 +17,5 @@ __primitive(op_loop)
     }
 }
 __end
+
+__define_operator("loop", op_loop);

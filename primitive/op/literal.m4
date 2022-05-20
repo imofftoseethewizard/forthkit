@@ -5,3 +5,5 @@ __primitive(op_literal)
     *--sp = (cell)*ip++;
 }
 __end
+
+__define_operator("literal", op_literal);

@@ -3,7 +3,7 @@ __primitive(pr_save_buffers)
     register cell n;
     register cell block;
 
-    for (n = 0; n < BUFFER_COUNT; n++) {
+    for (n = 0; n < e[ea_buffer_count]; n++) {
 
         block = e[e[ea_buffers] + n];
 
@@ -17,7 +17,7 @@ __primitive(pr_save_buffers)
 
         if (   storage_fd < 0
                || lseek(storage_fd, (block ^ c_msb)*e[ea_buffer_size], SEEK_SET) == -1
-               || write(storage_fd, _buffer_addr(n), e[ea_buffer_size]) == -1
+               || write(storage_fd, _to_buffer_ptr(n), e[ea_buffer_size]) == -1
             ) {
 
             _abort(-34);

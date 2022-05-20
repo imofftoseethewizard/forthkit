@@ -3,8 +3,10 @@
 /* op_call expects the next location to be a pointer to a native
    function that neither accepts arguments nor returns a value.
 */
-__primitive(op_call)  
+__primitive(op_call)
 {
     ((native_word)*ip++)();
 }
 __end
+
+__define_operator("call", op_call);

@@ -1,6 +1,11 @@
+upper memory allotment
+  ea_top -- highest addressable cell
+  reserve (n -- addr) e[ea_top] -= n, return e[ea_top]
+  top ( -- n) return e[ea_top]
+
+
+
 move memory layout config to runtime parameters (init_evaluator)
-    #define BUFFER_COUNT             32   /* move to runtime */
-    #define BUFFER_SIZE              1024 /* move to runtime */
     #define FIBER_STACK_SIZE         4    /* move to runtime */
     #define FIBER_COUNT              4    /* move to runtime */
     #define MAX_WORD_LENGTH          64   /* move to runtime */
@@ -8,6 +13,7 @@ move memory layout config to runtime parameters (init_evaluator)
     #define RETURN_STACK_SIZE        256  /* move to runtime */
     #define SOURCE_SIZE              1024 /* move to runtime */
     #define TASK_COUNT               2    /* move to runtime */
+    primitive/core/hold.m4:#define _number_pad_buf_addr() ((char *)e + e[ea_size] - e[ea_buffer_count] * e[ea_buffer_size] - _c_number_pad_size)
 
     ex. BUFFER_COUNT
       add ea_buffer_count

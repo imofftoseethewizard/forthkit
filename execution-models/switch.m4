@@ -24,6 +24,8 @@ define(`__implement_evaluator_core', `
 
             if (steps > 0) steps -= 1;
 
+            _trace("early main loop: ");
+
             if (!_is_primitive(*ip))
                 _enter();
 

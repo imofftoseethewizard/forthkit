@@ -2,7 +2,7 @@
    loop index, resp. op_plus_loop performs the run time activity for LOOP: update index, compare
    and branch ahead 2, allowing space to compile a jump to the top of the loop.
 */
-__primitive(op_plus_loop)  
+__primitive(op_plus_loop)
 {
 
     register number n = *(number *)sp++;
@@ -21,3 +21,5 @@ __primitive(op_plus_loop)
 
 }
 __end
+
+__define_operator("plus_loop", op_plus_loop);

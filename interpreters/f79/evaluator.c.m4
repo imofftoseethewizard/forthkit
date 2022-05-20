@@ -41,6 +41,7 @@ init_evaluator(
     e[ea_task_count]           = task_count;
 
     e[ea_forth] = 0;
+    e[ea_top]   = _from_ptr((char *)e + evaluator_size - sizeof(cell));
 }
 
 void
@@ -108,9 +109,9 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_source_len]  = 0;
         e[ea_sp0]         = e[ea_sp];
         e[ea_state]       = 0;
-        e[ea_interpret]   = 0;
         e[ea_source_addr] = _from_ptr(&e[ea_source_buffer]);
         e[ea_blk]         = 0;
+        e[ea_buffer0]     = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
         e[ea_buffers]     = _from_ptr(&e[ea_buffer_map]);
         e[ea_next_buffer] = 0;
         e[ea_scr]         = 0;

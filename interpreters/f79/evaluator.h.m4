@@ -68,6 +68,7 @@ enum task_attribute {
 enum engine_attribute {
     /* attributes common to all tasks */
     ea_size,
+    ea_top,
     ea_buffer_size,
     ea_buffer_count,
     ea_fiber_count,
@@ -77,10 +78,12 @@ enum engine_attribute {
     ea_return_stack_size,
     ea_source_size,
     ea_task_count,
+    ea_word_buffer,
     ea_source_addr,
     ea_source_idx,
     ea_source_len,
     ea_blk,
+    ea_buffer0,
     ea_buffers,
     ea_next_buffer,
     ea_scr,
@@ -222,8 +225,12 @@ do {                                                              \
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
 
+#define _register_operator(s, l)                                  \
+        _info("defining %-16s %lx\n", s, (long)_from_pr(l));
+
 #define _primary_fiber 0
 
+#define _to_buffer_ptr(n) ((char *)_to_ptr(e[ea_buffer0] + (e[ea_buffer_count] - n - 1) * e[ea_buffer_size]))
 #define _to_fiber_ptr(n) (&e[ea_primary_fiber] + _fiber_size * (n))
 #define _to_task_ptr(n)  (&e[ea_primary_task]  + _task_size  * (n))
 

@@ -11,3 +11,5 @@ __primitive(op_do)
     _check_return_stack_bounds();
 }
 __end
+
+__define_operator("do", op_do);

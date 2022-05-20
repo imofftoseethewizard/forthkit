@@ -1,5 +1,3 @@
-#define _buffer_addr(n) (char *)e + e[ea_size] - e[ea_buffer_size] * ((n) + 1)
-
 __primitive(pr_buffer)
 {
     register cell new_block = *sp++;
@@ -9,7 +7,7 @@ __primitive(pr_buffer)
     if (old_block != -1 && old_block & c_msb) {
         if (   storage_fd < 0
                || lseek(storage_fd, (old_block ^ c_msb)*e[ea_buffer_size], SEEK_SET) == -1
-               || write(storage_fd, _buffer_addr(n), e[ea_buffer_size]) == -1
+               || write(storage_fd, _to_buffer_ptr(n), e[ea_buffer_size]) == -1
             ) {
 
             _abort(-34);
@@ -18,8 +16,8 @@ __primitive(pr_buffer)
     }
 
     e[e[ea_buffers] + n] = new_block;
-    *--sp = _from_ptr(_buffer_addr(n));
-    e[ea_next_buffer] = (n + 1) % BUFFER_COUNT;
+    *--sp = _from_ptr(_to_buffer_ptr(n));
+    e[ea_next_buffer] = (n + 1) % e[ea_buffer_count];
 
   pr_buffer_exit:
 }
