@@ -112,7 +112,9 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_blk]         = 0;
         e[ea_buffer0]     = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
         e[ea_buffers]     = _reserve(e[ea_buffer_count] * sizeof(cell));
+        e[ea_number_pad]  = _reserve(_c_number_pad_size);
         e[ea_source_addr] = _reserve(e[ea_source_size]);
+
         e[ea_next_buffer] = 0;
         e[ea_scr]         = 0;
 

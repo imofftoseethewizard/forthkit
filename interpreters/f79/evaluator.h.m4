@@ -78,6 +78,7 @@ enum engine_attribute {
     ea_return_stack_size,
     ea_source_size,
     ea_task_count,
+    ea_number_pad,
     ea_word_buffer,
     ea_source_addr,
     ea_source_idx,
