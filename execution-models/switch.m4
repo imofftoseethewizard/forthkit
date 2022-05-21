@@ -33,9 +33,9 @@ define(`__implement_evaluator_core', `
                 switch (_to_pv(*ip++)) {
                 undivert(__primitive_implementations)
                 default:
+                    result = err_unknown_primitive;
                     ip = 0;
                     break;
-                    /* illegal operator */
                 }
             }
             _check_parameter_stack_bounds();
