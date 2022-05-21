@@ -88,6 +88,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         rp0 = rp = &e[ea_primary_fiber + fiber_attribute_count + RETURN_STACK_SIZE];
         sp0 = sp = &e[ea_primary_task + task_attribute_count + PARAMETER_STACK_SIZE];
         dp = (char *)&e[ea_end_tasks];
+        steps = -1; /* negative numbers indicate no limit */
 
         /* registers */
         e[ea_ip]           = 0;
@@ -95,7 +96,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_sp]           = _from_ptr(sp);
         e[ea_dp]           = _from_ptr(dp);
         e[ea_rp_stop]      = 0;
-        e[ea_steps]        = -1; /* negative numbers indicate no limit */
+        e[ea_steps]        = steps;
 
         /* internal state */
         e[ea_base]         = 10;
@@ -162,6 +163,8 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         rp = rp0;
         *--rp = 0;
         ip = _to_ptr(e[ea_interpret]);
+
+        steps = -1;
 
         _save_fiber_state();
 
