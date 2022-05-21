@@ -2,7 +2,6 @@
 #define DOUBLE_TYPE              long long
 #define LENGTH_TYPE              unsigned char
 
-#define BUFFER_COUNT             32   /* move to runtime */
 #define BUFFER_SIZE              1024 /* move to runtime */
 #define FIBER_STACK_SIZE         4    /* move to runtime */
 #define FIBER_COUNT              4    /* move to runtime */

@@ -120,7 +120,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         /*_check_thread_memory();*/
 
-        for (register int i = 0; i < BUFFER_COUNT; i++)
+        for (register int i = 0; i < e[ea_buffer_count]; i++)
             *(_to_ptr(e[ea_buffers]) + i) = -1;
 
         undivert(__primitive_word_definitions)
