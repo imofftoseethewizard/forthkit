@@ -44,14 +44,6 @@ init_evaluator(
     e[ea_top]   = _from_ptr((char *)e + evaluator_size - sizeof(cell));
 }
 
-void
-reset_evaluator_execution_state(cell *e)
-{
-    e[ea_sp] = e[ea_sp0];
-    e[ea_rp] = e[ea_rp0];
-    e[ea_ip] = 0;
-}
-
 int
 evaluate(cell *evaluator, const char *source, int storage_fd)
 {
@@ -84,14 +76,23 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
     if (!e[ea_interpret]) {
 
-        fp0 = fp = &e[ea_end_fiber_stack];
+        e[ea_buffer0]      = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
+        e[ea_buffers]      = _reserve(e[ea_buffer_count] * sizeof(cell));
+        e[ea_number_pad]   = _reserve(_c_number_pad_size);
+        e[ea_source_addr]  = _reserve(e[ea_source_size]);
+        e[ea_word_buffer0] = _reserve(e[ea_word_buffer_size]);
+        e[ea_word_buffer1] = _reserve(e[ea_word_buffer_size]);
+        e[ea_fp0]          = _reserve(_fiber_area) + _fiber_area;
+
+        fp0 = fp = _to_ptr(e[ea_fp0]);
         rp0 = rp = &e[ea_primary_fiber + fiber_attribute_count + RETURN_STACK_SIZE];
         sp0 = sp = &e[ea_primary_task + task_attribute_count + PARAMETER_STACK_SIZE];
         dp = (char *)&e[ea_end_tasks];
         steps = -1; /* negative numbers indicate no limit */
 
         /* registers */
-        e[ea_ip]           = 0;
+        fp[fa_ip]          = 0;
+
         e[ea_rp]           = _from_ptr(rp);
         e[ea_sp]           = _from_ptr(sp);
         e[ea_dp]           = _from_ptr(dp);
@@ -103,20 +104,13 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_context]      = 0;
         e[ea_current]      = _from_ptr(&e[ea_forth]);
         e[ea_forth]        = 0;
-        e[ea_fp]           = _from_ptr(fp);
-        e[ea_fp0]          = e[ea_fp];
+        e[ea_fp]           = e[ea_fp0];
         e[ea_rp0]          = e[ea_rp];
         e[ea_source_idx]   = 0;
         e[ea_source_len]   = 0;
         e[ea_sp0]          = e[ea_sp];
         e[ea_state]        = 0;
         e[ea_blk]          = 0;
-        e[ea_buffer0]      = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
-        e[ea_buffers]      = _reserve(e[ea_buffer_count] * sizeof(cell));
-        e[ea_number_pad]   = _reserve(_c_number_pad_size);
-        e[ea_source_addr]  = _reserve(e[ea_source_size]);
-        e[ea_word_buffer0] = _reserve(e[ea_word_buffer_size]);
-        e[ea_word_buffer1] = _reserve(e[ea_word_buffer_size]);
 
         e[ea_next_buffer]  = 0;
         e[ea_scr]          = 0;
@@ -172,7 +166,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         fp  = _to_ptr(e[ea_fp]);
         fp0 = _to_ptr(e[ea_fp0]);
-        ip  = _to_ptr(e[ea_ip]);
+        ip  = _to_ptr(fp[fa_ip]);
         sp  = _to_ptr(e[ea_sp]);
         rp  = _to_ptr(e[ea_rp]);
         tp  = _to_task_ptr(e[ea_task]);

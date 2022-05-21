@@ -6,16 +6,13 @@ move memory layout config to runtime parameters (init_evaluator)
     #define TASK_COUNT               2    /* move to runtime */
 
 inputs to make
-  common
-    PREAMBLE
-    EXECUTION_MODEL
-    EVALUATOR_PRIMITIVES
-  variable
-    MEMORY_MODEL
-    COMPILED_WORDS
-    CONFIG_H
-    EVALUATOR
-    TEST_RUNNER
+  PREAMBLE
+  EXECUTION_MODEL
+  EVALUATOR_PRIMITIVES
+  MEMORY_MODEL
+  COMPILED_WORDS
+  CONFIG_H
+  EVALUATOR
 
   source $config && make all
 

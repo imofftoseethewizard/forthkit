@@ -26,7 +26,6 @@ extern void init_evaluator(
     cell task_count,
     cell word_buffer_size);
 
-extern void reset_evaluator_execution_state(cell *evaluator);
 extern int evaluate(cell *evaluator, const char *source, int storage_fd);
 
 #define _from_high_word(x) ((x) >> (sizeof(number)*8))
@@ -99,7 +98,6 @@ enum engine_attribute {
     /* attributes of the primary fiber */
     ea_primary_fiber = ea_end_fiber_stack,
 
-    ea_ip      = ea_primary_fiber + fa_ip,
     ea_rp      = ea_primary_fiber + fa_rp,
     ea_rp0     = ea_primary_fiber + fa_rp0,
     ea_task    = ea_primary_fiber + fa_task,
@@ -224,6 +222,7 @@ do {                                                              \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));
 
 #define _primary_fiber 0
+#define _fiber_area (_fiber_size * e[ea_fiber_count])
 
 #define _to_buffer_ptr(n) ((char *)_to_ptr(e[ea_buffer0] + (e[ea_buffer_count] - n - 1) * e[ea_buffer_size]))
 #define _to_fiber_ptr(n) (&e[ea_primary_fiber] + _fiber_size * (n))
