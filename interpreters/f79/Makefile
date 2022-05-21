@@ -42,7 +42,7 @@ m4_deps =											 \
 ${BIN} ${INCLUDE} ${LIB} ${SRC} :
 	mkdir -p $@
 
-${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
+${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC} bounds.h debug.h errors.h log.h
 	m4								 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
@@ -51,7 +51,7 @@ ${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
 	  --define __compiled_words=${COMPILED_WORDS}			 \
 	  evaluator.c.m4 | indent -kr -l96 >$@
 
-${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE}
+${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE} bounds.h debug.h errors.h log.h
 	m4								 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
@@ -60,7 +60,7 @@ ${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE}
 	  --define __compiled_words=${COMPILED_WORDS}			 \
 	  evaluator.h.m4 | indent -kr -l96 >$@
 
-${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} bounds.h ${CONFIG_H} debug.h errors.h log.h ${LIB}
+${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${CONFIG_H} ${LIB}
 	gcc ${CFLAGS} -o ${EVALUATOR_O} -c ${EVALUATOR_C}
 
 ${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
