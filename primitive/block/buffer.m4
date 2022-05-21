@@ -2,7 +2,7 @@ __primitive(pr_buffer)
 {
     register cell new_block = *sp++;
     register cell n = e[ea_next_buffer];
-    register cell old_block = *(_to_ptr(e[ea_buffers]) + n);
+    register cell old_block = *(_to_ptr(e[ea_buffer_map]) + n);
 
     if (old_block != -1 && old_block & c_msb) {
         if (   storage_fd < 0
@@ -15,7 +15,7 @@ __primitive(pr_buffer)
         }
     }
 
-    *(_to_ptr(e[ea_buffers]) + n) = new_block;
+    *(_to_ptr(e[ea_buffer_map]) + n) = new_block;
     *--sp = _from_ptr(_to_buffer_ptr(n));
     e[ea_next_buffer] = (n + 1) % e[ea_buffer_count];
 

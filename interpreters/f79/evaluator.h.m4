@@ -83,7 +83,7 @@ enum engine_attribute {
     ea_source_idx,
     ea_source_len,
     ea_blk,
-    ea_buffer0,
+    ea_buffers,
     ea_buffer_map,
     ea_next_buffer,
     ea_word_buffer0,
@@ -224,7 +224,7 @@ do {                                                              \
 #define _fiber_area (_fiber_size * e[ea_fiber_count])
 #define _task_area (_task_size * e[ea_task_count])
 
-#define _to_buffer_ptr(n) ((char *)_to_ptr(e[ea_buffer0] + (e[ea_buffer_count] - n - 1) * e[ea_buffer_size]))
+#define _to_buffer_ptr(n) ((char *)_to_ptr(e[ea_buffers] + (e[ea_buffer_count] - n - 1) * e[ea_buffer_size]))
 #define _to_fiber_ptr(n) ((cell *)((char *)_to_ptr(e[ea_fibers]) + _fiber_size * (n)))
 #define _to_task_ptr(n)  ((cell *)((char *)_to_ptr(e[ea_tasks]) + _task_size * (n)))
 
