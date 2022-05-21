@@ -11,7 +11,7 @@ if __name__ == '__main__':
         else:
             for key, value in symbols.items():
                 try:
-                    line = re.sub(re.escape(value).rjust(16, ' '), key.rjust(16, ' '), line)
+                    line = re.sub(re.escape(value).rjust(8, ' '), key.rjust(8, ' '), line)
                 except:
                     print(key, value, line)
                     raise

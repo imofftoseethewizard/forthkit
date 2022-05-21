@@ -31,11 +31,14 @@ do {                                                                     \
 
 #define _print_registers()                                               \
 do {                                                                     \
-    _debug("ip: %16lx; *ip: %16lx, rp: %16lx, *rp: %16lx, sp: %16lx, *sp: %16lx, dp: %16lx\n",  \
-           (long)ip, ip?(long)*ip:0,                                     \
-           (long)rp, rp?(long)_to_ptr(*rp):0,                           \
-           (long)sp, sp?(long)*sp:0,                                    \
-           (long)dp);                                    \
+    _debug("s: %8x, ip: %8x; *ip: %8x, *(ip+1): %8x, rp: %8x, *rp: %8x, sp: %8x, *sp: %8x, dp: %8x src: %.*s\n",  \
+           steps, \
+           _from_ptr(ip), ip?*ip:0, ip?*(ip+1):0,        \
+           _from_ptr(rp), rp?*rp:0,                      \
+           _from_ptr(sp), sp?*sp:0,                      \
+           _from_ptr(dp),                                      \
+           e[ea_source_len]-e[ea_source_idx], \
+           (char *)_to_ptr(e[ea_source_addr]) + e[ea_source_idx]);      \
 } while (0)
 
 
