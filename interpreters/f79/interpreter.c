@@ -21,7 +21,7 @@
 #define DEFAULT_EXPECTED_RESULT      0
 #define DEFAULT_FIBER_COUNT          4
 #define DEFAULT_FIBER_STACK_SIZE     4
-#define DEFAULT_MAX_WORD_LENGTH      64
+#define DEFAULT_WORD_BUFFER_SIZE     64
 #define DEFAULT_PARAMETER_STACK_SIZE 256
 #define DEFAULT_RETURN_STACK_SIZE    256
 #define DEFAULT_SOURCE_SIZE          1024
@@ -40,7 +40,7 @@ static int evaluator_size       = DEFAULT_EVALUATOR_SIZE;
 static int expected_result      = DEFAULT_EXPECTED_RESULT;
 static int fiber_count          = DEFAULT_FIBER_COUNT;
 static int fiber_stack_size     = DEFAULT_FIBER_STACK_SIZE;
-static int max_word_length      = DEFAULT_MAX_WORD_LENGTH;
+static int word_buffer_size     = DEFAULT_WORD_BUFFER_SIZE;
 static int parameter_stack_size = DEFAULT_PARAMETER_STACK_SIZE;
 static int return_stack_size    = DEFAULT_RETURN_STACK_SIZE;
 static int source_size          = DEFAULT_SOURCE_SIZE;
@@ -60,15 +60,15 @@ static struct option long_options[] = {
     {"buffer-size",          required_argument, NULL,          'B'},
     {"command",              required_argument, NULL,          'c'},
     {"evaluator-size",       required_argument, NULL,          'E'},
+    {"expected-result",      required_argument, NULL,          'r'},
     {"fiber-count",          required_argument, NULL,          'f'},
     {"fiber-stack-size",     required_argument, NULL,          'F'},
-    {"max-word-length",      required_argument, NULL,          'w'},
     {"parameter-stack-size", required_argument, NULL,          'P'},
     {"return-stack-size",    required_argument, NULL,          'R'},
-    {"expected-result",      required_argument, NULL,          'r'},
     {"source-size",          required_argument, NULL,          'S'},
     {"storage",              required_argument, NULL,          's'},
     {"task-count",           required_argument, NULL,          't'},
+    {"word-buffer-size",     required_argument, NULL,          'W'},
     {"help",                 no_argument,       &show_help,    1},
     {"interactive",          no_argument,       &interactive,  1},
     {"quiet",                no_argument,       &quiet,        1},
@@ -113,7 +113,7 @@ print_help(char *message)
     printf("  -s, --storage               path to block storage\n");
     printf("  -t, --task-count            number of tasks to reserve space for, default %d\n", DEFAULT_TASK_COUNT);
     printf("  -v, --version               print version\n");
-    printf("  -w, --max-word-length       maximum length of parsed word, default %d\n", DEFAULT_MAX_WORD_LENGTH);
+    printf("  -W, --word-buffer-size      maximum length of parsed word, default %d\n", DEFAULT_WORD_BUFFER_SIZE);
     printf("\n");
 
     if (message) {
@@ -142,11 +142,11 @@ main(int argc, char *argv[])
         evaluator_size,
         fiber_count,
         fiber_stack_size,
-        max_word_length,
         parameter_stack_size,
         return_stack_size,
         source_size,
-        task_count);
+        task_count,
+        word_buffer_size);
 
     if (!quiet && !show_help && !show_version)
         printf("Forthkit %s\n", INTERPRETER_NAME);
@@ -428,6 +428,16 @@ process_options(int argc, char *argv[])
 
         case 'v':
             show_version = 1;
+            break;
+
+        case 'W':
+
+            if (!is_valid_non_negative_integer(optarg)) {
+                print_help("-W, --word-buffer-size must have a non-negative integer argument.");
+                exit(1);
+            }
+
+            word_buffer_size = atoi(optarg);
             break;
 
         case ':':

@@ -1,9 +1,8 @@
-__primitive(pr_word)  
+__primitive(pr_word)
 {
-
-    /* Delimiter is on the top of the stack. */
+    /* Word buffer is on the top of the stack, delimiter is next. */
+    register char *word_buffer = (char *)_to_ptr(*sp++);
     register char delimiter    = *sp++;
-    register char *word_buffer = (char *)_align(dp);
     register int word_idx      = sizeof(length_type);
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
@@ -15,7 +14,7 @@ __primitive(pr_word)
         source_idx++;
 
     /* Copy word from source to word buffer. */
-    while (source_idx < source_len && word_idx < MAX_WORD_LENGTH
+    while (source_idx < source_len && word_idx < e[ea_word_buffer_size]
            && (source[source_idx] != delimiter && source[source_idx] > 32))
         word_buffer[word_idx++] = source[source_idx++];
 

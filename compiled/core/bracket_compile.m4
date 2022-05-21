@@ -1,5 +1,7 @@
     __compiled_word("[COMPILE]", cw_bracket_compile, c_immediate)
     _compile_literal(32);
+    _compile_literal(_from_ptr(&e[ea_word_buffer1]));
+    _compile_pr(pr_fetch);
     _compile_pr(pr_word);
     _compile_pr(pr_q_dup);
     _compile_if();

@@ -20,11 +20,11 @@ extern void init_evaluator(
     cell evaluator_size,
     cell fiber_count,
     cell fiber_stack_size,
-    cell max_word_length,
     cell parameter_stack_size,
     cell return_stack_size,
     cell source_size,
-    cell task_count);
+    cell task_count,
+    cell word_buffer_size);
 
 extern void reset_evaluator_execution_state(cell *evaluator);
 extern int evaluate(cell *evaluator, const char *source, int storage_fd);
@@ -73,7 +73,7 @@ enum engine_attribute {
     ea_buffer_count,
     ea_fiber_count,
     ea_fiber_stack_size,
-    ea_max_word_length,
+    ea_word_buffer_size,
     ea_parameter_stack_size,
     ea_return_stack_size,
     ea_source_size,
@@ -87,6 +87,8 @@ enum engine_attribute {
     ea_buffer0,
     ea_buffers,
     ea_next_buffer,
+    ea_word_buffer0,
+    ea_word_buffer1,
     ea_scr,
     ea_fp,
     ea_fp0,
@@ -208,12 +210,10 @@ do {                                                              \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));      \
         _begin_define_word(s, c_primitive);                       \
         _register_compiled_word(cw_l);                            \
-        _compile_literal(MAX_WORD_LENGTH);                        \
-        _compile_pr(pr_allot);                                    \
         _compile_literal(32);                                     \
+        _compile_literal(_from_ptr(&e[ea_word_buffer1]));         \
+        _compile_pr(pr_fetch);                                    \
         _compile_pr(pr_word);                                     \
-        _compile_literal(-MAX_WORD_LENGTH);                       \
-        _compile_pr(pr_allot);                                    \
         _compile_pr(l);                                           \
         _compile_pr(op_exit);
 

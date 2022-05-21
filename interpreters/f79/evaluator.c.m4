@@ -23,22 +23,22 @@ init_evaluator(
     cell evaluator_size,
     cell fiber_count,
     cell fiber_stack_size,
-    cell max_word_length,
     cell parameter_stack_size,
     cell return_stack_size,
     cell source_size,
-    cell task_count)
+    cell task_count,
+    cell word_buffer_size)
 {
     e[ea_buffer_count]         = buffer_count;
     e[ea_buffer_size]          = buffer_size;
     e[ea_fiber_count]          = fiber_count;
     e[ea_fiber_stack_size]     = fiber_stack_size;
-    e[ea_max_word_length]      = max_word_length;
     e[ea_parameter_stack_size] = parameter_stack_size;
     e[ea_return_stack_size]    = return_stack_size;
     e[ea_size]                 = evaluator_size;
     e[ea_source_size]          = source_size;
     e[ea_task_count]           = task_count;
+    e[ea_word_buffer_size]     = word_buffer_size;
 
     e[ea_forth] = 0;
     e[ea_top]   = _from_ptr((char *)e + evaluator_size - sizeof(cell));
@@ -90,33 +90,35 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         dp = (char *)&e[ea_end_tasks];
 
         /* registers */
-        e[ea_ip]          = 0;
-        e[ea_rp]          = _from_ptr(rp);
-        e[ea_sp]          = _from_ptr(sp);
-        e[ea_dp]          = _from_ptr(dp);
-        e[ea_rp_stop]     = 0;
-        e[ea_steps]       = -1; /* negative numbers indicate no limit */
+        e[ea_ip]           = 0;
+        e[ea_rp]           = _from_ptr(rp);
+        e[ea_sp]           = _from_ptr(sp);
+        e[ea_dp]           = _from_ptr(dp);
+        e[ea_rp_stop]      = 0;
+        e[ea_steps]        = -1; /* negative numbers indicate no limit */
 
         /* internal state */
-        e[ea_base]        = 10;
-        e[ea_context]     = 0;
-        e[ea_current]     = _from_ptr(&e[ea_forth]);
-        e[ea_forth]       = 0;
-        e[ea_fp]          = _from_ptr(fp);
-        e[ea_fp0]         = e[ea_fp];
-        e[ea_rp0]         = e[ea_rp];
-        e[ea_source_idx]  = 0;
-        e[ea_source_len]  = 0;
-        e[ea_sp0]         = e[ea_sp];
-        e[ea_state]       = 0;
-        e[ea_blk]         = 0;
-        e[ea_buffer0]     = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
-        e[ea_buffers]     = _reserve(e[ea_buffer_count] * sizeof(cell));
-        e[ea_number_pad]  = _reserve(_c_number_pad_size);
-        e[ea_source_addr] = _reserve(e[ea_source_size]);
+        e[ea_base]         = 10;
+        e[ea_context]      = 0;
+        e[ea_current]      = _from_ptr(&e[ea_forth]);
+        e[ea_forth]        = 0;
+        e[ea_fp]           = _from_ptr(fp);
+        e[ea_fp0]          = e[ea_fp];
+        e[ea_rp0]          = e[ea_rp];
+        e[ea_source_idx]   = 0;
+        e[ea_source_len]   = 0;
+        e[ea_sp0]          = e[ea_sp];
+        e[ea_state]        = 0;
+        e[ea_blk]          = 0;
+        e[ea_buffer0]      = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
+        e[ea_buffers]      = _reserve(e[ea_buffer_count] * sizeof(cell));
+        e[ea_number_pad]   = _reserve(_c_number_pad_size);
+        e[ea_source_addr]  = _reserve(e[ea_source_size]);
+        e[ea_word_buffer0] = _reserve(e[ea_word_buffer_size]);
+        e[ea_word_buffer1] = _reserve(e[ea_word_buffer_size]);
 
-        e[ea_next_buffer] = 0;
-        e[ea_scr]         = 0;
+        e[ea_next_buffer]  = 0;
+        e[ea_scr]          = 0;
 
         /*_check_thread_memory();*/
 
