@@ -91,12 +91,11 @@ enum engine_attribute {
     ea_scr,
     ea_fp,
     ea_fp0,
-
-    ea_fiber_stack = ea_fp0,
-    ea_end_fiber_stack = ea_fiber_stack + FIBER_COUNT,
+    ea_fibers,
+    ea_tasks,
 
     /* attributes of the primary fiber */
-    ea_primary_fiber = ea_end_fiber_stack,
+    ea_primary_fiber = ea_fp0,
 
     ea_rp      = ea_primary_fiber + fa_rp,
     ea_rp0     = ea_primary_fiber + fa_rp0,
@@ -223,10 +222,11 @@ do {                                                              \
 
 #define _primary_fiber 0
 #define _fiber_area (_fiber_size * e[ea_fiber_count])
+#define _task_area (_task_size * e[ea_task_count])
 
 #define _to_buffer_ptr(n) ((char *)_to_ptr(e[ea_buffer0] + (e[ea_buffer_count] - n - 1) * e[ea_buffer_size]))
-#define _to_fiber_ptr(n) (&e[ea_primary_fiber] + _fiber_size * (n))
-#define _to_task_ptr(n)  (&e[ea_primary_task]  + _task_size  * (n))
+#define _to_fiber_ptr(n) ((cell *)((char *)_to_ptr(e[ea_fibers]) + _fiber_size * (n)))
+#define _to_task_ptr(n)  ((cell *)((char *)_to_ptr(e[ea_tasks]) + _task_size * (n)))
 
 #define _save_fiber_state()                                       \
 do {                                                              \

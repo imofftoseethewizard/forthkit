@@ -2,7 +2,7 @@ __primitive(pr_lay)
 {
     register cell idx = *sp++;
 
-    if (fp == &e[ea_fiber_stack])
+    if (fp0 - fp == e[ea_fiber_stack_size] * sizeof(cell))
         _abort(err_fiber_stack_overflow);
 
     else if (idx >= FIBER_COUNT)

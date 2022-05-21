@@ -82,7 +82,34 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_source_addr]  = _reserve(e[ea_source_size]);
         e[ea_word_buffer0] = _reserve(e[ea_word_buffer_size]);
         e[ea_word_buffer1] = _reserve(e[ea_word_buffer_size]);
-        e[ea_fp0]          = _reserve(_fiber_area) + _fiber_area;
+        e[ea_fp0]          = _reserve(e[ea_fiber_count] * sizeof(cell)) + e[ea_fiber_count];
+        e[ea_fibers]       = _reserve(_fiber_area);
+        e[ea_tasks]        = _reserve(_task_area);
+
+        for (register int i = 0; i < e[ea_buffer_count]; i++)
+            *(_to_ptr(e[ea_buffers]) + i) = -1;
+
+        for (register int i = 0; i < e[ea_fiber_count]; i++) {
+            register cell *f = _to_ptr(e[ea_fibers]) + i * _fiber_size;
+            f[fa_ip] = 0;
+            f[fa_rp] = f[fa_rp_stop] = f[fa_rp0] = _from_ptr(f) + _fiber_size;
+            f[fa_steps] = -1;
+            f[fa_task] = e[ea_tasks];
+        }
+
+        for (register int i = 0; i < e[ea_task_count]; i++) {
+            register cell *t = _to_ptr(e[ea_tasks]) + i * _task_size;
+            t[ta_dp] = _from_ptr(&e[ea_end_tasks]);
+            t[ta_sp] = t[ta_sp0] = _from_ptr(t) + _task_size;
+            t[ta_context] = 0;
+            t[ta_current] = _from_ptr(&t[ta_forth]);
+            t[ta_base] = 10;
+            t[ta_state] = 0;
+            t[ta_interpret] = 0;
+        }
+
+        e[ea_task] = 0;
+        tp = _to_task_ptr(e[ea_task]);
 
         fp0 = fp = _to_ptr(e[ea_fp0]);
         rp0 = rp = &e[ea_primary_fiber + fiber_attribute_count + RETURN_STACK_SIZE];
@@ -116,9 +143,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_scr]          = 0;
 
         /*_check_thread_memory();*/
-
-        for (register int i = 0; i < e[ea_buffer_count]; i++)
-            *(_to_ptr(e[ea_buffers]) + i) = -1;
 
         undivert(__primitive_word_definitions)
         undivert(__compiled_word_definitions)dnl
