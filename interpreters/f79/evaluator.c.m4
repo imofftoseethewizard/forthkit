@@ -76,8 +76,10 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
     if (!e[ea_interpret]) {
 
+        /* reserve large blocks in high memory */
+
         e[ea_buffer0]      = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
-        e[ea_buffers]      = _reserve(e[ea_buffer_count] * sizeof(cell));
+        e[ea_buffer_map]      = _reserve(e[ea_buffer_count] * sizeof(cell));
         e[ea_number_pad]   = _reserve(_c_number_pad_size);
         e[ea_source_addr]  = _reserve(e[ea_source_size]);
         e[ea_word_buffer0] = _reserve(e[ea_word_buffer_size]);
@@ -87,7 +89,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_tasks]        = _reserve(_task_area);
 
         for (register int i = 0; i < e[ea_buffer_count]; i++)
-            *(_to_ptr(e[ea_buffers]) + i) = -1;
+            *(_to_ptr(e[ea_buffer_map]) + i) = -1;
 
         for (register int i = 0; i < e[ea_fiber_count]; i++) {
             register cell *f = _to_ptr(e[ea_fibers]) + i * _fiber_size;

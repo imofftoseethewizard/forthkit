@@ -84,7 +84,7 @@ enum engine_attribute {
     ea_source_len,
     ea_blk,
     ea_buffer0,
-    ea_buffers,
+    ea_buffer_map,
     ea_next_buffer,
     ea_word_buffer0,
     ea_word_buffer1,
