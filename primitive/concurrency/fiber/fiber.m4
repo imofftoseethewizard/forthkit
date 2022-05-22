@@ -17,7 +17,7 @@ __primitive(pr_fiber)
         *_to_ptr(f[fa_rp]) = 0;
         f[fa_rp_stop] = f[fa_rp0];
         f[fa_steps] = -1;
-        f[fa_task] = e[ea_task];
+        f[fa_task] = f[fa_task];
         *sp = idx;
     }
 }

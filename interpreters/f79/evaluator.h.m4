@@ -45,7 +45,7 @@ enum fiber_attribute {
     fiber_attribute_count
 };
 
-#define _fiber_size (fiber_attribute_count + RETURN_STACK_SIZE)
+#define _fiber_size (fiber_attribute_count * sizeof(cell) + RETURN_STACK_SIZE)
 
 enum task_attribute {
     ta_dp,
@@ -94,19 +94,8 @@ enum engine_attribute {
     ea_fibers,
     ea_tasks,
 
-    /* attributes of the primary fiber */
-    ea_primary_fiber = ea_fp0,
-
-    ea_rp      = ea_primary_fiber + fa_rp,
-    ea_rp0     = ea_primary_fiber + fa_rp0,
-    ea_task    = ea_primary_fiber + fa_task,
-    ea_rp_stop = ea_primary_fiber + fa_rp_stop,
-    ea_steps   = ea_primary_fiber + fa_steps,
-
-    ea_end_fibers = ea_primary_fiber + _fiber_size * FIBER_COUNT,
-
     /* attributes of the primary task */
-    ea_primary_task = ea_end_fibers,
+    ea_primary_task = ea_tasks,
 
     ea_dp        = ea_primary_task + ta_dp,
     ea_sp        = ea_primary_task + ta_sp,
@@ -247,6 +236,7 @@ do {                                                              \
     rp0     = _to_ptr(fiber[fa_rp0]);                             \
     rp_stop = _to_ptr(fiber[fa_rp_stop]);                         \
     steps   = fiber[fa_steps];                                    \
+    tp      = _to_task_ptr(fiber[fa_task]);                       \
 } while (0)
 
 #define _end_fiber()                                              \
