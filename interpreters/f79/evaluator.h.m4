@@ -95,7 +95,7 @@ enum engine_attribute {
     ea_tasks,
 
     /* attributes of the primary task */
-    ea_primary_task = ea_tasks,
+    ea_primary_task,
 
     ea_dp        = ea_primary_task + ta_dp,
     ea_sp        = ea_primary_task + ta_sp,
@@ -220,11 +220,17 @@ do {                                                              \
 #define _save_fiber_state()                                       \
 do {                                                              \
     register cell *fiber = _to_fiber_ptr(*fp);                    \
+                                                                  \
     fiber[fa_ip]  = rp == rp0 ? 0 : _from_ptr(ip);                \
     fiber[fa_rp]  = _from_ptr(rp);                                \
     fiber[fa_rp0] = _from_ptr(rp0);                               \
     fiber[fa_rp_stop] = _from_ptr(rp_stop);                       \
     fiber[fa_steps] = steps;                                      \
+                                                                  \
+    /*tp[ta_dp] = _from_ptr(dp);*/                                    \
+    tp[ta_sp] = _from_ptr(sp);                                    \
+    tp[ta_sp0] = _from_ptr(sp0);                                  \
+                                                                  \
 } while (0)
 
 #define _load_fiber_state()                                       \
@@ -237,6 +243,11 @@ do {                                                              \
     rp_stop = _to_ptr(fiber[fa_rp_stop]);                         \
     steps   = fiber[fa_steps];                                    \
     tp      = _to_task_ptr(fiber[fa_task]);                       \
+                                                                  \
+    /*dp = (char *)_to_ptr(tp[ta_dp]);*/                              \
+    sp = _to_ptr(tp[ta_sp]);                                      \
+    sp0 = _to_ptr(tp[ta_sp0]);                                    \
+                                                                  \
 } while (0)
 
 #define _end_fiber()                                              \

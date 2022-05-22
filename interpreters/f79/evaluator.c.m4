@@ -88,15 +88,15 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_fibers]       = _reserve(_fiber_area);
         e[ea_tasks]        = _reserve(_task_area);
 
-        _debug("buffers: %x\n", e[ea_buffers]);
-        _debug("buffer_map: %x\n", e[ea_buffer_map]);
-        _debug("number_pad: %x\n", e[ea_number_pad]);
-        _debug("source_addr: %x\n", e[ea_source_addr]);
-        _debug("word_buffer0: %x\n", e[ea_word_buffer0]);
+        _debug("tasks:        %x\n", e[ea_tasks]);
+        _debug("fibers:       %x\n", e[ea_fibers]);
+        _debug("fp0:          %x\n", e[ea_fp0]);
         _debug("word_buffer1: %x\n", e[ea_word_buffer1]);
-        _debug("fp0: %x\n", e[ea_fp0]);
-        _debug("fibers: %x\n", e[ea_fibers]);
-        _debug("tasks: %x\n", e[ea_tasks]);
+        _debug("word_buffer0: %x\n", e[ea_word_buffer0]);
+        _debug("source_addr:  %x\n", e[ea_source_addr]);
+        _debug("number_pad:   %x\n", e[ea_number_pad]);
+        _debug("buffer_map:   %x\n", e[ea_buffer_map]);
+        _debug("buffers:      %x\n", e[ea_buffers]);
 
         for (register int i = 0; i < e[ea_buffer_count]; i++)
             *(_to_ptr(e[ea_buffer_map]) + i) = -1;
@@ -123,10 +123,9 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         fp0 = fp = _to_ptr(e[ea_fp0]);
         *--fp = _primary_fiber;
         _load_fiber_state();
-        sp0 = sp = &e[ea_primary_task + task_attribute_count + PARAMETER_STACK_SIZE];
+
         dp = (char *)&e[ea_end_tasks];
 
-        e[ea_sp]           = _from_ptr(sp);
         e[ea_dp]           = _from_ptr(dp);
 
         /* internal state */
@@ -137,7 +136,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_fp]           = e[ea_fp0];
         e[ea_source_idx]   = 0;
         e[ea_source_len]   = 0;
-        e[ea_sp0]          = e[ea_sp];
         e[ea_state]        = 0;
         e[ea_blk]          = 0;
 
@@ -161,11 +159,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
      */
     if (source) {
 
-        sp  = _to_ptr(e[ea_sp]);
-
         dp = (char *)_to_ptr(e[ea_dp]);
-        fp0 = _to_ptr(e[ea_fp0]);
-        sp0  = _to_ptr(e[ea_sp0]);
 
         _debug("interpreting source '%s'\n", source);
 
@@ -174,7 +168,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         /* push new fiber for the interpreter task onto fiber stack */
 
-        fp = fp0;
+        fp = fp0 = _to_ptr(e[ea_fp0]);
         *--fp = _primary_fiber;
 
         _load_fiber_state();
@@ -192,23 +186,19 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         fp  = _to_ptr(e[ea_fp]);
         fp0 = _to_ptr(e[ea_fp0]);
 
+
         _load_fiber_state();
 
-        sp  = _to_ptr(e[ea_sp]);
-
         dp = (char *)_to_ptr(e[ea_dp]);
-        sp0  = _to_ptr(e[ea_sp0]);
     }
 
     __implement_evaluator_core() dnl
 
+
     /* Store state back in the evaluator structure. */
-    /* _save_task_state(); */
-    e[ea_sp] = _from_ptr(sp);
     e[ea_dp] = _from_ptr(dp);
 
     e[ea_fp] = _from_ptr(fp);
-
     _debug("done with run: result: %d\n", result);
     _print_stack();
     return result;
