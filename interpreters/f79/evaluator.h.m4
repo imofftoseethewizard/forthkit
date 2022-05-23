@@ -98,7 +98,6 @@ enum engine_attribute {
     ea_primary_task,
 
     ea_state     = ea_primary_task + ta_state,
-    ea_forth     = ea_primary_task + ta_forth,
 
     ea_end_tasks = ea_primary_task + task_attribute_count,
 

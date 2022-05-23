@@ -40,8 +40,7 @@ init_evaluator(
     e[ea_task_count]           = task_count;
     e[ea_word_buffer_size]     = word_buffer_size;
 
-    e[ea_forth] = 0;
-    e[ea_top]   = 0;
+    e[ea_top] = 0;
 }
 
 int
@@ -129,8 +128,8 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         /* internal state */
         tp[ta_base]         = 10;
         tp[ta_context]      = 0;
-        tp[ta_current]      = _from_ptr(&e[ea_forth]);
-        e[ea_forth]        = 0;
+        tp[ta_current]      = _from_ptr(&tp[ta_forth]);
+        tp[ta_forth]        = 0;
         e[ea_fp]           = e[ea_fp0];
         e[ea_source_idx]   = 0;
         e[ea_source_len]   = 0;
@@ -144,7 +143,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         undivert(__primitive_word_definitions)
         undivert(__compiled_word_definitions)dnl
-        tp[ta_context] = _from_ptr(&e[ea_forth]);
+        tp[ta_context] = _from_ptr(&tp[ta_forth]);
 
         _save_fiber_state();
         _check_dictionary_bounds();
