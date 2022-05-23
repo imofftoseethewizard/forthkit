@@ -124,10 +124,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         *--fp = _primary_fiber;
         _load_fiber_state();
 
-        dp = (char *)&e[ea_end_tasks];
-
-        e[ea_dp]           = _from_ptr(dp);
-
         /* internal state */
         e[ea_base]         = 10;
         e[ea_context]      = 0;
@@ -147,8 +143,9 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         undivert(__primitive_word_definitions)
         undivert(__compiled_word_definitions)dnl
         e[ea_context] = _from_ptr(&e[ea_forth]);
+
+        _save_fiber_state();
         _check_dictionary_bounds();
-        e[ea_dp] = _from_ptr(dp);
     }
 
     /*_check_fiber_stack_bounds();
@@ -158,8 +155,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
        defines primitives and the bootstrap interpreter.
      */
     if (source) {
-
-        dp = (char *)_to_ptr(e[ea_dp]);
 
         _debug("interpreting source '%s'\n", source);
 
@@ -188,15 +183,12 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
 
         _load_fiber_state();
-
-        dp = (char *)_to_ptr(e[ea_dp]);
     }
 
     __implement_evaluator_core() dnl
 
 
     /* Store state back in the evaluator structure. */
-    e[ea_dp] = _from_ptr(dp);
 
     e[ea_fp] = _from_ptr(fp);
     _debug("done with run: result: %d\n", result);

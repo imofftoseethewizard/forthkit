@@ -227,7 +227,7 @@ do {                                                              \
     fiber[fa_rp_stop] = _from_ptr(rp_stop);                       \
     fiber[fa_steps] = steps;                                      \
                                                                   \
-    /*tp[ta_dp] = _from_ptr(dp);*/                                    \
+    tp[ta_dp] = _from_ptr(dp);                                    \
     tp[ta_sp] = _from_ptr(sp);                                    \
     tp[ta_sp0] = _from_ptr(sp0);                                  \
                                                                   \
@@ -244,7 +244,7 @@ do {                                                              \
     steps   = fiber[fa_steps];                                    \
     tp      = _to_task_ptr(fiber[fa_task]);                       \
                                                                   \
-    /*dp = (char *)_to_ptr(tp[ta_dp]);*/                              \
+    dp = (char *)_to_ptr(tp[ta_dp]);                              \
     sp = _to_ptr(tp[ta_sp]);                                      \
     sp0 = _to_ptr(tp[ta_sp0]);                                    \
                                                                   \
