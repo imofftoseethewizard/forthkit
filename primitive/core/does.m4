@@ -1,6 +1,6 @@
 __primitive(pr_do_does)
 {
-    register cell *word = _to_ptr(*_to_ptr(e[ea_current]));
+    register cell *word = _to_ptr(*_to_ptr(tp[ta_current]));
     register cell *origp = _get_word_interpretation_ptr(word);
 
     *origp = (cell)_from_pr(op_does);
@@ -20,7 +20,7 @@ __primitive(pr_does)
        At interpretation time, do_does> runs during the creation of a
        new word.  As left by does> at compile time, the location of
        the does> code is on the stack and the word being defined is
-       available in e[ea_current].  (See preamble.h "Add to current
+       available in tp[ta_current].  (See preamble.h "Add to current
        vocabulary.") Assuming it was created with CREATE, the body of
        the word will so far be
 

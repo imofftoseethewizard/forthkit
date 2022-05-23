@@ -129,7 +129,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         /* internal state */
         tp[ta_base]         = 10;
         tp[ta_context]      = 0;
-        e[ea_current]      = _from_ptr(&e[ea_forth]);
+        tp[ta_current]      = _from_ptr(&e[ea_forth]);
         e[ea_forth]        = 0;
         e[ea_fp]           = e[ea_fp0];
         e[ea_source_idx]   = 0;

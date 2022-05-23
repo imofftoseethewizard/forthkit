@@ -97,7 +97,6 @@ enum engine_attribute {
     /* attributes of the primary task */
     ea_primary_task,
 
-    ea_current   = ea_primary_task + ta_current,
     ea_state     = ea_primary_task + ta_state,
     ea_forth     = ea_primary_task + ta_forth,
 
@@ -156,10 +155,10 @@ do {                                                              \
        _store_data(*sp++);                                        \
                                                                   \
        /* Vocabulary list link.               */                  \
-       _store_data(*_to_ptr(e[ea_current]));                      \
+       _store_data(*_to_ptr(tp[ta_current]));                      \
                                                                   \
        /* Add to current vocabulary.          */                  \
-       *_to_ptr(e[ea_current]) = *rp++;                           \
+       *_to_ptr(tp[ta_current]) = *rp++;                           \
                                                                   \
        /* Word flags.                         */                  \
        _store_data(flags)
