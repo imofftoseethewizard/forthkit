@@ -1,0 +1,1 @@
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/zero_lt.fs
