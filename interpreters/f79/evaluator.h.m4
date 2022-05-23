@@ -97,9 +97,6 @@ enum engine_attribute {
     /* attributes of the primary task */
     ea_primary_task,
 
-    ea_dp        = ea_primary_task + ta_dp,
-    ea_sp        = ea_primary_task + ta_sp,
-    ea_sp0       = ea_primary_task + ta_sp0,
     ea_base      = ea_primary_task + ta_base,
     ea_context   = ea_primary_task + ta_context,
     ea_current   = ea_primary_task + ta_current,
@@ -107,7 +104,7 @@ enum engine_attribute {
     ea_interpret = ea_primary_task + ta_interpret,
     ea_forth     = ea_primary_task + ta_forth,
 
-    ea_end_tasks = ea_primary_task + (task_attribute_count + PARAMETER_STACK_SIZE) * TASK_COUNT,
+    ea_end_tasks = ea_primary_task + task_attribute_count,
 
     /* must be last */
     engine_attribute_count
