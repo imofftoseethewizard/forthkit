@@ -41,7 +41,7 @@ init_evaluator(
     e[ea_word_buffer_size]     = word_buffer_size;
 
     e[ea_forth] = 0;
-    e[ea_top]   = _from_ptr((char *)e + evaluator_size - sizeof(cell));
+    e[ea_top]   = 0;
 }
 
 int
@@ -74,7 +74,9 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
     cell *rp0;
     cell *sp0;
 
-    if (!e[ea_interpret]) {
+    if (!e[ea_top]) {
+
+        e[ea_top] = _from_ptr((char *)e + e[ea_size] - sizeof(cell));
 
         /* reserve large blocks in high memory */
 
