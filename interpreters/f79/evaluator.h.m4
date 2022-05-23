@@ -100,7 +100,6 @@ enum engine_attribute {
     ea_context   = ea_primary_task + ta_context,
     ea_current   = ea_primary_task + ta_current,
     ea_state     = ea_primary_task + ta_state,
-    ea_interpret = ea_primary_task + ta_interpret,
     ea_forth     = ea_primary_task + ta_forth,
 
     ea_end_tasks = ea_primary_task + task_attribute_count,

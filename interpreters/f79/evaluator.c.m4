@@ -172,7 +172,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         rp = rp_stop = rp0;
         *--rp = 0;
-        ip = _to_ptr(e[ea_interpret]);
+        ip = _to_ptr(tp[ta_interpret]);
 
         steps = -1;
 

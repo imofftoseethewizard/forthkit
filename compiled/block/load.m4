@@ -37,7 +37,7 @@
     _compile_pr(pr_fetch);
     _compile_literal(_from_ptr(&e[ea_source_len]));
     _compile_pr(pr_store);
-    _store_data(e[ea_interpret]);
+    _store_data(tp[ta_interpret]);
     _compile_pr(pr_r_from);
     _compile_pr(pr_blk);
     _compile_pr(pr_store);

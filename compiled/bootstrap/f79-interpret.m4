@@ -64,7 +64,7 @@
          */
 
 _begin_define_word("interpret", 0);
-e[ea_interpret] = _from_ptr(dp);
+tp[ta_interpret] = _from_ptr(dp);
 
 _compile_begin();
 
