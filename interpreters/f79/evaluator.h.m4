@@ -65,34 +65,41 @@ enum task_attribute {
 #define _task_size (task_attribute_count + PARAMETER_STACK_SIZE)
 
 enum engine_attribute {
-    /* attributes common to all tasks */
-    ea_size,
-    ea_top,
+    /* attributes set by init_evaluator */
+
+    ea_size, /* from evaluator_size parameter */
+    ea_top,  /* == 0 implies that the evaluator's memory has not been set
+                up yet */
+
     ea_buffer_size,
     ea_buffer_count,
     ea_fiber_count,
     ea_fiber_stack_size,
-    ea_word_buffer_size,
     ea_parameter_stack_size,
     ea_return_stack_size,
     ea_source_size,
     ea_task_count,
-    ea_number_pad,
-    ea_word_buffer,
-    ea_source_addr,
-    ea_source_idx,
-    ea_source_len,
-    ea_blk,
-    ea_buffers,
+    ea_word_buffer_size,
+
+    /* attributes referencing reserved memory areas */
     ea_buffer_map,
-    ea_next_buffer,
+    ea_buffers,
+    ea_fibers,
+    ea_fp0,
+    ea_number_pad,
+    ea_source_addr,
+    ea_tasks,
+    ea_word_buffer,
     ea_word_buffer0,
     ea_word_buffer1,
-    ea_scr,
+
+    /* miscellaneous */
+    ea_blk,
     ea_fp,
-    ea_fp0,
-    ea_fibers,
-    ea_tasks,
+    ea_next_buffer,
+    ea_scr,
+    ea_source_idx,
+    ea_source_len,
 
     /* must be last */
     engine_attribute_count

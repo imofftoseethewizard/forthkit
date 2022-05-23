@@ -1,12 +1,5 @@
 warn on state = 1 at end of line while interpreting?
 
-move memory layout config to runtime parameters (init_evaluator)
-    #define FIBER_STACK_SIZE         4    /* move to runtime */
-    #define FIBER_COUNT              4    /* move to runtime */
-    #define PARAMETER_STACK_SIZE     128  /* move to runtime */
-    #define RETURN_STACK_SIZE        256  /* move to runtime */
-    #define TASK_COUNT               2    /* move to runtime */
-
 inputs to make
   PREAMBLE
   EXECUTION_MODEL
@@ -50,7 +43,6 @@ core fiber test suite
   twist
 
 move loader context stack out of return stack
-move fibers and tasks up to buffer memory
 
 slab tooling for buffers, fibers, and tasks.
 

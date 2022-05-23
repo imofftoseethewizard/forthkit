@@ -40,6 +40,7 @@ init_evaluator(
     e[ea_task_count]           = task_count;
     e[ea_word_buffer_size]     = word_buffer_size;
 
+    /* signals to evalute() that the evaluator's memory is uninitialized */
     e[ea_top] = 0;
 }
 
@@ -121,28 +122,23 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
             t[ta_interpret] = 0;
         }
 
-        fp0 = fp = _to_ptr(e[ea_fp0]);
-        *--fp = _primary_fiber;
-        _load_fiber_state();
-
-        /* internal state */
-        tp[ta_base]         = 10;
-        tp[ta_context]      = 0;
-        tp[ta_current]      = _from_ptr(&tp[ta_forth]);
-        tp[ta_forth]        = 0;
         e[ea_fp]           = e[ea_fp0];
         e[ea_source_idx]   = 0;
         e[ea_source_len]   = 0;
-        tp[ta_state]        = 0;
         e[ea_blk]          = 0;
-
         e[ea_next_buffer]  = 0;
         e[ea_scr]          = 0;
+
+        fp0 = fp = _to_ptr(e[ea_fp0]);
+        *--fp = _primary_fiber;
+
+        _load_fiber_state();
 
         /*_check_thread_memory();*/
 
         undivert(__primitive_word_definitions)
         undivert(__compiled_word_definitions)dnl
+
         tp[ta_context] = _from_ptr(&tp[ta_forth]);
 
         _save_fiber_state();
@@ -182,18 +178,18 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         fp  = _to_ptr(e[ea_fp]);
         fp0 = _to_ptr(e[ea_fp0]);
 
-
         _load_fiber_state();
     }
 
     __implement_evaluator_core() dnl
 
-
     /* Store state back in the evaluator structure. */
 
     e[ea_fp] = _from_ptr(fp);
+
     _debug("done with run: result: %d\n", result);
     _print_stack();
+
     return result;
 }
 
