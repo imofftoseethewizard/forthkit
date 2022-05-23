@@ -133,7 +133,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_fp]           = e[ea_fp0];
         e[ea_source_idx]   = 0;
         e[ea_source_len]   = 0;
-        e[ea_state]        = 0;
+        tp[ta_state]        = 0;
         e[ea_blk]          = 0;
 
         e[ea_next_buffer]  = 0;

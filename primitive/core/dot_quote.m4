@@ -4,7 +4,7 @@ __primitive(pr_dot_quote)
     register cell source_len   = e[ea_source_len];
     register cell source_idx   = e[ea_source_idx] + 1; /* skip space after ." */
 
-    if (e[ea_state]) {
+    if (tp[ta_state]) {
 
         register cell *jump_offset = (cell *)dp + 3;
         register char *s, *s0 = dp + 4*sizeof(cell);

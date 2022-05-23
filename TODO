@@ -1,3 +1,5 @@
+warn on state = 1 at end of line while interpreting?
+
 move memory layout config to runtime parameters (init_evaluator)
     #define FIBER_STACK_SIZE         4    /* move to runtime */
     #define FIBER_COUNT              4    /* move to runtime */
