@@ -1,15 +1,5 @@
 warn on state = 1 at end of line while interpreting?
-
-inputs to make
-  PREAMBLE
-  EXECUTION_MODEL
-  EVALUATOR_PRIMITIVES
-  MEMORY_MODEL
-  COMPILED_WORDS
-  CONFIG_H
-  EVALUATOR
-
-  source $config && make all
+  gforth prints "compiled" instead of "ok"
 
 test system
   watch files
@@ -25,14 +15,6 @@ test system
   parameterized make
     CFLAGS = -D config or -D <config>=<value>
 
-test harness
-  separate evaluate.c into evaluate.c and interepreter.c
-  create test.c parallel to interperter.c
-    accepts test file name from cmd line, returns 0 if tests pass
-    handles verifying non-zero result codes
-
-    f79-test [-r symbol/number] test-file
-
 core fiber test suite
   braid
   end
@@ -45,6 +27,8 @@ core fiber test suite
 move loader context stack out of return stack
 
 slab tooling for buffers, fibers, and tasks.
+
+stack margins for overflow/underflow detection
 
 fiber migration
   objective

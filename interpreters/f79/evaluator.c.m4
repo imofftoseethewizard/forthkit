@@ -63,16 +63,14 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
     /* These are useful to have, but probably not worth putting in a register.
      */
 
-    /* fiber stack */
+    char *dp;
     cell *fp;
     cell *fp0;
+    cell *rp0;
+    cell *sp0;
 
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
-
-    char *dp;
-    cell *rp0;
-    cell *sp0;
 
     if (!e[ea_top]) {
 
@@ -142,15 +140,11 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         tp[ta_context] = _from_ptr(&tp[ta_forth]);
 
         _save_fiber_state();
-        _check_dictionary_bounds();
     }
 
     /*_check_fiber_stack_bounds();
     _check_task_memory();*/
 
-    /* The first run will have context == 0. The preamble detects that and
-       defines primitives and the bootstrap interpreter.
-     */
     if (source) {
 
         _debug("interpreting source '%s'\n", source);

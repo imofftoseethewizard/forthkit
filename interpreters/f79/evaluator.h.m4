@@ -45,7 +45,7 @@ enum fiber_attribute {
     fiber_attribute_count
 };
 
-#define _fiber_size (fiber_attribute_count * sizeof(cell) + RETURN_STACK_SIZE)
+#define _fiber_size (fiber_attribute_count * sizeof(cell) + e[ea_return_stack_size])
 
 enum task_attribute {
     ta_dp,
@@ -62,7 +62,7 @@ enum task_attribute {
     task_attribute_count
 };
 
-#define _task_size (task_attribute_count + PARAMETER_STACK_SIZE)
+#define _task_size (task_attribute_count + e[ea_parameter_stack_size])
 
 enum engine_attribute {
     /* attributes set by init_evaluator */

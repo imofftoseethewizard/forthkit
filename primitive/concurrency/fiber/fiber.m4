@@ -2,11 +2,11 @@ __primitive(pr_fiber)
 {
     register int idx;
 
-    for (idx = 0; idx < FIBER_COUNT; idx++)
+    for (idx = 0; idx < e[ea_fiber_count]; idx++)
         if (_to_fiber_ptr(idx)[fa_ip] == 0)
             break;
 
-    if (idx == FIBER_COUNT)
+    if (idx == e[ea_fiber_count])
         _abort(err_no_fibers_available);
 
     else {
