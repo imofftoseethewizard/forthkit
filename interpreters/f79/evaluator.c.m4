@@ -112,7 +112,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         for (register int i = 0; i < e[ea_task_count]; i++) {
             register cell *t = _to_task_ptr(i);
-            t[ta_dp] = _from_ptr(&e[ea_end_tasks]);
+            t[ta_dp] = _from_ptr(&e[engine_attribute_count]);
             t[ta_sp] = t[ta_sp0] = _from_ptr(t) + _task_size;
             t[ta_context] = 0;
             t[ta_current] = _from_ptr(&t[ta_forth]);

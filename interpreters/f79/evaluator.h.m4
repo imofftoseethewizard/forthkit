@@ -94,11 +94,6 @@ enum engine_attribute {
     ea_fibers,
     ea_tasks,
 
-    /* attributes of the primary task */
-    ea_primary_task,
-
-    ea_end_tasks = ea_primary_task + task_attribute_count,
-
     /* must be last */
     engine_attribute_count
 };
