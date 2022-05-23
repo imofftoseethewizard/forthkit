@@ -11,7 +11,7 @@ __primitive(pr_convert)
     register double_number result;
     register char *s;
 
-    base = e[ea_base];
+    base = tp[ta_base];
     s = (char *)_to_ptr(*sp);
     result = _to_high_word(*(sp+1)) | _to_low_word(*(sp+2));
 

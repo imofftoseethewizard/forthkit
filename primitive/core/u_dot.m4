@@ -1,7 +1,7 @@
 __primitive(pr_u_dot)  
 {
     register cell u = *sp;
-    register cell base = e[ea_base];
+    register cell base = tp[ta_base];
 
     _num_start();
 

@@ -1,7 +1,7 @@
 __primitive(pr_dot)  
 {
     register number n = (number)*sp;
-    register cell base = e[ea_base];
+    register cell base = tp[ta_base];
 
     n = n < 0 ? -n : n;
 

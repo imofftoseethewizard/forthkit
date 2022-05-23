@@ -125,7 +125,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         _load_fiber_state();
 
         /* internal state */
-        e[ea_base]         = 10;
+        tp[ta_base]         = 10;
         e[ea_context]      = 0;
         e[ea_current]      = _from_ptr(&e[ea_forth]);
         e[ea_forth]        = 0;

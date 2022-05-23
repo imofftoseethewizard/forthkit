@@ -1,4 +1,4 @@
-#define _base() *--sp = _from_ptr(&e[ea_base])
+#define _base() *--sp = _from_ptr(&tp[ta_base])
 
 __primitive(pr_base) 
 {
