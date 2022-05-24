@@ -48,7 +48,7 @@ done < $tests
 
 if [ $n = 0 ]
 then
-    echo All \($total\) tests passed.
+    echo All $total tests passed.
 else
     echo $n out of $total tests failed.
     exit 1

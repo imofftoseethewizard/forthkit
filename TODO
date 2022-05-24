@@ -44,10 +44,6 @@ core fiber test suite
   start
   twist
 
-move loader context stack out of return stack
-
-slab tooling for buffers, fibers, and tasks.
-
 stack margins for overflow/underflow detection
 
 fiber migration
