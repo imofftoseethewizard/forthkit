@@ -7,3 +7,7 @@ t{  3  3 * ->  9 }t
 t{ -3  3 * -> -9 }t
 t{  3 -3 * -> -9 }t
 t{ -3 -3 * ->  9 }t
+
+t{ mid-uint+1 1 rshift 2 *               -> mid-uint+1 }t
+t{ mid-uint+1 2 rshift 4 *               -> mid-uint+1 }t
+t{ mid-uint+1 1 rshift mid-uint+1 or 2 * -> mid-uint+1 }t

@@ -1,0 +1,12 @@
+t{        0        1 u< -> <true>  }t
+t{        1        2 u< -> <true>  }t
+t{        0 mid-uint u< -> <true>  }t
+t{        0 max-uint u< -> <true>  }t
+t{ mid-uint max-uint u< -> <true>  }t
+t{        0        0 u< -> <false> }t
+t{        1        1 u< -> <false> }t
+t{        1        0 u< -> <false> }t
+t{        2        1 u< -> <false> }t
+t{ mid-uint        0 u< -> <false> }t
+t{ max-uint        0 u< -> <false> }t
+t{ max-uint mid-uint u< -> <false> }t
