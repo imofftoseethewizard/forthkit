@@ -14,7 +14,7 @@
 # Usage
 #   $ export FORTHKIT=~/src/forthkit
 #   $ export SOURCE=$FORTHKIT/interpreters/f79
-#   $ export VERSION_TAG=rel-switch-a32-c4
+#   $ export VERSION_TAG=rel-switch-a32-c4-l1
 #   $ cd $SOURCE
 #   $ source spec/$VERSION_TAG.rc && make all
 

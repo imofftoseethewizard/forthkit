@@ -2,6 +2,26 @@ warn on state = 1 at end of line while interpreting?
   gforth prints "compiled" instead of "ok"
 
 test system
+  tooling
+    make, shell scripts, files
+
+  types of tests
+    standard tests based on internally observed values
+      `t{  0  0 * ->  0 }t`
+
+    tests of output
+      evaluating `1 .` prints "1 "
+
+    test of failures
+      evaluating `.` returns err_parameter_stack_underflow
+
+    tests of storage
+      ... example tbd
+
+  split test-suite.fs into individual files
+    common tools to support `t{ ... }t` tests
+    test groups
+
   watch files
   on change
     record commit hash, git diff

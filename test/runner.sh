@@ -7,8 +7,6 @@
 tests=$1
 
 # future improvements:
-#   1. don't count blank or comment lines (# syntax)
-#   2. recognize \ for line continuation
 #   3. markdown mode ($1 ~ *.md)
 #       a. run lines in code blocks
 #       b. everything else is a comment
@@ -21,6 +19,7 @@ tests=$1
 #   6. multiple arguments (concatenate)
 #   7. error message for nothing to do
 #   8. error message for file not found/inaccessible
+#   9. detect and compensate for missing newline at end of $tests file
 
 
 n=0                 # number of failures
@@ -28,6 +27,12 @@ total=0             # total tests
 
 while read line
 do
+
+    if echo $line | grep -q -E '^[ ]*(#|$)'
+    then
+        continue
+    fi
+
     sh -c "$line" >/dev/null 2>&1
 
     if [ $? != '0' ]
@@ -38,11 +43,13 @@ do
 
     total=$((total+1))
 
-done < $1
+done < $tests
 
-echo $n out of $total tests failed.
 
-if [ $n != 0 ]
+if [ $n = 0 ]
 then
+    echo All \($total\) tests passed.
+else
+    echo $n out of $total tests failed.
     exit 1
 fi

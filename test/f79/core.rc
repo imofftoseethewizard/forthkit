@@ -1,1 +1,19 @@
-$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/zero_lt.fs
+# Comments, blank lines skipped. Lines may be continued with a trailing backslash
+
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q \
+  $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/and.fs
+
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q \
+  $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/not.fs
+
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q \
+  $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/or.fs
+
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q \
+  $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/xor.fs
+
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q \
+  $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/zero_gt.fs
+
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q \
+  $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/zero_lt.fs
