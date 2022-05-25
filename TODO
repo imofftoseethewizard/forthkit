@@ -1,3 +1,76 @@
+decompiler
+  for compiled word references
+
+  for primitives
+
+  : words3
+    current @ @ ( get address of first word in current vocabulary )
+    begin
+        ?dup
+    while
+        dup @ count type space ( emit name of words )
+        dup c + ( word code address )
+        over 8 + @ ( fetch word flags )
+        2 and ( is inline? )
+        if @ then ( if so, fetch to get the primitive it wraps )
+        u. cr ( show that )
+        4 + @ ( follow link to next word )
+    repeat ;
+
+  : word-name ( xt -- nt )
+    current @ @ ( get address of first word in current vocabulary )
+    begin
+        ?dup
+    while
+        dup c + ( word code address )
+        over 8 + @ ( fetch word flags )
+        2 and ( is inline? )
+        if @ then ( if so, fetch to get the primitive it wraps )
+        u. cr ( show that )
+        4 + @ ( follow link to next word )
+    repeat ;
+
+  cases
+    1 operator
+      a. one cell
+        abort
+        branch
+        do
+        exit
+        loop
+        plus loop
+      b. two cells (jump)
+        does
+        jump
+        literal
+    abort =
+    if
+       ...
+    else
+    branch =
+    if
+       ...
+    etc
+    else
+        begin
+        not finished dictionary
+        while
+          word matches target
+          word is inline
+          word's first cell matches target
+          and or
+          if
+            word name
+            leave
+          then
+        repeat
+
+
+    2 primitive (inlined)
+      dict search
+        if word inline, check against inlined value
+    3 defined word
+
 warn on state = 1 at end of line while interpreting?
   gforth prints "compiled" instead of "ok"
 
@@ -77,8 +150,6 @@ fiber migration
     indirection for task
     interpreter task
     fiber/task primitives/words/tests
-
-  change *fp, *tp values to be indicies, rather than ptrs
 
   indirection for task attributes
   identify/define task/fiber words
