@@ -9,4 +9,4 @@ __primitive(op_call)
 }
 __end
 
-__define_operator("call", op_call);
+__define_primitive("call", op_call, c_operand_ip); /* nb: c_operand_ip is not defined */

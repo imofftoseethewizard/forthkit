@@ -1,34 +1,23 @@
+order of features
+  decompiler
+  debugger
+  image load
+  indirect word references
+
+order of generalization
+  finish rework test suite
+  configs
+  forth versions
+  compilers
+  architectures
+
 decompiler
-  for compiled word references
 
-  for primitives
-
-  : words3
-    current @ @ ( get address of first word in current vocabulary )
-    begin
-        ?dup
-    while
-        dup @ count type space ( emit name of words )
-        dup c + ( word code address )
-        over 8 + @ ( fetch word flags )
-        2 and ( is inline? )
-        if @ then ( if so, fetch to get the primitive it wraps )
-        u. cr ( show that )
-        4 + @ ( follow link to next word )
-    repeat ;
-
-  : word-name ( xt -- nt )
-    current @ @ ( get address of first word in current vocabulary )
-    begin
-        ?dup
-    while
-        dup c + ( word code address )
-        over 8 + @ ( fetch word flags )
-        2 and ( is inline? )
-        if @ then ( if so, fetch to get the primitive it wraps )
-        u. cr ( show that )
-        4 + @ ( follow link to next word )
-    repeat ;
+  add operators to dictionary
+  add flags to describe operands
+    literal arg c_operand_literal
+    ip offset   c_operand_ip_offset
+    code addr   c_operand_ip
 
   cases
     1 operator
@@ -36,43 +25,21 @@ decompiler
         abort
         branch
         do
+        does
         exit
         loop
         plus loop
-      b. two cells (jump)
-        does
+      b. two cells
         jump
         literal
-    abort =
-    if
-       ...
-    else
-    branch =
-    if
-       ...
-    etc
-    else
-        begin
-        not finished dictionary
-        while
-          word matches target
-          word is inline
-          word's first cell matches target
-          and or
-          if
-            word name
-            leave
-          then
-        repeat
-
-
-    2 primitive (inlined)
-      dict search
-        if word inline, check against inlined value
-    3 defined word
 
 warn on state = 1 at end of line while interpreting?
   gforth prints "compiled" instead of "ok"
+
+warn on semicolon where unfinished control structure
+  eg : foo 1 if 2 else 3 ;
+
+use monitor, runner for build system
 
 test system
   tooling

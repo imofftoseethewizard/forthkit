@@ -19,8 +19,6 @@ divert(__primitive_word_definitions)        _define_parsing_primitive($1, $2, cw
 define(`__define_primitive',`divert(__compiled_word_declarations)    cw_$2,
 divert(__primitive_word_definitions)        _define_primitive($1, $2, cw_$2)')
 
-define(`__define_operator',`divert(__compiled_word_definitions)    _register_operator($1, $2);')
-
 define(`__define_immediate_primitive',`divert(__compiled_word_declarations)    cw_$2,
 divert(__primitive_word_definitions)        _define_immediate_primitive($1, $2, cw_$2)')
 

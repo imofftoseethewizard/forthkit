@@ -22,4 +22,4 @@ __primitive(op_plus_loop)
 }
 __end
 
-__define_operator("plus_loop", op_plus_loop);
+__define_primitive("<+loop>", op_plus_loop);

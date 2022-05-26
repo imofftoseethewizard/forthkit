@@ -10,4 +10,4 @@ __primitive(op_branch)
 }
 __end
 
-__define_operator("branch", op_branch);
+__define_primitive("<branch>", op_branch);

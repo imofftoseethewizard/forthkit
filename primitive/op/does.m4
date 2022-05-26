@@ -10,4 +10,4 @@ __primitive(op_does)
 }
 __end
 
-__define_operator("does", op_does);
+__define_primitive("<does>", op_does);

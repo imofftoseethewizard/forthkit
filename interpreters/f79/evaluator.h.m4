@@ -105,10 +105,12 @@ enum engine_attribute {
     engine_attribute_count
 };
 
-#define c_immediate 0b0001
-#define c_inline    0b0010
-#define c_primitive 0b0100
-#define c_value     0b1000
+#define c_immediate         0b000001
+#define c_inline            0b000010
+#define c_primitive         0b000100
+#define c_value             0b001000
+#define c_operand_ip_offset 0b010000
+#define c_operand_literal   0b100000
 
 #define _quote(x) #x
 #define _from_pr(x) _from_pv(_pr_value(x))
@@ -197,9 +199,6 @@ do {                                                              \
 
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
-
-#define _register_operator(s, l)                                  \
-        _info("defining %-16s %lx\n", s, (long)_from_pr(l));
 
 #define _primary_fiber 0
 #define _fiber_area (_fiber_size * e[ea_fiber_count])

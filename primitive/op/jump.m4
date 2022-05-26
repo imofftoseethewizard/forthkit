@@ -26,4 +26,4 @@ __primitive(op_jump)
 }
 __end
 
-__define_operator("jump", op_jump);
+__define_primitive_ext("<jump>", op_jump, c_operand_ip_offset);

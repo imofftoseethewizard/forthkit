@@ -6,4 +6,4 @@ __primitive(op_abort)
 }
 __end
 
-__define_operator("abort", op_abort);
+__define_primitive("<abort>", op_abort);

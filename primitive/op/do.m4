@@ -12,4 +12,4 @@ __primitive(op_do)
 }
 __end
 
-__define_operator("do", op_do);
+__define_primitive("<do>", op_do);
