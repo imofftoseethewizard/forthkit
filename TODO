@@ -28,6 +28,8 @@ test system
   tooling
     make, shell scripts, files
 
+  review standard test suite for output, failure, and storage tests
+
   types of tests
     standard tests based on internally observed values
       `t{  0  0 * ->  0 }t`
