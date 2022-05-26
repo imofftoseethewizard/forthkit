@@ -1,3 +1,5 @@
+show errors while loading files
+
 order of features
   decompiler
   debugger
@@ -12,26 +14,11 @@ order of generalization
   architectures
 
 decompiler
+  word
+  decompile ( addr n -- )
+    decompile n instructions starting at addr
+    if n is 0, then decompile until all branches have reached an exit
 
-  add operators to dictionary
-  add flags to describe operands
-    literal arg c_operand_literal
-    ip offset   c_operand_ip_offset
-    code addr   c_operand_ip
-
-  cases
-    1 operator
-      a. one cell
-        abort
-        branch
-        do
-        does
-        exit
-        loop
-        plus loop
-      b. two cells
-        jump
-        literal
 
 warn on state = 1 at end of line while interpreting?
   gforth prints "compiled" instead of "ok"
