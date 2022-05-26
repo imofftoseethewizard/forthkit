@@ -1,4 +1,4 @@
-__primitive(pr_read_block)  
+__primitive(pr_read_block)
 {
 
     register char *buffer = (char *)_to_ptr(*sp++);
@@ -16,3 +16,5 @@ __primitive(pr_read_block)
 
 }
 __end
+
+__define_primitive("<read-block>", pr_read_block);

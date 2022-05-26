@@ -8,13 +8,17 @@ here 0 , here - dup allot negate constant cell
 8 constant w.flags
 4 constant w.next
 2 constant wf-inline
+16 constant wf-op-ip-offset
+32 constant wf-op-literal
 
-: primitive? 0< ;
+: xt-primitive? 0< ;
 : word-flags w.flags + @ ;
 : word-xt w.xt + ;
 : first-word current @ @ ;
 : next-word w.next + @ ;
-: inline? word-flags wf-inline and 0= not ;
+: inline? word-flags wf-inline and 0= 0= ;
+: has-op-literal? word-flags wf-op-literal and 0= 0= ;
+: has-op-ip-offset? word-flags wf-op-ip-offset and 0= 0= ;
 
 : find-word ( cond-xt -- w | 0 )
     >r
@@ -44,8 +48,36 @@ here 0 , here - dup allot negate constant cell
 
 : xt>word ( xt -- w | 0 )
 
-    dup primitive?
+    dup xt-primitive?
     if ' match-primitive? else ' match-compiled? then
     find-word
     swap drop ( remove xt from below the result )
+;
+
+: decompile ( addr n -- )
+
+    0 do
+        dup dup .
+        @ xt>word
+        ?dup
+        if
+            dup
+            @ count type
+            dup has-op-literal?
+            if
+                drop
+                space cell+ dup @ .
+            else
+                has-op-ip-offset?
+                if
+                    space cell+ dup @ over + cell - .
+                then
+            then
+        else
+            ." <unknown>" space dup @ .
+        then
+        cr
+        cell+
+    loop
+    drop
 ;
