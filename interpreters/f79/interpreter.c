@@ -214,6 +214,7 @@ repl(void)
 int
 evaluate_file(char *path)
 {
+    int line_no;
     int result = 0;
     char *line = malloc(source_size);
 
@@ -224,8 +225,16 @@ evaluate_file(char *path)
         exit(2);
     }
 
-    while (!result && fgets(line, source_size, file))
+    for (line_no = 0; !result && fgets(line, source_size, file); line_no++)
         result = evaluate(evaluator, line, storage_fd);
+
+    if (result) {
+        printf("While reading %s at line %d: \n", path, line_no);
+        print_error(
+            evaluator,
+            (result <= next_error_code) ? "unknown_error" : result_messages[-result],
+            evaluator[ea_source_idx]);
+    }
 
     if (fclose(file)) {
         fprintf(stderr, "failed to close file \"%s\" with errno %d\n", path, errno);
