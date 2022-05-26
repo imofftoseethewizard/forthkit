@@ -1,24 +1,20 @@
-show errors while loading files
-
 order of features
-  decompiler
+  fiber/task words
   debugger
   image load
   indirect word references
 
 order of generalization
-  finish rework test suite
+  finish rework of test suite
   configs
   forth versions
   compilers
   architectures
 
-decompiler
-  word
-  decompile ( addr n -- )
-    decompile n instructions starting at addr
-    if n is 0, then decompile until all branches have reached an exit
-
+decompiler (future work)
+  guess counted strings
+  recognize word headers, show flags, dictionary link
+  if n is 0, then decompile until all branches have reached an exit
 
 warn on state = 1 at end of line while interpreting?
   gforth prints "compiled" instead of "ok"
@@ -174,15 +170,6 @@ task
     drop top of fiber stack
     load ip/rp/rp0 from fiber on top of fiber stack
 
-debugging use of fiber
-
-  debug evaluator changes
-    implement step, next, out
-    on break, set run, debug-fiber twist
-
-  xt debug -- sets up a fiber
-  ss --  <set single step> _twist
-
 thread
   context
     fp/fp0
@@ -228,6 +215,16 @@ debugging
     break points
 
   breakpoint
+
+  fibers
+    break
+
+    debug evaluator changes
+      implement step, next, out
+      on break, set run, debug-fiber twist
+
+    xt debug -- sets up a fiber
+    ss --  <set single step> _twist
 
 naming convention for executables
   <f79|f83|f94|f-ansi|f12|f-std>-<cell bits>-<length bits>-<thr(eaded)|sw(itched)|sub(routine)>-<r(elocatable)|a(bsolute)>
@@ -314,12 +311,10 @@ tools
 10. indirect primitives for 2 byte word size, or translate more primitives to compiled
 14. other compilers: clang, bcc, tcc, pcc, icc
 14.
-    consistency checks (config option)
     test suite
       double number words
 
     selected (all?) items from reference word set
-    reorg test suite
 
 11. f83
 12. f94
