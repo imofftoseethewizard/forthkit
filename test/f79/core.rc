@@ -10,7 +10,7 @@ $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTH
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/cmove.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/depth.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/divide.fs
-$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/divide_mod.fs
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/div_mod.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/do_loop.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/do_plus_loop.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/drop.fs
@@ -50,25 +50,25 @@ $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTH
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/dnegate.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/u_lt.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/u_times.fs
-$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/u_divide_mod.fs
+$FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/u_div_mod.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/equal.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/d_plus.fs
 $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/gt.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
-# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/times_div_mod.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/mod.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/colon.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/constant.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/variable.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/does.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/quote_execute.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/find.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/zero_eq.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/hold.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/sign.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/num.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/num_s.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/comments.fs
+# $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/dot_quote.fs
 # $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
 # $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
 # $FORTHKIT/build/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
