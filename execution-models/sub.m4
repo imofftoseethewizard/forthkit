@@ -10,7 +10,7 @@ divert(__header_definitions)
 typedef void (native_word)(void);
 
 #define _pr_value(x)        ((void *)&(x))
-#define _pr_value_base      (void *)&engine
+#define _pr_value_base      (void *)&evaluator
 #define _pr_value_limit     __builtin_frame_address(0)
 
 define(`__implement_evaluator_core', `undivert(__primitive_implementations)
