@@ -1,3 +1,8 @@
+build watch
+  create deps file
+  watch deps
+  build every spec
+
 order of features
   fiber/task words
   debugger
