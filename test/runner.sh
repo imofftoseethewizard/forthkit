@@ -37,7 +37,7 @@ do
 
     if [ $? != '0' ]
     then
-        echo FAILED: $line
+        eval echo FAILED: $line
         n=$((n+1))
     fi
 

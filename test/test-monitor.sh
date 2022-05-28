@@ -2,7 +2,7 @@
 
 mkdir -p $FORTHKIT/test/log
 
-inotifywait -mr --exclude '.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build | \
+inotifywait -mr --exclude 'log|.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build | \
     while read dir events file
     do
         version_tag=$(echo $dir | sed -E 's|.*/([^/]*)/bin/|\1|')
