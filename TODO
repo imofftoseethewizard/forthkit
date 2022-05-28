@@ -1,7 +1,4 @@
-build watch
-  create deps file
-  watch deps
-  build every spec
+move log targets to top level logs/
 
 order of features
   fiber/task words
@@ -10,8 +7,6 @@ order of features
   indirect word references
 
 order of generalization
-  finish rework of test suite
-  configs
   forth versions
   compilers
   architectures
@@ -26,8 +21,6 @@ warn on state = 1 at end of line while interpreting?
 
 warn on semicolon where unfinished control structure
   eg : foo 1 if 2 else 3 ;
-
-use monitor, runner for build system
 
 test system
   tooling
@@ -47,23 +40,6 @@ test system
 
     tests of storage
       ... example tbd
-
-  split test-suite.fs into individual files
-    common tools to support `t{ ... }t` tests
-    test groups
-
-  watch files
-  on change
-    record commit hash, git diff
-    for each config spec (in some list in a file)
-      make
-      if make successful
-        run make, tests, record any failing tests
-  parameterize make for target name
-  create list of configs
-
-  parameterized make
-    CFLAGS = -D config or -D <config>=<value>
 
 core fiber test suite
   braid
@@ -232,17 +208,6 @@ debugging
 
     xt debug -- sets up a fiber
     ss --  <set single step> _twist
-
-naming convention for executables
-  <f79|f83|f94|f-ansi|f12|f-std>-<cell bits>-<length bits>-<thr(eaded)|sw(itched)|sub(routine)>-<r(elocatable)|a(bsolute)>
-  eg
-    f79-32-16-thr-r:
-      * FORTH-79
-      * 32 bit cells
-      * 16 bit lengths (for counted strings)
-      * threaded execution
-      * relocatable image
-
 
 tools
   rationale: ubiquitious and lightweight
