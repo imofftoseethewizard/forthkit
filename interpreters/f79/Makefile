@@ -18,7 +18,7 @@
 #   $ cd $SOURCE
 #   $ source spec/$VERSION_TAG.rc && make all
 
-BUILD   = ${FORTHKIT}/build/${VERSION_TAG}
+BUILD   = ${FORTHKIT}/build/f79/${VERSION_TAG}/
 
 BIN	= ${BUILD}/bin
 INCLUDE = ${BUILD}/include
