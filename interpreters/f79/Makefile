@@ -29,7 +29,6 @@ EVALUATOR_C = ${SRC}/evaluator.c
 EVALUATOR_H = ${INCLUDE}/evaluator.h
 EVALUATOR_O = ${LIB}/evaluator.o
 INTERPRETER = ${BIN}/interpreter
-TEST_RUNNER = ${BIN}/test_runner
 
 CFLAGS += -include ${CONFIG_H} -I${SOURCE} -I${INCLUDE}
 
@@ -66,11 +65,6 @@ ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${CONFIG_H} ${LIB}
 ${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
 	gcc ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
-${TEST_RUNNER} : ${EVALUATOR_O} test-runner.c ${CONFIG_H} ${BIN}
-	gcc ${CFLAGS} -o ${TEST_RUNNER} test-runner.c ${EVALUATOR_O} ${LDFLAGS}
-
-test_runner : ${TEST_RUNNER}
 
 all : ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
 
-.PHONY : all test_runner
