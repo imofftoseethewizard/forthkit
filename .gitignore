@@ -1,4 +1,4 @@
 *.o
 build
-test/log
+log/
 deps.txt

@@ -1,5 +1,3 @@
-move log targets to top level logs/
-
 order of features
   fiber/task words
   debugger
