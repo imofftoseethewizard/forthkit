@@ -1,5 +1,8 @@
 #! /usr/bin/env sh
 
+mkdir -p $FORTHKIT/build
+touch $FORTHKIT/build/log
+
 log_file=$FORTHKIT/build/log
 
 make deps >/dev/null
