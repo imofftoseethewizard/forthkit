@@ -65,6 +65,9 @@ ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${CONFIG_H} ${LIB}
 ${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
 	gcc ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
+deps :
+	echo ${m4_deps} | tr ' ' '\n' > deps.txt
 
 all : ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
 
+.PHONY : all deps
