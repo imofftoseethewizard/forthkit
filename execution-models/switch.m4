@@ -12,7 +12,7 @@ divert(__header_definitions)
 
 #define _pr_value(x)       x
 #define _pr_value_base     0
-#define _pr_value_limit    -1
+#define _pr_value_limit    primitive_count
 
 define(`__implement_evaluator_core', `
 
@@ -33,6 +33,10 @@ define(`__implement_evaluator_core', `
                 switch (_to_pv(*ip++)) {
                 undivert(__primitive_implementations)
                 default:
+                    printf("e: %x\n", e);
+                    printf("_pr_value_base: %x\n", _pr_value_base);
+                    printf("_pr_value_limit: %x\n", _pr_value_limit);
+                    printf("*ip: %x\n", *(ip-1));
                     result = err_unknown_primitive;
                     ip = 0;
                     break;
