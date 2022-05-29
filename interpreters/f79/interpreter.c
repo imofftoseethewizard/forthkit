@@ -229,7 +229,7 @@ evaluate_file(char *path)
         result = evaluate(evaluator, line, storage_fd);
 
     if (result) {
-        printf("While reading %s at line %d: \n", path, line_no);
+        printf("\nWhile reading %s at line %d: \n", path, line_no);
         print_error(
             evaluator,
             (result <= next_error_code) ? "unknown_error" : result_messages[-result],
