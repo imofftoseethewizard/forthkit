@@ -19,6 +19,8 @@ divert(__header_definitions)
                                           \
         if (steps > 0) steps -= 1;        \
                                           \
+        _trace("early main loop: ");      \
+                                          \
         if (!_is_primitive(*ip))          \
             goto op_enter;                \
         else                              \
@@ -34,8 +36,10 @@ __first:
 
       op_end_fiber:
         {
-            _save_fiber_state();
-            fp++;
+            if (fp < fp0) {
+                _save_fiber_state();
+                fp++;
+            }
 
             if (fp == fp0 || result)
                 goto __last;

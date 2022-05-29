@@ -18,6 +18,7 @@ define(`__implement_evaluator_core', `
 
     while (fp < fp0 && !result) {
 
+        _debug("loading fiber %d\n", *fp);
         _load_fiber_state();
 
         while (ip && steps && !result) {
@@ -41,10 +42,12 @@ define(`__implement_evaluator_core', `
             _check_parameter_stack_bounds();
         }
 
-       if (fp < fp0) {
-           _save_fiber_state();
-           fp++;
-       }
+        _print_fiber_stack();
+
+        if (fp < fp0) {
+            _save_fiber_state();
+            fp++;
+        }
     }
 ')
 divert`'dnl
