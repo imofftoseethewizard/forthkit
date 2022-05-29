@@ -18,7 +18,7 @@
 #   $ cd $SOURCE
 #   $ source spec/$VERSION_TAG.rc && make all
 
-BUILD   = ${FORTHKIT}/build/f79/${VERSION_TAG}/
+BUILD   = ${FORTHKIT}/build/f79/${VERSION_TAG}
 
 BIN	= ${BUILD}/bin
 INCLUDE = ${BUILD}/include
@@ -30,7 +30,7 @@ EVALUATOR_H = ${INCLUDE}/evaluator.h
 EVALUATOR_O = ${LIB}/evaluator.o
 INTERPRETER = ${BIN}/interpreter
 
-CFLAGS += -include ${CONFIG_H} -I${SOURCE} -I${INCLUDE}
+CFLAGS += -include ${CONFIG_H} -I${INCLUDE}
 
 m4_deps =											 \
 	${PREAMBLE} ${MEMORY_MODEL} ${EXECUTION_MODEL}						 \
@@ -69,5 +69,8 @@ deps :
 	echo ${m4_deps} | tr ' ' '\n' > deps.txt
 
 all : ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
+
+clean :
+	rm -f ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
 
 .PHONY : all deps
