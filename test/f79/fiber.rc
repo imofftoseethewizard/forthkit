@@ -1,4 +1,4 @@
-$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/braid.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/braid_twist.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/end.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/fiber.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/lay.fs
