@@ -9,6 +9,12 @@ order of generalization
   compilers
   architectures
 
+order of expanded testing
+  new features
+  failures of std words
+  output of std words
+  filesystem side-effects of standard words (i.e. block words)
+
 decompiler (future work)
   guess counted strings
   recognize word headers, show flags, dictionary link
@@ -27,16 +33,16 @@ test system
   review standard test suite for output, failure, and storage tests
 
   types of tests
-    standard tests based on internally observed values
+    i. standard tests based on internally observed values
       `t{  0  0 * ->  0 }t`
 
-    tests of output
+    ii. tests of output
       evaluating `1 .` prints "1 "
 
-    test of failures
+    iii. test of failures
       evaluating `.` returns err_parameter_stack_underflow
 
-    tests of storage
+    iv. tests of storage
       ... example tbd
 
 core fiber test suite
@@ -87,24 +93,25 @@ fiber migration
     fiber ( xt -- f ) gets next empty fiber
       initialize ip = xt, rp, rp0 in fiber
     snip ( -- ) f1 f0 -> f0 (clear f1)
+    lay ( f -- )
     twist ( -- ) f1 f0 -> f0 f1
     braid ( n -- ) ; fn ... f1 f0 --> f1 ... fn f0
     end ( -- ) ; f1 f0 -> f1 (clear f0)
     start (f -- ) ; f0 -> f0 f
     #f ( -- n )
     f@ ( n -- f )
-    f-ip ( f -- addr )
-    f-rp ( f -- addr )
-    >f-rp
-    f-rp>
-    f-rp0 ( f -- addr )
-    f-rp-stop ( f -- addr )
-    f-steps ( f -- addr )
-    t-dp
-    t-sp
-    t-sp0
-    >t-sp
-    t-sp>
+    fip ( f -- addr )
+    frp ( f -- addr )
+    >frp ( x f -- )
+    frp> ( f -- x )
+    frp0 ( f -- addr )
+    frph ( f -- addr )
+    fsteps ( f -- addr )
+    there
+    tsp
+    tsp0
+    >tsp
+    tsp>
 
 
 types of concurrency
@@ -291,3 +298,9 @@ tools
 13. f2012
 12. investigate Joy and HVM.
 15. posix signal handling
+
+wrappers
+  posix
+    ...
+  sqlite
+  blas
