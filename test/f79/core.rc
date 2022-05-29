@@ -54,7 +54,6 @@ $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harn
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/equal.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/d_plus.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/gt.fs
-$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/fiber.fs
 # $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/mod.fs
 # $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/colon.fs
 # $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/constant.fs
