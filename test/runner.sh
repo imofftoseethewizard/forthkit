@@ -4,8 +4,6 @@
 # one per line, each of which should be a command that is executable in the same
 # environment that this script is running in.
 
-tests=$1
-
 # future improvements:
 #   3. markdown mode ($1 ~ *.md)
 #       a. run lines in code blocks
@@ -16,7 +14,6 @@ tests=$1
 #       b. -n/--normal (as below)
 #       c. -v/--verbose, echo command and stderr from the command
 #       d. -d/--debug echo command and stdout, stderr from command
-#   6. multiple arguments (concatenate)
 #   7. error message for nothing to do
 #   8. error message for file not found/inaccessible
 #   9. detect and compensate for missing newline at end of $tests file
@@ -25,26 +22,33 @@ tests=$1
 n=0                 # number of failures
 total=0             # total tests
 
-while read line
+while [ $# != '0' ]
 do
+    tests=$1
 
-    if echo $line | grep -q -E '^[ ]*(#|$)'
-    then
-        continue
-    fi
+    while read line
+    do
 
-    sh -c "$line" >/dev/null 2>&1
+        # skip comments and blank lines
+        if echo $line | grep -q -E '^[ ]*(#|$)'
+        then
+            continue
+        fi
 
-    if [ $? != '0' ]
-    then
-        eval echo FAILED: $line
-        n=$((n+1))
-    fi
+        sh -c "$line" >/dev/null 2>&1
 
-    total=$((total+1))
+        if [ $? != '0' ]
+        then
+            eval echo FAILED: $line
+            n=$((n+1))
+        fi
 
-done < $tests
+        total=$((total+1))
 
+    done < $tests
+
+    shift
+done
 
 if [ $n = 0 ]
 then
