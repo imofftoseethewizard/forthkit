@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #if VERBOSE
 
 #define _info(...) fprintf(stderr, __VA_ARGS__)
