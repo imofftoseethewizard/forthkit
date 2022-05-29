@@ -38,6 +38,9 @@ do {                                                 \
 #define _check_task_memory()
 #define _check_thread_memory()
 
+#define _is_fiber_stack_full() (fp0 - fp == e[ea_fiber_stack_size])
+#define _is_valid_fiber_number(x) ((cell)(x) >= e[ea_fiber_count])
+
 #else
 
 #define _check_buffer_address()
@@ -49,5 +52,8 @@ do {                                                 \
 #define _check_task_address()
 #define _check_task_memory()
 #define _check_thread_memory()
+
+#define _is_fiber_stack_full() 0
+#define _is_valid_fiber_number() 1
 
 #endif

@@ -2,10 +2,10 @@ __primitive(pr_start)
 {
     register cell idx = *sp++;
 
-    if (fp0 - fp == e[ea_fiber_stack_size] * sizeof(cell))
-        _abort(err_fiber_stack_overflow);
+    if (_is_fiber_stack_full())
+        _abort(err_fiber_stack_overflow;
 
-    else if (idx >= e[ea_fiber_count])
+    else if (_is_valid_fiber_number(idx))
         _abort(err_invalid_fiber_number);
 
     else {

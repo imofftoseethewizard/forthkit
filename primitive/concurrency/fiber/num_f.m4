@@ -1,6 +1,6 @@
 __primitive(pr_num_f)
 {
-    *--sp = (fp0 - fp) / sizeof(cell);
+    *--sp = fp0 - fp;
 }
 __end
 
