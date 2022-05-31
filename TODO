@@ -1,14 +1,8 @@
-move date prefix from test-monitor.sh into runner.sh
-
 order of features
   remaining fiber/task words
     need words for interacting with the fiber stack
-    f@ ( i -- fn ) ( where i is the index into the fiber stack )
-    fip ( fn -- addr )
-    frp ( fn -- addr )
     >fr ( x fn -- )
     fr> ( fn -- x )
-    frp0 ( fn -- addr )
     fstop ( fn -- addr )
     fsteps ( fn -- addr )
     ftask ( fn -- tn )

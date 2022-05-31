@@ -39,7 +39,7 @@ do
 
         if [ $? != '0' ]
         then
-            eval echo FAILED: $line
+            eval echo `date "+%Y-%m-%dT%H:%M:%SZ" -u` FAILED: $line
             n=$((n+1))
         fi
 
