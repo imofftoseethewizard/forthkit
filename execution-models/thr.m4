@@ -43,6 +43,9 @@ __first:
 
             if (fp == fp0 || result)
                 goto __last;
+
+            _print_fiber_stack();
+            _load_fiber_state();
         }
         _next();
 
