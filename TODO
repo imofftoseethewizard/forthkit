@@ -1,10 +1,5 @@
 move date prefix from test-monitor.sh into runner.sh
 
-detect unexpected early exit in a test where exit code is 0, but not all tests ran
-  write tool which expects text and exit code 0
-  if text does not match or exit code is not zero, then return output and exit code 1
-  otherwise return exit code 0, no output.
-
 order of features
   remaining fiber/task words
     need words for interacting with the fiber stack
