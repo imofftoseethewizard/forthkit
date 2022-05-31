@@ -1,4 +1,4 @@
-#define _exit() ip = *rp ? _to_ptr(*rp) : 0, rp++
+#define _exit() ip = *rp ? _to_ptr(*rp) : 0, rp++, rp == rp_stop ? (steps = 0) : 0
 
 /* op_exit pops the top of the return stack into ip and advances
    it past the call to the just completed word.
