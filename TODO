@@ -1,5 +1,28 @@
+move date prefix from test-monitor.sh into runner.sh
+
+detect unexpected early exit in a test where exit code is 0, but not all tests ran
+  write tool which expects text and exit code 0
+  if text does not match or exit code is not zero, then return output and exit code 1
+  otherwise return exit code 0, no output.
+
 order of features
-  fiber/task words
+  remaining fiber/task words
+    need words for interacting with the fiber stack
+    f@ ( i -- fn ) ( where i is the index into the fiber stack )
+    fip ( fn -- addr )
+    frp ( fn -- addr )
+    >fr ( x fn -- )
+    fr> ( fn -- x )
+    frp0 ( fn -- addr )
+    fstop ( fn -- addr )
+    fsteps ( fn -- addr )
+    ftask ( fn -- tn )
+    there ( tn -- addr )
+    tsp ( tn -- addr )
+    tsp0 ( tn -- addr )
+    >t
+    t>
+
   debugger
   image load
   indirect word references
@@ -46,13 +69,19 @@ test system
       ... example tbd
 
 core fiber test suite
-  braid
-  end
-  fiber
-  lay
-  snip
-  start
-  twist
+    f@ ( n -- f )
+    fip ( f -- addr )
+    frp ( f -- addr )
+    >frp ( x f -- )
+    frp> ( f -- x )
+    frp0 ( f -- addr )
+    frph ( f -- addr )
+    fsteps ( f -- addr )
+    there
+    tsp
+    tsp0
+    >tsp
+    tsp>
 
 stack margins for overflow/underflow detection
 
@@ -112,7 +141,8 @@ fiber migration
     tsp0
     >tsp
     tsp>
-
+    tclone
+    tfork
 
 types of concurrency
   - f0: ip/rp/rp_stop/step -- useful for debugging, profiling
