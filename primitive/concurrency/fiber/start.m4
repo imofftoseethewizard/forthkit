@@ -9,9 +9,16 @@ __primitive(pr_start)
         _abort(err_invalid_fiber_number);
 
     else {
+        _debug("saving fiber %d\n", *fp);
+        _print_registers();
+
         _save_fiber_state();
         *--fp = idx;
+
         _load_fiber_state();
+
+        _debug("loaded fiber %d\n", *fp);
+        _print_registers();
     }
 }
 __end

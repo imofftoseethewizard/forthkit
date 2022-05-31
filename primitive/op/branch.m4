@@ -4,8 +4,6 @@
 */
 __primitive(op_branch)
 {
-    _debug("branch: ");
-    _print_stack();
     ip += *sp++ ? 2 : 0;
 }
 __end

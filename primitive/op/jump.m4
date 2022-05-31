@@ -20,9 +20,7 @@
 
 __primitive(op_jump)
 {
-    _debug("jump: *ip: %lx, %ld\n", (long)*ip, (long)*ip);
     ip = (cell *)((char *)ip + (number)*ip - sizeof(cell));
-    _debug("jump: *ip: %lx\n", (long)*ip);
 }
 __end
 

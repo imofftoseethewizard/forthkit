@@ -18,8 +18,11 @@ define(`__implement_evaluator_core', `
 
     while (fp < fp0 && !result) {
 
-        _debug("loading fiber %d\n", *fp);
+        _print_fiber_stack();
         _load_fiber_state();
+
+        _debug("loaded fiber %d\n", *fp);
+        _print_registers();
 
         while (ip && steps && !result) {
 
@@ -40,11 +43,13 @@ define(`__implement_evaluator_core', `
                 }
             }
             _check_parameter_stack_bounds();
+            _print_stack();
         }
 
-        _print_fiber_stack();
-
         if (fp < fp0) {
+            _debug("saving fiber %d\n", *fp);
+            _print_registers();
+
             _save_fiber_state();
             fp++;
         }
