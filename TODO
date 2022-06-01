@@ -1,4 +1,6 @@
 order of features
+  fiber tests
+    check error conditions
 
   tasks
     define additional task words
@@ -28,7 +30,15 @@ order of features
 order of generalization
   forth versions
   compilers
+    clang
+    tinycc
+    msvc
   architectures
+    rpi
+    macos
+    arduino
+    pic?
+    beaglebone
 
 order of expanded testing
   new features
