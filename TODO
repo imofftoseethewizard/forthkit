@@ -1,20 +1,29 @@
 order of features
-  remaining fiber/task words
-    need words for interacting with the fiber stack
-    >fr ( x fn -- )
-    fr> ( fn -- x )
-    fstop ( fn -- addr )
-    fsteps ( fn -- addr )
+
+  tasks
+    define additional task words
     ftask ( fn -- tn )
     there ( tn -- addr )
     tsp ( tn -- addr )
     tsp0 ( tn -- addr )
     >t
     t>
+    tcontext
+    tcurrent
+    tbase
+    tstate
+    tinterpret
+    tforth
 
   debugger
+    does the debugger need its own task?
   image load
   indirect word references
+
+  use aux task to implement compile-execute interpreter
+    enables control structures in "interpret" mode
+    would this eliminate state?
+    how would [ ] be handled?
 
 order of generalization
   forth versions
