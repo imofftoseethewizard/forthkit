@@ -1,11 +1,10 @@
 order of features
-  fiber tests
-    check error conditions
-
   tasks
     define additional task words
+    task
     ftask ( fn -- tn )
-    there ( tn -- addr )
+      returns the task number of the fiber
+    tdp ( tn -- addr )
     tsp ( tn -- addr )
     tsp0 ( tn -- addr )
     >t
@@ -44,7 +43,7 @@ order of expanded testing
   new features
   failures of std words
   output of std words
-  filesystem side-effects of standard words (i.e. block words)
+  file system side-effects of standard words (i.e. block words)
 
 decompiler (future work)
   guess counted strings

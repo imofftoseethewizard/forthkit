@@ -48,6 +48,7 @@ enum fiber_attribute {
 #define _fiber_size (fiber_attribute_count * sizeof(cell) + e[ea_return_stack_size])
 
 enum task_attribute {
+    ta_top,
     ta_dp,
     ta_sp,
     ta_sp0,
@@ -221,6 +222,7 @@ do {                                                              \
     tp[ta_dp] = _from_ptr(dp);                                    \
     tp[ta_sp] = _from_ptr(sp);                                    \
     tp[ta_sp0] = _from_ptr(sp0);                                  \
+    tp[ta_top] = _from_ptr(top);                                  \
                                                                   \
 } while (0)
 
@@ -238,6 +240,7 @@ do {                                                              \
     dp = (char *)_to_ptr(tp[ta_dp]);                              \
     sp = _to_ptr(tp[ta_sp]);                                      \
     sp0 = _to_ptr(tp[ta_sp0]);                                    \
+    top = (char *)_to_ptr(tp[ta_top]);                            \
                                                                   \
 } while (0)
 

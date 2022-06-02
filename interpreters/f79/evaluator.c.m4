@@ -68,13 +68,15 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
     cell *fp0;
     cell *rp0;
     cell *sp0;
+    char *top;
 
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
 
     if (!e[ea_top]) {
 
-        e[ea_top] = _from_ptr((char *)e + e[ea_size] - sizeof(cell));
+        top = (char *)e + e[ea_size] - sizeof(cell);
+        e[ea_top] = _from_ptr(top);
 
         /* reserve large blocks in high memory */
 
@@ -111,7 +113,8 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         for (register int i = 0; i < e[ea_task_count]; i++) {
             register cell *t = _to_task_ptr(i);
-            t[ta_dp] = _from_ptr(&e[engine_attribute_count]);
+            t[ta_top] = i == 0 ? _from_ptr(top) : 0;
+            t[ta_dp] = i == 0 ? _from_ptr(&e[engine_attribute_count]) : 0;
             t[ta_sp] = t[ta_sp0] = _from_ptr(t) + _task_size;
             t[ta_context] = 0;
             t[ta_current] = _from_ptr(&t[ta_forth]);

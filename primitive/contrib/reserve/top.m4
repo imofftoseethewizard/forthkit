@@ -1,4 +1,4 @@
-#define _top() *--sp = _from_ptr(&e[ea_top])
+#define _top() *--sp = _from_ptr(top)
 
 __primitive(pr_top)
 {
