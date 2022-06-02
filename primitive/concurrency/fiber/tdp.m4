@@ -1,4 +1,4 @@
-__primitive(pr_tdb)
+__primitive(pr_tdp)
 {
     register cell idx = *sp;
 
@@ -15,4 +15,4 @@ __primitive(pr_tdb)
 }
 __end
 
-__define_primitive("tdp", pr_tdb);
+__define_primitive("tdp", pr_tdp);
