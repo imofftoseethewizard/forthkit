@@ -1,7 +1,10 @@
 /* https://forth-standard.org/standard/exception */
 
 enum standard_result_code {
-    next_error_code = -86,
+    next_error_code = -89,
+    err_invalid_task_number,                           /* -88 */
+    err_active_task_not_allowed,                       /* -87 */
+    err_no_tasks_available,                            /* -86 */
     err_active_fiber_not_allowed,                      /* -85 */
     err_unknown_primitive,                             /* -84 */
     err_invalid_fiber_number,                          /* -83 */
@@ -177,5 +180,8 @@ static char *result_messages[] = {                    \
     "no fibers available",                            \
     "invalid fiber number",                           \
     "unknown primitive",                              \
-    "active fiber not allowed"                        \
+    "active fiber not allowed",                       \
+    "no tasks available",                             \
+    "invalid task number",                            \
+    "active task not allowed"                         \
 }

@@ -42,6 +42,9 @@ do {                                                 \
 #define _is_fiber_stack_full() (fp0 - fp == e[ea_fiber_stack_size])
 #define _is_valid_fiber_number(x) ((cell)(x) >= e[ea_fiber_count])
 
+#define _is_active_task_number(x) ((x) == fp[fa_task])
+#define _is_valid_task_number(x) ((cell)(x) >= e[ea_task_count])
+
 #else
 
 #define _check_buffer_address()
@@ -57,5 +60,8 @@ do {                                                 \
 #define _is_active_fiber_number() 0
 #define _is_fiber_stack_full() 0
 #define _is_valid_fiber_number() 1
+
+#define _is_active_task_number(x) 0
+#define _is_valid_task_number(x) 1
 
 #endif

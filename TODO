@@ -1,9 +1,7 @@
 order of features
   tasks
     define additional task words
-    task
-    ftask ( fn -- tn )
-      returns the task number of the fiber
+      need way to release a task
     tdp ( tn -- addr )
     tsp ( tn -- addr )
     tsp0 ( tn -- addr )
@@ -15,6 +13,12 @@ order of features
     tstate
     tinterpret
     tforth
+    ttop
+
+    tests
+      task
+      ftask ( fn -- tn )
+        returns the task number of the fiber
 
   debugger
     does the debugger need its own task?

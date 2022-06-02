@@ -116,7 +116,8 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
             t[ta_top] = i == 0 ? _from_ptr(top) : 0;
             t[ta_dp] = i == 0 ? _from_ptr(&e[engine_attribute_count]) : 0;
             t[ta_sp] = t[ta_sp0] = _from_ptr(t) + _task_size;
-            t[ta_context] = 0;
+            t[ta_forth] = 0;
+            t[ta_context] =
             t[ta_current] = _from_ptr(&t[ta_forth]);
             t[ta_base] = 10;
             t[ta_state] = 0;
@@ -139,8 +140,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         undivert(__primitive_word_definitions)
         undivert(__compiled_word_definitions)dnl
-
-        tp[ta_context] = _from_ptr(&tp[ta_forth]);
 
         _save_fiber_state();
     }
