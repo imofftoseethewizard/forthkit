@@ -1,7 +1,8 @@
 /* https://forth-standard.org/standard/exception */
 
 enum standard_result_code {
-    next_error_code = -85,
+    next_error_code = -86,
+    err_active_fiber_not_allowed,                      /* -85 */
     err_unknown_primitive,                             /* -84 */
     err_invalid_fiber_number,                          /* -83 */
     err_no_fibers_available,                           /* -82 */
@@ -176,4 +177,5 @@ static char *result_messages[] = {                    \
     "no fibers available",                            \
     "invalid fiber number",                           \
     "unknown primitive",                              \
+    "active fiber not allowed"                        \
 }

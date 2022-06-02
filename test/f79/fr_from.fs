@@ -3,5 +3,6 @@
 
 ' this-shouldn't-work fiber constant f
 
-( check if it works with a different fiber )
+( set single step for f, start f to push 10 onto its return stack, take 10 )
+( from its return stack, set unlimited steps for f to let it complete. )
 t{ 1 f fsteps ! f start f fr> -1 f fsteps ! f start -> 10 20 }t

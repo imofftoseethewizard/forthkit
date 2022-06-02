@@ -12,8 +12,24 @@ $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/snip.fs
 $FORTHKIT/test/check.sh ..   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/start.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/to_fr.fs
-$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -80 $FORTHKIT/test/f79/lay_err_fiber_stack_overflow.fs
-$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -80 -f 8 -F 4 $FORTHKIT/test/f79/start_err_fiber_stack_overflow.fs
-$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/lay_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -81 $FORTHKIT/test/f79/braid_err_fiber_stack_underflow.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -81 $FORTHKIT/test/f79/f_at_err_fiber_stack_underflow.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -82 $FORTHKIT/test/f79/fiber_err_no_fibers_available.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/fr_from_err_active_fiber_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/fr_from_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/fip_err_active_fiber_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/fip_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/frp0_err_active_fiber_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/frp0_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/frp_err_active_fiber_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/frp_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/fsteps_err_active_fiber_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/fsteps_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/fstop_err_active_fiber_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/fstop_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -80 $FORTHKIT/test/f79/lay_err_fiber_stack_overflow.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/lay_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -80 -f 8 -F 4 $FORTHKIT/test/f79/start_err_fiber_stack_overflow.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/to_fr_err_active_fiber_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/to_fr_err_invalid_fiber_number.fs
 # $FORTHKIT/test/check.sh ... $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/.fs
