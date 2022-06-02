@@ -13,6 +13,9 @@ $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/snip.fs
 $FORTHKIT/test/check.sh ..   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/start.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/task.fs
+$FORTHKIT/test/check.sh .a   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tbase.fs
+$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tcontext.fs
+$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tcurrent.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tdp.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tsp.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tsp0.fs
@@ -37,6 +40,12 @@ $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harn
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -80 $FORTHKIT/test/f79/lay_err_fiber_stack_overflow.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/lay_err_invalid_fiber_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -80 -f 8 -F 4 $FORTHKIT/test/f79/start_err_fiber_stack_overflow.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/tbase_err_active_task_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/tbase_err_invalid_task_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/tcontext_err_active_task_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/tcontext_err_invalid_task_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/tcurrent_err_active_task_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/tcurrent_err_invalid_task_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/tdp_err_active_task_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/tdp_err_invalid_task_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q -E 65534 $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/tsp_err_active_task_not_allowed.fs

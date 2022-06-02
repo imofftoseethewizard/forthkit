@@ -4,9 +4,6 @@ order of features
       need way to release a task
     >t
     t>
-    tcontext
-    tcurrent
-    tbase
     tstate
     tinterpret
     tforth
