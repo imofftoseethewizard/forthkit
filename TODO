@@ -2,7 +2,6 @@ order of features
   tasks
     define additional task words
       need way to release a task
-    tsp0 ( tn -- addr )
     >t
     t>
     tcontext
