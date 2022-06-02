@@ -1,13 +1,11 @@
 order of features
   tasks
-    define additional task words
-      need way to release a task
     >t
     t>
-    tstate
     tinterpret
     tforth
     ttop
+    tfinish
 
   debugger
     does the debugger need its own task?
