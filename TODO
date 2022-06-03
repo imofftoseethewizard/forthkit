@@ -1,29 +1,58 @@
 order of features
   tasks
-    >t
-    t>
-    tinterpret
-    tforth
-    ttop
-    tfinish
+    words to implement
+      >t
+      t>
+      factive?  *fp == idx
+      tactive? _to_fiber_ptr(*fp)[fa_task] == idx
+      tprimary? idx == _primary_task
+      fpaused? f[fa_steps] == 0 && f[fa_ip] != 0
+      fscheduled? idx in *fp ... *(fp0-1)
+      ffree? f[fa_ip] == 0
+      tfree? t[ta_dp] == 0
+      run ( -1 over fsteps ! start )
+      stop ( steps = 0 )
 
   debugger
     does the debugger need its own task?
+
   image load
-  indirect word references
 
   use aux task to implement compile-execute interpreter
     enables control structures in "interpret" mode
     would this eliminate state?
     how would [ ] be handled?
 
+  garbage collector
+
+
+
 order of generalization
+  forth variants
+    wihtout fibers
+    indirect word references
+    no bounds checking
   forth versions
+    f0
+      minimum required to do useful work
+      interpreter
+      arithmetic
+      word/vocabulary creation & management
+      dictionary, store, fetch
+      control structures
+      basic io
+    standards
+      83, 94, ansi, gforth, forth.org
+      impl:
+        refactor f79 into f0 + f79 additions
+        define additions for each standard
+        refine f0 to be the least common denominator
+
   compilers
     clang
     tinycc
     msvc
-  architectures
+  os/arch
     rpi
     macos
     arduino
@@ -35,6 +64,7 @@ order of expanded testing
   failures of std words
   output of std words
   file system side-effects of standard words (i.e. block words)
+  variants and versions
 
 decompiler (future work)
   guess counted strings

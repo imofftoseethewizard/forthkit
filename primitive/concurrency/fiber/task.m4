@@ -12,7 +12,7 @@ __primitive(pr_task)
     else {
         register cell* t = _to_task_ptr(idx);
         t[ta_dp] = *sp++;
-        t[ta_top] = t[ta_dp] + *sp;
+        t[ta_top] = t[ta_dp] + *sp - sizeof(cell);
         t[ta_sp] = t[ta_sp0];
         t[ta_base] = tp[ta_base];
         t[ta_forth] = tp[ta_forth];

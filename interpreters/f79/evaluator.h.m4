@@ -202,6 +202,8 @@ do {                                                              \
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
 
 #define _primary_fiber 0
+#define _primary_task 0
+
 #define _fiber_area (_fiber_size * e[ea_fiber_count])
 #define _task_area (_task_size * e[ea_task_count])
 
