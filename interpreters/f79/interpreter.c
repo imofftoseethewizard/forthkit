@@ -17,7 +17,7 @@
 
 #define DEFAULT_BUFFER_COUNT         32
 #define DEFAULT_BUFFER_SIZE          1024
-#define DEFAULT_EVALUATOR_SIZE       1<<20
+#define DEFAULT_EVALUATOR_SIZE       (sizeof(cell) == 2 ? (1<<16) - 2 : 1<<20)
 #define DEFAULT_EXPECTED_RESULT      0
 #define DEFAULT_FIBER_COUNT          4
 #define DEFAULT_FIBER_STACK_SIZE     4
