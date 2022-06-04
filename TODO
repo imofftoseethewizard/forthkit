@@ -1,8 +1,6 @@
 order of features
   tasks
     words to implement
-      >t
-      t>
       factive?  *fp == idx
       tactive? _to_fiber_ptr(*fp)[fa_task] == idx
       tprimary? idx == _primary_task
@@ -25,14 +23,14 @@ order of features
 
   garbage collector
 
-
-
 order of generalization
-  forth variants
-    wihtout fibers
-    indirect word references
-    no bounds checking
   forth versions
+    standards
+      83, 94, ansi, gforth, forth.org
+      impl:
+        refactor f79 into f0 + f79 additions
+        define additions for each standard
+        refine f0 to be the least common denominator
     f0
       minimum required to do useful work
       interpreter
@@ -41,12 +39,10 @@ order of generalization
       dictionary, store, fetch
       control structures
       basic io
-    standards
-      83, 94, ansi, gforth, forth.org
-      impl:
-        refactor f79 into f0 + f79 additions
-        define additions for each standard
-        refine f0 to be the least common denominator
+  forth variants
+    wihtout fibers
+    indirect word references
+    no bounds checking
 
   compilers
     clang

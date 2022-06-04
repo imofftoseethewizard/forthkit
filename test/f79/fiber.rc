@@ -36,6 +36,8 @@ $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/fr_from_err_invalid_fiber_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/fip_err_active_fiber_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/fip_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/t_from_err_active_task_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/t_from_err_invalid_task_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/frp0_err_active_fiber_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/frp0_err_invalid_fiber_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/frp_err_active_fiber_not_allowed.fs
@@ -61,6 +63,8 @@ $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/tinterpret_err_invalid_task_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -85 $FORTHKIT/test/f79/to_fr_err_active_fiber_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -83 $FORTHKIT/test/f79/to_fr_err_invalid_fiber_number.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/to_t_err_active_task_not_allowed.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/to_t_err_invalid_task_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/tsp_err_active_task_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/tsp_err_invalid_task_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/tsp0_err_active_task_not_allowed.fs
