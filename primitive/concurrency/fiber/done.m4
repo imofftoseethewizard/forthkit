@@ -2,7 +2,7 @@ __primitive(pr_done)
 {
     register cell idx = *sp++;
 
-    if (_is_valid_task_number(idx))
+    if (!_is_valid_task_number(idx))
         _abort(err_invalid_task_number);
 
     else if (_is_primary_task_number(idx))
