@@ -5,7 +5,7 @@ __primitive(pr_start)
     if (_is_fiber_stack_full())
         _abort(err_fiber_stack_overflow);
 
-    else if (_is_valid_fiber_number(idx))
+    else if (!_is_valid_fiber_number(idx))
         _abort(err_invalid_fiber_number);
 
     else if (_is_active_fiber_number(idx))

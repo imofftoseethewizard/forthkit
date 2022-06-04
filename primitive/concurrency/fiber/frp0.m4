@@ -2,7 +2,7 @@ __primitive(pr_frp0)
 {
     register cell idx = *sp;
 
-    if (_is_valid_fiber_number(idx))
+    if (!_is_valid_fiber_number(idx))
         _abort(err_invalid_fiber_number);
 
     else if (_is_active_fiber_number(idx))
