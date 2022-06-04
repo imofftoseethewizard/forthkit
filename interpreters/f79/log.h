@@ -41,7 +41,7 @@ do {                                                                     \
 
 #define _print_registers()                                               \
 do {                                                                     \
-    _debug("s: %8x, ip: %8x; *ip: %8x, *(ip+1): %8x, rp: %8x, *rp: %8x, sp: %8x, *sp: %8x, dp: %8x src: %.*s\n",  \
+    _debug("s: %8lx, ip: %8lx; *ip: %8lx, *(ip+1): %8lx, rp: %8lx, *rp: %8lx, sp: %8lx, *sp: %8lx, dp: %8lx src: %.*s\n",  \
            steps, \
            _from_ptr(ip), ip?*ip:0, ip?*(ip+1):0,        \
            _from_ptr(rp), rp?*rp:0,                      \
