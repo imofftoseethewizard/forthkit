@@ -20,10 +20,12 @@ $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tdp.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tinterpret.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/to_fr.fs
+$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/to_t.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tsp.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tsp0.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/tstate.fs
 $FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/ttop.fs
+$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs $FORTHKIT/test/f79/t_from.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -81 $FORTHKIT/test/f79/braid_err_fiber_stack_underflow.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -87 $FORTHKIT/test/f79/done_err_active_task_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/test/harness.fs -r -88 $FORTHKIT/test/f79/done_err_invalid_task_number.fs
