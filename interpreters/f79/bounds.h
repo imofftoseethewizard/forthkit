@@ -42,7 +42,7 @@ do {                                                 \
 #define _is_fiber_stack_full() (fp0 - fp == e[ea_fiber_stack_size])
 #define _is_valid_fiber_number(x) ((cell)(x) >= e[ea_fiber_count])
 
-#define _is_active_task_number(x) ((x) == fp[fa_task])
+#define _is_active_task_number(x) ((x) == _to_fiber_ptr(*fp)[fa_task])
 #define _is_primary_task_number(x) ((x) == _primary_task)
 #define _is_valid_task_number(x) ((cell)(x) >= e[ea_task_count])
 
