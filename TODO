@@ -1,15 +1,8 @@
 order of features
   tasks
     words to implement
-      factive?  *fp == idx
-      tactive? _to_fiber_ptr(*fp)[fa_task] == idx
-      tprimary? idx == _primary_task
-      fpaused? f[fa_steps] == 0 && f[fa_ip] != 0
-      fscheduled? idx in *fp ... *(fp0-1)
-      ffree? f[fa_ip] == 0
-      tfree? t[ta_dp] == 0
-      run ( -1 over fsteps ! start )
-      stop ( steps = 0 )
+      ftask@ _to_fiber_ptr(idx)[fa_task]
+      stop  steps = 0;
 
   debugger
     does the debugger need its own task?
@@ -22,6 +15,18 @@ order of features
     how would [ ] be handled?
 
   garbage collector
+
+  primitive reduction (f0 effort/after image loading)
+    move base, state to dictionary from task
+    move current, forth, interpret to evaluator from task
+    remove primitives base, state, tbase, tcurrent, tinterpret, tstate
+
+    base
+      dot num convert u_dot decimal to_number
+
+    state
+      _abort left_bracket quit dot_quote colon semicolon right_bracket
+      tick_f79 interpret
 
 order of generalization
   forth versions
