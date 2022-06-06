@@ -1,32 +1,9 @@
-order of features
-  tasks
-    words to implement
-      ftask@ _to_fiber_ptr(idx)[fa_task]
-      stop  steps = 0;
+f83
+  new directory
 
-  debugger
-    does the debugger need its own task?
-
-  image load
-
-  use aux task to implement compile-execute interpreter
-    enables control structures in "interpret" mode
-    would this eliminate state?
-    how would [ ] be handled?
-
-  garbage collector
-
-  primitive reduction (f0 effort/after image loading)
-    move base, state to dictionary from task
-    move current, forth, interpret to evaluator from task
-    remove primitives base, state, tbase, tcurrent, tinterpret, tstate
-
-    base
-      dot num convert u_dot decimal to_number
-
-    state
-      _abort left_bracket quit dot_quote colon semicolon right_bracket
-      tick_f79 interpret
+  reorganize tests
+  reorganize make
+  update monitors
 
 order of generalization
   forth versions
@@ -59,6 +36,37 @@ order of generalization
     arduino
     pic?
     beaglebone
+
+order of features
+  tasks
+    words to implement
+      stop  steps = 0;
+    tests for fiber.fs
+    rename end -> pause
+
+  debugger
+    does the debugger need its own task?
+
+  image load
+
+  use aux task to implement compile-execute interpreter
+    enables control structures in "interpret" mode
+    would this eliminate state?
+    how would [ ] be handled?
+
+  garbage collector
+
+  primitive reduction (f0 effort/after image loading)
+    move base, state to dictionary from task
+    move current, forth, interpret to evaluator from task
+    remove primitives base, state, tbase, tcurrent, tinterpret, tstate
+
+    base
+      dot num convert u_dot decimal to_number
+
+    state
+      _abort left_bracket quit dot_quote colon semicolon right_bracket
+      tick_f79 interpret
 
 order of expanded testing
   new features

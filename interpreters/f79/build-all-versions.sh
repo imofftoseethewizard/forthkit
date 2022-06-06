@@ -1,6 +1,8 @@
 #! /usr/bin/env sh
 
-for f in `ls $FORTHKIT/interpreters/f79/spec/*.rc`
+export FAMILY=f79
+
+for f in `ls $FORTHKIT/interpreters/$FAMILY/spec/*.rc`
 do
     export VERSION_TAG=$(echo $f | sed -E 's|.*/([^.]*)\.rc$|\1|')
     . $f

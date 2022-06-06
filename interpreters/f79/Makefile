@@ -18,7 +18,7 @@
 #   $ cd $SOURCE
 #   $ source spec/$VERSION_TAG.rc && make all
 
-BUILD   = ${FORTHKIT}/build/f79/${VERSION_TAG}
+BUILD   = ${FORTHKIT}/build/${FAMILY}/${VERSION_TAG}
 
 BIN	= ${BUILD}/bin
 INCLUDE = ${BUILD}/include
@@ -66,7 +66,7 @@ ${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
 	gcc ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
 deps :
-	echo ${m4_deps} | tr ' ' '\n' > deps.txt
+	echo ${m4_deps} | tr ' ' '\n' > ${BUILD}/deps.txt
 
 all : ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
 
