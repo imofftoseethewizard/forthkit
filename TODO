@@ -1,9 +1,7 @@
 f83
-  new directory
-
-  reorganize tests
-  reorganize make
-  update monitors
+  review each test
+    move to common/core or common/fiber, adjust lines in f79/suites/*.rc and f83/suites/*.rc
+    add *_err_* tests as appropriate
 
 order of generalization
   forth versions
