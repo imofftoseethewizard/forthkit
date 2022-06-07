@@ -1,8 +1,8 @@
-0 f@ constant f-primaru
+0 f@ constant f-primary
 
-: 10-to-primaru 10 f-primaru ftask @ >t ;
+: 10-to-primary 10 f-primary ftask @ >t ;
 
-' 10-to-primaru fiber constant f
+' 10-to-primary fiber constant f
 
 1000 dup reserve task constant t
 
