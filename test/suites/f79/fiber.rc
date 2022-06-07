@@ -1,32 +1,32 @@
-$FORTHKIT/test/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/braid_twist.fs
-$FORTHKIT/test/check.sh .... $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/is_factive.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/end.fs
-$FORTHKIT/test/check.sh '*.' $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/done.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/f_at.fs
-$FORTHKIT/test/check.sh ..   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber.fs
-$FORTHKIT/test/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fip.fs
-$FORTHKIT/test/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/frp_frp0.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fr_from.fs
-$FORTHKIT/test/check.sh .... $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fsteps.fs
-$FORTHKIT/test/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fstop.fs
-$FORTHKIT/test/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/ftask.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/lay.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/num_f.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/snip.fs
-$FORTHKIT/test/check.sh ..   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/start.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/task.fs
-$FORTHKIT/test/check.sh .a   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tbase.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tcontext.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tcurrent.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tdp.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tinterpret.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/to_fr.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/to_t.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tsp.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tsp0.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tstate.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/ttop.fs
-$FORTHKIT/test/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/t_from.fs
+$FORTHKIT/scripts/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/braid_twist.fs
+$FORTHKIT/scripts/check.sh .... $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/is_factive.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/end.fs
+$FORTHKIT/scripts/check.sh '*.' $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/done.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/f_at.fs
+$FORTHKIT/scripts/check.sh ..   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber.fs
+$FORTHKIT/scripts/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fip.fs
+$FORTHKIT/scripts/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/frp_frp0.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fr_from.fs
+$FORTHKIT/scripts/check.sh .... $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fsteps.fs
+$FORTHKIT/scripts/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fstop.fs
+$FORTHKIT/scripts/check.sh ...  $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/ftask.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/lay.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/num_f.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/snip.fs
+$FORTHKIT/scripts/check.sh ..   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/start.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/task.fs
+$FORTHKIT/scripts/check.sh .a   $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tbase.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tcontext.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tcurrent.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tdp.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tinterpret.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/to_fr.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/to_t.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tsp.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tsp0.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/tstate.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/ttop.fs
+$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/t_from.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -81 $FORTHKIT/lib/test/common/braid_err_fiber_stack_underflow.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -87 $FORTHKIT/lib/test/common/done_err_active_task_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -88 $FORTHKIT/lib/test/common/done_err_invalid_task_number.fs
@@ -74,4 +74,4 @@ $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.f
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -88 $FORTHKIT/lib/test/common/tstate_err_invalid_task_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -87 $FORTHKIT/lib/test/common/ttop_err_active_task_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -88 $FORTHKIT/lib/test/common/ttop_err_invalid_task_number.fs
-# $FORTHKIT/test/check.sh ... $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/.fs
+# $FORTHKIT/scripts/check.sh ... $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/.fs

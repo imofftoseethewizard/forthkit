@@ -1,5 +1,7 @@
 #! /usr/bin/env sh
 
+cd $FORTHKIT/interpreters
+
 for family in $FAMILIES
 do
     for f in `ls $FORTHKIT/interpreters/$family/spec/*.rc`

@@ -1,5 +1,7 @@
 #! /usr/bin/env sh
 
+cd $FORTHKIT/interpreters
+
 export FAMILIES='f79 f83'
 
 mkdir -p $FORTHKIT/log
@@ -7,7 +9,7 @@ touch $FORTHKIT/log/build
 
 log_file=$FORTHKIT/log/build
 
-$FORTHKIT/interpreters/update-all-deps.sh
+$FORTHKIT/scripts/update-all-deps.sh
 
 find $FORTHKIT -name deps.txt -exec cat {} \; | \
     sort -u | \
@@ -16,5 +18,5 @@ find $FORTHKIT -name deps.txt -exec cat {} \; | \
     while read dir events file
     do
         echo $dir $events $file >>$log_file
-        $FORTHKIT/interpreters/build-all-versions.sh >>$log_file
+        $FORTHKIT/scripts/build-all-versions.sh >>$log_file
     done
