@@ -38,7 +38,7 @@ m4_deps =											 \
 	$(shell m4 ${FORTHKIT}/interpreters/primitive-dependencies.m4 ${EVALUATOR_PRIMITIVES})	 \
 	$(shell m4 ${FORTHKIT}/interpreters/compiled-dependencies.m4 ${COMPILED_WORDS})
 
-${BIN} ${INCLUDE} ${LIB} ${SRC} :
+${BIN} ${BUILD} ${INCLUDE} ${LIB} ${SRC} :
 	mkdir -p $@
 
 ${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC} bounds.h debug.h errors.h log.h
@@ -65,8 +65,11 @@ ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${CONFIG_H} ${LIB}
 ${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
 	gcc ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
-deps :
-	echo ${m4_deps} | tr ' ' '\n' > ${BUILD}/deps.txt
+deps : ${BUILD}
+	echo ${m4_deps} | tr ' ' '\n'    >  ${BUILD}/deps.txt
+	ls ${FORTHKIT}/interpreters/*.c  >> ${BUILD}/deps.txt
+	ls ${FORTHKIT}/interpreters/*.h  >> ${BUILD}/deps.txt
+	ls ${FORTHKIT}/interpreters/*.m4 >> ${BUILD}/deps.txt
 
 all : ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
 
