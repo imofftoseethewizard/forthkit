@@ -2,7 +2,7 @@
 
 # Comments, blank lines skipped. Lines may be continued with a trailing backslash
 # Tests using t{ }t from the standard test suite
-$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/test/common/abs.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/abs.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/and.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/begin_until.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/begin_while_repeat.fs
