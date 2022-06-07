@@ -1,12 +1,18 @@
 #! /usr/bin/env sh
 
-mkdir -p $FORTHKIT/log/test
-
 inotifywait -mr --exclude 'log|.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build | \
     while read dir events file
     do
-        version_tag=$(echo $dir | sed -E 's|.*/([^/]*)/bin/|\1|')
-        log_file=$FORTHKIT/log/test/$version_tag
+        if echo $dir | grep /bin/ >/dev/null
+        then
+            version_tag=$(echo $dir | sed -E 's|.*/([^/]+)/bin/|\1|')
 
-        VERSION_TAG=$version_tag ./runner.sh $FORTHKIT/test/f79/core.rc $FORTHKIT/test/f79/fiber.rc >>$log_file
+            family=$(echo $dir | sed -E "s|.*/([^/]*)/$version_tag/bin/|\1|")
+
+            log_file=$FORTHKIT/log/test/$family/$version_tag
+
+            mkdir -p $FORTHKIT/log/test/$family
+
+            VERSION_TAG=$version_tag ./runner.sh $FORTHKIT/test/$family/core.rc $FORTHKIT/test/$family/fiber.rc >>$log_file
+        fi
     done

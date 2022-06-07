@@ -10,9 +10,9 @@ do
 
         if [ $? = '0' ]
         then
-            echo `date "+%Y-%m-%dT%H:%M:%SZ" -u` Built version $VERSION_TAG successfully.
+            echo `date "+%Y-%m-%dT%H:%M:%SZ" -u` Built $family version $VERSION_TAG successfully.
         else
-            echo `date "+%Y-%m-%dT%H:%M:%SZ" -u` Build of version $VERSION_TAG failed.
+            echo `date "+%Y-%m-%dT%H:%M:%SZ" -u` Build of $family  version $VERSION_TAG failed.
         fi
     done
 done
