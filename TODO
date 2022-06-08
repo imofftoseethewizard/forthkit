@@ -1,12 +1,12 @@
 f83
   review each test
-    move to common/core or common/fiber, adjust lines in f79/suites/*.rc and f83/suites/*.rc
+    move to common/core or common/fiber, adjust lines in suites/f79/*.rc and suites/f83/*.rc
     add *_err_* tests as appropriate
 
 order of generalization
   forth versions
     standards
-      83, 94, ansi, gforth, forth.org
+      83, 94 (ansi), current standard, gforth?
       impl:
         refactor f79 into f0 + f79 additions
         define additions for each standard
