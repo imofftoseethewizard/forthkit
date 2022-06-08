@@ -13,6 +13,6 @@ inotifywait -mr --exclude 'log|.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build | \
 
             mkdir -p $FORTHKIT/log/test/$family
 
-            VERSION_TAG=$version_tag $FORTHKIT/scripts/runner.sh $FORTHKIT/test/$FAMILY/*.rc >>$log_file
+            VERSION_TAG=$version_tag $FORTHKIT/scripts/runner.sh $FORTHKIT/test/common/*.rc $FORTHKIT/test/$FAMILY/*.rc >>$log_file
         fi
     done
