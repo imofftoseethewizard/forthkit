@@ -7,12 +7,12 @@ inotifywait -mr --exclude 'log|.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build | \
         then
             version_tag=$(echo $dir | sed -E 's|.*/([^/]+)/bin/|\1|')
 
-            family=$(echo $dir | sed -E "s|.*/([^/]*)/$version_tag/bin/|\1|")
+            export FAMILY=$(echo $dir | sed -E "s|.*/([^/]*)/$version_tag/bin/|\1|")
 
             log_file=$FORTHKIT/log/test/$family/$version_tag
 
             mkdir -p $FORTHKIT/log/test/$family
 
-            VERSION_TAG=$version_tag $FORTHKIT/scripts/runner.sh $FORTHKIT/test/suites/$family/*.rc >>$log_file
+            VERSION_TAG=$version_tag $FORTHKIT/scripts/runner.sh $FORTHKIT/test/$FAMILY/*.rc >>$log_file
         fi
     done

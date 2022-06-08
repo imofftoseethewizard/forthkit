@@ -1,7 +1,19 @@
 f83
   review each test
-    move to common/core or common/fiber, adjust lines in suites/f79/*.rc and suites/f83/*.rc
     add *_err_* tests as appropriate
+  additional words
+    #tib
+    '
+    -trailing
+    .(
+    [']
+    abort"
+    find
+    forth-83
+    pad
+    tib
+    um*
+    um/mod
 
 order of generalization
   forth versions
