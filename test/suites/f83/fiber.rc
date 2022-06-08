@@ -52,6 +52,7 @@ $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.f
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -80 $FORTHKIT/lib/test/common/fiber/lay_err_fiber_stack_overflow.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -83 $FORTHKIT/lib/test/common/fiber/lay_err_invalid_fiber_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -80 -f 8 -F 4 $FORTHKIT/lib/test/common/fiber/start_err_fiber_stack_overflow.fs
+$FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -83 $FORTHKIT/lib/test/common/fiber/start_err_invalid_fiber_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -87 $FORTHKIT/lib/test/common/fiber/tbase_err_active_task_not_allowed.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -88 $FORTHKIT/lib/test/common/fiber/tbase_err_invalid_task_number.fs
 $FORTHKIT/build/f79/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -87 $FORTHKIT/lib/test/common/fiber/tcontext_err_active_task_not_allowed.fs
