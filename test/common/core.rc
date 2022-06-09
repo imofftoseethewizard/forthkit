@@ -54,6 +54,9 @@ $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harne
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/equal.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/d_plus.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/gt.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -10 $FORTHKIT/lib/test/common/core/times_divide_err_division_by_zero.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -11 $FORTHKIT/lib/test/common/core/times_divide_err_result_out_of_range_negative.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs -r -11 $FORTHKIT/lib/test/common/core/times_divide_err_result_out_of_range_positive.fs
 # $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/mod.fs
 # $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/colon.fs
 # $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/constant.fs

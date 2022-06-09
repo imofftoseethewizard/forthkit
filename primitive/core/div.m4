@@ -5,7 +5,7 @@ __primitive(pr_div)
     if (*sp)
         _div();
     else
-        _abort(-10);
+        _abort(err_division_by_zero);
 }
 __end
 __define_primitive("/", pr_div);
