@@ -1,19 +1,30 @@
 f83
-  review each test
+  review each word (in f83 order)
     add *_err_* tests as appropriate
+    check signature, semantics of f79 vs f83
+    check that standard tests are implemented
+    add doc to word and any macros
   additional words
     #tib
-    '
-    -trailing
+    ."
     .(
+    2/
+    >body
     [']
     abort"
-    find
+    cmove>
+    flush (forth-79 defines this as a synonym to save-buffers)
     forth-83
     pad
+    span
     tib
-    um*
+    um* (forth-83 lacks u*)
     um/mod
+  words with different semantics
+    '
+    find
+    interpreter (as a result of the change to find)
+
 
 order of generalization
   forth versions
