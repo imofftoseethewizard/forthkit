@@ -14,6 +14,7 @@ __primitive(pr_times_div)
         results if the divisor is zero or if the quotient falls
         outside of the range of a signed single cell.
      */
+
     register double_number
       d = _to_low_word((number)*sp++),
       p = _to_low_word((number)*sp++) * _to_low_word((number)*sp++);
@@ -22,15 +23,15 @@ __primitive(pr_times_div)
         _abort(err_division_by_zero);
 
     else {
-        register double_number q = p/d;
+        register double_number q = p / d;
         register number
           q_l = _from_low_word(q),
           q_h = _from_high_word(q);
 
-        if (!(q_l & c_msb) && q_h || q_l & c_msb && q_h != -1)
+        if (q_l > 0 && q_h || q_l < 0 && q_h != -1)
             _abort(err_result_out_of_range);
         else
-            *--sp = _from_low_word(q_l);
+            *--sp = q_l;
     }
 }
 __end
