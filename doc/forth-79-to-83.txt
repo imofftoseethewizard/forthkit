@@ -1,0 +1,15 @@
+Changes in the standard from FORTH-79 to FORTH-83:
+
+1. The '79 standard specifies symmetric division:
+
+          /              n1 n2 -- n3                   178           "divide"
+               Divide  n1  by n2 and leave the quotient n3.   n3  is  rounded
+               toward zero.
+
+whereas the '83 standard calls for floored division
+
+          /            n1 n2 -- n3                   83           "divide"
+               n3 is the floor of the quotient of n1 divided by the divisor
+               n2.  An error condition results if the divisor is zero or if
+               the quotient falls outside of the range {-32,768..32,767}.
+               See:  "division, floored"

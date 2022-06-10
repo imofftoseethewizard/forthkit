@@ -11,7 +11,7 @@ log_file=$FORTHKIT/log/build
 
 $FORTHKIT/scripts/update-all-deps.sh
 
-find $FORTHKIT -name deps.txt -exec cat {} \; | \
+find $FORTHKIT/build -name deps.txt -exec cat {} \; | \
     sort -u | \
     tee $FORTHKIT/build/build-monitor-watching.txt | \
     inotifywait -mr --fromfile - -e CLOSE_WRITE | \
