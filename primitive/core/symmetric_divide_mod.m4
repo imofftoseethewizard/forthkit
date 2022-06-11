@@ -1,18 +1,38 @@
-__primitive(pr_div_mod)  
+__primitive(pr_divide_mod)
 {
+    /* /MOD ( n1 n2 -- n3 n4 ) "divide-mod"
+       Divide  n1 by n2 and leave the remainder n3 and quotient n4.
+       n3 has the same sign as n1.
+
+     */
+
     register number
-      q = (number)*sp++,
-      n = (number)*sp++,
-      r = n % q;
+      n2 = (number)*sp++,
+      n1 = (number)*sp++;
 
-    if (n > 0 && r < 0)
-        r += q > 0 ? q : -q;
+    if (!n2)
+        _abort(err_division_by_zero);
 
-    else if (n < 0 && r > 0)
-        r += q < 0 ? q : -q;
+    else {
+        register number
+          q = n1 / n2,
+          r = n1 % n2;
 
-    *--sp = r;
-    *--sp = (n-r)/q;
+        if (r && (r ^ n1) & c_msb) {
+
+            if ((r ^ n2) & c_msb) {
+                r += n2;
+                q -= 1;
+
+            } else {
+                r -= n2;
+                q += 1;
+            }
+        }
+
+        *--sp = r;
+        *--sp = q;
+    }
 }
 __end
-__define_primitive("/MOD", pr_div_mod);
+__define_primitive("/MOD", pr_divide_mod);
