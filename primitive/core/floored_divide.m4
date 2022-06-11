@@ -6,6 +6,7 @@ __primitive(pr_divide)
        n2.  An error condition results if the divisor is zero.
 
      */
+
     register number
       n2 = *sp++,
       n1 = *sp;

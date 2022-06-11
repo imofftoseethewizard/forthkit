@@ -1,4 +1,4 @@
-: t/mod over over / >r mod r> ;
+: t/mod 1 swap */mod ;
 
 t{       0       1 /mod ->       0       1 t/mod }t
 t{       1       1 /mod ->       1       1 t/mod }t
