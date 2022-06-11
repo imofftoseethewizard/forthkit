@@ -8,17 +8,22 @@ __primitive(pr_divide)
      */
 
     register number
-      n2 = *sp++,
-      n1 = *sp;
+      n2 = (number)*sp++,
+      n1 = (number)*sp++;
 
     if (!n2)
         _abort(err_division_by_zero);
 
-    else if ((n1 ^ n2) & c_msb)
-        *sp = (n1 - (n2 - (n2 > 0 ? 1 : -1))) / n2;
+    else {
+        register number
+          q = n1 / n2,
+          r = n1 % n2;
 
-    else
-        *sp = n1 / n2;
+        if (r && (r ^ n2) & c_msb)
+            q -= 1;
+
+        *--sp = q;
+    }
 }
 __end
 __define_primitive("/", pr_divide);
