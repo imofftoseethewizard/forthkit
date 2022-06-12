@@ -31,7 +31,7 @@ $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harne
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/pick.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/plus.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/plus_store.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/q_dup.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/query_dup.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/roll.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/rot.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/swap.fs

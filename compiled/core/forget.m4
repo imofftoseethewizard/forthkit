@@ -1,6 +1,6 @@
     __compiled_word("FORGET", cw_forget, 0)
     _compile_cw(cw_tick);
-    _compile_pr(pr_q_dup);
+    _compile_pr(pr_query_dup);
     _compile_if();
     _compile_pr(pr_dup);
     _compile_literal(3 * sizeof(cell));

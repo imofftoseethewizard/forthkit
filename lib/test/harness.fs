@@ -96,3 +96,5 @@ min-int 2 /              constant lo-int
 : min-2int 0s min-int ;
 : hi-2int 1s hi-int ;
 : lo-2int 0s lo-int ;
+
+1s 1 rshift invert constant msb

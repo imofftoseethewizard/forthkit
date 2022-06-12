@@ -72,13 +72,13 @@ _compile_literal(32);
 _compile_literal(_from_ptr(&e[ea_word_buffer0]));
 _compile_pr(pr_fetch);
 _compile_pr(pr_word);
-_compile_pr(pr_q_dup);
+_compile_pr(pr_query_dup);
 
 _compile_while();
 
 _compile_pr(pr_dup);
 _compile_pr(pr_find);
-_compile_pr(pr_q_dup);
+_compile_pr(pr_query_dup);
 
 _compile_if();
 
