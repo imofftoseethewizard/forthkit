@@ -1,12 +1,17 @@
-#define _exit() ip = *rp ? _to_ptr(*rp) : 0, rp++, rp == rp_stop ? (steps = 0) : 0
-
-/* op_exit pops the top of the return stack into ip and advances
-   it past the call to the just completed word.
-*/
-
 __primitive(op_exit)
 {
-    _exit();
+    /* EXIT ( -- )
+
+       When compiled within a colon-definition,  terminate  execution
+       of that definition,  at that point.   May not be used within a
+       DO...LOOP.
+
+    */
+
+    ip = *rp ? _to_ptr(*rp) : 0;
+    rp++;
+    rp == rp_stop ? (steps = 0) : 0;
+
     _check_return_stack_bounds();
 }
 __end

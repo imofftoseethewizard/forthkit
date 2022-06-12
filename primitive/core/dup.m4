@@ -1,8 +1,11 @@
-#define _dup() *--sp = *(sp+1)
-
-__primitive(pr_dup)  
+__primitive(pr_dup)
 {
-    _dup();
+    /* DUP ( n -- n n ) "dupe"
+
+       Duplicate the value on the top of the stack.
+     */
+
+    *--sp = *(sp+1);
 }
 __end
 __define_primitive("DUP", pr_dup);

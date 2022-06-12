@@ -1,8 +1,10 @@
-#define _drop() ++sp
-
-__primitive(pr_drop)  
+__primitive(pr_drop)
 {
-    _drop();
+    /* DROP ( n -- )
+
+       Drop the top value from the stack.
+     */
+    ++sp;
 }
 __end
 __define_primitive("DROP", pr_drop);
