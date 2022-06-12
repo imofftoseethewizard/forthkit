@@ -1,8 +1,10 @@
-#define _lt() *++sp = (number)*(sp+1) < (number)*sp
-
-__primitive(pr_lt)  
+__primitive(pr_lt)
 {
-    _lt();
+    /* < ( n1 n2 -- flag ) "less-than"
+
+       flag is true if n1 is less than n2.
+     */
+    *++sp = (number)*(sp+1) < (number)*sp;
 }
 __end
 __define_primitive("<", pr_lt);
