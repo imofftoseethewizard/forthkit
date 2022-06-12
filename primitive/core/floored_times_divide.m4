@@ -1,4 +1,4 @@
-__primitive(pr_times_div)
+__primitive(pr_times_divide)
 {
     /*  * / ( n1 n2 n3 -- n4 ) "times-divide"
 
@@ -15,24 +15,34 @@ __primitive(pr_times_div)
         outside of the range of a signed single cell.
      */
 
-    register double_number
-      d = _to_low_word((number)*sp++),
-      p = _to_low_word((number)*sp++) * _to_low_word((number)*sp++);
+    register number
+      n3 = (number)*sp++,
+      n2 = (number)*sp++,
+      n1 = (number)*sp++;
 
-    if (!d)
+    if (!n3)
         _abort(err_division_by_zero);
 
     else {
-        register double_number q = p / d;
-        register number
-          q_l = _from_low_word(q),
-          q_h = _from_high_word(q);
+        register double_number
+          p = _to_low_word(n1) * _to_low_word(n2),
+          q = p / _to_low_word(n3),
+          r = p % _to_low_word(n3);
+
+        register number q_l, q_h;
+
+        if (r && (_from_high_word(r) ^ n3) & c_msb)
+            q -= 1;
+
+        q_l = _from_low_word(q);
+        q_h = _from_high_word(q);
 
         if (q_l > 0 && q_h || q_l < 0 && q_h != -1)
             _abort(err_result_out_of_range);
+
         else
             *--sp = q_l;
     }
 }
 __end
-__define_primitive("*/", pr_times_div);
+__define_primitive("*/", pr_times_divide);
