@@ -52,6 +52,7 @@ ${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC} bounds.h debug.h errors.h log.
 
 ${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE} bounds.h debug.h errors.h log.h
 	m4								 \
+	  --define __evaluator_family_name=${EVALUATOR_FAMILY_NAME}	 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
 	  --define __execution_model=${EXECUTION_MODEL}			 \

@@ -3,6 +3,8 @@ include(`debug.h')
 include(`errors.h')
 include(`log.h')
 
+`#define' EVALUATOR_FAMILY_NAME "__evaluator_family_name"
+
 typedef unsigned CELL_TYPE cell;
 typedef CELL_TYPE number;
 

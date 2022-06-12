@@ -9,7 +9,7 @@
 
 #include "evaluator.h"
 
-#define INTERPRETER_NAME    "forth-79"
+#define INTERPRETER_NAME    EVALUATOR_FAMILY_NAME
 #define VERSION_DESCRIPTION "<version TODO>"
 
 #define DEFAULT_COMMAND      NULL

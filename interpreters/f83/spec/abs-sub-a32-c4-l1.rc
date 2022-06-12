@@ -1,5 +1,6 @@
 # -*- mode: sh; -*-
 
+export EVALUATOR_FAMILY_NAME=forth-83
 export PREAMBLE=$FORTHKIT/interpreters/preamble.m4
 export MEMORY_MODEL=$FORTHKIT/address/absolute.c
 export EXECUTION_MODEL=$FORTHKIT/execution-models/sub.m4
