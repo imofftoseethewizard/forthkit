@@ -1,8 +1,11 @@
-#define _not() *sp = ~*sp
-
-__primitive(pr_not)  
+__primitive(pr_not)
 {
-    _not();
+    /* NOT ( w1 -- w2 )
+
+       w2 is the one's complement of w1.
+    */
+
+    *sp = ~*sp;
 }
 __end
 __define_primitive("NOT", pr_not);

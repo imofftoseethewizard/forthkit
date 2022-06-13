@@ -1,8 +1,11 @@
-#define _over() *--sp = *(sp+2)
-
-__primitive(pr_over)  
+__primitive(pr_over)
 {
-    _over();
+    /* OVER ( n1 n2 -- n1 n2 n1 )
+
+       Leave a copy of the second number on the stack.
+     */
+
+    *--sp = *(sp+2);
 }
 __end
 __define_primitive("OVER", pr_over);

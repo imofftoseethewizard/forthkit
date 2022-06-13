@@ -1,10 +1,21 @@
 __primitive(pr_pick)
 {
-    register number n = *sp;
-    if (n >= 1)
-        *sp = *(sp + n);
+    /* PICK ( +n -- w )
+
+       w is a copy of the +nth stack value, not counting +n
+       itself.  {0..the number of elements on stack-1}
+
+           0 PICK is equivalent to DUP
+           1 PICK is equivalent to OVER
+     */
+
+    register number n = *sp++;
+
+    if (!_is_valid_0_based_stack_index(n))
+        _abort(err_invalid_numeric_argument);
+
     else
-        _abort(-24); /* invalid numeric argument */
+        *--sp = *(sp + n);
 }
 __end
 __define_primitive("PICK", pr_pick);

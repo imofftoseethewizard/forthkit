@@ -46,6 +46,9 @@ do {                                                 \
 #define _is_primary_task_number(x) ((x) == _primary_task)
 #define _is_valid_task_number(x) ((cell)(x) < e[ea_task_count])
 
+#define _is_valid_0_based_stack_index(n) ((n) >= 0 && sp + (n) < sp0)
+#define _is_valid_1_based_stack_index(n) ((n) > 0 && sp + (n) <= sp0)
+
 #else
 
 #define _check_buffer_address()
@@ -65,5 +68,8 @@ do {                                                 \
 #define _is_active_task_number(x) 0
 #define _is_primary_task_number(x) 0
 #define _is_valid_task_number(x) 1
+
+#define _is_valid_0_based_stack_index(n) 1
+#define _is_valid_1_based_stack_index(n) 1
 
 #endif

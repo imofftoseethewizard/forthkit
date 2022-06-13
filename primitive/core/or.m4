@@ -1,8 +1,11 @@
-#define _or() *++sp = *(sp+1) | *sp
-
-__primitive(pr_or)  
+__primitive(pr_or)
 {
-    _or();
+    /* OR ( n1 n2 -- n3 )
+
+       Leave the bitwise inclusive-or of two numbers.
+     */
+
+    *++sp = *(sp+1) | *sp;
 }
 __end
 __define_primitive("OR", pr_or);

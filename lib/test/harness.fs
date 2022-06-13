@@ -11,7 +11,7 @@ here 0 , here - dup allot negate constant cell
 : cells cell * ;
 : char+ 1+ ;
 : chars ;
-: <> = 0= ; : invert not ;
+: <> = 0= ; : invert -1 xor ;
 
 (  ---------------------------------------------------------  )
 (  Test Harness Variables                                     )
@@ -80,7 +80,7 @@ create actual-results 32 cells allot
 decimal 36 constant max-base
 
 : count-bits
-    0 0 not begin dup while >r 1+ r> 2 * repeat drop ;
+    0 -1 begin dup while >r 1+ r> 2 * repeat drop ;
 
 count-bits 2 * constant #bits-ud
 

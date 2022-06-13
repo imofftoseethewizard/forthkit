@@ -1,17 +1,16 @@
 __primitive(pr_roll)
 {
-    /* ROLL ( +n -- )
+    /* ROLL ( n -- )
 
-       The +nth stack value, not counting +n itself is first
-       removed and then transferred to the top of the stack, moving
-       the remaining values into the vacated position.  {0..the
-       number of elements on the stack-1}
-
-           2 ROLL is equivalent to ROT
-           0 ROLL is a null operation
+       Extract  the  n-th stack value to the top of  the  stack,  not
+       counting  n  itself,  moving  the remaining  values  into  the
+       vacated position.   An error condition results for n less than
+       one.  {1..n}
+           3  ROLL  =  ROT
+           1  ROLL  =  null operation
      */
 
-    register number n = *sp++;
+    register number n = *sp++ - 1;
 
     if (!n)
         ;
