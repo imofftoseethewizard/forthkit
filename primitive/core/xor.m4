@@ -1,8 +1,11 @@
-#define _xor() *++sp = *(sp+1) ^ *sp
-
-__primitive(pr_xor)  
+__primitive(pr_xor)
 {
-    _xor();
+    /* XOR ( w1 w2 -- w3 ) "x-or"
+
+       w3 is the bit-by-bit exclusive-or of w1 with w2.
+     */
+
+    *++sp = *(sp+1) ^ *sp;
 }
 __end
 __define_primitive("XOR", pr_xor);
