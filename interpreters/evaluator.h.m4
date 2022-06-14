@@ -122,8 +122,7 @@ enum engine_attribute {
 #define _string_addr(x) (char *)((length_type *)(x) + 1)
 
 #define _compile_pr(x) _store_data(_from_pr(x))
-/* #define _compile_cw(x) _store_data(e[ea_size - x - 1]) */
-#define _compile_cw(x) _store_data(e[ea_size] / sizeof(cell) - x - 1)
+#define _compile_cw(x) _store_data(e[e[ea_size] / sizeof(cell) - x - 1])
 
 #define _set_word_flags(x, flags)       *((cell *)(x) + 2) |= (flags)
 #define _clear_word_flags(x, flags)     *((cell *)(x) + 2) &= ~(flags)
