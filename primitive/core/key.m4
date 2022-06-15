@@ -1,8 +1,13 @@
-#define _key() *--sp = getc(stdin)
-
-__primitive(pr_key)  
+__primitive(pr_key)
 {
-    _key();
+    /* KEY ( -- char )
+
+       Leave the ASCII value of the next available character from the
+       current input device. Characters received by KEY will not be
+       displayed.
+     */
+
+    *--sp = getc(stdin);
 }
 __end
 __define_primitive("KEY", pr_key);

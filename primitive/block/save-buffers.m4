@@ -1,5 +1,14 @@
 __primitive(pr_save_buffers)
 {
+    /* SAVE-BUFFERS ( -- )
+
+       The contents of all block buffers marked as UPDATEd are
+       written to their corresponding mass storage blocks.  All
+       buffers are marked as no longer being modified, but may
+       remain assigned. An error condition results if mass-
+       storage writing is not completed.
+     */
+
     register cell n;
     register cell block;
 
@@ -20,9 +29,12 @@ __primitive(pr_save_buffers)
                || write(storage_fd, _to_buffer_ptr(n), e[ea_buffer_size]) == -1
             ) {
 
-            _abort(-34);
+            _abort(err_block_write_exception);
             break;
         }
+
+        /* clear dirty bit */
+        *(_to_ptr(e[ea_buffer_map]) + n) = block & ~c_msb;
     }
 }
 __end

@@ -8,18 +8,13 @@ f83
     #tib
     ."
     .(
-    2/
     >body
     [']
     abort"
-    cmove>
     flush (forth-79 defines this as a synonym to save-buffers)
     forth-83
     pad
-    span
     tib
-    um* (forth-83 lacks u*)
-    um/mod
   words with different semantics
     '
     find
