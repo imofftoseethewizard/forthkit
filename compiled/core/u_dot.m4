@@ -1,9 +1,8 @@
 
-    /* . ( n -- ) "dot"
+    /* u. ( u -- ) "u-dot"
 
-       Display  n converted according to BASE in a free field format
-       with one trailing blank and with a leading minus sign if n is
-       negative.
+       Display u converted according to BASE in a free field format
+       with one trailing blank.
 
        |   : .
        |       0 <# #s #> type
