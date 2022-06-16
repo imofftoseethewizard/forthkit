@@ -10,7 +10,7 @@
        |   ;
      */
 
-    __compiled_word("u.", cw_u_dot, 0)
+    __compiled_word("U.", cw_u_dot, 0)
 
     _compile_pr(pr_num_start);
 
