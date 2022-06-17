@@ -1,3 +1,4 @@
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/bracket_tick.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/cmove_up.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/floored_times_divide_mod.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/floored_two_divide.fs
