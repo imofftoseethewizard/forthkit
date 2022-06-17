@@ -11,7 +11,7 @@
        |     # begin over over or while # repeat
        |   ;
      */
-    __compiled_word(`"#S"', cw_num_s, 0)
+    __compiled_word(`"#S"', cw_sharp_s, 0)
     _compile_pr(pr_sharp);
     _compile_begin();
     _compile_pr(pr_over);

@@ -17,7 +17,7 @@
     _compile_literal(0);
     _compile_pr(pr_num_start);
     _compile_cw(cw_sharp_s);
-    _compile_pr(pr_num_end);
+    _compile_pr(pr_sharp_greater);
     _compile_pr(pr_type);
 
     _compile_literal(' ');
