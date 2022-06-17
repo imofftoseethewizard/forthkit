@@ -21,7 +21,7 @@
 
 
                                   FORTH-83 STANDARD
-                                          
+
                       A PUBLICATION OF THE FORTH STANDARDS TEAM
 
 
@@ -71,7 +71,7 @@
           FORTH-83 STANDARD
 
 
-          
+
 
                        COPYRIGHT c. 1983  FORTH STANDARDS TEAM
 
@@ -137,7 +137,7 @@
           FORTH-83 STANDARD
 
 
-          
+
 
                                   TABLE OF CONTENTS
 
@@ -157,7 +157,7 @@
           14.  ASSEMBLER EXTENSION WORD SET  ........................... 44
           15.  SYSTEM EXTENSION WORD SET  .............................. 46
           16.  CONTROLLED REFERENCE WORDS  ............................. 48
-          
+
           APPENDICES
                A.   FORTH STANDARDS TEAM MEMBERSHIP  ................... 51
                B.   UNCONTROLLED REFERENCE WORDS  ...................... 54
@@ -166,7 +166,7 @@
                     C.2  DEFINITION FIELD ADDRESS CONVERSION OPERATORS . 66
                D.   STANDARDS TEAM CHARTER  ............................ 69
                E.   PROPOSAL/COMMENT FORM AND INSTRUCTIONS  ............ 78
-          
+
 
 
 
@@ -203,7 +203,7 @@
           FORTH-83 STANDARD
 
 
-          
+
 
 
 
@@ -308,7 +308,7 @@
           provided that the system or application remains transportable and
           obeys the other requirements of the standard.
 
-               
+
 
 
 
@@ -576,7 +576,7 @@
                the divisor or is zero, and the quotient is rounded to its
                arithmetic floor.  Note that, except for error conditions,
                n1 n2 SWAP OVER /MOD ROT * + is identical to n1.  See:
-               "floor, arithmetic" 
+               "floor, arithmetic"
                Examples:
                     dividend  divisor  remainder  quotient
                       10        7        3          1
@@ -1069,7 +1069,7 @@
           The following document is considered to be a portion of this
           Standard:
 
-               American National Standard Code for Information Interchange,               ___________________________________________________________ 
+               American National Standard Code for Information Interchange,
                X3.4-1977 (ASCII), American National Standards Institute,
                1430 Broadway, New York, NY 10018, USA.
 
@@ -1084,7 +1084,7 @@
 
                FORTH-83 STANDARD, Appendices, FORTH Standards Team
 
-          Webster's Collegiate Dictionary shall be used to resolve          _______________________________                         
+          Webster's Collegiate Dictionary shall be used to resolve
           conflicts in spelling and English word usage.
 
 
@@ -1432,7 +1432,7 @@
 
           2.   dictionary space ALLOTted;
 
-          3.   data in a valid mass storage block buffer.   
+          3.   data in a valid mass storage block buffer.
                See:  "9.7 Multiprogramming Impact";
 
           4.   data area of user variables;
@@ -1621,7 +1621,7 @@
           error conditions are listed below, but may occur at various times
           and with various words.
 
-          1.   input stream exhausted before encountering a required <name>                                                                      ____ 
+          1.   input stream exhausted before encountering a required <name>
                or delimiting character;
 
           2.   insufficient stack space or insufficient number of stack
@@ -1765,7 +1765,7 @@
           I    Indicates that the word is IMMEDIATE and will execute during
                compilation, unless special action is taken.
 
-          M    This word has a potential multiprogramming impact.     
+          M    This word has a potential multiprogramming impact.
                See:  "9.7 Multiprogramming Impact"
 
           U    A user variable.
@@ -1855,7 +1855,7 @@
 
           Stack     Number                   Range in            Minimum
           Abbrv.    Type                     Decimal             Field
-          
+
           flag      boolean                  0=false, else=true  16
           true      boolean                  -1 (as a result)    16
           false     boolean                  0                   0
@@ -1892,14 +1892,14 @@
 
           11.8 Input Text
 
-          <name>           ____ 
+          <name>
 
                An arbitrary FORTH word accepted from the input stream.
                This notation refers to text from the input stream, not to
                values on the data stack.  See:  "10.2 General Error
                Conditions"
 
-          ccc          ___
+          ccc
 
 
 
@@ -1922,7 +1922,7 @@
                A sequence of arbitrary characters accepted from the input
                stream until the first occurrence of the specified
                delimiting character.  The delimiter is accepted from the
-               input stream, but is not one of the characters ccc and is                                                              ___       
+               input stream, but is not one of the characters ccc and is
                therefore not otherwise processed.  This notation refers to
                text from the input stream, not to values on the data stack.
                Unless noted otherwise, the number of characters accepted
@@ -2051,7 +2051,7 @@
           12.  REQUIRED WORD SET
 
 
-          
+
 
 
           12.2 The Required Word Set Glossary
@@ -2086,20 +2086,20 @@
 
           '            -- addr                       M,83           "tick"
                Used in the form:
-                       ' <name>                          ____ 
-               addr is the compilation address of <name>.  An error                                                   ____            
-               condition exists if <name> is not found in the currently                                    ____                               
+                       ' <name>
+               addr is the compilation address of <name>.  An error
+               condition exists if <name> is not found in the currently
                active search order.
 
           (            --                            I,M,83        "paren"
                        --   (compiling)
                Used in the form:
-                       ( ccc)                         ___ 
-               The characters ccc, delimited by ) (closing parenthesis),                              ___                                       
+                       ( ccc)
+               The characters ccc, delimited by ) (closing parenthesis),
                are considered comments.  Comments are not otherwise
-               processed.  The blank following ( is not part of ccc.  ( may                                                                ___        
+               processed.  The blank following ( is not part of ccc.  ( may
                be freely used while interpreting or compiling.  The number
-               of characters in ccc may be zero to the number of characters                                ___                                        
+               of characters in ccc may be zero to the number of characters
                remaining in the input stream up to the closing parenthesis.
 
           *            w1 w2 -- w3                   79            "times"
@@ -2146,7 +2146,7 @@
                + .  This sum replaces the original value at addr.
 
           +LOOP        n --                          C,I,83    "plus-loop"
-                       sys --   (compiling)          
+                       sys --   (compiling)
                n is added to the loop index.  If the new index was
                incremented across the boundary between limit-1 and limit
                then the loop is terminated and loop control parameters are
@@ -2184,20 +2184,20 @@
 
 
           ."           --                            C,I,83    "dot-quote"
-                       --   (compiling)              
-               Used in the form:                     
-                       ." ccc"                                                 ___                        
-               Later execution will display the characters ccc up to but                                                           ___          
+                       --   (compiling)
+               Used in the form:
+                       ." ccc"
+               Later execution will display the characters ccc up to but
                not including the delimiting " (close-quote).  The blank
-               following ." is not part of ccc.                                           ___ 
+               following ." is not part of ccc.
 
           .(           --                            I,M,83    "dos-paren"
-                       --                            (compiling)          
-               Used in the form:                     
-                       .( ccc)                                                 ___                        
-               The characters ccc up to but not including the delimiting )                              ___                                         
+                       --                            (compiling)
+               Used in the form:
+                       .( ccc)
+               The characters ccc up to but not including the delimiting )
                (closing parenthesis) are displayed.  The blank following .(
-               is not part of ccc.                              ___ 
+               is not part of ccc.
 
           /            n1 n2 -- n3                   83           "divide"
                n3 is the floor of the quotient of n1 divided by the divisor
@@ -2255,19 +2255,19 @@
                unchanged.
 
           :            -- sys                        M,79          "colon"
-               A defining word executed in the form: 
-                       : <name> ... ;                                          ____                       
-               Create a word definition for <name> in the compilation                                             ____                    
+               A defining word executed in the form:
+                       : <name> ... ;
+               Create a word definition for <name> in the compilation
                vocabulary and set compilation state.  The search order is
                changed so that the first vocabulary in the search order is
                changed so that the first vocabulary in the search order is
                replaced by the compilation vocabulary.  The compilation
                vocabulary is unchanged.  The text from the input stream is
-               subsequently compiled.  <name> is called a "colon                                        ____                    
-               definition".  The newly created word definition for <name>                                                                    ____ 
+               subsequently compiled.  <name> is called a "colon
+               definition".  The newly created word definition for <name>
                cannot be found in the dictionary until the corresponding ;
-               or ;CODE is successfully processed.   
-               
+               or ;CODE is successfully processed.
+
                An error condition exists if a word is not found and cannot
                be converted to a number or if, during compilation from mass
                storage, the input stream is exhausted before encountering ;
@@ -2275,8 +2275,8 @@
                "compilation"  "9.4 Compilation"
 
           ;            --                            C,I,79   "semi-colon"
-                       sys --   (compiling)          
-               Stops compilation of a colon definition, allows the <name>                                                                    ____ 
+                       sys --   (compiling)
+               Stops compilation of a colon definition, allows the <name>
                of this colon definition to be found in the dictionary, sets
                interpret state and compiles EXIT (or a system dependent
                word which performs an equivalent function).  sys is
@@ -2284,13 +2284,13 @@
                return"  "9.4 Compilation"
 
           <            n1 n2 -- flag                 83        "less-than"
-               flag is true if n1 is less than n2.   
-                       -32678 32767 < must return true.                   
+               flag is true if n1 is less than n2.
+                       -32678 32767 < must return true.
                        -32768 0 < must return true.
 
           <#           --                            79       "less-sharp"
-               Initialize pictured numeric output conversion.  The words: 
-                       #  #>  #S  <#  HOLD  SIGN     
+               Initialize pictured numeric output conversion.  The words:
+                       #  #>  #S  <#  HOLD  SIGN
                can be used to specify the conversion of a double number
                into an ASCII text string stored in right-to-left order.
 
@@ -2298,8 +2298,8 @@
                flag is true if w1 is equal to w2.
 
           >            n1 n2 -- flag                 83     "greater-than"
-               flag is true if n1 is greater than n2.                     
-                       -32768 32767 > must return false.                  
+               flag is true if n1 is greater than n2.
+                       -32768 32767 > must return false.
                        -32768 0 > must return false.
 
 
@@ -2328,26 +2328,26 @@
                Transfers 16b to the return stack.  See  "9.3 Return Stack"
 
           ?DUP         16b -- 16b 16b                79    "question-dupe"
-               or      0 -- 0                        
+               or      0 -- 0
                Duplicate 16b if it is non-zero.
 
           @            addr -- 16b                   79            "fetch"
                16b is the value at addr.
 
-          ABORT                                      79                   
+          ABORT                                      79
                Clears the data stack and performs the function of QUIT .
                No message is displayed.
 
           ABORT"       flag --                       C,I,83  "abort-quote"
-                       --   (compiling)              
-               Used in the form:                     
-                       flag ABORT" ccc"                                                 ___               
-               When later executed, if flag is true the characters ccc,                                                                   ___ 
+                       --   (compiling)
+               Used in the form:
+                       flag ABORT" ccc"
+               When later executed, if flag is true the characters ccc,
                delimited by " (close-quote), are displayed and then a
                system dependent error abort sequence, including the
                function of ABORT , is performed.  If flag is false, the
                flag is dropped and execution continues.  The blank
-               following ABORT" is not part of ccc.                                               ___ 
+               following ABORT" is not part of ccc.
 
           ABS          n -- u                        79         "absolute"
                u is the absolute value of n.  If n is -32,768 then u is the
@@ -2357,10 +2357,10 @@
                Allocates w bytes in the dictionary.  The address of the
                next available dictionary entry is updated accordingly.
 
-          AND          16b1 16b2 -- 16b3             79                   
+          AND          16b1 16b2 -- 16b3             79
                16b3 is the bit-by-bit logical 'and' of 16b1 with 16b2.
 
-          BASE         -- addr                       U,83                 
+          BASE         -- addr                       U,83
                The address of a variable containing the current numeric
                conversion radix.  {{2..72}}
 
@@ -2381,12 +2381,12 @@
           12.  REQUIRED WORD SET
 
 
-          BEGIN        --                            C,I,79               
-                       -- sys   (compiling)          
-               Used in the form:                     
-                       BEGIN ... flag UNTIL          
-               or      
-                       BEGIN ... flag WHILE ... REPEAT                    
+          BEGIN        --                            C,I,79
+                       -- sys   (compiling)
+               Used in the form:
+                       BEGIN ... flag UNTIL
+               or
+                       BEGIN ... flag WHILE ... REPEAT
                BEGIN marks the start of a word sequence for repetitive
                execution.  A BEGIN-UNTIL loop will be repeated until flag
                is true.  A BEGIN-WHILE-REPEAT will be repeated until flag
@@ -2402,7 +2402,7 @@
                input buffer.  {{0..the number of blocks available -1}}
                See:  TIB  "input stream"
 
-          BLOCK        u -- addr                     M,83                 
+          BLOCK        u -- addr                     M,83
                addr is the address of the assigned buffer of the first byte
                of block u.  If the block occupying that buffer is not block
                u and has been UPDATEed it is transferred to mass storage
@@ -2415,7 +2415,7 @@
                block buffer must not be changed unless the change may be
                transferred to mass storage.
 
-          BUFFER       u -- addr                     M,83                 
+          BUFFER       u -- addr                     M,83
                Assigns a block buffer to block u.  addr is the address of
                the first byte of the block within its buffer.  This
                function is fully specified by the definition for BLOCK
@@ -2454,21 +2454,21 @@
                u bytes.  If u is zero nothing is moved.  (Useful for
                sliding a string towards higher addresses).
 
-          COMPILE      --                            C,83                 
-               Typically used in the form:           
-                       : <name> ... COMPILE <namex> ... ;                 
+          COMPILE      --                            C,83
+               Typically used in the form:
+                       : <name> ... COMPILE <namex> ... ;
                When <name> is executed, the compilation address compiled
                for <namex> is compiled and not executed.  <name> is
                typically immediate and <namex> is typically not immediate.
                See:  "compilation"
 
-          CONSTANT     16b --                        M,83                 
-               A defining word executed in the form: 
-                       16b CONSTANT <name>                                                ____            
-               Creates a dictionary entry for <name> so that when <name> is                                               ____                ____    
+          CONSTANT     16b --                        M,83
+               A defining word executed in the form:
+                       16b CONSTANT <name>
+               Creates a dictionary entry for <name> so that when <name> is
                later executed, 16b will be left on the stack.
 
-          CONVERT      +d1 addr1 -- +d2 addr2        79                   
+          CONVERT      +d1 addr1 -- +d2 addr2        79
                +d2 is the result of converting the characters within the
                text beginning at addr1+2 into digits, using the value of
                BASE , and accumulating each into +d1 after multiplying +d1
@@ -2476,7 +2476,7 @@
                unconvertible character is encounter.  addr2 is the location
                of the first unconvertible character.
 
-          COUNT        addr1 -- addr2 +n             79                   
+          COUNT        addr1 -- addr2 +n             79
                addr2 is addr1+1 and +n is the length of the counted string
                at addr1.  The byte at addr1 contains the byte count +n.
                Range of +n is {0.255}  See:  "string, counted"
@@ -2485,15 +2485,15 @@
                Displays a carriage-return and line-feed or equivalent
                operation.
 
-          CREATE       --                            M,79                 
-               A defining word executed in the form: 
-                       CREATE <name>                                                ____                  
-               Creates a dictionary entry for <name>.  After <name> is                                               ____           ____    
+          CREATE       --                            M,79
+               A defining word executed in the form:
+                       CREATE <name>
+               Creates a dictionary entry for <name>.  After <name> is
                created, the next available dictionary location is the first
-               byte of <name>'s parameter field.  When <name> is                        ____                            ____    
+               byte of <name>'s parameter field.  When <name> is
                subsequently executed, the address of the first byte of
-               <name>'s parameter field is left on the stack.  CREATE does                ____                                                      
-               not allocate space in <name>'s parameter field.                                      ____                    
+               <name>'s parameter field is left on the stack.  CREATE does
+               not allocate space in <name>'s parameter field.
 
           D+           wd1 wd2 -- wd3                79           "d-plus"
                wd3 is the arithmetic sum of wd1 plus wd2.
@@ -2513,27 +2513,27 @@
           12.  REQUIRED WORD SET
 
 
-          DECIMAL      --                            79                   
+          DECIMAL      --                            79
                Set the input-output numeric conversion base to ten.
 
-          DEFINITIONS  --                            79                   
+          DEFINITIONS  --                            79
                The compilation vocabulary is changed to be the same as the
                first vocabulary in the search order.  See:  "vocabulary,
                compilation"
 
-          DEPTH        -- +n                         79                   
+          DEPTH        -- +n                         79
                +n is the number of 16-bit values contained in the data
                stack before +n was placed on the stack.
 
           DNEGATE      d1 -- d2                      79         "d-negate"
                d2 is the two's complement of d1.
 
-          DO           w1 w2 --                      C,I,83               
-                       -- sys   (compiling)          
-               Used in the form:                     
-                       DO ... LOOP                   
-               or      
-                       DO ... +LOOP                  
+          DO           w1 w2 --                      C,I,83
+                       -- sys   (compiling)
+               Used in the form:
+                       DO ... LOOP
+               or
+                       DO ... +LOOP
                Begins a loop which terminates based on control parameters.
                The loop index begins at w2, and terminates based on the
                limit w1.  See LOOP and +LOOP for details on how the loop is
@@ -2541,28 +2541,28 @@
                example: w DUP DO ... LOOP executes 65,536 times.  sys is
                balanced with its corresponding LOOP or +LOOP .  See:  "9.9
                Control Structures"
-               
+
                An error condition exists if insufficient space is available
                for at least three nesting levels.
 
           DOES>        -- addr                       C,I,83         "does"
-                       --   (compiling)              
+                       --   (compiling)
                Defines the execution-time action of a word created by a
-               high-level defining word.  Used in the form:               
-                       : <namex> ... <create> ... DOES> ... ;             
-               and then                              
-                       <namex> <name>                                                ____                 
+               high-level defining word.  Used in the form:
+                       : <namex> ... <create> ... DOES> ... ;
+               and then
+                       <namex> <name>
                where <create> is CREATE or any user defined word which
-               executes CREATE .                     
-               
+               executes CREATE .
+
                Marks the termination of the defining part of the defining
                word <namex> and then begins the definition of the
                execution-time action for words that will later be defined
-               by <namex>.  When <name> is later executed, the address of                                  ____                                   
-               <name>'s parameter field is placed on the stack and then the                ____                                                       
+               by <namex>.  When <name> is later executed, the address of
+               <name>'s parameter field is placed on the stack and then the
                sequence of words between DOES> and ; are executed.
 
-          DROP         16b --                        79                   
+          DROP         16b --                        79
                16b is removed from the stack.
 
           DUP          16b -- 16b 16b                79             "dupe"
@@ -2579,16 +2579,16 @@
           12.  REQUIRED WORD SET
 
 
-          ELSE         --                            C,I,79               
-                       sys1 -- sys2   (compiling)    
-               Used in the form:                     
-                       flag IF ... ELSE ... THEN     
+          ELSE         --                            C,I,79
+                       sys1 -- sys2   (compiling)
+               Used in the form:
+                       flag IF ... ELSE ... THEN
                ELSE executes after the true part following IF .  ELSE
                forces execution to continue at just after THEN .  sys1 is
                balanced with its corresponding IF .  sys2 is balanced with
                its corresponding THEN .  See:  IF  THEN
 
-          EMIT         16b --                        M,83                 
+          EMIT         16b --                        M,83
                The least-significant 7-bit ASCII character is displayed.
                SEE:  "9.5.3 EMIT"
 
@@ -2596,7 +2596,7 @@
                The word definition indicated by addr is executed.  An error
                condition exists if addr is not a compilation address
 
-          EXIT         --                            C,79                 
+          EXIT         --                            C,79
                Compiled within a colon definition such that when executed,
                that colon definition returns control to the definition that
                passed control to it by returning control to the return
@@ -2605,7 +2605,7 @@
                valid return point.  May not be used within a do-loop.  See:
                ;  "stack, return"  "9.3 Return Stack"
 
-          EXPECT       addr +n --                    M,83                 
+          EXPECT       addr +n --                    M,83
                Receive characters and store each into memory.  The transfer
                begins at addr proceeding towards higher addresses one byte
                per character until either a "return" is received or until
@@ -2616,11 +2616,11 @@
                memory will be displayed, with the "return" displaying as a
                space.  See:  SPAN  "9.5.2 EXPECT"
 
-          FILL         addr u 8b --                  83                   
+          FILL         addr u 8b --                  83
                u bytes of memory beginning at addr are set to 8b.  No
                action is taken if u is zero.
 
-          FIND         addr1 -- addr2 n              83                   
+          FIND         addr1 -- addr2 n              83
                addr1 is the address of a counted string.  The string
                contains a word name to be located in the currently active
                search order.  If the word is not found, addr2 is the string
@@ -2645,22 +2645,22 @@
           12.  REQUIRED WORD SET
 
 
-          FLUSH        --                            M,83                 
+          FLUSH        --                            M,83
                Performs the function of SAVE-BUFFERS then unassigns all
                block buffers.  (This may be useful for mounting or changing
                mass storage media).
 
-          FORGET       --                            M,83                 
-               Used in the form:                     
-                       FORGET <name>                                                ____                  
-               If <name> is found in the compilation vocabulary, delete                   ____                                                
-               <name> from the dictionary and all words added to the                ____                                                
-               dictionary after <name> regardless of their vocabulary.                                 ____                                 
-               Failure to find <name> is an error condition.  An error                                ____                                  
+          FORGET       --                            M,83
+               Used in the form:
+                       FORGET <name>
+               If <name> is found in the compilation vocabulary, delete
+               <name> from the dictionary and all words added to the
+               dictionary after <name> regardless of their vocabulary.
+               Failure to find <name> is an error condition.  An error
                condition also exists if the compilation vocabulary is
                deleted.  See:  "10.2 General Error Conditions"
 
-          FORTH        --                            83                   
+          FORTH        --                            83
                The name of the primary vocabulary.  Execution replaces the
                first vocabulary in the search order with FORTH .  FORTH is
                initially the compilation vocabulary and the first
@@ -2668,7 +2668,7 @@
                of the FORTH vocabulary until a different compilation
                vocabulary is established.  See:  VOCABULARY
 
-          FORTH-83     --                            83                   
+          FORTH-83     --                            83
                Assures that a FORTH-83 Standard System is available,
                otherwise an error condition exists.
 
@@ -2679,11 +2679,11 @@
                char is inserted into a pictured numeric output string.
                Typically used between <# and #>.
 
-          I            -- w                          C,79                 
+          I            -- w                          C,79
                w is a copy of the loop index.  May only be used in the
-               form:   
-                       DO ... I ... LOOP             
-               or      
+               form:
+                       DO ... I ... LOOP
+               or
                        DO ... I ... +LOOP
 
 
@@ -2711,55 +2711,55 @@
           12.  REQUIRED WORD SET
 
 
-          IF           flag --                       C,I,79               
+          IF           flag --                       C,I,79
                        -- sys   (compiling)
-               Used in the form:                     
-                       flag IF ... ELSE ... THEN     
-               or      
-                       flag IF ... THEN              
+               Used in the form:
+                       flag IF ... ELSE ... THEN
+               or
+                       flag IF ... THEN
                If flag is true, the words following IF are executed and the
                words following ELSE until just after THEN are skipped.  The
-               ELSE part is optional.                
-               
+               ELSE part is optional.
+
                If flag is false, the words from IF through ELSE , or from
                IF through THEN (when no ELSE is used), are skipped.  sys is
                balanced with its corresponding ELSE or THEN .  See:  "9.9
                Control Structures"
 
-          IMMEDIATE    --                            79                   
+          IMMEDIATE    --                            79
                Marks the most recently created dictionary entry as a word
                which will be executed when encountered during compilation
                rather than compiled.
 
-          J            -- w                          C,79                 
+          J            -- w                          C,79
                w is a copy of the index of the next outer loop.  May only
                be used within a nested DO-LOOP or DO-+LOOP in the form, for
-               example:                              
+               example:
                        DO ... DO ... J ... LOOP ... +LOOP
 
-          KEY          -- 16b                        M,83                 
+          KEY          -- 16b                        M,83
                The least-significant 7 bits of 16b is the next ASCII
                character received.  All valid ASCII characters can be
                received.  Control characters are not processed by the
                system for any editing purpose.  Characters received by KEY
                will not be displayed.  See:  "9.5.1 KEY"
 
-          LEAVE        --                            C,I,83               
-                       --   (compiling)              
+          LEAVE        --                            C,I,83
+                       --   (compiling)
                Transfers execution to just beyond the next LOOP or +LOOP .
                The loop is terminated and loop control parameters are
-               discarded.  May only be used in the form:                  
-                       DO ... LEAVE ... LOOP         
-               or      
-                       DO ... LEAVE ... +LOOP        
+               discarded.  May only be used in the form:
+                       DO ... LEAVE ... LOOP
+               or
+                       DO ... LEAVE ... +LOOP
                LEAVE may appear within other control structures which are
                nested within the do-loop structure.  More than one LEAVE
                may appear within a do-loop.  See:  "9.3 Return Stack"
 
-          LITERAL      -- 16b                        C,I,79               
-                       16b --   (compiling)          
-               Typically used in the form:           
-                       [ 16b ] LITERAL               
+          LITERAL      -- 16b                        C,I,79
+                       16b --   (compiling)
+               Typically used in the form:
+                       [ 16b ] LITERAL
                Compiles a system dependent operation so that when later
                executed, 16b will be left on the stack.
 
@@ -2777,7 +2777,7 @@
           12.  REQUIRED WORD SET
 
 
-          LOAD         u --                          M,79                 
+          LOAD         u --                          M,79
                The contents of >IN and BLK , which locate the current input
                stream, are saved.  The input stream is then redirected to
                the beginning of screen u by setting >IN to zero and BLK to
@@ -2787,8 +2787,8 @@
                >IN and BLK will be restored.  An error condition exists if
                u is zero.  See:  >IN  BLK  BLOCK
 
-          LOOP         --                            C,I,83               
-                       sys --   (compiling)          
+          LOOP         --                            C,I,83
+                       sys --   (compiling)
                Increments the DO-LOOP index by one.  If the new index was
                incremented across the boundary between limit-1 and limit
                the loop is terminated and loop control parameters are
@@ -2804,27 +2804,27 @@
                n3 is the lesser of n1 and n2 according to the operation of
                < .
 
-          MOD          n1 n2 -- n3                   83                   
+          MOD          n1 n2 -- n3                   83
                n3 is the remainder after dividing n1 by the divisor n2.  n3
                has the same sign as n2 or is zero.  An error condition
                results if the divisor is zero or if the quotient falls
                outside of the range {-32,768..32,767}.  See:  "division,
                floored"
 
-          NEGATE       n1 -- n2                      79                   
+          NEGATE       n1 -- n2                      79
                n2 is the two's complement of n1, i.e, the difference of
                zero less n1.
 
-          NOT          16b1 -- 16b2                  83                   
+          NOT          16b1 -- 16b2                  83
                16b2 is the one's complement of 16b1.
 
-          OR           16b1 16b2 -- 16b3             79                   
+          OR           16b1 16b2 -- 16b3             79
                16b3 is the bit-by-bit inclusive-or of 16b1 with 16b2.
 
-          OVER         16b1 16b2 -- 16b1 16b2 16b3   79                   
+          OVER         16b1 16b2 -- 16b1 16b2 16b3   79
                16b3 is a copy of 16b1.
 
-          PAD          -- addr                       83                   
+          PAD          -- addr                       83
                The lower address of a scratch area used to hold data for
                intermediate processing.  The address or contents of PAD may
                change and the data lost if the address of the next
@@ -2843,13 +2843,13 @@
           12.  REQUIRED WORD SET
 
 
-          PICK         +n -- 16b                     83                   
+          PICK         +n -- 16b                     83
                16b is a copy of the +nth stack value, not counting +n
-               itself.  {0..the number of elements on stack-1}            
-                       0 PICK is equivalent to DUP   
+               itself.  {0..the number of elements on stack-1}
+                       0 PICK is equivalent to DUP
                        1 PICK is equivalent to OVER
 
-          QUIT         --                            79                   
+          QUIT         --                            79
                Clears the return stack, sets interpret state, accepts new
                input from the current input device, and begins text
                interpretation.  No message is displayed.
@@ -2861,20 +2861,20 @@
           R@           -- 16b                        C,79        "r-fetch"
                16b is a copy of the top of the return stack.
 
-          REPEAT       --                            C,I,79               
-                       sys --   (compiling)          
-               Used in the form:                     
-                       BEGIN ... flag WHILE ... REPEAT                    
+          REPEAT       --                            C,I,79
+                       sys --   (compiling)
+               Used in the form:
+                       BEGIN ... flag WHILE ... REPEAT
                At execution time, REPEAT continues execution to just after
                the corresponding BEGIN .  sys is balanced with its
                corresponding WHILE .  See:  BEGIN
 
-          ROLL         +n --                         83                   
+          ROLL         +n --                         83
                The +nth stack value, not counting +n itself is first
                removed and then transferred to the top of the stack, moving
                the remaining values into the vacated position.  {0..the
-               number of elements on the stack-1}    
-                       2 ROLL is equivalent to ROT   
+               number of elements on the stack-1}
+                       2 ROLL is equivalent to ROT
                        0 ROLL is a null operation
 
           ROT          16b1 16b2 16b3 -- 16b2 16b3 16b1  79         "rote"
@@ -2887,12 +2887,12 @@
                buffers are marked as no longer being modified, but may
                remain assigned.
 
-          SIGN         n --                          83                   
+          SIGN         n --                          83
                If n is negative, an ASCII "-" (minus sign) is appended to
                the pictured numeric output string.  Typically used between
                <# and #> .
 
-          SPACE        --                            M,79                 
+          SPACE        --                            M,79
                Displays an ASCII space.
 
 
@@ -2909,30 +2909,30 @@
           12.  REQUIRED WORD SET
 
 
-          SPACES       +n --                         M,79                 
+          SPACES       +n --                         M,79
                Displays +n ASCII spaces.  Nothing is displayed if +n is
                zero.
 
-          SPAN         -- addr                       U,83                 
+          SPAN         -- addr                       U,83
                The address of a variable containing the count of characters
                actually received and stored by the last execution of
                EXPECT .  See:  EXPECT
 
-          STATE        -- addr                       U,79                 
+          STATE        -- addr                       U,79
                The address of a variable containing the compilation state.
                A non-zero content indicates compilation is occurring, but
                the value itself is system dependent.  A Standard Program
                may not modify this variable.
 
-          SWAP         16b1 16b2 -- 16b2 16b1        79                   
+          SWAP         16b1 16b2 -- 16b2 16b1        79
                The top two stack entries are exchanged.
 
-          THEN         --                            C,I,79               
+          THEN         --                            C,I,79
                        sys --   (compiling)
-               Used in the form:                     
-                       flag IF ... ELSE ... THEN     
-               or      
-                       flag IF ... THEN              
+               Used in the form:
+                       flag IF ... ELSE ... THEN
+               or
+                       flag IF ... THEN
                THEN is the point where execution continues after ELSE , or
                IF when no ELSE is present.  sys is balanced with its
                corresponding IF or ELSE .  See:  IF  ELSE
@@ -2943,7 +2943,7 @@
                current input device.  The minimum capacity of TIB is 80
                characters.
 
-          TYPE         addr +n --                    M,79                 
+          TYPE         addr +n --                    M,79
                +n characters are displayed from memory beginning with the
                character at addr and continuing through consecutive
                addresses.  Nothing is displayed if +n is zero.  See:
@@ -2982,41 +2982,41 @@
                divisor is zero or if the quotient lies outside the range
                {0..65,535}.  See:  "floor, arithmetic"
 
-          UNTIL        flag --                       C,I,79               
-                       sys --   (compiling)          
-               Used in the form:                     
-                       BEGIN ... flag UNTIL          
+          UNTIL        flag --                       C,I,79
+                       sys --   (compiling)
+               Used in the form:
+                       BEGIN ... flag UNTIL
                Marks the end of a BEGIN-UNTIL loop which will terminate
                based on flag.  If flag is true, the loop is terminated.  If
                flag is false, execution continues to just after the
                corresponding BEGIN .  sys is balanced with its
                corresponding BEGIN .  See:  BEGIN
 
-          UPDATE       --                            79                   
+          UPDATE       --                            79
                The currently valid block buffer is marked as modified.
                Blocks marked as modified will subsequently be automatically
                transferred to mass storage should its memory buffer be
                needed for storage of a different block or upon execution of
                FLUSH or SAVE-BUFFERS .
 
-          VARIABLE     --                            M,79                 
-               A defining word executed in the form: 
-                       VARIABLE <name>                                                ____                
-               A dictionary entry for <name> is created and two bytes are                                       ____                              
+          VARIABLE     --                            M,79
+               A defining word executed in the form:
+                       VARIABLE <name>
+               A dictionary entry for <name> is created and two bytes are
                ALLOTted in its parameter field.  This parameter field is to
                be used for contents of the variable.  The application is
                responsible for initializing the contents of the variable
-               which it creates.  When <name> is later executed, the                                        ____                        
+               which it creates.  When <name> is later executed, the
                address of its parameter field is placed on the stack.
 
-          VOCABULARY   --                            M,83                 
-               A defining word executed in the form: 
-                       VOCABULARY <name>                                                ____              
-               A dictionary entry for <name> is created which specifies a                                       ____                              
+          VOCABULARY   --                            M,83
+               A defining word executed in the form:
+                       VOCABULARY <name>
+               A dictionary entry for <name> is created which specifies a
                new ordered list of word definitions.  Subsequent execution
-               of <name> replaces the first vocabulary in the search order                   ____                                                   
-               with <name>.  When <name> becomes the compilation vocabulary                     ____          ____                                    
-               new definitions will be appended to <name>'s list.     See:                                                    ____                  
+               of <name> replaces the first vocabulary in the search order
+               with <name>.  When <name> becomes the compilation vocabulary
+               new definitions will be appended to <name>'s list.     See:
                DEFINITIONS  "search order"
 
 
@@ -3041,10 +3041,10 @@
           12.  REQUIRED WORD SET
 
 
-          WHILE        flag --                       C,I,79               
-                       sys1 -- sys2   (compiling)    
-               Used in the form:                     
-                       BEGIN ... flag WHILE ... REPEAT                    
+          WHILE        flag --                       C,I,79
+                       sys1 -- sys2   (compiling)
+               Used in the form:
+                       BEGIN ... flag WHILE ... REPEAT
                Selects conditional execution based on flag.  When flag is
                true, execution continues to just after the WHILE through to
                the REPEAT which then continues execution back to just after
@@ -3053,7 +3053,7 @@
                balanced with its corresponding BEGIN .  sys2 is balanced
                with its corresponding REPEAT .  See:  BEGIN
 
-          WORD         char -- addr                  M,83                 
+          WORD         char -- addr                  M,83
                Generates a counted string by non-destructively accepting
                characters from the input stream until the delimiting
                character char is encountered or the input stream is
@@ -3064,13 +3064,13 @@
                is the number of characters {0..255}.  If the string is
                longer than 255 characters, the count is unspecified.  If
                the input stream is already exhausted as WORD is called,
-               then a zero length character string will result.           
-               
+               then a zero length character string will result.
+
                If the delimiter is not found the value of >IN is the size
                of the input stream.  If the delimiter is found >IN is
                adjusted to indicate the offset to the character following
-               the delimiter.  #TIB is unmodified.   
-               
+               the delimiter.  #TIB is unmodified.
+
                The counted string returned by WORD may reside in the "free"
                dictionary area at HERE or above.  Note that the text
                interpreter may also use this area.  See:  "input stream"
@@ -3079,18 +3079,18 @@
                16b3 is the bit-by-bit exclusive-or of 16b1 with 16b2.
 
           [            --                            I,79   "left-bracket"
-                       --   (compiling)              
+                       --   (compiling)
                Sets interpret state.  The text from the input stream is
                subsequently interpreted.  For typical usage see LITERAL .
                See:  ]
 
           [']          -- addr                       C,I,M,83    "bracket-
                        --   (compiling)                              tick"
-               Used in the form:                     
-                       ['] <name>                                                ____                     
-               Compiles the compilation address addr of <name> as a                                                         ____      
+               Used in the form:
+                       ['] <name>
+               Compiles the compilation address addr of <name> as a
                literal.  When the colon definition is later executed addr
-               is left on the stack.  An error condition exists if <name>                                                                    ____ 
+               is left on the stack.  An error condition exists if <name>
                is not found in the currently active search order.  See:
                LITERAL
 
@@ -3109,9 +3109,9 @@
 
           [COMPILE]    --                            C,I,M,79    "bracket-
                        --   (compiling)                           compile"
-               Used in the form:                     
-                       [COMPILE] <name>                                                ____               
-               Forces compilation of the following word <name>.  This                                                         ____        
+               Used in the form:
+                       [COMPILE] <name>
+               Forces compilation of the following word <name>.  This
                allows compilation of an immediate word when it would
                otherwise have been executed.
 
@@ -3239,7 +3239,7 @@
           13.  DOUBLE NUMBER EXTENSION WORD SET
 
 
-          
+
 
 
           13.2 The Double Number Extension Word Set Glossary
@@ -3251,9 +3251,9 @@
                32b is the value at addr.  See:  "number"
 
           2CONSTANT    32b --                        M,83   "two-constant"
-               A defining word executed in the form: 
-                       32b 2CONSTANT <name>                                                ____           
-               Creates a dictionary entry for <name> so that when <name> is                                               ____                ____    
+               A defining word executed in the form:
+                       32b 2CONSTANT <name>
+               Creates a dictionary entry for <name> so that when <name> is
                later executed, 32b will be left on the stack.
 
           2DROP        32b --                        79         "two-drop"
@@ -3274,17 +3274,17 @@
                The top two double numbers are exchanged.
 
           2VARIABLE    --                            M,79   "two-variable"
-               A defining word executed in the form: 
-                       2VARIABLE <name>                                                ____               
-               A dictionary entry for <name> is created and four bytes are                                       ____                               
+               A defining word executed in the form:
+                       2VARIABLE <name>
+               A dictionary entry for <name> is created and four bytes are
                ALLOTted in its parameter field.  This parameter field is to
                be used for contents of the variable.  The application is
                responsible for initializing the contents of the variable
-               which it creates.  When <name> is later executed, the                                        ____                        
+               which it creates.  When <name> is later executed, the
                address of its parameter field is placed on the stack.  See:
                VARIABLE
 
-          D+           wd1 wd2 -- wd3                79                   
+          D+           wd1 wd2 -- wd3                79
                See the complete definition in the Required Word Set.
 
           D-           wd1 wd2 -- wd3                79          "d-minus"
@@ -3319,7 +3319,7 @@
                d2 is the result of d1 arithmetically shifted right one bit.
                The sign is included in the shift and remains unchanged.
 
-          D<           d1 d2 -- flag                 83                   
+          D<           d1 d2 -- flag                 83
                See the complete definition in the Required Word Set.
 
           D=           wd1 wd2 -- flag               83          "d-equal"
@@ -3335,7 +3335,7 @@
           DMIN         d1 d2 -- d3                   79            "d-min"
                d3 is the lesser of d1 and d2.
 
-          DNEGATE      d1 -- d2                      79                   
+          DNEGATE      d1 -- d2                      79
                See the complete definition in the Required Word Set.
 
           DU<          ud1 ud2 -- flag               83         "d-u-less"
@@ -3437,42 +3437,42 @@
           14.  ASSEMBLER EXTENSION WORD SET
 
 
-          
+
 
 
           14.3 The Assembler Extension Word Set Glossary
 
           ;CODE        --                            C,I,79   "semi-colon-
                        sys1 -- sys2                  (compiling)     code"
-               Used in the form:                     
-                       : <namex> ... <create> ... ;CODE ... END-CODE                                _____       ______                              
-               Stops compilation, terminates the defining word <namex> and                                                                _____     
-               executes ASSEMBLER.  When <namex> is executed in the form:                                           _____                           
-                       <namex> <name>                                        _____   ____                 
-               to define the new <name>, the execution address of <name>                                  ____                             ____ 
+               Used in the form:
+                       : <namex> ... <create> ... ;CODE ... END-CODE
+               Stops compilation, terminates the defining word <namex> and
+               executes ASSEMBLER.  When <namex> is executed in the form:
+                       <namex> <name>
+               to define the new <name>, the execution address of <name>
                will contain the address of the code sequence following the
-               ;CODE in <namex>.  Execution of any <name> will cause this                         _____                      ____                 
+               ;CODE in <namex>.  Execution of any <name> will cause this
                machine code sequence to be executed.  sys1 is balanced with
                its corresponding : .  sys2 is balanced with its
                corresponding END-CODE .  See:  CODE  DOES>
 
-          ASSEMBLER    --                            83                   
+          ASSEMBLER    --                            83
                Execution replaces the first vocabulary in the search order
                with the ASSEMBLER vocabulary.  See:  VOCABULARY
 
-          CODE         -- sys                        M,83                 
-               A defining word executed in the form: 
-                       CODE <name> ... END-CODE                                   ____                    
-               Creates a dictionary entry for <name> to be defined by a                                               ____                    
+          CODE         -- sys                        M,83
+               A defining word executed in the form:
+                       CODE <name> ... END-CODE
+               Creates a dictionary entry for <name> to be defined by a
                following sequence of assembly language words.  Words thus
                defined are called code definitions.  This newly created
-               word definition for <name> cannot be found in the dictionary                                    ____                                   
+               word definition for <name> cannot be found in the dictionary
                until the corresponding END-CODE is successfully processed
                (see:  END-CODE ).  Executes ASSEMBLER .  sys is balanced
                with its corresponding END-CODE .
 
           END-CODE     sys --                        79         "end-code"
-               Terminates a code definition and allows the <name> of the                                                            ____        
+               Terminates a code definition and allows the <name> of the
                corresponding code definition to be found in the dictionary.
                sys is balanced with its corresponding CODE or ;CODE .  See:
                CODE
@@ -3536,8 +3536,8 @@
 
           After BRANCH or ?BRANCH is compiled, >MARK or <RESOLVE is
           executed.  The addr left by >MARK is passed to >RESOLVE .  The
-          addr left by <MARK is passed to <RESOLVE .  For example:    
-               : IF     COMPILE ?BRANCH  >MARK  ; IMMEDIATE 
+          addr left by <MARK is passed to <RESOLVE .  For example:
+               : IF     COMPILE ?BRANCH  >MARK  ; IMMEDIATE
                : THEN   >RESOLVE  ; IMMEDIATE
 
 
@@ -3569,7 +3569,7 @@
           15.  THE SYSTEM EXTENSION WORD SET
 
 
-          
+
 
 
           15.3 The System Extension Word Set Glossary
@@ -3603,18 +3603,18 @@
                continues at the compilation address immediately following
                the branch address.
 
-          BRANCH       --                            C,83                 
+          BRANCH       --                            C,83
                When used in the form:  COMPILE BRANCH  an unconditional
                branch operation is compiled.  A branch address must be
                compiled immediately following this compilation address.
                The branch address is typically generated by following
                BRANCH with <RESOLVE or >MARK .
 
-          CONTEXT      -- addr                       U,79                 
+          CONTEXT      -- addr                       U,79
                The address of a variable which determines the dictionary
                search order.
 
-          CURRENT      -- addr                       U,79                 
+          CURRENT      -- addr                       U,79
                The address of a variable specifying the vocabulary in which
                new word definitions are appended.
 
@@ -3647,7 +3647,7 @@
           standardization.
 
           -->          --                            I,M,79   "next-block"
-                       --                            (compilation)        
+                       --                            (compilation)
                Continue interpretation on the next sequential block.  May
                be used within a colon definition that crosses a block
                boundary.
@@ -3666,7 +3666,7 @@
           BL           -- 32                         79              "b-l"
                Leave the ASCII character value for space (decimal 32).
 
-          BLANK        addr u --                     83                   
+          BLANK        addr u --                     83
                u bytes of memory beginning at addr are set to the ASCII
                character value for space.  No action is taken if u is zero.
 
@@ -3674,12 +3674,12 @@
                ALLOT one byte then store the least-significant 8 bits of
                16b at HERE 1- .
 
-          DUMP         addr u --                     M,79                 
+          DUMP         addr u --                     M,79
                List the contents of u addresses starting at addr.  Each
                line of values may be preceded by the address of the first
                value.
 
-          EDITOR       --                            83                   
+          EDITOR       --                            83
                Execution replaces the first vocabulary in the search order
                with the EDITOR vocabulary.  See:  VOCABULARY
 
@@ -3701,8 +3701,8 @@
           16.  CONTROLLED REFERENCE WORDS
 
 
-          END          flag --                       C,I,79               
-                       sys --                        (compiling)          
+          END          flag --                       C,I,79
+                       sys --                        (compiling)
                A synonym for UNTIL .
 
           ERASE        addr u --                     79
@@ -3712,32 +3712,32 @@
           HEX          --                            29
                Set the numeric input-output conversion base to sixteen.
 
-          INTERPRET    --                            M,83                 
+          INTERPRET    --                            M,83
                Begin text interpretation at the character indexed by the
                contents of >IN relative to the block number contained in
                BLK , continuing until the input stream is exhausted.  If
                BLK contains zero, interpret characters from the text input
                buffer.  See:  "input stream"
 
-          K            -- w                          C,83                 
+          K            -- w                          C,83
                w is a copy of the index of the second outer loop.  May only
                be used within a nested DO-LOOP or DO-+LOOP in the form, for
-               example:                              
+               example:
                        DO ... DO ... DO ... K ... LOOP ... +LOOP ... LOOP
 
-          LIST         u --                          M,79                 
+          LIST         u --                          M,79
                The contents of screen u are displayed.  SCR is set to u.
                See:  BLOCK
 
-          OCTAL        --                            83                   
+          OCTAL        --                            83
                Set the numeric input-output conversion base to eight.
 
-          OFFSET       -- addr                       U,83                 
+          OFFSET       -- addr                       U,83
                The address of a variable that contains the offset added to
                the block number on the stack by BLOCK or BUFFER to
                determine the actual physical block number.
 
-          QUERY        --                            M,83                 
+          QUERY        --                            M,83
                Characters are received and transferred into the memory area
                addressed by TIB .  The transfer terminates when either a
                "return" is received or the number of characters transferred
@@ -3746,8 +3746,8 @@
                to the value of SPAN .  WORD may be used to accept text from
                this buffer.  See:  EXPECT  "input stream"
 
-          RECURSE      --                            C,I,83               
-                       --                            (compiling)          
+          RECURSE      --                            C,I,83
+                       --                            (compiling)
                Compile the compilation address of the definition being
                compiled to cause the definition to later be executed
                recursively.
@@ -3771,7 +3771,7 @@
                addr is the address of the top of the stack just before SP@
                was executed.
 
-          THRU         u1 u2 --                      M,83                 
+          THRU         u1 u2 --                      M,83
                Load consecutively the blocks from u1 through u2.
 
           U.R          u +n --                       M,83        "u-dot-r"
@@ -3899,7 +3899,7 @@
           A.  STANDARDS TEAM MEMBERSHIP
 
 
-          
+
 
 
           A.2  FORTH Standards Team Sponsors
@@ -4059,11 +4059,11 @@
                interpreted.
 
           -'           -- addr false                           "dash-tick"
-                       -- true                       
-               Used in the form:                     
-                       -' <name>                                                ____                      
-               Leave the parameter field of <name> beneath zero (false) if                                             ____                         
-               <name> can be found in the search order; leave only true if                ____                                                      
+                       -- true
+               Used in the form:
+                       -' <name>
+               Leave the parameter field of <name> beneath zero (false) if
+               <name> can be found in the search order; leave only true if
                not found.
 
           -MATCH       addr1 +n1 addr2 +n2 -- addr3 flag      "dash-match"
@@ -4098,7 +4098,7 @@
 
 
           /LOOP        +n --                         C,I         "up-loop"
-                       sys --   (compiling)          
+                       sys --   (compiling)
                A do-loop terminating word.  The loop index is incremented
                by the positive value +n.  If the unsigned magnitude of the
                resultant index is greater than the limit, then the loop is
@@ -4113,12 +4113,12 @@
                Subtract one from the 16-bit contents at addr.
 
           ;:           -- addr                       C,I"semi-colon-colon"
-               Used to specify a new defining word:  
-                       : <namex> <name>                                                ____               
+               Used to specify a new defining word:
+                       : <namex> <name>
                When <namex> is executed, it creates an entry for the new
-               word <name>.  Later execution of <name> will execute the                     ____                        ____                  
+               word <name>.  Later execution of <name> will execute the
                sequence of words between ;: and ; , with the address of the
-               first (if any) parameters associated with <name> on the                                                          ____        
+               first (if any) parameters associated with <name> on the
                stack.
 
           ;S           --                            Interpret only"semi-s"
@@ -4129,17 +4129,17 @@
 
           <BUILDS      --                                         "builds"
                Used in conjunction with DOES> in defining words, in the
-               form:   
-                       : <namex> ... <BUILDS ... DOES> ... ;              
-               and then:                             
-                       <namex> <name>                                                ____                 
-               
+               form:
+                       : <namex> ... <BUILDS ... DOES> ... ;
+               and then:
+                       <namex> <name>
+
                When <namex> executes, <BUILDS creates a dictionary entry
-               for the new <name>.  The sequence of words between <BUILDS                            ____                                         
-               and DOES> established a parameter field for <name>.  When                                                            ____        
-               <name> is later executed, the sequence of words following                ____                                                    
+               for the new <name>.  The sequence of words between <BUILDS
+               and DOES> established a parameter field for <name>.  When
+               <name> is later executed, the sequence of words following
                DOES> will be executed, with the parameter field address of
-               <name> on the data stack.                ____                    
+               <name> on the data stack.
 
           <CMOVE       addr1 addr2 u --                   "reverse-c-move"
                A synonym for CMOVE> .
@@ -4166,18 +4166,18 @@
           @BITS        addr 16b1 -- 16b2                      "fetch-bits"
                Return the 16-bits at addr masked by 16b1.
 
-          AGAIN        --                            C,I                  
-                       sys --   (compiling)          
+          AGAIN        --                            C,I
+                       sys --   (compiling)
                Effect an unconditional jump back to the start of a BEGIN-
                AGAIN loop.  sys is balanced with its corresponding BEGIN .
                See:  BEGIN
 
           ASCII        -- char                       I,M          "as-key"
-                       --                            (compiling)          
-               Used in the form:                     
-                       ASCII ccc                                                  ___                     
-               where the delimiter of ccc is a space.  char is the ASCII                                      ___                               
-               character value of the first character in ccc.  If                                                         ___     
+                       --                            (compiling)
+               Used in the form:
+                       ASCII ccc
+               where the delimiter of ccc is a space.  char is the ASCII
+               character value of the first character in ccc.  If
                interpreting, char is left on the stack.  If compiling,
                compile char as a literal so that when the colon definition
                is later executed, char is left on the stack.
@@ -4192,25 +4192,25 @@
                A constant leaving 1024, the number of bytes per block
                buffer.
 
-          BELL         --                            
+          BELL         --
                Activate a terminal bell or noise-maker as appropriate to
                the device in use.
 
-          CHAIN        --                            M                    
-               Used in the form:                     
-                       CHAIN <name>                                                ____                   
+          CHAIN        --                            M
+               Used in the form:
+                       CHAIN <name>
                Connect the CURRENT vocabulary to all definitions that might
-               be entered into the vocabulary <name> in the future.  The                                               ____                     
+               be entered into the vocabulary <name> in the future.  The
                CURRENT vocabulary may not be FORTH or ASSEMBLER .  Any
                given vocabulary may only be chained once, but may be the
                object of any number of chainings.  For example, every user-
-               defined vocabulary may include the sequence:               
+               defined vocabulary may include the sequence:
                        CHAIN FORTH
 
-          CONTINUED    u --                          M                    
+          CONTINUED    u --                          M
                Continue interpretation at block u.
 
-          CUR          -- addr                       
+          CUR          -- addr
                A variable pointing to the physical record number before
                which the tape is currently positioned.  REWIND sets CUR=1.
 
@@ -4250,28 +4250,28 @@
                IFTRUE .
 
           IFTRUE       flag --                    Interpret only "if-true"
-               Begin an:                             
-                       IFTRUE ... OTHERWISE ... IFEND                     
+               Begin an:
+                       IFTRUE ... OTHERWISE ... IFEND
                conditional sequence.  These conditional words operated
-               like:   
-                       IF ... ELSE ... THEN          
+               like:
+                       IF ... ELSE ... THEN
                except that they cannot be nested, and are to be used only
                during interpretation.  In conjunction with the words [ and
                ] the words [ and ] they may be used within a colon
                definition to control compilation, although they are not to
                be compiled.
 
-          INDEX        u1 u2 --                      M                    
+          INDEX        u1 u2 --                      M
                Print the first line of each screen over the range {u1..u2}.
                This displays the first line of each screen of source text,
                which conventionally contains a title.
 
-          LAST         -- addr                       U                    
+          LAST         -- addr                       U
                A variable containing the address of the beginning of the
                last dictionary entry made, which may not yet be a complete
                or valid entry.
 
-          LINE         +n -- addr                    M                    
+          LINE         +n -- addr                    M
                addr is the address of the beginning of line +n for the
                screen whose number is contained in SCR .  The range of +n
                is {0..15}.
@@ -4295,20 +4295,20 @@
           B.  UNCONTROLLED REFERENCE WORDS
 
 
-          LOADS        u --                          M                    
-               A defining word executed in the form: 
-                       u LOADS <name>                                                ____                 
-               When <name> is subsequently executed, block u will be                     ____                                           
+          LOADS        u --                          M
+               A defining word executed in the form:
+                       u LOADS <name>
+               When <name> is subsequently executed, block u will be
                loaded.
 
           MAP0         -- addr                                  "map-zero"
                A variable pointing to the first location in the tape map.
 
-          MASK         n -- 16b                      
+          MASK         n -- 16b
                16b is a mask of n most-significant bits if n is positive,
                or n least-significant bits if n is negative.
 
-          MOVE         addr1 addr2 u --              
+          MOVE         addr1 addr2 u --
                The u bytes at address addr1 are moved to address addr2.
                The data are moved such that the u bytes remaining at
                address addr2 are the same data as was originally at address
@@ -4317,15 +4317,15 @@
           MS           +n --                         M               "m-s"
                Delay for approximately +n milliseconds.
 
-          NAND         16b1 16b2 -- 16b3             
+          NAND         16b1 16b2 -- 16b3
                16b3 is the one's complement of the logical AND of 16b1 with
                16b2.
 
-          NOR          16b1 16b2 -- 16b3             
+          NOR          16b1 16b2 -- 16b3
                16b3 is the one's complement of the logical OR of 16b1 with
                16b2.
 
-          NUMBER       addr -- d                     
+          NUMBER       addr -- d
                Convert the count and character string at addr, to a signed
                32-bit integer, using the value of BASE .  If numeric
                conversion is not possible, an error condition exists.  The
@@ -4335,10 +4335,10 @@
                Print u in octal format with one trailing blank.  The value
                in BASE is unaffected.
 
-          OTHERWISE    --                            Interpret only       
+          OTHERWISE    --                            Interpret only
                An interpreter-level conditional word.  See:  IFTRUE
 
-          PAGE         --                            M                    
+          PAGE         --                            M
                Clear the terminal screen or perform a form-feed action
                suitable to the output device currently active.
 
@@ -4361,21 +4361,21 @@
           B.  UNCONTROLLED REFERENCE WORDS
 
 
-          REMEMBER     --                            M                    
-               A defining word executed in the form: 
-                       REMEMBER <name>                                                ____                
-               Defines a word which, when executed, will cause <name> and                                                                ____     
+          REMEMBER     --                            M
+               A defining word executed in the form:
+                       REMEMBER <name>
+               Defines a word which, when executed, will cause <name> and
                all subsequently defined words to be deleted from the
-               dictionary.  <name> may be compiled into and executed from a                             ____                                          
-               colon definition.  The sequence       
-                       DISCARD REMEMBER DISCARD      
+               dictionary.  <name> may be compiled into and executed from a
+               colon definition.  The sequence
+                       DISCARD REMEMBER DISCARD
                provides a standardized preface to any group of transient
                word definitions.
 
-          REWIND       --                            M                    
+          REWIND       --                            M
                Rewind the tape to its load point, setting CUR equal to one.
 
-          ROTATE       16b1 n -- 16b2                
+          ROTATE       16b1 n -- 16b2
                Rotate 16b1 left n bits if n is positive, right n bits if n
                is negative.  Bits shifted out of one end of the cell are
                shifted back in at the opposite end.
@@ -4384,30 +4384,30 @@
                A variable containing the address of the bottom of the
                stack.
 
-          SET          16b addr --                   M                    
-               A defining word executed in the form: 
-                       16b addr SET <name>                                                ____            
-               Defines a word <name> which, when executed, will cause the                               ____                                      
+          SET          16b addr --                   M
+               A defining word executed in the form:
+                       16b addr SET <name>
+               Defines a word <name> which, when executed, will cause the
                value 16b to be stored at addr.
 
-          SHIFT        16b1 n -- 16b2                
+          SHIFT        16b1 n -- 16b2
                Logical shift 16b1 left n bits if n is positive, right n
                bits if n is negative.  Zeros are shifted into vacated bit
                positions.
 
-          TEXT         char --                       M                    
+          TEXT         char --                       M
                Accept characters from the input stream, as for WORD , into
                PAD , blank-filling the remainder of PAD to 84 characters.
 
-          USER         +n --                         M                    
-               A defining word executed in the form: 
-                       +n USER <name>                                                ____                 
-               which creates a user variable <name>.  +n is the offset                                              ____                    
-               within the user area where the value for <name> is stored.                                                         ____            
-               Execution of <name> leaves its absolute user area storage                             ____                                       
+          USER         +n --                         M
+               A defining word executed in the form:
+                       +n USER <name>
+               which creates a user variable <name>.  +n is the offset
+               within the user area where the value for <name> is stored.
+               Execution of <name> leaves its absolute user area storage
                address.
 
-          WORDS        --                            M                    
+          WORDS        --                            M
                List the word names in the first vocabulary of the currently
                active search order.
 
@@ -4428,7 +4428,7 @@
 
 
           \LOOP        +n --                         C,I       "down-loop"
-                       sys --   (compiling)          
+                       sys --   (compiling)
                A do-loop terminating word.  The loop index is decremented
                by the positive value +n.  If the unsigned magnitude of the
                resultant index is less than or equal to the limit, then the
@@ -4559,7 +4559,7 @@
           C.  EXPERIMENTAL PROPOSALS
 
 
-          
+
 
 
 
@@ -4667,12 +4667,12 @@
 
           6  DEFINITIONS
 
-          Search order:  
+          Search order:
                The sequence in which vocabularies are selected when
                locating a word by name in the dictionary.  Consists of one
                transient and up to three resident vocabularies.
 
-          Transient order:    
+          Transient order:
                Execution of any vocabulary makes it the first vocabulary
                searched, replacing the previously selected transient
                vocabulary.
@@ -4691,7 +4691,7 @@
           C.  EXPERIMENTAL PROPOSALS
 
 
-          Resident order:     
+          Resident order:
                After searching the transient order, up to three additional
                vocabularies may be searched.  The application program
                controls this selection.
@@ -4703,40 +4703,40 @@
                Select just the ONLY vocabulary as both the transient
                vocabulary and resident vocabulary in the search order.
 
-          FORTH        --                            ONLY                 
+          FORTH        --                            ONLY
                The name of the primary vocabulary.  Execution makes FORTH
                the transient vocabulary, the first in the search order, and
                thus replaces the previous transient vocabulary.
 
-          ALSO         --                            ONLY                 
+          ALSO         --                            ONLY
                The transient vocabulary becomes the first vocabulary in the
                resident portion of the search order.  Up to the last two
                resident vocabularies will also be reserved, in order,
                forming the resident search order.
 
-          ORDER        --                            ONLY                 
+          ORDER        --                            ONLY
                Display the vocabulary names forming the search order in
                their present search order sequence.  Then show the
                vocabulary into which new definitions will be placed.
 
-          WORDS        --                            ONLY                 
+          WORDS        --                            ONLY
                Display the word names in the transient vocabulary, starting
                with the most recent definition.
 
-          FORGET       --                            ONLY                 
-               Used in the form:                     
-                       FORGET <name>                                                ____                  
-               Delete from the dictionary <name> and all words added to the                                           ____                            
-               dictionary after <name> regardless of the vocabulary.                                 ____                               
-               Failure to find <name> is an error condition.  An error                                ____                                  
+          FORGET       --                            ONLY
+               Used in the form:
+                       FORGET <name>
+               Delete from the dictionary <name> and all words added to the
+               dictionary after <name> regardless of the vocabulary.
+               Failure to find <name> is an error condition.  An error
                condition also exists upon implicitly forgetting a
-               vocabulary (due to its definition after <name>).                                                        ____   
+               vocabulary (due to its definition after <name>).
 
-          DEFINITIONS  --                            ONLY                 
+          DEFINITIONS  --                            ONLY
                Select the transient vocabulary as the current vocabulary
                into which subsequent definitions will be added.
 
-          SEAL         --                            ONLY                 
+          SEAL         --                            ONLY
                Delete all occurances of ONLY from the search order.  The
                effect is that only specified application vocabularies will
                be searched.
@@ -4808,8 +4808,8 @@
 
           10  REFERENCES
 
-          W. F. Ragsdale, The 'ONLY' Concept for Vocabularies, Proceedings                                                               ___________
-          of the 1982 FORML Conference, pub. Forth Interest Group.          ____________________________                            
+          W. F. Ragsdale, The 'ONLY' Concept for Vocabularies, Proceedings
+          of the 1982 FORML Conference, pub. Forth Interest Group.
 
 
 
@@ -4823,7 +4823,7 @@
           C.  EXPERIMENTAL PROPOSALS
 
 
-          W. F. Ragsdale, fig-FORTH Installation Manual, Forth Interest                          _____________________________                
+          W. F. Ragsdale, fig-FORTH Installation Manual, Forth Interest
           Group.
 
 
@@ -4889,7 +4889,7 @@
           C.  EXPERIMENTAL PROPOSALS
 
 
-          
+
 
 
 
@@ -5090,12 +5090,12 @@
 
 
                                      APPENDIX D.
-                                          
-                                          
+
+
                                        CHARTER
-                                          
+
                                        of the
-                                          
+
                                 FORTH STANDARDS TEAM
 
 
@@ -5173,7 +5173,7 @@
                voting member.  A longer notification period is recommended.
                It is anticipated that the continuing close coordination of
                the participants, the decision at the prior formal meeting,
-               and publication of a meeting notice in FORTH Dimensions and                                                      ________________    
+               and publication of a meeting notice in FORTH Dimensions and
                other trade journals will provide sufficient notice to the
                FORTH community.
 
@@ -5534,8 +5534,8 @@
                elected Chairperson.
 
                4.3.3  The Chairperson shall conduct each formal meeting.
-               In general, the meetings will follow the current Robert's                                                                ________
-               Rules of Order; however, the Chairperson may determine the               ______________                                            
+               In general, the meetings will follow the current Robert's
+               Rules of Order; however, the Chairperson may determine the
                specific rules for a formal meeting.
 
 
@@ -5890,44 +5890,44 @@
           FORTH Word(s):                      Section #(s):
           -----------------------------------------------------------------
           Abstract:
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
           -----------------------------------------------------------------
           Proposal and Discussion:
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           ----------------------------------------------------------------
           Submitted by:                                      Date:
                                                              Page    of
@@ -5945,7 +5945,7 @@
 
 
 
-          
+
 
                   Proposal and Comment Submittal Form Instructions
 
@@ -6081,51 +6081,51 @@
           -----------------------------------------------------------------
           FST USE ONLY -->                             Proposal Number:
           =================================================================
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           -----------------------------------------------------------------
           Submitted by:                                Date:
                                                              Page   of
