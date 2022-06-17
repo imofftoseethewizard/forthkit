@@ -13,8 +13,6 @@
 
     __compiled_word(".", cw_dot, 0)
 
-    _compile_pr(pr_num_start);
-
     _compile_pr(pr_dup);
     _compile_pr(pr_zero_lt);
     _compile_if();

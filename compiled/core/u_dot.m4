@@ -12,10 +12,8 @@
 
     __compiled_word("U.", cw_u_dot, 0)
 
-    _compile_pr(pr_num_start);
-
     _compile_literal(0);
-    _compile_pr(pr_num_start);
+    _compile_pr(pr_less_sharp);
     _compile_cw(cw_sharp_s);
     _compile_pr(pr_sharp_greater);
     _compile_pr(pr_type);
