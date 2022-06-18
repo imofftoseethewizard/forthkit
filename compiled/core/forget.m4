@@ -17,7 +17,6 @@
     _compile_pr(pr_store);
     _compile_else();
     _compile_literal(-13);
-    _compile_pr(pr_abort);
+    _compile_cw(cw_abort);
     _compile_then();
     _compile_pr(op_exit);
-

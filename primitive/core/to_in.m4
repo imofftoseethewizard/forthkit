@@ -1,8 +1,13 @@
-#define _to_in() *--sp = _from_ptr(&e[ea_source_idx])
-
-__primitive(pr_to_in)  
+__primitive(pr_to_in)
 {
-    _to_in();
+    /* >IN ( -- addr ) "to-in"
+
+       The address of a variable which contains the present
+       character offset within the input stream {{0..the number of
+       characters in the input stream}}.
+     */
+
+    *--sp = _from_ptr(&e[ea_source_idx]);
 }
 __end
 __define_primitive(">IN", pr_to_in);

@@ -1,3 +1,4 @@
+__include_compiled_word(`../compiled/core/abort.m4')
 __include_compiled_word(`../compiled/core/sharp_s.m4')
 __include_compiled_word(`../compiled/core/u_dot.m4')
 __include_compiled_word(`../compiled/core/dot.m4')
