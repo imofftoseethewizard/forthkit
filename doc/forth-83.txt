@@ -2191,7 +2191,7 @@
                not including the delimiting " (close-quote).  The blank
                following ." is not part of ccc.
 
-          .(           --                            I,M,83    "dos-paren"
+          .(           --                            I,M,83    "dot-paren"
                        --                            (compiling)
                Used in the form:
                        .( ccc)
