@@ -76,21 +76,12 @@ _compile_pr(pr_query_dup);
 
 _compile_while();
 
-_compile_pr(pr_dup);
 _compile_pr(pr_find);
-_compile_pr(pr_query_dup);
+_compile_pr(pr_dup);
 
 _compile_if();
 
-_compile_pr(pr_swap);
-_compile_pr(pr_drop);
-
-_compile_pr(pr_dup);
-_compile_literal(sizeof(cell));
-_compile_pr(pr_minus);
-_compile_pr(pr_fetch);
-_compile_literal(1);
-_compile_pr(pr_and);
+_compile_pr(pr_zero_gt);
 _compile_pr(pr_state);
 _compile_pr(pr_fetch);
 _compile_pr(pr_zero_eq);
@@ -104,7 +95,6 @@ _compile_then();
 
 _compile_else();
 
-_compile_literal(0);
 _compile_pr(pr_over);
 _compile_pr(pr_count);
 _compile_pr(pr_to_number);
