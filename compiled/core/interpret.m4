@@ -15,27 +15,18 @@
          *         \ its xt and 1 if the word is immediate, -1 otherwise. If the
          *         \ word is not found, leave the c-addr and push 0.
          *
-         *         dup find ?dup
-         *         ( c-addr 0 | c-addr xt xt )
+         *         find dup
+         *         ( c-addr 0 0 | xt -1 -1 | xt 1 1 )
          *         if
-         *             ( c-addr xt )
-         *
-         *             swap drop
-         *
-         *             \ Check state and the immediate flag, executing or compiling
-         *             \ as appropriate. The flags of the word is in the cell immediately
-         *             \ before the compilation address, and the immediate flag is
-         *             \ in the lsb.
-         *
-         *             dup <cell> - @ 1 and state @ 0= or
+         *             0> state @ 0= or
          *             if execute else compile, then
          *
          *         else
          *             \ The word was not found in the current context. Attempt to
          *             \ interpret it as a literal.
          *
-         *             ( c-addr )
-         *             0 over count >number
+         *             ( c-addr 0 )
+         *             over count >number
          *             ( c-addr ud c-addr2 u )
          *
          *             \ If u is 0, then the entirety of the word was consumed in converting
@@ -113,7 +104,7 @@ _compile_then();
 
 _compile_else();
 
-_compile_literal(-13);
+_compile_literal(err_undefined_word);
 _compile_pr(op_abort);
 
 _compile_then();
@@ -123,7 +114,3 @@ _compile_then();
 _compile_repeat();
 
 _compile_pr(op_exit);
-
-sp = sp0;
-rp = rp0;
-ip = 0;
