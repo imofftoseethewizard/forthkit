@@ -33,5 +33,4 @@ __primitive(pr_word)
 
 }
 __end
-
 __define_primitive("<word>", pr_word);
