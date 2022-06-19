@@ -1,7 +1,14 @@
 #define _lowercase_ascii(x) ((x) < 'A' || (x) > 'Z' ? (x) : (x) - 'A' + 'a')
 
-__primitive(pr_find)  
+__primitive(pr_find)
 {
+    /* FIND ( -- addr )
+
+       Leave the compilation address of the next word name, which is
+       accepted from the input stream. If that word cannot be found
+       in the dictionary after a search of CONTEXT and FORTH leave
+       zero.
+    */
 
     register cell *name, word, *wordp, *word_name_cs;
     register char *name_cp, *word_name_cp;
@@ -44,4 +51,4 @@ __primitive(pr_find)
 
 }
 __end
-__define_primitive("FIND", pr_find);
+__define_primitive("<find>", pr_find);
