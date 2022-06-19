@@ -1,3 +1,4 @@
+
     /* SPAN ( -- addr )
 
        The address of a variable containing the count of characters
