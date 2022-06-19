@@ -1,8 +1,19 @@
 
 #define _lowercase_ascii(x) ((x) < 'A' || (x) > 'Z' ? (x) : (x) - 'A' + 'a')
 
-__primitive(pr_find)  
+__primitive(pr_find)
 {
+    /* FIND ( addr1 -- addr1 n | addr2 n )
+
+       addr1 is the address of a counted string.  The string
+       contains a word name to be located in the currently active
+       search order.  If the word is not found, addr2 is the string
+       address addr1, and n is zero.  If the word is found, addr2
+       is the compilation address and n is set to one of two non-
+       zero values.  If the word found has the immediate attribute,
+       n is set to one.  If the word is non-immediate, n is set to
+       minus one (true).
+    */
 
     register cell *name, word, *wordp, *word_name_cs;
     register char *name_cp, *word_name_cp;
@@ -46,7 +57,6 @@ __primitive(pr_find)
         *--sp = _get_word_flags(wordp, c_immediate) ? 1 : -1;
         /* stack contains ( xt 1 ) or ( xt -1 ) */
     }
-
 }
 __end
 __define_primitive("FIND", pr_find);

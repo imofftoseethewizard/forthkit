@@ -11,7 +11,7 @@
 
         |  : '
         |    32 word find
-        |    dup 0= if
+        |    0= if
         |        err_undefined_word <abort>
         |    then
         |  ;
@@ -23,7 +23,6 @@
     _compile_cw(cw_word);
     _compile_pr(pr_find);
 
-    _compile_pr(pr_dup);
     _compile_pr(pr_zero_eq);
     _compile_if();
 

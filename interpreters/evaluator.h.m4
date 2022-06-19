@@ -126,7 +126,7 @@ enum engine_attribute {
 
 #define _set_word_flags(x, flags)       *((cell *)(x) + 2) |= (flags)
 #define _clear_word_flags(x, flags)     *((cell *)(x) + 2) &= ~(flags)
-#define _get_word_flags(x, flags)       *((cell *)(x) + 2) & ~(flags)
+#define _get_word_flags(x, flags)       (*((cell *)(x) + 2) & flags)
 
 #define _get_word_interpretation_ptr(x) ((cell *)(x) + 3)
 #define _get_word_interpretation(x)     _from_ptr(_get_word_interpretation_ptr(x))
