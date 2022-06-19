@@ -23,6 +23,7 @@ init_evaluator(
     cell evaluator_size,
     cell fiber_count,
     cell fiber_stack_size,
+    cell pad_buffer_size,
     cell parameter_stack_size,
     cell return_stack_size,
     cell source_size,
@@ -33,6 +34,7 @@ init_evaluator(
     e[ea_buffer_size]          = buffer_size;
     e[ea_fiber_count]          = fiber_count;
     e[ea_fiber_stack_size]     = fiber_stack_size;
+    e[ea_pad_buffer_size]      = pad_buffer_size;
     e[ea_parameter_stack_size] = parameter_stack_size;
     e[ea_return_stack_size]    = return_stack_size;
     e[ea_size]                 = evaluator_size;
@@ -83,6 +85,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
         e[ea_buffers]      = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
         e[ea_buffer_map]   = _reserve(e[ea_buffer_count] * sizeof(cell));
         e[ea_number_pad]   = _reserve(_c_number_pad_size);
+        e[ea_pad]          = _reserve(e[ea_pad_buffer_size]);
         e[ea_source_addr]  = _reserve(e[ea_source_size]);
         e[ea_word_buffer0] = _reserve(e[ea_word_buffer_size]);
         e[ea_word_buffer1] = _reserve(e[ea_word_buffer_size]);

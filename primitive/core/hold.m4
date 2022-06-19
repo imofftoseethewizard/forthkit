@@ -8,6 +8,12 @@
 
 __primitive(pr_hold)
 {
+    /* HOLD ( char -- )
+
+       char is inserted into a pictured numeric output string.
+       Typically used between <# and #>.
+     */
+
     _hold(*sp++);
 }
 __end

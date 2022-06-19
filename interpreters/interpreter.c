@@ -22,6 +22,7 @@
 #define DEFAULT_FIBER_COUNT          4
 #define DEFAULT_FIBER_STACK_SIZE     4
 #define DEFAULT_WORD_BUFFER_SIZE     64
+#define DEFAULT_PAD_BUFFER_SIZE      84 /* See PAD in doc/forth-83.txt */
 #define DEFAULT_PARAMETER_STACK_SIZE 64
 #define DEFAULT_RETURN_STACK_SIZE    64
 #define DEFAULT_SOURCE_SIZE          1024
@@ -41,6 +42,7 @@ static int expected_result      = DEFAULT_EXPECTED_RESULT;
 static int fiber_count          = DEFAULT_FIBER_COUNT;
 static int fiber_stack_size     = DEFAULT_FIBER_STACK_SIZE;
 static int word_buffer_size     = DEFAULT_WORD_BUFFER_SIZE;
+static int pad_buffer_size      = DEFAULT_PAD_BUFFER_SIZE;
 static int parameter_stack_size = DEFAULT_PARAMETER_STACK_SIZE;
 static int return_stack_size    = DEFAULT_RETURN_STACK_SIZE;
 static int source_size          = DEFAULT_SOURCE_SIZE;
@@ -64,6 +66,7 @@ static struct option long_options[] = {
     {"fiber-count",          required_argument, NULL,          'f'},
     {"fiber-stack-size",     required_argument, NULL,          'F'},
     {"parameter-stack-size", required_argument, NULL,          'P'},
+    {"pad-buffer-size",      required_argument, NULL,          'D'},
     {"return-stack-size",    required_argument, NULL,          'R'},
     {"source-size",          required_argument, NULL,          'S'},
     {"storage",              required_argument, NULL,          's'},
@@ -100,6 +103,7 @@ print_help(char *message)
     printf("  -B, --buffer-size           size of block buffers in bytes, default %d\n", DEFAULT_BUFFER_SIZE);
     printf("  -b, --buffer-count          number of block buffers, default %d\n", DEFAULT_BUFFER_COUNT);
     printf("  -c, --command               command to execute, suppresses repl\n");
+    printf("  -D, --pad-buffer-size       size of memory scratch area used to hold data for intermediate processing, default %d\n", DEFAULT_PAD_BUFFER_SIZE);
     printf("  -E, --evaluator-size        size of memory area for evaluator in bytes, default %d\n", DEFAULT_EVALUATOR_SIZE);
     printf("  -F, --fiber-stack-size      maximum depth of fiber stack, default %d\n", DEFAULT_FIBER_STACK_SIZE);
     printf("  -f, --fiber-count           number of fibers to reserve space for, default %d\n", DEFAULT_FIBER_COUNT);
@@ -142,6 +146,7 @@ main(int argc, char *argv[])
         evaluator_size,
         fiber_count,
         fiber_stack_size,
+        pad_buffer_size,
         parameter_stack_size,
         return_stack_size,
         source_size,
