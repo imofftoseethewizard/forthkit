@@ -4,8 +4,18 @@
       : 'a' <= c && c <= 'z' ? (c - 'a' + 10) \
       : -1
 
-__primitive(pr_convert)  
+__primitive(pr_convert)
 {
+    /* CONVERT ( ud1 addr1 -- ud2 addr2 )
+
+       ud2 is the result of converting the characters within the
+       text beginning at addr1+2 into digits, using the value of
+       BASE , and accumulating each into ud1 after multiplying ud1
+       by the value of BASE .  Conversion continues until an
+       unconvertible character is encounter.  addr2 is the location
+       of the first unconvertible character.
+
+     */
 
     register number base, digit;
     register double_number result;
