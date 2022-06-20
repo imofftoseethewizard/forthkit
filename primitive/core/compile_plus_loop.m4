@@ -1,9 +1,15 @@
 __primitive(pr_compile_plus_loop)
 {
+    /* +LOOP ( n -- ) "plus-loop"
+             compiling: ( sys -- )
 
-    /* op_plus_loop tests the limit condition, and if met, skips over the next
-       two instructions, leaving space for a jump back to the top of the loop.
-    */
+       n is added to the loop index.  If the new index was
+       incremented across the boundary between limit-1 and limit
+       then the loop is terminated and loop control parameters are
+       discarded.  When the loop is not terminated, execution
+       continues to just after the corresponding DO .  sys is
+       balanced with its corresponding DO .  See:  DO
+     */
 
     _compile_pr(op_plus_loop);
 

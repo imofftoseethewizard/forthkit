@@ -1,5 +1,20 @@
 __primitive(pr_dot_quote)
 {
+    /* ." ( -- ) "dot-quote"
+
+       Used in the form:
+
+       |   ." ccc"
+
+       Later execution will display the characters ccc up to but
+       not including the delimiting " (close-quote).  The blank
+       following ." is not part of ccc.
+
+       The standards do not define interpretation semantics for
+       this word. In this implementation, the characters are
+       provided to EMIT as they are read from the current input.
+     */
+
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
     register cell source_idx   = e[ea_source_idx] + 1; /* skip space after ." */
