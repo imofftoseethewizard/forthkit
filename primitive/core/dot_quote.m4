@@ -44,19 +44,15 @@ __primitive(pr_dot_quote)
 
         _check_dictionary_bounds();
 
-     } else {
-
+    } else {
         while (source_idx < source_len && source[source_idx] != '"') {
             *--sp = source[source_idx++];
             _emit();
         }
-
     }
 
-    if (source_idx == source_len) {
-        /* see https://forth-standard.org/standard/exception */
-        _abort(-39); /* unexpected end of file */
-    }
+    if (source_idx == source_len)
+        _abort(err_unexpected_end_of_file);
 
     e[ea_source_idx] = source_idx + 1; /* skip final quote */
 

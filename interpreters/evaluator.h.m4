@@ -89,6 +89,8 @@ enum engine_attribute {
     /* attributes referencing reserved memory areas */
     ea_buffer_map,
     ea_buffers,
+    ea_error_msg_addr,
+    ea_error_msg_len,
     ea_fibers,
     ea_fp0,
     ea_number_pad,

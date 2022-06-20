@@ -204,6 +204,12 @@ repl(void)
             break;
 
         case err_abort_message:
+            print_error(
+                evaluator,
+                (const char *)evaluator + evaluator[ea_error_msg_addr],
+                evaluator[ea_source_idx]);
+            break;
+
         default:
             print_error(
                 evaluator,
