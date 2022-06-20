@@ -1,5 +1,15 @@
 __primitive(pr_constant)
 {
+    /* CONSTANT ( n -- )
+
+       A defining word used in the form:
+
+       |   n CONSTANT <name>
+
+       to create a dictionary entry for <name>, leaving n in its
+       parameter field. When <name> is later executed, n will be
+       left on the stack.
+     */
 
     _store_word_name();
 

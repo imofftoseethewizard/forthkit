@@ -1,5 +1,18 @@
 __primitive(pr_create)
 {
+    /* CREATE ( -- )
+
+       A defining word executed in the form:
+
+       |   CREATE <name>
+
+       Creates a dictionary entry for <name>.  After <name> is
+       created, the next available dictionary location is the first
+       byte of <name>'s parameter field.  When <name> is
+       subsequently executed, the address of the first byte of
+       <name>'s parameter field is left on the stack.  CREATE does
+       not allocate space in <name>'s parameter field.
+     */
 
     _store_word_name();
 

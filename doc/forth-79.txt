@@ -1059,13 +1059,6 @@ COMPILE                                      C,146
      the compilation address of DUP.
           COMPILE  [ 0 , ]   will copy zero.
 
-CONSTANT       n --                          185
-     A defining word used in the form:
-          n CONSTANT <name>
-     to  create  a dictionary entry for <name>,  leaving n  in  its
-     parameter  field.   When <name> is later executed,  n will  be
-     left on the stack.
-
 CONTEXT        -- addr                       U,151
      Leave  the address of a variable specifying the vocabulary  in
      which   dictionary   searches   are   to   be   made,   during
@@ -1995,4 +1988,3 @@ WHERE
      n  and  the loop terminated when the resultant  index  becomes
      equal to or less than the limit.  Magnitude logic is used, and
      n must be positive.
-
