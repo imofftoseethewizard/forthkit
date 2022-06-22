@@ -1,13 +1,4 @@
-#define _compile_do()                \
-    do {                             \
-        _compile_pr(op_do);          \
-        *--sp = leave_link;          \
-        *--sp = _from_ptr(dp);       \
-        leave_link = *sp;            \
-    } while (0)
-
-__evaluator_variables
-    static cell leave_link = 0;
+#define _compile_do() do { _compile_pr(op_do); *--sp = _from_ptr(dp); } while (0)
 
 __primitive(pr_compile_do)
 {

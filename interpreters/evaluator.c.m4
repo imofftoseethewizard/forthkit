@@ -51,26 +51,25 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 {
     __declare_primitives()dnl
 
-    /* These are the most commonly referenced variables, generally every
-       iteration of the interpreter loop. */
-
     register cell *e = evaluator;
+
+    register char *top;
+    register cell *tp;    /* current task */
+    register cell *fp;    /* current fiber */
+
+    register cell *fp0;
+    register cell *rp0;
+    register cell *sp0;
+
+    register char *dp;
+    register cell *sp;
+
     register cell *ip;
     register cell *rp;
-    register cell *sp;
-    register cell *tp;
     register cell *rp_stop;
     register number steps;
 
-    /* These are useful to have, but probably not worth putting in a register.
-     */
-
-    char *dp;
-    cell *fp;
-    cell *fp0;
-    cell *rp0;
-    cell *sp0;
-    char *top;
+    __declare_evaluator_variables()
 
     /* Contains the throw code for uncaught exceptions. */
     int result = 0;
