@@ -39,7 +39,7 @@ __primitive(pr_abort_quote)
 
     dp = (char *)_align(s);
 
-    *jump_offset = (cell)(dp + sizeof(cell) - (char *)jump_offset);
+    *jump_offset = (cell)(dp - (char *)jump_offset);
 
     _compile_pr(op_literal);
     _store_data(err_abort_message);

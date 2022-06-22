@@ -5,7 +5,7 @@
     do {                                                        \
         _compile_pr(op_loop);                                   \
         _compile_pr(op_jump);                                   \
-        _store_data((char *)_to_ptr(*sp) - dp + sizeof(cell));  \
+        _store_data((char *)_to_ptr(*sp) - dp);  \
         _compute_leave_jumps();                                 \
         sp += 2;                                                \
     } while (0)

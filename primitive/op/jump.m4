@@ -11,7 +11,7 @@
 
 #pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
 #define _compile_jump_target() \
-    *_to_ptr(*sp++) = (int)(dp + sizeof(cell) - (char *)_to_ptr(*sp))
+    *_to_ptr(*sp++) = (int)(dp - (char *)_to_ptr(*sp))
 
 /* op_jump expects the next location to be an offset. It is relative
    to where the ip would normally be next, hence the "+ 2" to account
@@ -20,7 +20,7 @@
 
 __primitive(op_jump)
 {
-    ip = (cell *)((char *)ip + (number)*ip - sizeof(cell));
+    ip = (cell *)((char *)ip + (number)*ip);
 }
 __end
 
