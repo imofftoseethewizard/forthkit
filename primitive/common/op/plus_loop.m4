@@ -2,19 +2,25 @@ __primitive(op_plus_loop)
 {
     /* <+loop> "op-plus-loop"
 
-       DO et al use the top two cells of the return stack to store the
-       loop limit and the current loop index, resp. op_plus_loop
-       performs the run time activity for +LOOP: update index, compare
-       and branch ahead 2, allowing space to compile a jump to the top
-       of the loop.
+       DO et al use the top three cells of the return stack to
+       store the leave target address, loop limit, and the current
+       loop index, resp. op_plus_loop performs the run time
+       activity for +LOOP: update index, compare and branch ahead
+       2, allowing space to compile a jump to the top of the loop.
      */
 
-    register number n = *(number *)sp++;
+    register cell
+      i0 = *rp,
+      limit = *(rp + 1),
+      step = *sp++,
+      k = (*rp = i0 + step) - limit;
 
-    *(number *)rp += n;
+    /* The first term will have msb true if i0 is on the other
+       side of limit from i0 + step. The second term will have msb
+       true when step and i0 + step are on the same side of limit.
+     */
 
-    if ((n >= 0 && *(number *)rp >= *(number *)(rp + 1))
-        || (n < 0 && *(number *)rp < *(number *)(rp + 1))) {
+    if ((k ^ (i0 - limit)) & ~(k ^ step) & c_msb) {
 
         /* drop the leave target address, loop limit, and index from
            the return stack.

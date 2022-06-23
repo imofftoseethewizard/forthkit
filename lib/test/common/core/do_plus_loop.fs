@@ -1,43 +1,53 @@
-t{ : gd2 do i -1 +loop ; -> }t
-t{  1 4 gd2 -> 4 3 2  1 }t
-t{ -1 2 gd2 -> 2 1 0 -1 }t
+T{ : GD2 DO I -1 +LOOP ; -> }T
+T{        1          4 GD2 -> 4 3 2  1 }T
+T{       -1          2 GD2 -> 2 1 0 -1 }T
+T{ MID-UINT MID-UINT+1 GD2 -> MID-UINT+1 MID-UINT }T
 
-( There is a subtle difference in the definition of +loop     )
-( between FORTH-79 and FORTH-83. The earlier version defines  )
-( loop exit as the index being >= the limit -- if inc > 0 --  )
-( and < the limit if inc < 0. All later versions define the   )
-( exit condition in terms of the index crossing the limit.    )
-( 8 of the test cases below were changed for FORTH-79.        )
-
-variable gditerations
-variable gdincrement
+VARIABLE gditerations
+VARIABLE gdincrement
 
 : gd7 ( limit start increment -- )
     gdincrement !
     0 gditerations !
-    do
+    DO
         1 gditerations +!
-        i
-        gditerations @ 6 = if leave then
+        I
+        gditerations @ 6 = IF LEAVE THEN
         gdincrement @
-    +loop gditerations @
+    +LOOP gditerations @
 ;
 
-t{    4  4  -1 gd7 ->  4                  1  }t
-t{    1  4  -1 gd7 ->  4  3  2  1         4  }t
-t{    4  1  -1 gd7 ->  1                  1  }t
-t{    4  1   0 gd7 ->  1  1  1  1   1   1 6  }t
-t{    0  0   0 gd7 ->  0                  1  }t
-t{    1  4   0 gd7 ->  4                  1  }t
-t{    1  4   1 gd7 ->  4                  1  }t
-t{    4  1   1 gd7 ->  1  2  3            3  }t
-t{    4  4   1 gd7 ->  4                  1  }t
-t{    2 -1  -1 gd7 -> -1                  1  }t
-t{   -1  2  -1 gd7 ->  2  1  0 -1         4  }t
-t{    2 -1   0 gd7 -> -1 -1 -1 -1  -1  -1 6  }t
-t{   -1  2   0 gd7 ->  2                  1  }t
-t{   -1  2   1 gd7 ->  2                  1  }t
-t{    2 -1   1 gd7 -> -1 0 1              3  }t
-t{  -20 30 -10 gd7 -> 30 20 10  0 -10 -20 6  }t
-t{  -20 31 -10 gd7 -> 31 21 11  1  -9 -19 6  }t
-t{  -20 29 -10 gd7 -> 29 19  9 -1 -11     5  }t
+T{    4  4  -1 gd7 ->  4                  1  }T
+T{    1  4  -1 gd7 ->  4  3  2  1         4  }T
+T{    4  1  -1 gd7 ->  1  0 -1 -2  -3  -4 6  }T
+T{    4  1   0 gd7 ->  1  1  1  1   1   1 6  }T
+T{    0  0   0 gd7 ->  0  0  0  0   0   0 6  }T
+T{    1  4   0 gd7 ->  4  4  4  4   4   4 6  }T
+T{    1  4   1 gd7 ->  4  5  6  7   8   9 6  }T
+T{    4  1   1 gd7 ->  1  2  3            3  }T
+T{    4  4   1 gd7 ->  4  5  6  7   8   9 6  }T
+T{    2 -1  -1 gd7 -> -1 -2 -3 -4  -5  -6 6  }T
+T{   -1  2  -1 gd7 ->  2  1  0 -1         4  }T
+T{    2 -1   0 gd7 -> -1 -1 -1 -1  -1  -1 6  }T
+T{   -1  2   0 gd7 ->  2  2  2  2   2   2 6  }T
+T{   -1  2   1 gd7 ->  2  3  4  5   6   7 6  }T
+T{    2 -1   1 gd7 -> -1 0 1              3  }T
+T{  -20 30 -10 gd7 -> 30 20 10  0 -10 -20 6  }T
+T{  -20 31 -10 gd7 -> 31 21 11  1  -9 -19 6  }T
+T{  -20 29 -10 gd7 -> 29 19  9 -1 -11     5  }T
+
+( With large and small increments )
+
+MAX-UINT 8 RSHIFT 1+ CONSTANT ustep
+ustep NEGATE CONSTANT -ustep
+MAX-INT 7 RSHIFT 1+ CONSTANT step
+step NEGATE CONSTANT -step
+
+VARIABLE bump
+
+T{  : gd8 bump ! DO 1+ bump @ +LOOP ; -> }T
+
+T{  0 MAX-UINT 0 ustep gd8 -> 256 }T
+T{  0 0 MAX-UINT -ustep gd8 -> 256 }T
+T{  0 MAX-INT MIN-INT step gd8 -> 256 }T
+T{  0 MIN-INT MAX-INT -step gd8 -> 256 }T
