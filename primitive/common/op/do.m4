@@ -1,9 +1,9 @@
-__primitive(op_do1)
+__primitive(op_do)
 {
     /* DO et al use the top two cells of the return stack to store
-       the loop limit and the current loop index, resp. op_do0 and
-       op_do1 performs the run time activity for DO, ie just the
-       copy. In addition, op_do1 skips the next cell, which is
+       the loop limit and the current loop index, resp. op_do and
+       op_do performs the run time activity for DO, ie just the
+       copy. In addition, op_do skips the next cell, which is
        reserved to hold the relative address of the first code
        cell after the end of the loop.
      */
@@ -22,4 +22,4 @@ __primitive(op_do1)
 }
 __end
 
-__define_primitive("<do>", op_do1);
+__define_primitive("<do>", op_do);

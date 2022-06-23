@@ -4,7 +4,7 @@
  */
 #define _compile_do()                \
     do {                             \
-        _compile_pr(op_do1);         \
+        _compile_pr(op_do);         \
         _store_data(0);              \
         *--sp = _from_ptr(dp);       \
     } while (0)

@@ -1,6 +1,6 @@
 #define _compile_do()                \
     do {                             \
-        _compile_pr(op_do0);          \
+        _compile_pr(op_do);          \
         *--sp = leave_link;          \
         *--sp = _from_ptr(dp);       \
         leave_link = *sp;            \
