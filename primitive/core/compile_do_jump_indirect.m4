@@ -1,13 +1,13 @@
+/* _store_data(0) below reserves space for the relative addr of
+ * the first code cell after the end of the loop, to be filled in
+ * by LOOP or +LOOP.
+ */
 #define _compile_do()                \
     do {                             \
-        _compile_pr(op_do0);          \
-        *--sp = leave_link;          \
+        _compile_pr(op_do1);         \
+        _store_data(0);              \
         *--sp = _from_ptr(dp);       \
-        leave_link = *sp;            \
     } while (0)
-
-__evaluator_variables
-    static cell leave_link = 0;
 
 __primitive(pr_compile_do)
 {

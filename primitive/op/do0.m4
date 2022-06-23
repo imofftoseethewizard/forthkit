@@ -1,9 +1,9 @@
 /* DO et al use the top two cells of the return stack to store the loop limit and the current
-   loop index, resp. op_do performs the run time activity for DO, just the copy. Implementing
+   loop index, resp. op_do0 performs the run time activity for DO, just the copy. Implementing
    this as a primitive operation simplifies a common operation. Otherwise, this would be SWAP >R
    >R. That's the overhead of two additional _next() transitions.
 */
-__primitive(op_do)
+__primitive(op_do0)
 {
     *--rp = *(sp+1);
     *--rp = *sp;
@@ -12,4 +12,4 @@ __primitive(op_do)
 }
 __end
 
-__define_primitive("<do>", op_do);
+__define_primitive("<do>", op_do0);
