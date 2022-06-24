@@ -8,17 +8,19 @@ __primitive(op_loop)
 
     (*rp)++;
 
-    if (*(number *)rp >= *(number *)(rp + 1)) {
+    if (*(number *)rp < *(number *)(rp + 1))
+        ip = (cell *)((char *)ip + (number)*ip);
+
+    else {
 
         /* drop the leave target address, loop limit, and index from
            the return stack.
          */
         rp += 3;
 
-        /* advance over the following op_jump that would return to the
-           start of the loop.
+        /* advance over the address of the start of the loop.
          */
-        ip += 2;
+        ip++;
 
         _check_return_stack_bounds();
     }
