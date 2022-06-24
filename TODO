@@ -5,41 +5,20 @@ f83
     check that standard tests are implemented
     add doc to word and any macros
   additional words
-    #tib
-    ."
-    .(
-    >body
     [']
-    abort"
-    flush (forth-79 defines this as a synonym to save-buffers)
-    forth-83
-    pad
-    tib
-  words with different semantics
-    '
-    find
-    interpreter (as a result of the change to find)
 
 order of generalization
   forth versions
     standards
-      83, 94 (ansi), current standard, gforth?
-      impl:
-        refactor f79 into f0 + f79 additions
-        define additions for each standard
-        refine f0 to be the least common denominator
-    f0
-      minimum required to do useful work
-      interpreter
-      arithmetic
-      word/vocabulary creation & management
-      dictionary, store, fetch
-      control structures
-      basic io
+      94 (ansi), current standard, (check gforth compat works)
+  modules
+    contains ops, primitives, compiled, tests for a unit of functionality
+    eg one each for the standard word sets, posix file handling or optargs, etc
   forth variants
     wihtout fibers
     indirect word references
     no bounds checking
+    strict case matching
 
   compilers
     clang
