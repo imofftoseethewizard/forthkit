@@ -1,3 +1,5 @@
+remove jump from <loop>, <+loop>, and <branch>
+
 f83
   review each word (in f83 order)
     add *_err_* tests as appropriate

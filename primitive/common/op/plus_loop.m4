@@ -32,7 +32,6 @@ __primitive(op_plus_loop)
          */
         ip += 2;
     }
-
 }
 __end
 __define_primitive("<+loop>", op_plus_loop);
