@@ -20,17 +20,19 @@ __primitive(op_plus_loop)
        true when step and i0 + step are on the same side of limit.
      */
 
-    if ((k ^ (i0 - limit)) & ~(k ^ step) & c_msb) {
+    if ((~(k ^ (i0 - limit)) | (k ^ step)) & c_msb)
+        ip = (cell *)((char *)ip + (number)*ip);
+
+    else {
 
         /* drop the leave target address, loop limit, and index from
            the return stack.
          */
         rp += 3;
 
-        /* advance over the following op_jump that would return to the
-           start of the loop.
+        /* advance over the address of the start of the loop.
          */
-        ip += 2;
+        ip++;
     }
 }
 __end

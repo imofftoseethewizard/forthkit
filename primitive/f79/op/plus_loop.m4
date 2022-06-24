@@ -13,17 +13,20 @@ __primitive(op_plus_loop)
 
     *(number *)rp += n;
 
-    if ((n >= 0 && *(number *)rp >= *(number *)(rp + 1))
-        || (n < 0 && *(number *)rp < *(number *)(rp + 1))) {
+    if ((n >= 0 && *(number *)rp < *(number *)(rp + 1))
+        || (n < 0 && *(number *)rp >= *(number *)(rp + 1)))
+
+        ip = (cell *)((char *)ip + (number)*ip);
+
+    else {
 
         /* drop the loop limit and index from the return stack. */
         rp += 2;
 
-        /* advance over the following op_jump that would return
-           to the start of the loop. */
-        ip += 2;
+        /* advance over the address of the start of the loop.
+         */
+        ip++;
     }
-
 }
 __end
 __define_primitive("<+loop>", op_plus_loop);
