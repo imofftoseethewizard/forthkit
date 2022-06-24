@@ -1,6 +1,5 @@
 __include_primitive(`../primitive/common/op/0branch.m4')
 __include_primitive(`../primitive/common/op/abort.m4')
-__include_primitive(`../primitive/common/op/branch.m4')
 __include_primitive(`../primitive/common/op/do.m4')
 __include_primitive(`../primitive/common/op/does.m4')
 __include_primitive(`../primitive/common/op/exit.m4')
