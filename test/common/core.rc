@@ -6,7 +6,6 @@ $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harne
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/and.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/begin_until.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/begin_while_repeat.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/bracket_tick.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/c_comma_c_store_c_fetch.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/cmove.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/depth.fs
