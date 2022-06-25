@@ -10,6 +10,7 @@ $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpr
 $FORTHKIT/scripts/check.sh .... $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/fsteps.fs
 $FORTHKIT/scripts/check.sh ...  $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/fstop.fs
 $FORTHKIT/scripts/check.sh ...  $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/ftask.fs
+$FORTHKIT/scripts/check.sh ..   $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/is_primitive.fs
 $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/lay.fs
 $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/num_f.fs
 $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/interpreter -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/snip.fs
