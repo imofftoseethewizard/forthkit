@@ -4,7 +4,9 @@ __primitive(pr_query_dup)
 
      Duplicate n if it is non-zero.
      */
-    if (*sp) *--sp = *(sp+1);
+    register cell n = *sp;
+
+    if (n) *--sp = n;
 }
 __end
 __define_primitive("?DUP", pr_query_dup);

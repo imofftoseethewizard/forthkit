@@ -5,7 +5,8 @@ __primitive(pr_over)
        Leave a copy of the second number on the stack.
      */
 
-    *--sp = *(sp+2);
+    register cell n = *(sp+1);
+    *--sp = n;
 }
 __end
 __define_primitive("OVER", pr_over);

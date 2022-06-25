@@ -61,10 +61,10 @@ ${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE} bounds.h debug.h errors.h 
 	  evaluator.h.m4 | indent -kr -l96 >$@
 
 ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${CONFIG_H} ${LIB}
-	gcc ${CFLAGS} -o ${EVALUATOR_O} -c ${EVALUATOR_C}
+	${CC} ${CFLAGS} -o ${EVALUATOR_O} -c ${EVALUATOR_C}
 
 ${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
-	gcc ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
+	${CC} ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
 deps : ${BUILD}
 	echo ${m4_deps} | tr ' ' '\n'    >  ${BUILD}/deps.txt

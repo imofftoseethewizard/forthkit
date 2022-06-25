@@ -5,7 +5,8 @@ __primitive(pr_dup)
        Duplicate the value on the top of the stack.
      */
 
-    *--sp = *(sp+1);
+    cell n = *sp;
+    *--sp = n;
 }
 __end
 __define_primitive("DUP", pr_dup);

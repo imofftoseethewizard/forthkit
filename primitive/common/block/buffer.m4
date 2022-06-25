@@ -31,6 +31,7 @@ __primitive(pr_buffer)
     e[ea_next_buffer] = (n + 1) % e[ea_buffer_count];
 
   pr_buffer_exit:
+    ;
 }
 __end
 __define_primitive("BUFFER", pr_buffer);
