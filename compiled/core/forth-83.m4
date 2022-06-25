@@ -5,5 +5,5 @@
        otherwise an error condition exists.
      */
 
-    __compiled_word("FORTH-83", cw_79_standard, 0)
+    __compiled_word("FORTH-83", cw_forth_83, 0)
     _compile_pr(op_exit);
