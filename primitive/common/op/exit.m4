@@ -9,8 +9,10 @@ __primitive(op_exit)
     */
 
     ip = *rp ? _to_ptr(*rp) : 0;
+
     rp++;
-    rp == rp_stop ? (steps = 0) : 0;
+
+    if (rp >= rp_stop) steps = 0;
 
     _check_return_stack_bounds();
 }
