@@ -1,5 +1,3 @@
-: nip swap drop ;
-
 base @
 decimal
 
@@ -51,18 +49,18 @@ base !
 : match-primitive? ( xt w -- xt w f )
     dup primitive-word?
     over inline-word? and
-    over word-xt @ 3 pick =
+    over word-xt @ 4 pick =
     and
 ;
 
 : match-compiled? ( xt w -- xt w f )
-    dup word-xt 2 pick =
+    dup word-xt 3 pick =
 ;
 
 : xt>word ( xt -- w | 0 )
 
     dup primitive?
-    if ['] match-primitive? else ['] match-compiled? then
+    if [ ' match-primitive? ] literal else [ ' match-compiled? ] literal then
     find-word
     swap drop ( remove xt from below the result )
 ;

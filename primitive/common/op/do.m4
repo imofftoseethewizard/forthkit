@@ -22,4 +22,4 @@ __primitive(op_do)
 }
 __end
 
-__define_primitive("<do>", op_do);
+__define_primitive_ext("<do>", op_do, c_operand_ip_absolute);

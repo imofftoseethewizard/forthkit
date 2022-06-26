@@ -27,4 +27,4 @@ __primitive(op_loop)
 }
 __end
 
-__define_primitive("<loop>", op_loop);
+__define_primitive_ext("<loop>", op_loop, c_operand_ip_offset);

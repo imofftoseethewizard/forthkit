@@ -113,13 +113,14 @@ enum engine_attribute {
     engine_attribute_count
 };
 
-#define c_immediate                  0b0000001
-#define c_inline                     0b0000010
-#define c_primitive                  0b0000100
-#define c_value                      0b0001000
-#define c_operand_ip_offset          0b0010000
-#define c_operand_indirect_ip_offset 0b0100000
-#define c_operand_literal            0b1000000
+#define c_immediate                  0b00000001
+#define c_inline                     0b00000010
+#define c_primitive                  0b00000100
+#define c_value                      0b00001000
+#define c_operand_ip_absolute        0b00010000
+#define c_operand_ip_offset          0b00100000
+#define c_operand_indirect_ip_offset 0b01000000
+#define c_operand_literal            0b10000000
 
 #define _quote(x) #x
 #define _from_pr(x) _from_pv(_pr_value(x))
