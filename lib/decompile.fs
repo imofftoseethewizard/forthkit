@@ -26,8 +26,10 @@ base !
 : first-word current @ @ ;
 : next-word w.next + @ ;
 
+: immediate-word? word-flags wf-immediate and 0= 0= ;
 : inline-word? word-flags wf-inline and 0= 0= ;
 : primitive-word? word-flags wf-primitive and 0= 0= ;
+: value-word? word-flags wf-value and 0= 0= ;
 : has-op-literal? word-flags wf-op-literal and 0= 0= ;
 : has-op-ip-absolute? word-flags wf-op-ip-absolute and 0= 0= ;
 : has-op-ip-offset? word-flags wf-op-ip-offset and 0= 0= ;
@@ -97,4 +99,26 @@ base !
         cell+
     loop
     drop
+;
+
+: display-word ( w -- w )
+
+    dup w.nt + @ count type space
+
+    dup immediate-word? if ." immediate " then
+    dup inline-word?    if ." inline "    then
+    dup primitive-word? if ." primitive " then
+    dup value-word?     if ." value "     then
+
+    cr
+;
+
+: display-words ( -- )
+    first-word
+    begin
+        ?dup
+    while
+            display-word
+            next-word
+    repeat
 ;
