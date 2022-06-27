@@ -1,11 +1,46 @@
-f83
-  review each word (in f83 order)
-    add *_err_* tests as appropriate
-    check signature, semantics of f79 vs f83
-    check that standard tests are implemented
-    add doc to word and any macros
-  additional words
-    [']
+debugger
+  ( f79 )
+  : debug' 32 word find ?dup if debug else ... then ;
+  ( f83 )
+  : debug' 32 word find if debug else ... then ;
+  \b (break)
+  \bt backtrace
+  bp
+  \.s
+  convenience forms for debug fiber's stack
+
+image load
+  interface
+    build
+      switch/env var to build bootstrap code
+    cli
+      flag to specify an image file
+        check that image is compatible
+        load image
+      checks for incompatible flags
+      check that build either has bootstrap code or an image file
+
+  simplest thing that could work
+    save evaluator memory block as a file.
+    should work for rel versions which load back to the same execution model
+
+  improvements
+    save only up to dp, plus total size
+
+    in canonical order, a list of locations where each primitive is referenced
+      create list on save
+      update in-memory image on load
+      enables loading an image created by one eecution model into a different evaluator
+
+    identify and encode references to addresses given by reserve
+      enable loading to a larger/smaller total memory size.
+
+    build bootstrap vs image loading interpreters
+
+    bundle image code with interpreter
+
+  load/save for absolute addressing may be possible
+  changing cell size is likely impossible
 
 order of generalization
   forth versions
@@ -21,7 +56,6 @@ order of generalization
     strict case matching
 
   compilers
-    clang
     tinycc
     msvc
   os/arch
@@ -37,9 +71,6 @@ order of features
       stop  steps = 0;
     tests for fiber.fs
     rename end -> pause
-
-  debugger
-    does the debugger need its own task?
 
   image load
 
@@ -234,53 +265,15 @@ thread
   switch ( ctx -- ) switch context, set regs into current, set current to ctx, read regs
 
 
-debugging
-  requires debug build
-    before prim check
-      check for breakpoint
-      check for steps == 0 (ss/ms)
-      check for ip == <> (nx)
-      check for rp == <> (so)
-    check
-
-
-  <xt> debug.. sets up a debug context
-  stack of stacks (say 4 stacks of 64 cells each) impl dependent parameters
-
-  : debug' 32 word find ?dup if debug else ... then ;
-  \s (single step)
-  \o (step out)
-  \w (next word)
-  n \m (multistep)
-  \r (run)
-  \b (break)
-  \bt backtrace
-  bp
-
-  debug context:
-    ip
-    rp
-    <space for rp>
-    break points
-
-  breakpoint
-
-  fibers
-    break
-
-    debug evaluator changes
-      implement step, next, out
-      on break, set run, debug-fiber twist
-
-    xt debug -- sets up a fiber
-    ss --  <set single step> _twist
-
 tools
   rationale: ubiquitious and lightweight
   a c compiler: bcc, clang, gcc, icc, pcc, tcc
   m4
   make
   sh
+  grep
+  find
+  indent
 
 1. discover which optimizations cause failures in absolute addressing
    individually and pairwise for individual optimizations,
