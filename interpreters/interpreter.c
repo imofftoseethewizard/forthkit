@@ -12,8 +12,9 @@
 #define INTERPRETER_NAME    EVALUATOR_FAMILY_NAME
 #define VERSION_DESCRIPTION "<version TODO>"
 
-#define DEFAULT_COMMAND      NULL
-#define DEFAULT_STORAGE_PATH NULL
+#define DEFAULT_COMMAND         NULL
+#define DEFAULT_IMAGE_FILE_PATH NULL
+#define DEFAULT_STORAGE_PATH    NULL
 
 #define DEFAULT_BUFFER_COUNT         32
 #define DEFAULT_BUFFER_SIZE          1024
@@ -32,6 +33,7 @@ static cell *evaluator = NULL;
 
 /* string options */
 static char *command            = DEFAULT_COMMAND;
+static char *image_file_path    = DEFAULT_IMAGE_FILE_PATH;
 static char *storage_path       = DEFAULT_STORAGE_PATH;
 
 /* integer options */
@@ -65,6 +67,7 @@ static struct option long_options[] = {
     {"expected-result",      required_argument, NULL,          'r'},
     {"fiber-count",          required_argument, NULL,          'f'},
     {"fiber-stack-size",     required_argument, NULL,          'F'},
+    {"image",                required_argument, NULL,          'I'},
     {"parameter-stack-size", required_argument, NULL,          'P'},
     {"pad-buffer-size",      required_argument, NULL,          'D'},
     {"return-stack-size",    required_argument, NULL,          'R'},
@@ -85,6 +88,7 @@ _define_result_messages();
 /* used for composing error in response to getopt_long errors; see process_options() */
 static char message_buffer[100];
 
+cell *read_image_file(const char *path);
 int evaluate_file(char *path);
 int is_valid_non_negative_integer(char *s);
 int is_valid_integer(char *s);
@@ -108,6 +112,7 @@ print_help(char *message)
     printf("  -F, --fiber-stack-size      maximum depth of fiber stack, default %d\n", DEFAULT_FIBER_STACK_SIZE);
     printf("  -f, --fiber-count           number of fibers to reserve space for, default %d\n", DEFAULT_FIBER_COUNT);
     printf("  -h, --help                  show this message\n");
+    printf("  -I, --image                 load an image file\n");
     printf("  -i, --interactive           start repl regardless of other options\n");
     printf("  -P, --parameter-stack-size  maximum depth of parameter stack, default %d\n", DEFAULT_PARAMETER_STACK_SIZE);
     printf("  -q, --quiet                 suppress greeting\n");
@@ -136,22 +141,27 @@ main(int argc, char *argv[])
 
     process_options(argc, argv);
 
-    evaluator = (cell *)malloc(evaluator_size);
+    if (image_file_path)
+        evaluator = read_image_file(image_file_path);
 
-    /* Clears structure, sets up basic limits. */
-    init_evaluator(
-        evaluator,
-        buffer_count,
-        buffer_size,
-        evaluator_size,
-        fiber_count,
-        fiber_stack_size,
-        pad_buffer_size,
-        parameter_stack_size,
-        return_stack_size,
-        source_size,
-        task_count,
-        word_buffer_size);
+    else {
+        evaluator = (cell *)malloc(evaluator_size);
+
+        /* Clears structure, sets up basic limits. */
+        init_evaluator(
+            evaluator,
+            buffer_count,
+            buffer_size,
+            evaluator_size,
+            fiber_count,
+            fiber_stack_size,
+            pad_buffer_size,
+            parameter_stack_size,
+            return_stack_size,
+            source_size,
+            task_count,
+            word_buffer_size);
+    }
 
     if (!quiet && !show_help && !show_version)
         printf("Forthkit %s\n", INTERPRETER_NAME);
@@ -182,6 +192,46 @@ main(int argc, char *argv[])
         repl();
 
     exit(0);
+}
+
+cell *
+read_image_file(const char *path)
+{
+    FILE *file = fopen(path, "r");
+    cell size = -1;
+    size_t bytes_read = -1;
+    cell *evaluator = NULL;
+    int result = 0;
+
+    if (!file) {
+        fprintf(stderr, "failed to open file \"%s\" with errno %d\n", path, errno);
+        exit(2);
+    }
+
+    bytes_read = fread(&size, 1, sizeof(cell), file);
+
+    if (bytes_read < sizeof(cell)) {
+        fprintf(stderr, "failed to read size of image in file \"%s\" with errno %d\n", path, errno);
+        exit(2);
+    }
+
+    evaluator = (cell *)malloc(size);
+
+    result = fseek(file, 0, SEEK_SET);
+
+    bytes_read = fread((char *)evaluator, 1, size, file);
+
+    if (bytes_read < size) {
+        fprintf(stderr, "failed to read image from file \"%s\" with errno %d\n", path, errno);
+        exit(2);
+    }
+
+    if (fclose(file)) {
+        fprintf(stderr, "failed to close file \"%s\" with errno %d\n", path, errno);
+        exit(3);
+    }
+
+    return evaluator;
 }
 
 void
@@ -315,7 +365,7 @@ process_options(int argc, char *argv[])
 
     while (1) {
 
-        c = getopt_long(argc, argv, ":b:B:c:E:F:f:hiP:qR:r:S:s:t:vw:", long_options, NULL);
+        c = getopt_long(argc, argv, ":b:B:c:E:F:f:hiI:P:qR:r:S:s:t:vw:", long_options, NULL);
 
         if (c == -1) break;
 
@@ -382,6 +432,10 @@ process_options(int argc, char *argv[])
 
         case 'h':
             show_help = 1;
+            break;
+
+        case 'I':
+            image_file_path = optarg;
             break;
 
         case 'i':

@@ -6,3 +6,4 @@ deps.txt
 *.trace
 \#*
 .#*
+*.fi
