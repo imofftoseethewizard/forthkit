@@ -183,10 +183,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
     __implement_evaluator_core() dnl
 
-    /* Store state back in the evaluator structure. */
-
-    e[ea_fp] = _from_ptr(fp);
-
     _debug("done with run: result: %d\n", result);
     _print_stack();
 

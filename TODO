@@ -13,33 +13,22 @@ debugger
   convenience forms for debug fiber's stack
 
 image load
+  build option to add bootstrap code
+
   interface
-    build
-      switch/env var to build bootstrap code
     cli
-      flag to specify an image file
-        check that image is compatible
-        load image
+      check that image is compatible
       checks for incompatible flags
       check that build either has bootstrap code or an image file
-    words
-      save-image
 
   improvements
-    save list of blocks with relocation information
-      <length><target addr><bytes>...
-      blocks:
-        engine attributes
-        task attributes
-        task dictionaries
 
-    save base data  problem, dp is actually stored in reserved memory as part of task 0
-      we could store all of the reserved area
+    move parameter, return stacks from fiber/task to independent reserved areas
 
     in canonical order, a list of locations where each primitive is referenced
       create list on save
       update in-memory image on load
-      enables loading an image created by one eecution model into a different evaluator
+      enables loading an image created by one execution model into a different evaluator
 
     identify and encode references to addresses given by reserve
       enable loading to a larger/smaller total memory size.
