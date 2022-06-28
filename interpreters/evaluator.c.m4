@@ -52,6 +52,8 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 {
     __declare_primitives()dnl
 
+    int result = 0;
+
     register cell *e = evaluator;
 
     register char *top;
@@ -72,114 +74,29 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
     __declare_evaluator_variables()
 
-    /* Contains the throw code for uncaught exceptions. */
-    int result = 0;
+    ifdef(`__include_bootstrap', `include(`./bootstrap.c.m4')')dnl
 
-    if (!e[ea_top]) {
+    _debug("interpreting source '%s'\n", source);
 
-        top = (char *)e + e[ea_size] - sizeof(cell);
-        e[ea_top] = _from_ptr(top);
+    /* copy source into evaluator memory */
 
-        /* reserve large blocks in high memory */
+    memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
+    e[ea_source_idx] = 0;
 
-        e[ea_buffers]      = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
-        e[ea_buffer_map]   = _reserve(e[ea_buffer_count] * sizeof(cell));
-        e[ea_number_pad]   = _reserve(_c_number_pad_size);
-        e[ea_pad]          = _reserve(e[ea_pad_buffer_size]);
-        e[ea_source_addr]  = _reserve(e[ea_source_size]);
-        e[ea_word_buffer0] = _reserve(e[ea_word_buffer_size]);
-        e[ea_word_buffer1] = _reserve(e[ea_word_buffer_size]);
-        e[ea_fp0]          = _reserve(e[ea_fiber_count] * sizeof(cell)) + e[ea_fiber_count] * sizeof(cell);
-        e[ea_fibers]       = _reserve(_fiber_area);
-        e[ea_tasks]        = _reserve(_task_area);
+    /* push new fiber for the interpreter task onto fiber stack */
 
-        _debug("tasks:        %x\n", e[ea_tasks]);
-        _debug("fibers:       %x\n", e[ea_fibers]);
-        _debug("fp0:          %x\n", e[ea_fp0]);
-        _debug("word_buffer1: %x\n", e[ea_word_buffer1]);
-        _debug("word_buffer0: %x\n", e[ea_word_buffer0]);
-        _debug("source_addr:  %x\n", e[ea_source_addr]);
-        _debug("number_pad:   %x\n", e[ea_number_pad]);
-        _debug("buffer_map:   %x\n", e[ea_buffer_map]);
-        _debug("buffers:      %x\n", e[ea_buffers]);
+    fp = fp0 = _to_ptr(e[ea_fp0]);
+    *--fp = _primary_fiber;
 
-        for (register int i = 0; i < e[ea_buffer_count]; i++)
-            *(_to_ptr(e[ea_buffer_map]) + i) = -1;
+    _load_fiber_state();
 
-        for (register int i = 0; i < e[ea_fiber_count]; i++) {
-            register cell *f = _to_fiber_ptr(i);
-            f[fa_ip] = 0;
-            f[fa_rp] = f[fa_rp_stop] = f[fa_rp0] = _from_ptr(f) + _fiber_size;
-            f[fa_steps] = -1;
-            f[fa_task] = 0;
-        }
+    rp = rp_stop = rp0;
+    *--rp = 0;
+    ip = _to_ptr(tp[ta_interpret]);
 
-        for (register int i = 0; i < e[ea_task_count]; i++) {
-            register cell *t = _to_task_ptr(i);
-            t[ta_bottom] = 0;
-            t[ta_top] = i == 0 ? _from_ptr(top) : 0;
-            t[ta_dp] = i == 0 ? _from_ptr(&e[engine_attribute_count]) : 0;
-            t[ta_sp] = t[ta_sp0] = _from_ptr(t) + _task_size;
-            t[ta_forth] = 0;
-            t[ta_context] =
-            t[ta_current] = _from_ptr(&t[ta_forth]);
-            t[ta_base] = 10;
-            t[ta_state] = 0;
-            t[ta_interpret] = 0;
-        }
+    steps = -1;
 
-        e[ea_fp]           = e[ea_fp0];
-        e[ea_source_idx]   = 0;
-        e[ea_source_len]   = 0;
-        e[ea_blk]          = 0;
-        e[ea_next_buffer]  = 0;
-        e[ea_scr]          = 0;
-
-        fp0 = fp = _to_ptr(e[ea_fp0]);
-        *--fp = _primary_fiber;
-
-        _load_fiber_state();
-
-        /*_check_thread_memory();*/
-
-        undivert(__primitive_word_definitions)
-        undivert(__compiled_word_definitions)dnl
-
-        _save_fiber_state();
-    }
-
-    /*_check_fiber_stack_bounds();
-    _check_task_memory();*/
-
-    if (source) {
-
-        _debug("interpreting source '%s'\n", source);
-
-        memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
-        e[ea_source_idx] = 0;
-
-        /* push new fiber for the interpreter task onto fiber stack */
-
-        fp = fp0 = _to_ptr(e[ea_fp0]);
-        *--fp = _primary_fiber;
-
-        _load_fiber_state();
-
-        rp = rp_stop = rp0;
-        *--rp = 0;
-        ip = _to_ptr(tp[ta_interpret]);
-
-        steps = -1;
-
-        _save_fiber_state();
-
-    } else {
-
-        fp  = _to_ptr(e[ea_fp]);
-        fp0 = _to_ptr(e[ea_fp0]);
-
-        _load_fiber_state();
-    }
+    _save_fiber_state();
 
     __implement_evaluator_core() dnl
 

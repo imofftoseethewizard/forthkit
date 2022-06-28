@@ -25,6 +25,10 @@ INCLUDE = ${BUILD}/include
 LIB	= ${BUILD}/lib
 SRC     = ${BUILD}/src
 
+BOOTSTRAP_EVALUATOR_C = ${SRC}/bootstrap-evaluator.c
+BOOTSTRAP_EVALUATOR_O = ${LIB}/bootstrap-evaluator.o
+BOOTSTRAP_INTERPRETER = ${BIN}/bootstrap-interpreter
+
 EVALUATOR_C = ${SRC}/evaluator.c
 EVALUATOR_H = ${INCLUDE}/evaluator.h
 EVALUATOR_O = ${LIB}/evaluator.o
@@ -40,6 +44,16 @@ m4_deps =											 \
 
 ${BIN} ${BUILD} ${INCLUDE} ${LIB} ${SRC} :
 	mkdir -p $@
+
+${BOOTSTRAP_EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC} bounds.h debug.h errors.h log.h
+	m4								 \
+	  --define __preamble=${PREAMBLE}				 \
+	  --define __memory_model=${MEMORY_MODEL}			 \
+	  --define __execution_model=${EXECUTION_MODEL}			 \
+	  --define __evaluator_primitives=${EVALUATOR_PRIMITIVES}	 \
+	  --define __compiled_words=${COMPILED_WORDS}			 \
+	  --define __include_bootstrap                                   \
+	  evaluator.c.m4 | indent -kr -l96 >$@
 
 ${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC} bounds.h debug.h errors.h log.h
 	m4								 \
@@ -60,11 +74,17 @@ ${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE} bounds.h debug.h errors.h 
 	  --define __compiled_words=${COMPILED_WORDS}			 \
 	  evaluator.h.m4 | indent -kr -l96 >$@
 
+${BOOTSTRAP_EVALUATOR_O} : ${BOOTSTRAP_EVALUATOR_C} ${EVALUATOR_H} ${CONFIG_H} ${LIB}
+	${CC} ${CFLAGS} -o $@ -c ${BOOTSTRAP_EVALUATOR_C}
+
+${BOOTSTRAP_INTERPRETER} : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
+	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${BOOTSTRAP_EVALUATOR_O}
+
 ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${CONFIG_H} ${LIB}
-	${CC} ${CFLAGS} -o ${EVALUATOR_O} -c ${EVALUATOR_C}
+	${CC} ${CFLAGS} -o $@ -c ${EVALUATOR_C}
 
 ${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
-	${CC} ${CFLAGS} -o ${INTERPRETER} interpreter.c ${LDFLAGS} ${EVALUATOR_O}
+	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
 deps : ${BUILD}
 	echo ${m4_deps} | tr ' ' '\n'    >  ${BUILD}/deps.txt
@@ -72,7 +92,7 @@ deps : ${BUILD}
 	ls ${FORTHKIT}/interpreters/*.h  >> ${BUILD}/deps.txt
 	ls ${FORTHKIT}/interpreters/*.m4 >> ${BUILD}/deps.txt
 
-all : ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
+all : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${BOOTSTRAP_INTERPRETER} ${EVALUATOR_O} ${INTERPRETER}
 
 clean :
 	rm -f ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}

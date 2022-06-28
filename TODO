@@ -13,7 +13,8 @@ debugger
   convenience forms for debug fiber's stack
 
 image load
-  build option to add bootstrap code
+  build step to create image from bootstrap file
+  run tests on no bootstrap evaluator with image
 
   interface
     cli
