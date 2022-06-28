@@ -51,6 +51,7 @@ enum fiber_attribute {
 #define _fiber_size ((fiber_attribute_count + e[ea_return_stack_size]) * sizeof(cell))
 
 enum task_attribute {
+    ta_bottom,
     ta_top,
     ta_dp,
     ta_sp,

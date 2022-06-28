@@ -217,13 +217,32 @@ read_image_file(const char *path)
 
     evaluator = (cell *)malloc(size);
 
-    result = fseek(file, 0, SEEK_SET);
+    while (1) {
+        cell length, addr;
 
-    bytes_read = fread((char *)evaluator, 1, size, file);
+        bytes_read = fread(&length, 1, sizeof(cell), file);
 
-    if (bytes_read < size) {
-        fprintf(stderr, "failed to read image from file \"%s\" with errno %d\n", path, errno);
-        exit(2);
+        if (!bytes_read)
+            break;
+
+        if (bytes_read < sizeof(cell)) {
+            fprintf(stderr, "failed to read block length from file \"%s\" with errno %d\n", path, errno);
+            exit(2);
+        }
+
+        bytes_read = fread(&addr, 1, sizeof(cell), file);
+
+        if (bytes_read < sizeof(cell)) {
+            fprintf(stderr, "failed to read block addr from file \"%s\" with errno %d\n", path, errno);
+            exit(2);
+        }
+
+        bytes_read = fread((char *)evaluator + addr, 1, length, file);
+
+        if (bytes_read < length) {
+            fprintf(stderr, "failed to read block contents from file \"%s\" with errno %d\n", path, errno);
+            exit(2);
+        }
     }
 
     if (fclose(file)) {

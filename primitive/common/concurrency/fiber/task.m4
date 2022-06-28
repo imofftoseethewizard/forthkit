@@ -1,5 +1,9 @@
 __primitive(pr_task)
 {
+    /* task ( u addr -- t )
+
+
+     */
     register int idx;
 
     for (idx = 0; idx < e[ea_task_count]; idx++)
@@ -11,8 +15,9 @@ __primitive(pr_task)
 
     else {
         register cell* t = _to_task_ptr(idx);
-        t[ta_dp] = *sp++;
-        t[ta_top] = t[ta_dp] + *sp - sizeof(cell);
+        t[ta_bottom] = *sp++;
+        t[ta_top] = t[ta_bottom] + *sp - sizeof(cell);
+        t[ta_dp] = t[ta_bottom];
         t[ta_sp] = t[ta_sp0];
         t[ta_base] = tp[ta_base];
         t[ta_forth] = tp[ta_forth];

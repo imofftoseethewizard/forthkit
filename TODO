@@ -1,3 +1,6 @@
+refactor
+  decompile.fs to isolate f79-specific core
+
 debugger
   ( f79 )
   : debug' 32 word find ?dup if debug else ... then ;
@@ -19,13 +22,19 @@ image load
         load image
       checks for incompatible flags
       check that build either has bootstrap code or an image file
-
-  simplest thing that could work
-    save evaluator memory block as a file.
-    should work for rel versions which load back to the same execution model
+    words
+      save-image
 
   improvements
-    save only up to dp, plus total size
+    save list of blocks with relocation information
+      <length><target addr><bytes>...
+      blocks:
+        engine attributes
+        task attributes
+        task dictionaries
+
+    save base data  problem, dp is actually stored in reserved memory as part of task 0
+      we could store all of the reserved area
 
     in canonical order, a list of locations where each primitive is referenced
       create list on save

@@ -1,7 +1,8 @@
 /* https://forth-standard.org/standard/exception */
 
 enum standard_result_code {
-    next_error_code = -90,
+    next_error_code = -91,
+    err_unable_to_allocate_memory,                     /* -90 */
     err_primary_task_not_allowed,                      /* -89 */
     err_invalid_task_number,                           /* -88 */
     err_active_task_not_allowed,                       /* -87 */
@@ -185,5 +186,6 @@ static char *result_messages[] = {                    \
     "no tasks available",                             \
     "active task not allowed",                        \
     "invalid task number",                            \
-    "primary task not allowed"                        \
+    "primary task not allowed",                       \
+    "unable to allocate memory"                       \
 }

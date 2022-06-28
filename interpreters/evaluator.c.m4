@@ -14,6 +14,7 @@ include(__compiled_words)dnl
 #include "evaluator.h"
 
 char *store_counted_string(const char *s, char *dp);
+int write_image_block(cell length, cell addr, char *data, FILE *file);
 
 void
 init_evaluator(
@@ -115,6 +116,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd)
 
         for (register int i = 0; i < e[ea_task_count]; i++) {
             register cell *t = _to_task_ptr(i);
+            t[ta_bottom] = 0;
             t[ta_top] = i == 0 ? _from_ptr(top) : 0;
             t[ta_dp] = i == 0 ? _from_ptr(&e[engine_attribute_count]) : 0;
             t[ta_sp] = t[ta_sp0] = _from_ptr(t) + _task_size;
@@ -203,6 +205,14 @@ store_counted_string(const char *s, char *dp)
     strncpy((char *)((length_type *)dp + 1), s, n);
 
     return dp + sizeof(cell) + n + 1;
+}
+
+int
+write_image_block(cell length, cell addr, char *data, FILE *file)
+{
+    return (sizeof(cell)    == fwrite(&length, 1, sizeof(cell), file)
+            && sizeof(cell) == fwrite(&addr, 1, sizeof(cell), file)
+            && length       == fwrite(data, 1, length, file));
 }
 
 __discard_all_diversions()dnl
