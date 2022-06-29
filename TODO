@@ -24,6 +24,12 @@ image load
 
   improvements
 
+    To support use by different rel (eg switch using thr image),
+    all primitive references must be adjusted to a common set.
+
+    ideally, a saved image for a given cell size should be the same across
+      execution models, address models, etc
+
     move parameter, return stacks from fiber/task to independent reserved areas
 
     in canonical order, a list of locations where each primitive is referenced
@@ -39,6 +45,44 @@ image load
     bundle image code with interpreter
 
   load/save for absolute addressing may be possible
+    list of attribute relocation points for abs addressing mode
+
+         fa_ip
+         fa_rp
+         fa_rp0
+         fa_rp_stop
+         fa_task
+
+         ta_bottom
+         ta_top
+         ta_dp
+         ta_sp
+         ta_sp0
+         ta_context
+         ta_current
+         ta_interpret
+         ta_forth
+
+         ea_buffer_map
+         ea_buffers
+         ea_error_message_addr
+         ea_fibers
+         ea_fp0
+         ea_fp
+         ea_number_pad
+         ea_pad
+         ea_source_addr
+         ea_tasks
+         ea_word_buffer
+         ea_word_buffer0
+         ea_word_buffer1
+
+         all address references in the dictionary, specifically
+             words in code
+             nfa
+             lfa
+             the values of variables and literals
+
   changing cell size is likely impossible
 
 order of generalization

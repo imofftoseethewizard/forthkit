@@ -93,6 +93,7 @@ enum engine_attribute {
     ea_error_msg_addr,
     ea_error_msg_len,
     ea_fibers,
+    ea_fp,
     ea_fp0,
     ea_number_pad,
     ea_pad,
@@ -104,7 +105,6 @@ enum engine_attribute {
 
     /* miscellaneous */
     ea_blk,
-    ea_fp,
     ea_next_buffer,
     ea_scr,
     ea_source_idx,

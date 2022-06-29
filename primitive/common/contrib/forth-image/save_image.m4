@@ -50,12 +50,20 @@ __primitive(pr_save_image)
         goto pr_save_image_exit;
     }
 
+    /* save engine attributes */
+    if (!write_image_block(engine_attribute_count, _from_ptr(e), e, file)) {
+        _abort(err_write_file);
+        goto pr_save_image_exit;
+    }
+
+    /* save task attributes */
     if (!write_image_block(_task_area, e[ea_tasks],
                            (char *)_to_ptr(e[ea_tasks]), file)) {
         _abort(err_write_file);
         goto pr_save_image_exit;
     }
 
+    /* save fiber attributes */
     if (!write_image_block(_fiber_area, e[ea_fibers],
                            (char *)_to_ptr(e[ea_fibers]), file)) {
         _abort(err_write_file);

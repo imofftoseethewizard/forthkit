@@ -39,7 +39,7 @@
 
         for (register int i = 0; i < e[ea_task_count]; i++) {
             register cell *t = _to_task_ptr(i);
-            t[ta_bottom] = 0;
+            t[ta_bottom] = i == 0 ? _from_ptr(e) : 0;
             t[ta_top] = i == 0 ? _from_ptr(top) : 0;
             t[ta_dp] = i == 0 ? _from_ptr(&e[engine_attribute_count]) : 0;
             t[ta_sp] = t[ta_sp0] = _from_ptr(t) + _task_size;
