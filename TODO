@@ -13,8 +13,10 @@ debugger
   convenience forms for debug fiber's stack
 
 image load
-  build step to create image from bootstrap file
-  run tests on no bootstrap evaluator with image
+  rerog bootstrapped- vs bare- vs <> in Makefile to use directories
+  reorg interpreter code to support separate c files for bootstrapped vs bare/bundled
+
+  run tests on no bootstrap evaluator with image for rel-switch builds
 
   interface
     cli
@@ -110,10 +112,7 @@ order of generalization
 
 order of features
   tasks
-    words to implement
-      stop  steps = 0;
     tests for fiber.fs
-    rename end -> pause
 
   image load
 
