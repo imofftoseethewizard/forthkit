@@ -25,14 +25,16 @@ INCLUDE = ${BUILD}/include
 LIB	= ${BUILD}/lib
 SRC     = ${BUILD}/src
 
-BOOTSTRAP_EVALUATOR_C = ${SRC}/bootstrap-evaluator.c
-BOOTSTRAP_EVALUATOR_O = ${LIB}/bootstrap-evaluator.o
-BOOTSTRAP_INTERPRETER = ${BIN}/bootstrap-interpreter
-
-EVALUATOR_C = ${SRC}/evaluator.c
-EVALUATOR_H = ${INCLUDE}/evaluator.h
-EVALUATOR_O = ${LIB}/evaluator.o
-INTERPRETER = ${BIN}/interpreter
+BARE_INTERPRETER	= ${BIN}/bare-interpreter
+BOOTSTRAP_EVALUATOR_C	= ${SRC}/bootstrap-evaluator.c
+BOOTSTRAP_EVALUATOR_O	= ${LIB}/bootstrap-evaluator.o
+BOOTSTRAP_INTERPRETER	= ${BIN}/bootstrap-interpreter
+EVALUATOR_C		= ${SRC}/evaluator.c
+EVALUATOR_H		= ${INCLUDE}/evaluator.h
+EVALUATOR_O		= ${LIB}/evaluator.o
+EVALUATOR_IMAGE		= ${LIB}/evaluator.fi
+EVALUATOR_IMAGE_O	= ${LIB}/evaluator.fi.o
+INTERPRETER		= ${BIN}/interpreter
 
 CFLAGS += -include ${CONFIG_H} -I${INCLUDE}
 
@@ -45,7 +47,7 @@ m4_deps =											 \
 ${BIN} ${BUILD} ${INCLUDE} ${LIB} ${SRC} :
 	mkdir -p $@
 
-${BOOTSTRAP_EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC} bounds.h debug.h errors.h log.h
+${BOOTSTRAP_EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
 	m4								 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
@@ -55,7 +57,7 @@ ${BOOTSTRAP_EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC} bounds.h debug.h err
 	  --define __include_bootstrap                                   \
 	  evaluator.c.m4 | indent -kr -l96 >$@
 
-${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC} bounds.h debug.h errors.h log.h
+${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
 	m4								 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
@@ -83,8 +85,17 @@ ${BOOTSTRAP_INTERPRETER} : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${CONFIG_H} $
 ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${CONFIG_H} ${LIB}
 	${CC} ${CFLAGS} -o $@ -c ${EVALUATOR_C}
 
-${INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
+${BARE_INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
 	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_O}
+
+${INTERPRETER} : ${EVALUATOR_IMAGE_O} ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
+	${CC} ${CFLAGS} -D BUNDLED=1 -fPIC -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
+
+${EVALUATOR_IMAGE} : ${BOOTSTRAP_INTERPRETER}
+	cd ${LIB} && ${BOOTSTRAP_INTERPRETER} -q -c "32 word $@ count save-image"
+
+${EVALUATOR_IMAGE_O} : ${EVALUATOR_IMAGE}
+	cd ${LIB} && ld ${EVALUATOR_IMAGE_LDFLAGS} -r -b binary evaluator.fi -o $@
 
 deps : ${BUILD}
 	echo ${m4_deps} | tr ' ' '\n'    >  ${BUILD}/deps.txt
@@ -92,7 +103,7 @@ deps : ${BUILD}
 	ls ${FORTHKIT}/interpreters/*.h  >> ${BUILD}/deps.txt
 	ls ${FORTHKIT}/interpreters/*.m4 >> ${BUILD}/deps.txt
 
-all : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${BOOTSTRAP_INTERPRETER} ${EVALUATOR_O} ${INTERPRETER}
+all : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${BOOTSTRAP_INTERPRETER} ${EVALUATOR_O} ${INTERPRETER} ${EVALUATOR_IMAGE_O}
 
 clean :
 	rm -f ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}

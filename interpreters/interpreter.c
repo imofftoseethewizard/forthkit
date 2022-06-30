@@ -12,6 +12,17 @@
 #define INTERPRETER_NAME    EVALUATOR_FAMILY_NAME
 #define VERSION_DESCRIPTION "<version TODO>"
 
+#ifdef BUNDLED
+
+#if BUNDLED
+extern const char _binary_evaluator_fi_end;
+extern const char _binary_evaluator_fi_start;
+#endif
+
+#else
+#define BUNDLED 0
+#endif
+
 #define DEFAULT_COMMAND         NULL
 #define DEFAULT_IMAGE_FILE_PATH NULL
 #define DEFAULT_STORAGE_PATH    NULL
@@ -22,7 +33,7 @@
 #define DEFAULT_EXPECTED_RESULT      0
 #define DEFAULT_FIBER_COUNT          4
 #define DEFAULT_FIBER_STACK_SIZE     4
-#define DEFAULT_WORD_BUFFER_SIZE     64
+#define DEFAULT_WORD_BUFFER_SIZE     128
 #define DEFAULT_PAD_BUFFER_SIZE      84 /* See PAD in doc/forth-83.txt */
 #define DEFAULT_PARAMETER_STACK_SIZE 64
 #define DEFAULT_RETURN_STACK_SIZE    64
@@ -88,7 +99,9 @@ _define_result_messages();
 /* used for composing error in response to getopt_long errors; see process_options() */
 static char message_buffer[100];
 
+cell *load_bundled_evaluator(void);
 cell *read_image_file(const char *path);
+cell *load_image(const char *image, int image_size);
 int evaluate_file(char *path);
 int is_valid_non_negative_integer(char *s);
 int is_valid_integer(char *s);
@@ -141,7 +154,10 @@ main(int argc, char *argv[])
 
     process_options(argc, argv);
 
-    if (image_file_path)
+    if (BUNDLED)
+        evaluator = load_bundled_evaluator();
+
+    else if (image_file_path)
         evaluator = read_image_file(image_file_path);
 
     else {
@@ -195,59 +211,93 @@ main(int argc, char *argv[])
 }
 
 cell *
+load_bundled_evaluator(void)
+{
+    #if BUNDLED
+    const char *image = &_binary_evaluator_fi_start;
+    size_t image_size = &_binary_evaluator_fi_end - &_binary_evaluator_fi_start;
+    return load_image(image, image_size);
+    #else
+    return NULL;
+    #endif
+}
+
+cell *
 read_image_file(const char *path)
 {
     FILE *file = fopen(path, "r");
-    cell size = -1;
+    long image_size = -1;
     size_t bytes_read = -1;
+    char *image = NULL;
     cell *evaluator = NULL;
-    int result = 0;
 
     if (!file) {
         fprintf(stderr, "failed to open file \"%s\" with errno %d\n", path, errno);
         exit(2);
     }
 
-    bytes_read = fread(&size, 1, sizeof(cell), file);
+    fseek(file, 0, SEEK_END);
 
-    if (bytes_read < sizeof(cell)) {
-        fprintf(stderr, "failed to read size of image in file \"%s\" with errno %d\n", path, errno);
+    image_size = ftell(file);
+
+    fseek(file, 0, SEEK_SET);
+
+    image = malloc(image_size);
+
+    if (!image) {
+        fprintf(stderr, "unable to allocate memory\n");
         exit(2);
     }
 
-    evaluator = (cell *)malloc(size);
+    bytes_read = fread(image, 1, image_size, file);
 
-    while (1) {
-        cell length, addr;
-
-        bytes_read = fread(&length, 1, sizeof(cell), file);
-
-        if (!bytes_read)
-            break;
-
-        if (bytes_read < sizeof(cell)) {
-            fprintf(stderr, "failed to read block length from file \"%s\" with errno %d\n", path, errno);
-            exit(2);
-        }
-
-        bytes_read = fread(&addr, 1, sizeof(cell), file);
-
-        if (bytes_read < sizeof(cell)) {
-            fprintf(stderr, "failed to read block addr from file \"%s\" with errno %d\n", path, errno);
-            exit(2);
-        }
-
-        bytes_read = fread((char *)evaluator + addr, 1, length, file);
-
-        if (bytes_read < length) {
-            fprintf(stderr, "failed to read block contents from file \"%s\" with errno %d\n", path, errno);
-            exit(2);
-        }
+    if (bytes_read < image_size) {
+        fprintf(stderr, "failed to read image contents from file \"%s\" with errno %d\n", path, errno);
+        exit(2);
     }
 
     if (fclose(file)) {
         fprintf(stderr, "failed to close file \"%s\" with errno %d\n", path, errno);
-        exit(3);
+        exit(2);
+    }
+
+    evaluator = load_image(image, image_size);
+
+    free(image);
+
+    return evaluator;
+}
+
+cell *
+load_image(const char *image, int image_size)
+{
+    cell size = *(cell *)image;
+    cell *evaluator = NULL;
+    int idx = sizeof(cell);
+    cell length, addr;
+
+    evaluator = (cell *)malloc(size);
+
+    while (idx < image_size) {
+
+        if (idx + 2 * sizeof(cell) >= image_size) {
+            fprintf(stderr, "image format error 1");
+            exit(2);
+        }
+
+        length = *(cell *)(image + idx);
+        idx += sizeof(cell);
+
+        addr = *(cell *)(image + idx);
+        idx += sizeof(cell);
+
+        if (idx + length > image_size) {
+            fprintf(stderr, "image format error 2");
+            exit(2);
+        }
+
+        memcpy((char *)evaluator + addr, image + idx, length);
+        idx += length;
     }
 
     return evaluator;
@@ -318,7 +368,7 @@ evaluate_file(char *path)
 
     if (fclose(file)) {
         fprintf(stderr, "failed to close file \"%s\" with errno %d\n", path, errno);
-        exit(3);
+        exit(2);
     }
 
     free(line);
