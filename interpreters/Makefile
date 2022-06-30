@@ -89,7 +89,7 @@ ${BARE_INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpret
 	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_O}
 
 ${INTERPRETER} : ${EVALUATOR_IMAGE_O} ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} ${BIN} interpreter.c
-	${CC} ${CFLAGS} -D BUNDLED=1 -fPIC -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
+	${CC} ${CFLAGS} -D BUNDLED=1 -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
 
 ${EVALUATOR_IMAGE} : ${BOOTSTRAP_INTERPRETER}
 	cd ${LIB} && ${BOOTSTRAP_INTERPRETER} -q -c "32 word $@ count save-image"
@@ -103,7 +103,7 @@ deps : ${BUILD}
 	ls ${FORTHKIT}/interpreters/*.h  >> ${BUILD}/deps.txt
 	ls ${FORTHKIT}/interpreters/*.m4 >> ${BUILD}/deps.txt
 
-all : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${BOOTSTRAP_INTERPRETER} ${EVALUATOR_O} ${INTERPRETER} ${EVALUATOR_IMAGE_O}
+all : ${BARE_INTERPRETER} ${BOOTSTRAP_INTERPRETER} ${INTERPRETER}
 
 clean :
 	rm -f ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
