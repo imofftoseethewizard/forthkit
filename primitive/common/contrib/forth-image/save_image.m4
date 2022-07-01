@@ -50,27 +50,21 @@ __primitive(pr_save_image)
         goto pr_save_image_exit;
     }
 
-    /* save engine attributes */
-    if (!write_image_block(engine_attribute_count, _from_ptr(e), e, file)) {
-        _abort(err_write_file);
-        goto pr_save_image_exit;
-    }
-
     /* save task attributes */
-    if (!write_image_block(_task_area, e[ea_tasks],
+    if (!write_image_block(bt_data, _task_area, e[ea_tasks],
                            (char *)_to_ptr(e[ea_tasks]), file)) {
         _abort(err_write_file);
         goto pr_save_image_exit;
     }
 
     /* save fiber attributes */
-    if (!write_image_block(_fiber_area, e[ea_fibers],
+    if (!write_image_block(bt_data, _fiber_area, e[ea_fibers],
                            (char *)_to_ptr(e[ea_fibers]), file)) {
         _abort(err_write_file);
         goto pr_save_image_exit;
     }
 
-    /* save task dictionaries */
+    /* save task dictionaries (and engine attributes with task 0) */
     for (register int i = 0; i < e[ea_task_count]; i++) {
 
         register cell
@@ -80,7 +74,7 @@ __primitive(pr_save_image)
         if (length == 0)
             continue;
 
-        if (!write_image_block(length, t[ta_bottom],
+        if (!write_image_block(bt_data, length, t[ta_bottom],
                                (char *)_to_ptr(t[ta_bottom]), file)) {
             _abort(err_write_file);
             goto pr_save_image_exit;

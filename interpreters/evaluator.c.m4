@@ -14,7 +14,7 @@ include(__compiled_words)dnl
 #include "evaluator.h"
 
 char *store_counted_string(const char *s, char *dp);
-int write_image_block(cell length, cell addr, char *data, FILE *file);
+int write_image_block(cell block_type, cell length, cell addr, char *data, FILE *file);
 
 void
 init_evaluator(
@@ -132,9 +132,10 @@ store_counted_string(const char *s, char *dp)
 }
 
 int
-write_image_block(cell length, cell addr, char *data, FILE *file)
+  write_image_block(cell block_type, cell length, cell addr, char *data, FILE *file)
 {
-    return (sizeof(cell)    == fwrite(&length, 1, sizeof(cell), file)
+    return (sizeof(cell)    == fwrite(&block_type, 1, sizeof(cell), file)
+            && sizeof(cell) == fwrite(&length, 1, sizeof(cell), file)
             && sizeof(cell) == fwrite(&addr, 1, sizeof(cell), file)
             && length       == fwrite(data, 1, length, file));
 }

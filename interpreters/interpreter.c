@@ -274,7 +274,7 @@ load_image(const char *image, int image_size)
     cell size = *(cell *)image;
     cell *evaluator = NULL;
     int idx = sizeof(cell);
-    cell length, addr;
+    cell block_type, length, addr;
 
     evaluator = (cell *)malloc(size);
 
@@ -289,6 +289,9 @@ load_image(const char *image, int image_size)
             fprintf(stderr, "image format error 1");
             exit(2);
         }
+
+        block_type = *(cell *)(image + idx);
+        idx += sizeof(cell);
 
         length = *(cell *)(image + idx);
         idx += sizeof(cell);

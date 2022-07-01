@@ -29,6 +29,21 @@ image load
     To support use by different rel (eg switch using thr image),
     all primitive references must be adjusted to a common set.
 
+      build should create index of primitive id to primitive value
+
+      on image load:
+        iterate through an array of offset, primitive id
+        replacing value at offset with the corresponding primitive value
+
+      on image save
+        need lookup of primitive value to primitive id
+          this is easy in switch. maybe restrict relocatable image creation to
+          the switch execution model?
+        create array of primitive address, primitive id
+        add block type cell (primitive, code)
+        store as 1st block after evaluator size
+
+
     ideally, a saved image for a given cell size should be the same across
       execution models, address models, etc
 

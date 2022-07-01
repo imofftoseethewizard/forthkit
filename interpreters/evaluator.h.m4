@@ -36,6 +36,12 @@ extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *p
 #define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
 #define _to_low_word(x)    ((double_number)(x))
 
+/* Used in when saving and loading evaluator images */
+enum block_type {
+    bt_data,
+    bt_primitive_references,
+};
+
 enum fiber_attribute {
     fa_ip,
     fa_rp,
