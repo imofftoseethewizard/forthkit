@@ -3,7 +3,7 @@
 inotifywait -mr --exclude 'log|.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build | \
     while read dir events file
     do
-        if echo $dir | grep /bin/ >/dev/null
+        if [ $file = 'bootstrap-interpreter' ]
         then
             version_tag=$(echo $dir | sed -E 's|.*/([^/]+)/bin/|\1|')
 
