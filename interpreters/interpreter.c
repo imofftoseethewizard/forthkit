@@ -199,7 +199,7 @@ main(int argc, char *argv[])
         exit(result == expected_result ? 0 : 3);
 
     if (command)
-        result = evaluate(evaluator, command, storage_fd);
+        result = evaluate(evaluator, command, storage_fd, NULL);
 
     if (result)
         exit(result == expected_result ? 0 : 3);
@@ -278,6 +278,11 @@ load_image(const char *image, int image_size)
 
     evaluator = (cell *)malloc(size);
 
+    int primitive_count = evaluate(NULL, NULL, 0, NULL);
+    cell *primitives = malloc(primitive_count * sizeof(cell));
+
+    primitive_count = evaluate(NULL, NULL, 0, primitives);
+
     while (idx < image_size) {
 
         if (idx + 2 * sizeof(cell) >= image_size) {
@@ -315,7 +320,7 @@ repl(void)
 
         if (!line) break;
 
-        result = evaluate(evaluator, line, storage_fd);
+        result = evaluate(evaluator, line, storage_fd, NULL);
 
         switch (result) {
         case result_ok:
@@ -356,7 +361,7 @@ evaluate_file(char *path)
     }
 
     for (line_no = 0; !result && fgets(line, source_size, file); line_no++)
-        result = evaluate(evaluator, line, storage_fd);
+        result = evaluate(evaluator, line, storage_fd, NULL);
 
     if (result) {
         printf("\nWhile reading %s at line %d: \n", path, line_no);

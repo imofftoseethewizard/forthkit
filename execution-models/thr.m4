@@ -1,5 +1,6 @@
 divert(-1)
-define(`__primitive', `divert(__primitive_implementations)    $1:')
+define(`__primitive', `divert(__primitive_registry)_pr_value($1),
+divert(__primitive_implementations)    $1:')
 define(`__end', `_next();
 ')
 define(`__declare_primitives', `')

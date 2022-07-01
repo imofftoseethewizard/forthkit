@@ -29,7 +29,7 @@ extern void init_evaluator(
     cell task_count,
     cell word_buffer_size);
 
-extern int evaluate(cell *evaluator, const char *source, int storage_fd);
+extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitive_registry);
 
 #define _from_high_word(x) ((x) >> (sizeof(number)*8))
 #define _from_low_word(x)  ((number)(x))

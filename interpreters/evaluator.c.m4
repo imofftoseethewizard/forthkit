@@ -48,9 +48,20 @@ init_evaluator(
 }
 
 int
-evaluate(cell *evaluator, const char *source, int storage_fd)
+evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
 {
     __declare_primitives()dnl
+
+    static cell internal_primitives[] = {
+        undivert(__primitive_registry)dnl
+    };
+
+    if (!evaluator) {
+        if (primitives)
+            memcpy(primitives, &internal_primitives, sizeof(internal_primitives));
+
+        return sizeof(internal_primitives)/sizeof(cell);
+    }
 
     int result = 0;
 
