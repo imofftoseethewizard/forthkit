@@ -46,7 +46,7 @@ do {                                                                     \
            _from_ptr(ip), ip?*ip:0, ip?*(ip+1):0,        \
            _from_ptr(rp), rp?*rp:0,                      \
            _from_ptr(sp), sp?*sp:0,                      \
-           _from_ptr(dp),                                      \
+           (long)_from_ptr(dp),                          \
            e[ea_source_len]-e[ea_source_idx], \
            (char *)_to_ptr(e[ea_source_addr]) + e[ea_source_idx]);      \
 } while (0)

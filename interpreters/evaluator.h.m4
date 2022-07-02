@@ -30,6 +30,8 @@ extern void init_evaluator(
     cell word_buffer_size);
 
 extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitive_registry);
+extern cell *create_evaluator_image(cell *e0, cell *e1, int *image_size);
+extern cell *load_evaluator_image(const char *image, int image_size);
 
 #define _from_high_word(x) ((x) >> (sizeof(number)*8))
 #define _from_low_word(x)  ((number)(x))
@@ -40,6 +42,7 @@ extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *p
 enum block_type {
     bt_data,
     bt_primitive_references,
+    bt_relocation_table,
 };
 
 enum fiber_attribute {

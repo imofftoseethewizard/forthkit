@@ -38,10 +38,11 @@ INTERPRETER		= ${BIN}/interpreter
 
 CFLAGS += -include ${CONFIG_H} -I${INCLUDE}
 
-m4_deps =											 \
-	${PREAMBLE} ${MEMORY_MODEL} ${EXECUTION_MODEL}						 \
-	${EVALUATOR_PRIMITIVES} ${COMPILED_WORDS}						 \
-	$(shell m4 ${FORTHKIT}/interpreters/primitive-dependencies.m4 ${EVALUATOR_PRIMITIVES})	 \
+m4_deps =											\
+	${PREAMBLE} ${MEMORY_MODEL} ${EXECUTION_MODEL}						\
+	${EVALUATOR_PRIMITIVES} ${COMPILED_WORDS}						\
+        ${FORTHKIT}/interpreters/bootstrap.c.m4							\
+	$(shell m4 ${FORTHKIT}/interpreters/primitive-dependencies.m4 ${EVALUATOR_PRIMITIVES})	\
 	$(shell m4 ${FORTHKIT}/interpreters/compiled-dependencies.m4 ${COMPILED_WORDS})
 
 ${BIN} ${BUILD} ${INCLUDE} ${LIB} ${SRC} :
@@ -92,7 +93,7 @@ ${INTERPRETER} : ${EVALUATOR_IMAGE_O} ${EVALUATOR_H} ${EVALUATOR_O} ${CONFIG_H} 
 	${CC} ${CFLAGS} -D BUNDLED=1 -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
 
 ${EVALUATOR_IMAGE} : ${BOOTSTRAP_INTERPRETER}
-	cd ${LIB} && ${BOOTSTRAP_INTERPRETER} -q -c "32 word $@ count save-image"
+	cd ${LIB} && ${BOOTSTRAP_INTERPRETER} -q -C $@
 
 ${EVALUATOR_IMAGE_O} : ${EVALUATOR_IMAGE}
 	cd ${LIB} && ld ${EVALUATOR_IMAGE_LDFLAGS} -r -b binary evaluator.fi -o $@

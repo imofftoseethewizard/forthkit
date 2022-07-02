@@ -23,9 +23,10 @@ extern const char _binary_evaluator_fi_start;
 #define BUNDLED 0
 #endif
 
-#define DEFAULT_COMMAND         NULL
-#define DEFAULT_IMAGE_FILE_PATH NULL
-#define DEFAULT_STORAGE_PATH    NULL
+#define DEFAULT_COMMAND           NULL
+#define DEFAULT_CREATE_IMAGE_PATH NULL
+#define DEFAULT_LOAD_IMAGE_PATH   NULL
+#define DEFAULT_STORAGE_PATH      NULL
 
 #define DEFAULT_BUFFER_COUNT         32
 #define DEFAULT_BUFFER_SIZE          1024
@@ -44,7 +45,8 @@ static cell *evaluator = NULL;
 
 /* string options */
 static char *command            = DEFAULT_COMMAND;
-static char *image_file_path    = DEFAULT_IMAGE_FILE_PATH;
+static char *create_image_path  = DEFAULT_CREATE_IMAGE_PATH;
+static char *load_image_path    = DEFAULT_LOAD_IMAGE_PATH;
 static char *storage_path       = DEFAULT_STORAGE_PATH;
 
 /* integer options */
@@ -74,13 +76,14 @@ static struct option long_options[] = {
     {"buffer-count",         required_argument, NULL,          'b'},
     {"buffer-size",          required_argument, NULL,          'B'},
     {"command",              required_argument, NULL,          'c'},
+    {"create-image",         required_argument, NULL,          'C'},
     {"evaluator-size",       required_argument, NULL,          'E'},
     {"expected-result",      required_argument, NULL,          'r'},
     {"fiber-count",          required_argument, NULL,          'f'},
     {"fiber-stack-size",     required_argument, NULL,          'F'},
     {"image",                required_argument, NULL,          'I'},
-    {"parameter-stack-size", required_argument, NULL,          'P'},
     {"pad-buffer-size",      required_argument, NULL,          'D'},
+    {"parameter-stack-size", required_argument, NULL,          'P'},
     {"return-stack-size",    required_argument, NULL,          'R'},
     {"source-size",          required_argument, NULL,          'S'},
     {"storage",              required_argument, NULL,          's'},
@@ -101,10 +104,11 @@ static char message_buffer[100];
 
 cell *load_bundled_evaluator(void);
 cell *read_image_file(const char *path);
-cell *load_image(const char *image, int image_size);
+void create_image(cell *e0, int argc, char *argv[]);
 int evaluate_file(char *path);
 int is_valid_non_negative_integer(char *s);
 int is_valid_integer(char *s);
+cell *prepare_evaluator(int argc, char *argv[]);
 void print_error(cell *e, const char *message, cell n);
 void print_version(void);
 void process_options(int argc, char *argv[]);
@@ -119,6 +123,7 @@ print_help(char *message)
 
     printf("  -B, --buffer-size           size of block buffers in bytes, default %d\n", DEFAULT_BUFFER_SIZE);
     printf("  -b, --buffer-count          number of block buffers, default %d\n", DEFAULT_BUFFER_COUNT);
+    printf("  -C, --create-image          path at which to store an image of the evaluator\n");
     printf("  -c, --command               command to execute, suppresses repl\n");
     printf("  -D, --pad-buffer-size       size of memory scratch area used to hold data for intermediate processing, default %d\n", DEFAULT_PAD_BUFFER_SIZE);
     printf("  -E, --evaluator-size        size of memory area for evaluator in bytes, default %d\n", DEFAULT_EVALUATOR_SIZE);
@@ -149,23 +154,58 @@ print_help(char *message)
 int
 main(int argc, char *argv[])
 {
-    int idx;
     number result = 0;
 
     process_options(argc, argv);
 
-    if (BUNDLED)
-        evaluator = load_bundled_evaluator();
+    if (show_help)
+        print_help(NULL);
 
-    else if (image_file_path)
-        evaluator = read_image_file(image_file_path);
+    else if (show_version)
+        /* print_help also calls print_version, so only call it here
+         * where show_help is false.
+         */
+        print_version();
+
+    if (storage_path)
+        storage_fd = open(storage_path, O_RDWR);
+
+    if (!quiet && !show_help && !show_version)
+        printf("Forthkit %s\n", INTERPRETER_NAME);
+
+    evaluator = prepare_evaluator(argc, argv);
+
+    if (create_image_path)
+        create_image(evaluator, argc, argv);
+
+    if (result)
+        exit(result == expected_result ? 0 : 3);
+
+    if (!command && !create_image_path && !show_help && !show_version && optind == argc || interactive)
+        repl();
+
+    exit(0);
+}
+
+cell *
+prepare_evaluator(int argc, char *argv[])
+{
+    cell *e = NULL;
+    int idx;
+    number result = 0;
+
+    if (BUNDLED)
+        e = load_bundled_evaluator();
+
+    else if (load_image_path)
+        e = read_image_file(load_image_path);
 
     else {
-        evaluator = (cell *)malloc(evaluator_size);
+        e = (cell *)malloc(evaluator_size);
 
         /* Clears structure, sets up basic limits. */
         init_evaluator(
-            evaluator,
+            e,
             buffer_count,
             buffer_size,
             evaluator_size,
@@ -179,35 +219,67 @@ main(int argc, char *argv[])
             word_buffer_size);
     }
 
-    if (!quiet && !show_help && !show_version)
-        printf("Forthkit %s\n", INTERPRETER_NAME);
-
-    if (show_help)
-        print_help(NULL);
-
-    else if (show_version)
-        /* print_help also calls print_version, so only call it here if show_help is false */
-        print_version();
-
-    if (storage_path)
-        storage_fd = open(storage_path, O_RDWR);
-
     for (idx = optind; !result && idx < argc; idx++)
         result = evaluate_file(argv[idx]);
 
     if (result)
         exit(result == expected_result ? 0 : 3);
 
-    if (command)
-        result = evaluate(evaluator, command, storage_fd, NULL);
+    result = evaluate(e, command ? command : "1", storage_fd, NULL);
 
     if (result)
         exit(result == expected_result ? 0 : 3);
 
-    if (!command && !show_help && !show_version && optind == argc || interactive)
-        repl();
+    return e;
+}
 
-    exit(0);
+void
+create_image(cell *e0, int argc, char *argv[])
+{
+    /* Create an indentical evaluator to compare it to. This makes it
+     * easy to detect address-dependent code and create the relocation
+     * table.
+     */
+    cell *e1 = prepare_evaluator(argc, argv);
+
+    if (!e1) {
+        fprintf(stderr, "failed to prepare comparison evaluator for create_image.\n");
+        exit(2);
+    }
+
+    int image_size;
+    cell *image = create_evaluator_image(e0, e1, &image_size);
+
+    free(e1);
+
+    if (!image) {
+        fprintf(stderr, "failed to create evaluator image.\n");
+        exit(2);
+    }
+
+    FILE *file;
+    size_t bytes_written;
+
+    file = fopen(create_image_path, "w");
+
+    if (!file) {
+        fprintf(stderr, "failed to open image \"%s\" for writing with errno %d\n", create_image_path, errno);
+        exit(2);
+    }
+
+    bytes_written = fwrite(image, 1, image_size, file);
+
+    if (bytes_written != image_size) {
+        fprintf(stderr, "failed to write all %d bytes to \"%s\" (only %d) with errno %d\n", image_size, create_image_path, bytes_written, errno);
+        exit(2);
+    }
+
+    if (fclose(file)) {
+        fprintf(stderr, "failed to close file \"%s\" with errno %d\n", create_image_path, errno);
+        exit(2);
+    }
+
+    free(image);
 }
 
 cell *
@@ -216,7 +288,7 @@ load_bundled_evaluator(void)
     #if BUNDLED
     const char *image = &_binary_evaluator_fi_start;
     size_t image_size = &_binary_evaluator_fi_end - &_binary_evaluator_fi_start;
-    return load_image(image, image_size);
+    return load_evaluator_image(image, image_size);
     #else
     return NULL;
     #endif
@@ -232,7 +304,7 @@ read_image_file(const char *path)
     cell *evaluator = NULL;
 
     if (!file) {
-        fprintf(stderr, "failed to open file \"%s\" with errno %d\n", path, errno);
+        fprintf(stderr, "failed to open image \"%s\" for reading with errno %d\n", path, errno);
         exit(2);
     }
 
@@ -261,52 +333,9 @@ read_image_file(const char *path)
         exit(2);
     }
 
-    evaluator = load_image(image, image_size);
+    evaluator = load_evaluator_image(image, image_size);
 
     free(image);
-
-    return evaluator;
-}
-
-cell *
-load_image(const char *image, int image_size)
-{
-    cell size = *(cell *)image;
-    cell *evaluator = NULL;
-    int idx = sizeof(cell);
-    cell block_type, length, addr;
-
-    evaluator = (cell *)malloc(size);
-
-    int primitive_count = evaluate(NULL, NULL, 0, NULL);
-    cell *primitives = malloc(primitive_count * sizeof(cell));
-
-    primitive_count = evaluate(NULL, NULL, 0, primitives);
-
-    while (idx < image_size) {
-
-        if (idx + 2 * sizeof(cell) >= image_size) {
-            fprintf(stderr, "image format error 1");
-            exit(2);
-        }
-
-        block_type = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        length = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        addr = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        if (idx + length > image_size) {
-            fprintf(stderr, "image format error 2");
-            exit(2);
-        }
-
-        memcpy((char *)evaluator + addr, image + idx, length);
-        idx += length;
-    }
 
     return evaluator;
 }
@@ -442,7 +471,7 @@ process_options(int argc, char *argv[])
 
     while (1) {
 
-        c = getopt_long(argc, argv, ":b:B:c:E:F:f:hiI:P:qR:r:S:s:t:vw:", long_options, NULL);
+        c = getopt_long(argc, argv, ":b:B:c:C:E:F:f:hiI:P:qR:r:S:s:t:vw:", long_options, NULL);
 
         if (c == -1) break;
 
@@ -475,6 +504,10 @@ process_options(int argc, char *argv[])
 
         case 'c':
             command = optarg;
+            break;
+
+        case 'C':
+            create_image_path = optarg;
             break;
 
         case 'E':
@@ -512,7 +545,7 @@ process_options(int argc, char *argv[])
             break;
 
         case 'I':
-            image_file_path = optarg;
+            load_image_path = optarg;
             break;
 
         case 'i':

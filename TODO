@@ -13,6 +13,8 @@ debugger
   convenience forms for debug fiber's stack
 
 image load
+  move save-image to interpreter
+
   rerog bootstrapped- vs bare- vs <> in Makefile to use directories
   reorg interpreter code to support separate c files for bootstrapped vs bare/bundled
 
@@ -37,8 +39,7 @@ image load
 
       on image save
         need lookup of primitive value to primitive id
-          this is easy in switch. maybe restrict relocatable image creation to
-          the switch execution model?
+          walk dictionary, collecting
         create array of primitive address, primitive id
         add block type cell (primitive, code)
         store as 1st block after evaluator size

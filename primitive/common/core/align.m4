@@ -2,9 +2,10 @@
     That seems like a safe assumption.
  */
 
+#pragma GCC diagnostic ignored "-Wint-conversion"
 #define _align(x) (cell *)((long)(x) + sizeof(cell) - 1 & ~(sizeof(cell) - 1))
 
-__primitive(pr_align)  
+__primitive(pr_align)
 {
     dp = (char *)_align(dp);
 }

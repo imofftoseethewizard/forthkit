@@ -1,7 +1,6 @@
 __primitive(pr_to_t)
 {
     register cell idx = *sp++;
-    fprintf(stderr, "to_t: idx: %d, fp[fa_task]: %lx\n", idx, _to_fiber_ptr(*fp)[fa_task]);
 
     if (!_is_valid_task_number(idx))
         _abort(err_invalid_task_number);
