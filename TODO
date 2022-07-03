@@ -13,7 +13,25 @@ debugger
   convenience forms for debug fiber's stack
 
 image load
-  move save-image to interpreter
+  image format. array of cells
+    first 8 bytes "Forthkit"
+    first 32 bytes reserved.
+    32nd byte is the cell size
+    following the first 32:
+    evaluator image
+    0 size of image
+    1 size of evaluator
+    2,3 offset to/number of relocated addresses
+    4,5 offset to/number of primitive addresses
+    6,7 offset to/number of data blocks
+    8,9 offset to/number of metadata blocks
+    each data block
+      length, offset (from evaluator base)
+    each metadata block
+      length tag data
+    header length: 32 bytes + 10 * cell size
+
+  add metadata to image
 
   rerog bootstrapped- vs bare- vs <> in Makefile to use directories
   reorg interpreter code to support separate c files for bootstrapped vs bare/bundled

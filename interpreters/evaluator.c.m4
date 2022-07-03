@@ -139,8 +139,6 @@ create_image_block(cell block_type, cell length, cell offset, char *data, cell *
     *image++ = length;
     *image++ = offset;
 
-    printf("create_image_block: block_type: %d, length: %d, offset: %d\n", block_type, length, offset);
-
     memcpy((char *)image, data, length);
 }
 
@@ -241,7 +239,6 @@ create_evaluator_image(cell *e0, cell *e1, int *image_size)
     for (int idx = 0; idx < image_size0 / sizeof(cell); idx++)
         if (im1[idx] - im0[idx] == offset) {
             im0[idx] -= (cell)e0;
-            printf("added relocation of %x with offset %x\n", idx * sizeof(cell), im0[idx]);
             *rtp++ = idx;
         }
 
@@ -267,8 +264,6 @@ create_evaluator_image(cell *e0, cell *e1, int *image_size)
 
     free(rt);
 
-    printf("created image: size: %x\n", *(cell *)im0);
-
     return im0;
 }
 
@@ -277,53 +272,49 @@ load_evaluator_image(const char *image0, int image_size)
 {
     char *image = malloc(image_size);
     cell size = *(cell *)image0;
-    cell *evaluator = NULL;
+    cell *e = NULL;
     int idx = sizeof(cell);
     cell block_type, length, offset;
 
     memcpy(image, image0, image_size);
 
-    printf("size: %x\n", size);
-    evaluator = (cell *)malloc(size);
-    printf("evaluator: %x, evaluator + size: %x\n", evaluator, (char *)evaluator + size);
+    e = (cell *)malloc(size);
 
     int primitive_count = evaluate(NULL, NULL, 0, NULL);
     cell *primitives = malloc(primitive_count * sizeof(cell));
 
     primitive_count = evaluate(NULL, NULL, 0, primitives);
 
-    printf("image_size: %d\n", image_size);
-    while (idx < image_size) {
+    if (_from_ptr(e) == e) {
 
-        if (idx + 3 * sizeof(cell) >= image_size) {
-            fprintf(stderr, "image format error 1");
-            exit(2);
-        }
+        while (idx < image_size) {
 
-        block_type = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        length = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        offset = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        printf("block_type: %d, length: %d, offset: %d, idx + length: %d\n", block_type, length, offset, idx + length);
-
-        if (idx + length > image_size) {
-            fprintf(stderr, "image format error 2");
-            exit(2);
-        }
-
-        cell *rtp = (cell *)(image + idx);
-        if (block_type == bt_relocation_table)
-            for (int ridx = 0; ridx < length/sizeof(cell); ridx++, rtp++) {
-                printf("relocating cell at %x from %x to %x\n", *rtp, ((cell *)image)[*rtp], ((cell *)image)[*rtp] + (cell)evaluator);
-                ((cell *)image)[*rtp] += (cell)evaluator;
+            if (idx + 3 * sizeof(cell) >= image_size) {
+                fprintf(stderr, "image format error 1");
+                exit(2);
             }
 
-        idx += length;
+            block_type = *(cell *)(image + idx);
+            idx += sizeof(cell);
+
+            length = *(cell *)(image + idx);
+            idx += sizeof(cell);
+
+            offset = *(cell *)(image + idx);
+            idx += sizeof(cell);
+
+            if (idx + length > image_size) {
+                fprintf(stderr, "image format error 2");
+                exit(2);
+            }
+
+            cell *rtp = (cell *)(image + idx);
+            if (block_type == bt_relocation_table)
+                for (int ridx = 0; ridx < length/sizeof(cell); ridx++, rtp++)
+                    ((cell *)image)[*rtp] += (cell)e;
+
+            idx += length;
+        }
     }
 
     idx = sizeof(cell);
@@ -343,24 +334,20 @@ load_evaluator_image(const char *image0, int image_size)
         offset = *(cell *)(image + idx);
         idx += sizeof(cell);
 
-        printf("block_type: %d, length: %d, offset: %d, idx + length: %d\n", block_type, length, offset, idx + length);
-
         if (idx + length > image_size) {
             fprintf(stderr, "image format error 2");
             exit(2);
         }
 
-        printf("(char *)evaluator + offset: %x, image + idx: %x, length: %d);\n", (char *)evaluator + offset, image + idx, length);
         if (block_type == bt_data)
-            memcpy((char *)evaluator + offset, image + idx, length);
+            memcpy((char *)e + offset, image + idx, length);
 
         idx += length;
     }
 
     free(image);
 
-    printf("image loaded\n");
-    return evaluator;
+    return e;
 }
 
 

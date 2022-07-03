@@ -105,7 +105,7 @@ static char message_buffer[100];
 cell *load_bundled_evaluator(void);
 cell *read_image_file(const char *path);
 void create_image(cell *e0, int argc, char *argv[]);
-int evaluate_file(char *path);
+int evaluate_file(cell *e, char *path);
 int is_valid_non_negative_integer(char *s);
 int is_valid_integer(char *s);
 cell *prepare_evaluator(int argc, char *argv[]);
@@ -220,7 +220,7 @@ prepare_evaluator(int argc, char *argv[])
     }
 
     for (idx = optind; !result && idx < argc; idx++)
-        result = evaluate_file(argv[idx]);
+        result = evaluate_file(e, argv[idx]);
 
     if (result)
         exit(result == expected_result ? 0 : 3);
@@ -379,7 +379,7 @@ repl(void)
 }
 
 int
-evaluate_file(char *path)
+evaluate_file(cell *e, char *path)
 {
     int line_no;
     int result = 0;
@@ -393,14 +393,14 @@ evaluate_file(char *path)
     }
 
     for (line_no = 0; !result && fgets(line, source_size, file); line_no++)
-        result = evaluate(evaluator, line, storage_fd, NULL);
+        result = evaluate(e, line, storage_fd, NULL);
 
     if (result) {
         printf("\nWhile reading %s at line %d: \n", path, line_no);
         print_error(
-            evaluator,
+            e,
             (result <= next_error_code) ? "unknown_error" : result_messages[-result],
-            evaluator[ea_source_idx]);
+            e[ea_source_idx]);
     }
 
     if (fclose(file)) {
