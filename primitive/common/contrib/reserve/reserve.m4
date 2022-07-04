@@ -1,4 +1,4 @@
-#define _reserve(x) (((top -= (x)) || 1) ? _from_ptr(top + sizeof(cell)) : 0)
+#define _reserve(x) (((top -= (x) + ((int)top % sizeof(cell))) || 1) ? _from_ptr(top + sizeof(cell)) : 0)
 
 __primitive(pr_reserve)
 {
