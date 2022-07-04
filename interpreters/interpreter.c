@@ -225,7 +225,8 @@ prepare_evaluator(int argc, char *argv[])
     if (result)
         exit(result == expected_result ? 0 : 3);
 
-    result = evaluate(e, command ? command : "1", storage_fd, NULL);
+    if (command)
+        evaluate(e, command, storage_fd, NULL);
 
     if (result)
         exit(result == expected_result ? 0 : 3);
