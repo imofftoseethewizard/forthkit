@@ -12,7 +12,7 @@ __primitive(pr_fiber)
     else {
         register cell* f = _to_fiber_ptr(idx);
         f[fa_ip] = *sp;
-        f[fa_rp0] = _from_ptr(f + _fiber_size);
+        f[fa_rp0] = _from_ptr(f) + _fiber_size;
         f[fa_rp] = f[fa_rp0] - sizeof(cell);
         *_to_ptr(f[fa_rp]) = 0;
         f[fa_rp_stop] = f[fa_rp0];
