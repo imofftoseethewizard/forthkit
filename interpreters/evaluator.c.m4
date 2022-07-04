@@ -365,8 +365,9 @@ load_evaluator_image(const char *image0, int image_size)
 
             rtp = (cell *)(image + idx);
 
-            for (int ridx = 0; ridx < length/sizeof(cell); ridx++, rtp++)
-                ((cell *)image)[*rtp] += (cell)e;
+            if (_from_ptr(e) == e)
+                for (int ridx = 0; ridx < length/sizeof(cell); ridx++, rtp++)
+                    ((cell *)image)[*rtp] += (cell)e;
 
             break;
 
