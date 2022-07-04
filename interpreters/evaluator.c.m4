@@ -51,13 +51,15 @@ init_evaluator(
 int
 evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
 {
+    __declare_evaluator_variables()
+
     __declare_primitives()dnl
 
-    static cell internal_primitives[] = {
-        undivert(__primitive_registry)dnl
-    };
+    static cell internal_primitives[__primitive_count];
 
     if (!evaluator) {
+        __initialize_internal_primitive_registry()dnl
+
         if (primitives)
             memcpy(primitives, &internal_primitives, sizeof(internal_primitives));
 
@@ -83,8 +85,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
     register cell *rp;
     register cell *rp_stop;
     register number steps;
-
-    __declare_evaluator_variables()
 
     ifdef(`__include_bootstrap', `include(`./bootstrap.c.m4')')dnl
 
@@ -209,12 +209,6 @@ create_data_image(cell *e, int *image_size)
 cell *
 create_evaluator_image(cell *e0, cell *e1, int *image_size)
 {
-    /* Implies relative addressing mode; there's no need for a relocation
-     * table.
-     */
-    if (sizeof(cell) < sizeof(void *))
-        return create_data_image(e0, image_size);
-
     int image_size0, image_size1;
     cell *im0, *im1;
 
@@ -262,6 +256,49 @@ create_evaluator_image(cell *e0, cell *e1, int *image_size)
         create_image_block(bt_relocation_table, rt_size, 0, (char *)rt, (char *)im0 + image_size0);
     }
 
+    int primitive_count = evaluate(NULL, NULL, 0, NULL);
+    cell *primitives = malloc(primitive_count * sizeof(cell));
+    evaluate(NULL, NULL, 0, primitives);
+
+    cell *pt = malloc(image_size0), *ptp = pt;
+
+    rtp = rt;
+    for (int idx = 0; idx < image_size0 / sizeof(cell); idx++) {
+        for (int i = 0; i < primitive_count; i++) {
+            if (idx == *rtp) {
+                rtp++;
+                i = primitive_count;
+                break;
+            }
+            if (im0[idx] == primitives[i]) {
+                *ptp++ = idx;
+                im0[idx] = i;
+                /* fprintf(stderr, "primitive %d (%x) found at idx %x\n", i, primitives[i], idx); */
+                break;
+            }
+        }
+    }
+
+    int pt_size = (char *)ptp - (char *)pt;
+
+    if (pt_size) {
+        *image_size += image_block_size(pt_size);
+
+        im1 = realloc(im0, *image_size);
+
+        if (!im1) {
+            free(im0);
+            free(pt);
+            *image_size = 0;
+            return NULL;
+        }
+
+        im0 = im1;
+        create_image_block(bt_primitive_references, pt_size, 0, (char *)pt, (char *)im0 + *image_size - image_block_size(pt_size));
+    }
+
+    free(primitives);
+    free(pt);
     free(rt);
 
     return im0;
@@ -285,43 +322,12 @@ load_evaluator_image(const char *image0, int image_size)
 
     primitive_count = evaluate(NULL, NULL, 0, primitives);
 
-    if (_from_ptr(e) == e) {
-
-        while (idx < image_size) {
-
-            if (idx + 3 * sizeof(cell) >= image_size) {
-                fprintf(stderr, "image format error 1");
-                exit(2);
-            }
-
-            block_type = *(cell *)(image + idx);
-            idx += sizeof(cell);
-
-            length = *(cell *)(image + idx);
-            idx += sizeof(cell);
-
-            offset = *(cell *)(image + idx);
-            idx += sizeof(cell);
-
-            if (idx + length > image_size) {
-                fprintf(stderr, "image format error 2");
-                exit(2);
-            }
-
-            cell *rtp = (cell *)(image + idx);
-            if (block_type == bt_relocation_table)
-                for (int ridx = 0; ridx < length/sizeof(cell); ridx++, rtp++)
-                    ((cell *)image)[*rtp] += (cell)e;
-
-            idx += length;
-        }
-    }
-
-    idx = sizeof(cell);
     while (idx < image_size) {
 
+        /* fprintf(stderr, "idx: %d, image_size: %d\n", idx, image_size); */
+
         if (idx + 3 * sizeof(cell) >= image_size) {
-            fprintf(stderr, "image format error 1");
+            fprintf(stderr, "image format error 1\n");
             exit(2);
         }
 
@@ -334,8 +340,64 @@ load_evaluator_image(const char *image0, int image_size)
         offset = *(cell *)(image + idx);
         idx += sizeof(cell);
 
+        /* fprintf(stderr, "block_type: %d, length: %d, offset: %d\n", block_type, length, offset); */
+
         if (idx + length > image_size) {
-            fprintf(stderr, "image format error 2");
+            fprintf(stderr, "image format error 2: idx+length: %d image_size: %d\n", idx+length, image_size);
+            exit(2);
+        }
+
+        cell *prp, *rtp;
+
+        switch (block_type) {
+        case bt_primitive_references:
+
+            prp = (cell *)(image + idx);
+
+            for (int pidx = 0; pidx < length/sizeof(cell); pidx++, prp++) {
+                /* fprintf(stderr, "setting idx %x to primitive %d %x\n", pidx, ((cell *)image)[*prp], primitives[((cell *)image)[*prp]]); */
+                ((cell *)image)[*prp] = primitives[((cell *)image)[*prp]];
+            }
+
+            break;
+
+        case bt_relocation_table:
+
+            rtp = (cell *)(image + idx);
+
+            for (int ridx = 0; ridx < length/sizeof(cell); ridx++, rtp++)
+                ((cell *)image)[*rtp] += (cell)e;
+
+            break;
+
+        }
+
+        idx += length;
+    }
+
+    idx = sizeof(cell);
+    while (idx < image_size) {
+
+        /* fprintf(stderr, "idx: %d, image_size: %d\n", idx, image_size); */
+
+        if (idx + 3 * sizeof(cell) >= image_size) {
+            fprintf(stderr, "image format error 1\n");
+            exit(2);
+        }
+
+        block_type = *(cell *)(image + idx);
+        idx += sizeof(cell);
+
+        length = *(cell *)(image + idx);
+        idx += sizeof(cell);
+
+        offset = *(cell *)(image + idx);
+        idx += sizeof(cell);
+
+        /* fprintf(stderr, "block_type: %d, length: %d, offset: %d\n", block_type, length, offset); */
+
+        if (idx + length > image_size) {
+            fprintf(stderr, "image format error 2: idx+length: %d image_size: %d\n", idx+length, image_size);
             exit(2);
         }
 

@@ -1,10 +1,11 @@
 divert(`-1')
-define(`__primitive', `divert(__primitive_registry)_pr_value($1),
+define(`__primitive', `divert(__primitive_registry)*prp++ = _from_pr($1);
 divert(__primitive_declarations)$1,
 divert(__primitive_implementations)case $1:')
 define(`__end', `break;
 ')
 define(`__declare_primitives', `enum {
+primitive_start = c_msb,
 undivert(__primitive_declarations)
 primitive_count
 };')
@@ -12,7 +13,7 @@ primitive_count
 divert(__header_definitions)
 
 #define _pr_value(x)       x
-#define _pr_value_base     0
+#define _pr_value_base     primitive_start
 #define _pr_value_limit    primitive_count
 
 define(`__implement_evaluator_core', `
@@ -45,7 +46,7 @@ define(`__implement_evaluator_core', `
             }
             _check_parameter_stack_bounds();
             _print_stack();
-        }
+       }
 
         if (fp < fp0) {
             _debug("saving fiber %d\n", *fp);

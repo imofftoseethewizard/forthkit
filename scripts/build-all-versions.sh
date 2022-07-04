@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
 cd $FORTHKIT/interpreters
-
+export FAMILIES=f83
 for family in $FAMILIES
 do
     for f in `ls $FORTHKIT/interpreters/$family/spec/*.rc`

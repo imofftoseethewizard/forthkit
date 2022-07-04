@@ -1,5 +1,5 @@
 divert(`-1')
-define(`__primitive', `divert(__primitive_registry)_pr_value($1),
+define(`__primitive', `divert(__primitive_registry)*prp++ = _from_pr($1);
 divert(__primitive_declarations)auto void $1(void);
 divert(__primitive_implementations)void $1(void)')
 define(`__end', `')
