@@ -1,3 +1,8 @@
+c to fs
+  move compiled/ to lib/
+  move some primitives to lib/
+  tests
+
 refactor
   decompile.fs to isolate f79-specific core
 
@@ -12,7 +17,60 @@ debugger
   \.s
   convenience forms for debug fiber's stack
 
-image load
+order of generalization
+  forth versions
+    standards
+      94 (ansi), current standard, (check gforth compat works)
+
+  modules
+    contains ops, primitives, compiled, tests for a unit of functionality
+    eg one each for the standard word sets, posix file handling or optargs, etc
+
+  forth variants
+    wihtout fibers
+    indirect word references
+    no bounds checking
+    strict case matching
+
+  compilers
+    tinycc
+    msvc
+
+  os/arch
+    rpi -- have one
+    macos -- qemu
+    arduino -- have one
+    pic?
+    beaglebone
+
+order of features
+  move contents of compiled/*.m4 (c files) to lib *.fs
+
+  primitive reduction (f0 effort/after image loading)
+    move base, state to dictionary from task
+    move current, forth, interpret to evaluator from task
+    remove primitives base, state, tbase, tcurrent, tinterpret, tstate
+
+    base
+      dot num convert u_dot decimal to_number
+
+    state
+      _abort left_bracket quit dot_quote colon semicolon right_bracket
+      tick_f79 interpret
+
+  tasks
+    tests for fiber.fs
+
+  use aux task to implement compile-execute interpreter
+    enables control structures in "interpret" mode
+    would this eliminate state?
+    how would [ ] be handled?
+
+  garbage collector
+
+  image load 2
+
+image load (part 2)
   image format. array of cells
     first 8 bytes "Forthkit"
     first 32 bytes reserved.
@@ -36,8 +94,6 @@ image load
   rerog bootstrapped- vs bare- vs <> in Makefile to use directories
   reorg interpreter code to support separate c files for bootstrapped vs bare/bundled
 
-  run tests on no bootstrap evaluator with image for rel-switch builds
-
   interface
     cli
       check that image is compatible
@@ -46,128 +102,10 @@ image load
 
   improvements
 
-    To support use by different rel (eg switch using thr image),
-    all primitive references must be adjusted to a common set.
-
-      build should create index of primitive id to primitive value
-
-      on image load:
-        iterate through an array of offset, primitive id
-        replacing value at offset with the corresponding primitive value
-
-      on image save
-        need lookup of primitive value to primitive id
-          walk dictionary, collecting
-        create array of primitive address, primitive id
-        add block type cell (primitive, code)
-        store as 1st block after evaluator size
-
-
-    ideally, a saved image for a given cell size should be the same across
-      execution models, address models, etc
-
     move parameter, return stacks from fiber/task to independent reserved areas
-
-    in canonical order, a list of locations where each primitive is referenced
-      create list on save
-      update in-memory image on load
-      enables loading an image created by one execution model into a different evaluator
 
     identify and encode references to addresses given by reserve
       enable loading to a larger/smaller total memory size.
-
-    build bootstrap vs image loading interpreters
-
-    bundle image code with interpreter
-
-  load/save for absolute addressing may be possible
-    list of attribute relocation points for abs addressing mode
-
-         fa_ip
-         fa_rp
-         fa_rp0
-         fa_rp_stop
-         fa_task
-
-         ta_bottom
-         ta_top
-         ta_dp
-         ta_sp
-         ta_sp0
-         ta_context
-         ta_current
-         ta_interpret
-         ta_forth
-
-         ea_buffer_map
-         ea_buffers
-         ea_error_message_addr
-         ea_fibers
-         ea_fp0
-         ea_fp
-         ea_number_pad
-         ea_pad
-         ea_source_addr
-         ea_tasks
-         ea_word_buffer
-         ea_word_buffer0
-         ea_word_buffer1
-
-         all address references in the dictionary, specifically
-             words in code
-             nfa
-             lfa
-             the values of variables and literals
-
-  changing cell size is likely impossible
-
-order of generalization
-  forth versions
-    standards
-      94 (ansi), current standard, (check gforth compat works)
-  modules
-    contains ops, primitives, compiled, tests for a unit of functionality
-    eg one each for the standard word sets, posix file handling or optargs, etc
-  forth variants
-    wihtout fibers
-    indirect word references
-    no bounds checking
-    strict case matching
-
-  compilers
-    tinycc
-    msvc
-  os/arch
-    rpi
-    macos
-    arduino
-    pic?
-    beaglebone
-
-order of features
-  tasks
-    tests for fiber.fs
-
-  image load
-
-  use aux task to implement compile-execute interpreter
-    enables control structures in "interpret" mode
-    would this eliminate state?
-    how would [ ] be handled?
-
-  garbage collector
-
-  primitive reduction (f0 effort/after image loading)
-    move base, state to dictionary from task
-    move current, forth, interpret to evaluator from task
-    remove primitives base, state, tbase, tcurrent, tinterpret, tstate
-
-    base
-      dot num convert u_dot decimal to_number
-
-    state
-      _abort left_bracket quit dot_quote colon semicolon right_bracket
-      tick_f79 interpret
 
 order of expanded testing
   new features
@@ -412,18 +350,16 @@ tools
     _to_ptr       -- translates a cell which references another to (cell *), inverse of _from_ptr
 
 5. indirect threading
-7. load/save relocatable images
 8. multi-threading
 9. local multi-process
 10. indirect primitives for 2 byte word size, or translate more primitives to compiled
-14. other compilers: clang, bcc, tcc, pcc, icc
+14. other compilers: bcc, tcc, pcc, icc
 14.
     test suite
       double number words
 
     selected (all?) items from reference word set
 
-11. f83
 12. f94
 13. f2012
 12. investigate Joy and HVM.
