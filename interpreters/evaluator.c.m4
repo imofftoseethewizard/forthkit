@@ -187,8 +187,7 @@ add_data_block(
 cell *
 create_data_image(cell *e, int *image_size)
 {
-
-    char *image = malloc(e[ea_size]);
+    char *image = malloc(sizeof(cell));
     char *data;
 
     if (!image)
@@ -285,7 +284,6 @@ create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int 
      *   1. Only process the data portions of the data blocks in the
      *      image.
      *   2. Only process the dictionary portions of the data.
-     *   3. Make relocation addresses and
      */
 
     for (int idx = 1, ridx = 0; idx < image_size / sizeof(cell); idx++) {
@@ -440,7 +438,5 @@ load_evaluator_image(const char *image0, int image_size)
 
     return e;
 }
-
-
 
 __discard_all_diversions()dnl
