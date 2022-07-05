@@ -16,7 +16,6 @@ $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERP
 $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/snip.fs
 $FORTHKIT/scripts/check.sh ..   $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/start.fs
 $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/task.fs
-$FORTHKIT/scripts/check.sh .a   $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tbase.fs
 $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tcontext.fs
 $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tcurrent.fs
 $FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tdp.fs

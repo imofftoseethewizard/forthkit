@@ -1,0 +1,1 @@
+$FORTHKIT/scripts/check.sh .a   $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tbase.fs
