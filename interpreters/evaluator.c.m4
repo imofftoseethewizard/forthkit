@@ -288,9 +288,42 @@ create_evaluator_image(cell *e0, cell *e1, int *image_size)
     free(pt);
     free(rt);
 
-    fprintf(stderr, "done2: *image_size: %d\n", *image_size);
-
     return im0;
+}
+
+int
+next_block(char *blks, int idx, int size, cell *block_type_out, cell *length_out, cell *offset_out)
+{
+    cell block_type, length, offset;
+
+    if (idx + 3 * sizeof(cell) >= size) {
+        fprintf(stderr, "image format error 1\n");
+        exit(2);
+    }
+
+    block_type = *(cell *)(blks + idx);
+    idx += sizeof(cell);
+
+    length = *(cell *)(blks + idx);
+    idx += sizeof(cell);
+
+    offset = *(cell *)(blks + idx);
+    idx += sizeof(cell);
+
+    if (idx + length > size) {
+        fprintf(stderr, "image format error 2\n", idx+length, size);
+        exit(2);
+    }
+
+    *block_type_out = block_type;
+    *length_out = length;
+    *offset_out = offset;
+
+    /* fprintf(stderr, "next_block: idx: %d, block_type: %d, length: %d, offset: %d\n", */
+    /*         idx, block_type, length, offset); */
+
+    return idx;
+
 }
 
 cell *
@@ -313,28 +346,7 @@ load_evaluator_image(const char *image0, int image_size)
 
     while (idx < image_size) {
 
-        /* fprintf(stderr, "idx: %d, image_size: %d\n", idx, image_size); */
-
-        if (idx + 3 * sizeof(cell) >= image_size) {
-            fprintf(stderr, "image format error 1\n");
-            exit(2);
-        }
-
-        block_type = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        length = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        offset = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        /* fprintf(stderr, "block_type: %d, length: %d, offset: %d\n", block_type, length, offset); */
-
-        if (idx + length > image_size) {
-            fprintf(stderr, "image format error 2: idx+length: %d image_size: %d\n", idx+length, image_size);
-            exit(2);
-        }
+        idx = next_block(image, idx, image_size, &block_type, &length, &offset);
 
         cell *prp, *rtp;
 
@@ -368,28 +380,7 @@ load_evaluator_image(const char *image0, int image_size)
     idx = sizeof(cell);
     while (idx < image_size) {
 
-        /* fprintf(stderr, "idx: %d, image_size: %d\n", idx, image_size); */
-
-        if (idx + 3 * sizeof(cell) >= image_size) {
-            fprintf(stderr, "image format error 1\n");
-            exit(2);
-        }
-
-        block_type = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        length = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        offset = *(cell *)(image + idx);
-        idx += sizeof(cell);
-
-        /* fprintf(stderr, "block_type: %d, length: %d, offset: %d\n", block_type, length, offset); */
-
-        if (idx + length > image_size) {
-            fprintf(stderr, "image format error 2: idx+length: %d image_size: %d\n", idx+length, image_size);
-            exit(2);
-        }
+        idx = next_block(image, idx, image_size, &block_type, &length, &offset);
 
         if (block_type == bt_data)
             memcpy((char *)e + offset, image + idx, length);
