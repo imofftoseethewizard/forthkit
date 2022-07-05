@@ -132,16 +132,6 @@ store_counted_string(const char *s, char *dp)
     return dp + sizeof(cell) + n + 1;
 }
 
-void
-create_image_block(cell block_type, cell length, cell offset, char *data, cell *image)
-{
-    *image++ = block_type;
-    *image++ = length;
-    *image++ = offset;
-
-    memcpy((char *)image, data, length);
-}
-
 int
 image_block_size(int payload_size)
 {
@@ -149,59 +139,85 @@ image_block_size(int payload_size)
 }
 
 cell *
+add_image_block(cell *image, int image_size, cell block_type, cell length, cell offset, char *data, int *image_size_out)
+{
+    int block_size = image_block_size(length);
+    int new_image_size = image_size + block_size;
+    cell *imp;
+
+    image = realloc(image, new_image_size);
+    imp = (char *)image + image_size;
+
+    *imp++ = block_type;
+    *imp++ = length;
+    *imp++ = offset;
+
+    memcpy((char *)imp, data, length);
+
+    *image_size_out = new_image_size;
+    return image;
+}
+
+cell *
+add_primitive_table_block(
+    cell *image, int image_size, cell length, char *data, int *image_size_out)
+{
+    return add_image_block(image, image_size, bt_primitive_references, length,
+                           0, data, image_size_out);
+}
+
+cell *
+add_relocation_table_block(
+    cell *image, int image_size, cell length, char *data, int *image_size_out)
+{
+    return add_image_block(
+        image, image_size, bt_relocation_table, length, 0, data,
+        image_size_out);
+}
+
+cell *
+add_data_block(
+    cell *image, int image_size, cell length, cell offset, char *data,
+    int *image_size_out)
+{
+    return add_image_block(
+        image, image_size, bt_data, length, offset, data, image_size_out);
+}
+
+cell *
 create_data_image(cell *e, int *image_size)
 {
-    /* save-image ( caddr u -- )
-
-       Opens the file at the path given by caddr u, creating it if
-       necessary.
-
-       Saves the memory size of the evaluator and relevant sections
-       of its memory as a list of blocks. The size is stored as a
-       cell-sized value at the beginning of the file. This is
-       followed by a sequence of blocks of the form.
-
-       |   length
-       |   address
-       |   <length bytes>
-
-       where length and address are cell-sized, and <length bytes>
-       is the contents of the block.
-     */
 
     char *image = malloc(e[ea_size]);
-    char *imagep = image;
     char *data;
 
     if (!image)
         return NULL;
 
-    *(cell *)imagep = e[ea_size];
-    imagep += sizeof(cell);
+    *(cell *)image = e[ea_size];
+    *image_size = sizeof(cell);
 
     /* save task attributes */
     data = (char *)_to_ptr(e[ea_tasks]);
-    create_image_block(bt_data, _task_area, (cell)(data - (char *)e), data, (cell *)imagep);
-    imagep += image_block_size(_task_area);
+    image = add_data_block(
+        image, *image_size, _task_area, (cell)(data - (char *)e), data, image_size);
 
     /* save fiber attributes */
     data = (char *)_to_ptr(e[ea_fibers]);
-    create_image_block(bt_data, _fiber_area, (cell)(data - (char *)e), data, (cell *)imagep);
-    imagep += image_block_size(_fiber_area);
+    image = add_data_block(
+        image, *image_size, _fiber_area, (cell)(data - (char *)e), data, image_size);
 
     /* save task dictionaries (and engine attributes with task 0) */
     for (register int i = 0; i < e[ea_task_count]; i++) {
-	register cell * t = _to_task_ptr(i), length = _align(t[ta_dp] - t[ta_bottom]);
+	register cell *t = _to_task_ptr(i), length = _align(t[ta_dp] - t[ta_bottom]);
         char *data = (char *)_to_ptr(t[ta_bottom]);
 
         if (length == 0)
             continue;
 
-        create_image_block(bt_data, length, (cell)(data - (char *)e), data, (cell *)imagep);
-        imagep += image_block_size(length);
+        image = add_data_block(
+            image, *image_size, length, (cell)(data - (char *)e), data, image_size);
     }
-
-    *image_size = imagep - image;
 
     return realloc(image, *image_size);
 }
@@ -240,21 +256,7 @@ create_evaluator_image(cell *e0, cell *e1, int *image_size)
 
     int rt_size = (char *)rtp - (char *)rt;
 
-    if (rt_size) {
-        *image_size += image_block_size(rt_size);
-
-        im1 = realloc(im0, *image_size);
-
-        if (!im1) {
-            free(im0);
-            free(rt);
-            *image_size = 0;
-            return NULL;
-        }
-
-        im0 = im1;
-        create_image_block(bt_relocation_table, rt_size, 0, (char *)rt, (char *)im0 + image_size0);
-    }
+    im0 = add_relocation_table_block(im0, *image_size, rt_size, (char *)rt, image_size);
 
     int primitive_count = evaluate(NULL, NULL, 0, NULL);
     cell *primitives = malloc(primitive_count * sizeof(cell));
@@ -280,26 +282,13 @@ create_evaluator_image(cell *e0, cell *e1, int *image_size)
     }
 
     int pt_size = (char *)ptp - (char *)pt;
-
-    if (pt_size) {
-        *image_size += image_block_size(pt_size);
-
-        im1 = realloc(im0, *image_size);
-
-        if (!im1) {
-            free(im0);
-            free(pt);
-            *image_size = 0;
-            return NULL;
-        }
-
-        im0 = im1;
-        create_image_block(bt_primitive_references, pt_size, 0, (char *)pt, (char *)im0 + *image_size - image_block_size(pt_size));
-    }
+    im0 = add_primitive_table_block(im0, *image_size, pt_size, (char *)pt, image_size);
 
     free(primitives);
     free(pt);
     free(rt);
+
+    fprintf(stderr, "done2: *image_size: %d\n", *image_size);
 
     return im0;
 }
