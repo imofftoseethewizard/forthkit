@@ -1,6 +1,6 @@
 #! /usr/bin/env sh
 
-inotifywait -mr --exclude 'log|.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build/f83/gcc-abs-thr-a32-c4-l1 | \
+inotifywait -mr --exclude 'log|.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build | \
     while read dir events file
     do
         if [ $file = 'interpreter' ] || [ $file = 'bootstrap-interpreter' ]
