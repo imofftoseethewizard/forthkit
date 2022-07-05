@@ -223,6 +223,40 @@ create_data_image(cell *e, int *image_size)
 }
 
 cell *
+create_relocation_table(cell *e0, cell *e1, cell *im0, cell *im1, int image_size, int *rt_size_out)
+{
+    /* relocation table */
+    cell *rt = malloc(image_size), *rtp = rt;
+
+    *rt_size_out = 0;
+
+    if (!rt)
+        return NULL;
+
+    /* If the evaluators use relocatable addressing, then they should be
+     * identical. If the use absolute addressing, then they will differ
+     * at all places where there is an address, and that difference will be
+     * be the same for every address and also equal to the difference between
+     * the memory blocks of the two evaluators.
+     */
+    int offset = (char *)e1 - (char *)e0;
+
+    for (int idx = 1; idx < image_size / sizeof(cell); idx++)
+        /* Check the cell to see if contains an absolute address.
+         */
+        if (im1[idx] - im0[idx] == offset) {
+            /* If so, compute the relative address, and store that,
+             * recording the index where the relocation happened.
+             */
+            im0[idx] -= (cell)e0;
+            *rtp++ = idx;
+        }
+
+    *rt_size_out = (char *)rtp - (char *)rt;
+    return rt;
+}
+
+cell *
 create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int *pt_size_out)
 {
     /* The primitives table will need at most the size of the data
@@ -287,49 +321,29 @@ create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int 
 cell *
 create_evaluator_image(cell *e0, cell *e1, int *image_size)
 {
-    int image_size0, image_size1;
-    cell *im0, *im1;
+    int image_size0, image_size1, rt_size, pt_size;
+    cell *image, *im0, *im1, *rt, *pt;
 
+    image = NULL;
     *image_size = 0;
 
     im0 = create_data_image(e0, &image_size0);
     im1 = create_data_image(e1, &image_size1);
 
-    if (!im0 || !im1)
-        return NULL;
-
-    /* relocation table */
-    cell *rt = malloc(image_size0), *rtp = rt;
-
-    if (!rt)
-        return NULL;
-
-    *image_size = image_size0;
-
-    int offset = (char *)e1 - (char *)e0;
-
-    for (int idx = 0; idx < image_size0 / sizeof(cell); idx++)
-        if (im1[idx] - im0[idx] == offset) {
-            im0[idx] -= (cell)e0;
-            *rtp++ = idx;
-        }
-
-    free(im1);
-
-    int rt_size = (char *)rtp - (char *)rt;
-
-    im0 = add_relocation_table_block(im0, *image_size, rt_size, (char *)rt, image_size);
-
-    cell *pt;
-    int pt_size;
+    rt = create_relocation_table(e0, e1, im0, im1, image_size0, &rt_size);
     pt = create_primitives_table(im0, image_size0, rt, rt_size, &pt_size);
 
-    im0 = add_primitive_table_block(im0, *image_size, pt_size, (char *)pt, image_size);
+    image = im0;
+    *image_size = image_size0;
+
+    image = add_relocation_table_block(image, *image_size, rt_size, (char *)rt, image_size);
+    image = add_primitive_table_block(image, *image_size, pt_size, (char *)pt, image_size);
 
     free(pt);
     free(rt);
+    free(im1);
 
-    return im0;
+    return image;
 }
 
 int
@@ -360,11 +374,7 @@ next_block(char *blks, int idx, int size, cell *block_type_out, cell *length_out
     *length_out = length;
     *offset_out = offset;
 
-    /* fprintf(stderr, "next_block: idx: %d, block_type: %d, length: %d, offset: %d\n", */
-    /*         idx, block_type, length, offset); */
-
     return idx;
-
 }
 
 cell *
@@ -396,10 +406,8 @@ load_evaluator_image(const char *image0, int image_size)
 
             prp = (cell *)(image + idx);
 
-            for (int pidx = 0; pidx < length/sizeof(cell); pidx++, prp++) {
-                /* fprintf(stderr, "setting idx %x to primitive %d %x\n", pidx, ((cell *)image)[*prp], primitives[((cell *)image)[*prp]]); */
+            for (int pidx = 0; pidx < length/sizeof(cell); pidx++, prp++)
                 ((cell *)image)[*prp] = primitives[((cell *)image)[*prp]];
-            }
 
             break;
 
@@ -412,7 +420,6 @@ load_evaluator_image(const char *image0, int image_size)
                     ((cell *)image)[*rtp] += (cell)e;
 
             break;
-
         }
 
         idx += length;
