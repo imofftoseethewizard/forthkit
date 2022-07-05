@@ -1,0 +1,3 @@
+: SPACES
+    0 DO SPACE LOOP
+;
