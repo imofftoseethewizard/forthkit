@@ -1,12 +1,10 @@
 # -*- mode: sh; -*-
 
+. $FORTHKIT/interpreters/f79/defaults.rc
+
 export CC=gcc
-export EVALUATOR_FAMILY_NAME=forth-79
-export PREAMBLE=$FORTHKIT/interpreters/preamble.m4
 export MEMORY_MODEL=$FORTHKIT/address/relocatable.c
 export EXECUTION_MODEL=$FORTHKIT/execution-models/sub.m4
-export EVALUATOR_PRIMITIVES=$FORTHKIT/interpreters/f79/primitives.m4
-export COMPILED_WORDS=$FORTHKIT/interpreters/f79/compiled-words.m4
 export CFLAGS=-m32
 export LDFLAGS=-lreadline
 export EVALUATOR_IMAGE_LDFLAGS="-m elf_i386"
