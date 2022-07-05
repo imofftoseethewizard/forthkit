@@ -223,6 +223,68 @@ create_data_image(cell *e, int *image_size)
 }
 
 cell *
+create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int *pt_size_out)
+{
+    /* The primitives table will need at most the size of the data
+     * portion less any relocations. In practice it will be a lot less.
+     */
+
+    cell
+      *pt = malloc(image_size - rt_size),
+      *ptp = pt;
+
+    /* Get the evaluator's list of primitives. */
+
+    cell *primitives = malloc(__primitive_count * sizeof(cell));
+    evaluate(NULL, NULL, 0, primitives);
+
+    /* Check the data blocks for primitives, using a linear search of the
+     * primitives at each location, skipping relocated cells (because
+     * those are definitely not primitives).
+     *
+     * These two items should prevent subtle errors from happening where
+     * a bit of non-code data matches a primitive value. Currently not
+     * necessary, and unlikely to be a problem, but should be done before
+     * declaring "v1".
+     *
+     * TODO:
+     *   1. Only process the data portions of the data blocks in the
+     *      image.
+     *   2. Only process the dictionary portions of the data.
+     *   3. Make relocation addresses and
+     */
+
+    for (int idx = 1, ridx = 0; idx < image_size / sizeof(cell); idx++) {
+
+        /* Check to see if the cell at this location has been relocated.
+         * If so, it's not a primitive.
+         */
+        if (ridx < rt_size && idx == rt[ridx])
+            /* Advance to the next relocated cell. */
+            ridx++;
+
+        else
+            for (int i = 0; i < __primitive_count; i++)
+
+                /* Check to see if the cell at this location is a primitive.
+                 */
+                if (image[idx] == primitives[i]) {
+                    /* Save the index and update the cell with the primitive's
+                     * id.
+                     */
+                    *ptp++ = idx;
+                    image[idx] = i;
+                    break;
+                }
+    }
+
+    free(primitives);
+
+    *pt_size_out = (char *)ptp - (char *)pt;
+    return pt;
+}
+
+cell *
 create_evaluator_image(cell *e0, cell *e1, int *image_size)
 {
     int image_size0, image_size1;
@@ -258,33 +320,12 @@ create_evaluator_image(cell *e0, cell *e1, int *image_size)
 
     im0 = add_relocation_table_block(im0, *image_size, rt_size, (char *)rt, image_size);
 
-    int primitive_count = evaluate(NULL, NULL, 0, NULL);
-    cell *primitives = malloc(primitive_count * sizeof(cell));
-    evaluate(NULL, NULL, 0, primitives);
+    cell *pt;
+    int pt_size;
+    pt = create_primitives_table(im0, image_size0, rt, rt_size, &pt_size);
 
-    cell *pt = malloc(image_size0), *ptp = pt;
-
-    rtp = rt;
-    for (int idx = 0; idx < image_size0 / sizeof(cell); idx++) {
-        for (int i = 0; i < primitive_count; i++) {
-            if (idx == *rtp) {
-                rtp++;
-                i = primitive_count;
-                break;
-            }
-            if (im0[idx] == primitives[i]) {
-                *ptp++ = idx;
-                im0[idx] = i;
-                /* fprintf(stderr, "primitive %d (%x) found at idx %x\n", i, primitives[i], idx); */
-                break;
-            }
-        }
-    }
-
-    int pt_size = (char *)ptp - (char *)pt;
     im0 = add_primitive_table_block(im0, *image_size, pt_size, (char *)pt, image_size);
 
-    free(primitives);
     free(pt);
     free(rt);
 
