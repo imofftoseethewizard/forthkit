@@ -7,6 +7,6 @@
 (       negative.                                                     )
 
 
-    dup 0< if 45 emit then
-    abs u.
+    DUP 0< IF 45 EMIT THEN
+    ABS U.
 ;
