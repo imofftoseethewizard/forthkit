@@ -7,6 +7,7 @@ export COMPILED_WORDS=$FORTHKIT/interpreters/f79/compiled-words.m4
 
 export BUNDLED_WORDS=" \
     $FORTHKIT/lib/f79/79-standard.fs \
+    $FORTHKIT/lib/f79/find.fs \
     $FORTHKIT/lib/common/core/sharp_s.fs \
     $FORTHKIT/lib/common/core/space.fs \
     $FORTHKIT/lib/common/core/space.fs \
