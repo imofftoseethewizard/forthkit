@@ -1,0 +1,1 @@
+: ['] ' [ ' LITERAL COMPILE, ] ; IMMEDIATE
