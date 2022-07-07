@@ -67,7 +67,7 @@ ${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
 	  --define __compiled_words=${COMPILED_WORDS}			 \
 	  evaluator.c.m4 | indent -kr -l96 >$@
 
-${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE} bounds.h debug.h errors.h log.h
+${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE} bounds.h errors.h log.h
 	m4								 \
 	  --define __evaluator_family_name=${EVALUATOR_FAMILY_NAME}	 \
 	  --define __preamble=${PREAMBLE}				 \

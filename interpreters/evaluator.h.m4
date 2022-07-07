@@ -1,5 +1,4 @@
 include(`bounds.h')
-include(`debug.h')
 include(`errors.h')
 include(`log.h')
 
