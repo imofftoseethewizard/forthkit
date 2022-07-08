@@ -146,7 +146,7 @@ add_image_block(cell *image, int image_size, cell block_type, cell length, cell 
     cell *imp;
 
     image = realloc(image, new_image_size);
-    imp = (char *)image + image_size;
+    imp = (cell *)((char *)image + image_size);
 
     *imp++ = block_type;
     *imp++ = length;
@@ -187,13 +187,13 @@ add_data_block(
 cell *
 create_data_image(cell *e, int *image_size)
 {
-    char *image = malloc(sizeof(cell));
+    cell *image = malloc(sizeof(cell));
     char *data;
 
     if (!image)
         return NULL;
 
-    *(cell *)image = e[ea_size];
+    *image = e[ea_size];
     *image_size = sizeof(cell);
 
     /* save task attributes */
@@ -364,7 +364,7 @@ next_block(char *blks, int idx, int size, cell *block_type_out, cell *length_out
     idx += sizeof(cell);
 
     if (idx + length > size) {
-        fprintf(stderr, "image format error 2\n", idx+length, size);
+        fprintf(stderr, "image format error 2\n");
         exit(2);
     }
 
@@ -413,7 +413,9 @@ load_evaluator_image(const char *image0, int image_size)
 
             rtp = (cell *)(image + idx);
 
-            if (_from_ptr(e) == e)
+            /* Does the interpreter use absolute addressing? */
+            /* TODO: evaluator build attributes */
+            if (sizeof(cell *) == sizeof(cell) && _from_ptr(e) == (cell)e)
                 for (int ridx = 0; ridx < length/sizeof(cell); ridx++, rtp++)
                     ((cell *)image)[*rtp] += (cell)e;
 
