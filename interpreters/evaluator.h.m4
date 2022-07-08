@@ -1,18 +1,11 @@
 include(`bounds.h')
 include(`errors.h')
 include(`log.h')
+include(`types.h')
 
 `#define' EVALUATOR_FAMILY_NAME "__evaluator_family_name"
 
-typedef unsigned CELL_TYPE cell;
-typedef CELL_TYPE number;
-
 #define c_msb ((cell)1 << (sizeof(cell) * 8 - 1))
-
-typedef LENGTH_TYPE length_type;
-
-typedef DOUBLE_TYPE double_number;
-typedef unsigned DOUBLE_TYPE double_cell;
 
 extern void init_evaluator(
     cell *evaluator,

@@ -1,7 +1,38 @@
 c to fs
+
+  define constants
+    errors
+    engine, task, and fiber attributes
+    word
   move compiled/ to lib/
   move some primitives to lib/
   tests
+
+  __define_error(err_abort, -1, "abort")
+    defines a c identifier with value -1
+    defines a forth identifier with value -1
+
+    define(`__current_error_code', 0)
+    define(`__next_error_code', `__current_error_code`'define(`__current_error_code', eval(__current_error_code - 1))')
+    define(`__define_error_symbol', ``#'define $1 __next_error_code')
+
+  step 0
+    create files/build step to create error_messages.c and error_messages.o
+
+  step 1
+    create struct error_message { int code; char* message };
+    declare w/ initializer: struct error_message error_messages[] = { { -1, "abort" }, ...
+    replace simple array offset with linear search
+
+  step 2
+    migrate to __define_error_symbol and generate "#define"s and struct
+
+  step 3
+    add constants to the compiled words via to __define_error_symbol
+
+  step 4
+    parse error symbols as arguments to -r/--expected-result
+
 
 refactor
   decompile.fs to isolate f79-specific core

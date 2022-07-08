@@ -1,5 +1,6 @@
 # -*- mode: sh; -*-
 
+. $FORTHKIT/interpreters/config/c4-l1.rc
 . $FORTHKIT/interpreters/f79/defaults.rc
 
 export CC=gcc
@@ -8,4 +9,3 @@ export EXECUTION_MODEL=$FORTHKIT/execution-models/switch.m4
 export CFLAGS=-m32
 export LDFLAGS=-lreadline
 export EVALUATOR_IMAGE_LDFLAGS="-m elf_i386"
-export CONFIG_H=$FORTHKIT/interpreters/config/c4-l1.h
