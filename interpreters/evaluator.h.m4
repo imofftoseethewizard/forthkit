@@ -213,7 +213,6 @@ do {                                                              \
 #define _define_constant(s, v)                                    \
         _info("defining constant %-16s %d\n", s, v);              \
         _begin_define_word(s, c_value);                           \
-        _compile_pr(op_literal);                                  \
         _compile_literal(v);                                      \
         _compile_pr(op_exit);
 
