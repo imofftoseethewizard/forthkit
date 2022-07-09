@@ -99,7 +99,6 @@ enum engine_attribute {
     ea_pad,
     ea_source_addr,
     ea_tasks,
-    ea_word_buffer,
     ea_word_buffer0,
     ea_word_buffer1,
 
