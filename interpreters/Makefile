@@ -66,7 +66,7 @@ ${ERRORS_H} : errors.m4 errors.h.m4
 	M4PATH=${M4PATH} m4 errors.h.m4 | indent -kr -l96 >$@
 
 ${BOOTSTRAP_EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
-	m4								 \
+	M4PATH=${M4PATH} m4						 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
 	  --define __execution_model=${EXECUTION_MODEL}			 \
@@ -76,7 +76,7 @@ ${BOOTSTRAP_EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
 	  evaluator.c.m4 | indent -kr -l96 >$@
 
 ${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
-	m4								 \
+	M4PATH=${M4PATH} m4						 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \
 	  --define __execution_model=${EXECUTION_MODEL}			 \
@@ -85,7 +85,7 @@ ${EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}
 	  evaluator.c.m4 | indent -kr -l96 >$@
 
 ${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE} bounds.h log.h
-	m4								 \
+	M4PATH=${M4PATH} m4						 \
 	  --define __evaluator_family_name=${EVALUATOR_FAMILY_NAME}	 \
 	  --define __preamble=${PREAMBLE}				 \
 	  --define __memory_model=${MEMORY_MODEL}			 \

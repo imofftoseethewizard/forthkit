@@ -58,6 +58,39 @@
         e[ea_next_buffer]  = 0;
         e[ea_scr]          = 0;
 
+        __define_constant("ea_size",                 e[ea_size]);                       divert`'dnl
+        __define_constant("ea_top",                  e[ea_top]);                        divert`'dnl
+        __define_constant("ea_buffer_size",          e[ea_buffer_size]);                divert`'dnl
+        __define_constant("ea_buffer_count",         e[ea_buffer_count]);               divert`'dnl
+        __define_constant("ea_fiber_count",          e[ea_fiber_count]);                divert`'dnl
+        __define_constant("ea_fiber_stack_size",     e[ea_fiber_stack_size]);           divert`'dnl
+        __define_constant("ea_pad_buffer_size",      e[ea_pad_buffer_size]);            divert`'dnl
+        __define_constant("ea_parameter_stack_size", e[ea_parameter_stack_size]);       divert`'dnl
+        __define_constant("ea_return_stack_size",    e[ea_return_stack_size]);          divert`'dnl
+        __define_constant("ea_source_size",          e[ea_source_size]);                divert`'dnl
+        __define_constant("ea_task_count",           e[ea_task_count]);                 divert`'dnl
+        __define_constant("ea_word_buffer_size",     e[ea_word_buffer_size]);           divert`'dnl
+
+        __define_constant("ea_buffer_map",           _from_ptr(&e[ea_buffer_map]));     divert`'dnl
+        __define_constant("ea_buffers",              _from_ptr(&e[ea_buffers]));        divert`'dnl
+        __define_constant("ea_error_msg_addr",       _from_ptr(&e[ea_error_msg_addr])); divert`'dnl
+        __define_constant("ea_error_msg_len",        _from_ptr(&e[ea_error_msg_len]));  divert`'dnl
+        __define_constant("ea_fibers",               _from_ptr(&e[ea_fibers]));         divert`'dnl
+        __define_constant("ea_fp",                   _from_ptr(&e[ea_fp]));             divert`'dnl
+        __define_constant("ea_fp0",                  _from_ptr(&e[ea_fp0]));            divert`'dnl
+        __define_constant("ea_number_pad",           _from_ptr(&e[ea_number_pad]));     divert`'dnl
+        __define_constant("ea_pad",                  _from_ptr(&e[ea_pad]));            divert`'dnl
+        __define_constant("ea_source_addr",          _from_ptr(&e[ea_source_addr]));    divert`'dnl
+        __define_constant("ea_tasks",                _from_ptr(&e[ea_tasks]));          divert`'dnl
+        __define_constant("ea_word_buffer0",         _from_ptr(&e[ea_word_buffer0]));   divert`'dnl
+        __define_constant("ea_word_buffer1",         _from_ptr(&e[ea_word_buffer1]));   divert`'dnl
+
+        __define_constant("ea_blk",                  _from_ptr(&e[ea_blk]));            divert`'dnl
+        __define_constant("ea_next_buffer",          _from_ptr(&e[ea_next_buffer]));    divert`'dnl
+        __define_constant("ea_scr",                  _from_ptr(&e[ea_scr]));            divert`'dnl
+        __define_constant("ea_source_idx",           _from_ptr(&e[ea_source_idx]));     divert`'dnl
+        __define_constant("ea_source_len",           _from_ptr(&e[ea_source_len]));     divert`'dnl
+
         fp0 = fp = _to_ptr(e[ea_fp0]);
         *--fp = _primary_fiber;
 

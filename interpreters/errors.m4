@@ -8,7 +8,7 @@ define(__define_error_symbol,`
   $3
   },
   ')
-  __define_constant("$1", $1)
+  __define_constant("$1", $1)divert(-1)
 ')
 
 

@@ -32,7 +32,7 @@ divert(__primitive_word_definitions)        _define_immediate_primitive($1, $2, 
 define(`__compiled_word',`divert(__compiled_word_declarations)    $2,
 divert(__compiled_word_definitions) _compiled_word($1, $2, $3);');
 
-define(`__define_constant',`divert(__compiled_word_definitions)_define_constant($1, $2);divert(-1)')
+define(`__define_constant',`divert(__compiled_word_definitions)_define_constant($1, $2);')
 
 define(`__evaluator_variables',`divert(__evaluator_variable_declarations)')
 define(`__declare_evaluator_variables',`undivert(__evaluator_variable_declarations)')
