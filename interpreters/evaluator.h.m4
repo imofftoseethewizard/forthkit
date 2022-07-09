@@ -1,5 +1,4 @@
 include(`bounds.h')
-include(`errors.h')
 include(`log.h')
 include(`types.h')
 

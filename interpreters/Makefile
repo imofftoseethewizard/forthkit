@@ -44,11 +44,14 @@ CFLAGS += -D "CELL_TYPE=${CELL_TYPE}" -D "DOUBLE_TYPE=${DOUBLE_TYPE}" -D "LENGTH
 CFLAGS += -D LOG=${LOG} -D TRACE=${TRACE} -D VERBOSE=${VERBOSE}
 CFLAGS += -D DEBUG=${DEBUG} -D BOUNDS_CHECKING=${BOUNDS_CHECKING}
 
-M4PATH = /usr/share/doc/m4/examples
+M4PATH = /usr/share/doc/m4/examples/
 
 m4_deps =											\
 	${PREAMBLE} ${MEMORY_MODEL} ${EXECUTION_MODEL}						\
 	${EVALUATOR_PRIMITIVES} ${COMPILED_WORDS}						\
+        ${FORTHKIT}/interpreters/errors.c.m4							\
+        ${FORTHKIT}/interpreters/errors.h.m4							\
+        ${FORTHKIT}/interpreters/errors.m4							\
         ${FORTHKIT}/interpreters/bootstrap.c.m4							\
 	$(shell m4 ${FORTHKIT}/interpreters/primitive-dependencies.m4 ${EVALUATOR_PRIMITIVES})	\
 	$(shell m4 ${FORTHKIT}/interpreters/compiled-dependencies.m4 ${COMPILED_WORDS})
@@ -57,7 +60,7 @@ ${BIN} ${BUILD} ${INCLUDE} ${LIB} ${SRC} :
 	mkdir -p $@
 
 ${ERRORS_C} : errors.m4 errors.c.m4
-	M4PATH=${M4PATH} m4 /usr/share/doc/m4/examples errors.c.m4 | indent -kr -l128 >$@
+	M4PATH=${M4PATH} m4 errors.c.m4 | indent -kr -l128 >$@
 
 ${ERRORS_H} : errors.m4 errors.h.m4
 	M4PATH=${M4PATH} m4 errors.h.m4 | indent -kr -l96 >$@
@@ -94,8 +97,8 @@ ${EVALUATOR_H} : ${m4_deps} evaluator.h.m4 ${INCLUDE} bounds.h log.h
 ${BOOTSTRAP_EVALUATOR_O} : ${BOOTSTRAP_EVALUATOR_C} ${EVALUATOR_H} ${LIB}
 	${CC} ${CFLAGS} -o $@ -c ${BOOTSTRAP_EVALUATOR_C}
 
-${BOOTSTRAP_INTERPRETER} : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${BIN} interpreter.c
-	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${BOOTSTRAP_EVALUATOR_O}
+${BOOTSTRAP_INTERPRETER} : ${ERRORS_H} ${ERRORS_O} ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${BIN} interpreter.c
+	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${ERRORS_O} ${BOOTSTRAP_EVALUATOR_O}
 
 ${ERRORS_O} : ${ERRORS_C} ${ERRORS_H} ${LIB}
 	${CC} ${CFLAGS} -o $@ -c ${ERRORS_C}
@@ -103,11 +106,11 @@ ${ERRORS_O} : ${ERRORS_C} ${ERRORS_H} ${LIB}
 ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${LIB}
 	${CC} ${CFLAGS} -o $@ -c ${EVALUATOR_C}
 
-${BARE_INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${BIN} interpreter.c
-	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_O}
+${BARE_INTERPRETER} : ${ERRORS_H} ${ERRORS_O} ${EVALUATOR_H} ${EVALUATOR_O} ${BIN} interpreter.c
+	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${ERRORS_O} ${EVALUATOR_O}
 
 ${INTERPRETER} : ${ERRORS_H} ${ERRORS_O} ${EVALUATOR_IMAGE_O} ${EVALUATOR_H} ${EVALUATOR_O} ${BIN} interpreter.c
-	${CC} ${CFLAGS} -D BUNDLED=1 -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
+	${CC} ${CFLAGS} -D BUNDLED=1 -o $@ interpreter.c ${LDFLAGS} ${ERRORS_O} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
 
 ${EVALUATOR_IMAGE} : ${BOOTSTRAP_INTERPRETER}
 	${BOOTSTRAP_INTERPRETER} -q -C $@ ${BUNDLED_WORDS}

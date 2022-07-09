@@ -2,14 +2,19 @@ include(`stack.m4')dnl
 divert(`-1')
 
 define(__define_error_symbol,`
-  pushdef(`__error_symbol_definitions', `#define $1 $2')
-  pushdef(`__error_descriptor_initializers', `{ $1, $3 },')
+  pushdef(`__error_symbol_definitions', `$1 = $2,')
+  pushdef(`__error_descriptor_initializers', `{ $1,
+  "$1",
+  $3
+  },
+  ')
 ')
 
 
 define(__show, ``$1'
 ')
-define(__define_error_symbols,`stack_foreach(`__error_symbol_definitions', `__show')$1dnl')
+define(__define_error_symbols,`enum error_codes {
+stack_foreach(`__error_symbol_definitions', `__show')}')
 define(__initialize_error_descriptors,`stack_foreach(`__error_descriptor_initializers', `__show')dnl')
 
 __define_error_symbol(result_ok,                                           0, "ok")

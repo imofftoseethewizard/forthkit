@@ -12,6 +12,7 @@ include(__compiled_words)dnl
 #include <unistd.h>
 
 #include "evaluator.h"
+#include "errors.h"
 
 char *store_counted_string(const char *s, char *dp);
 

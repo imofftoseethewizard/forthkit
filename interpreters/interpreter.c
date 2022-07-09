@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "evaluator.h"
+#include "errors.h"
 
 #define INTERPRETER_NAME    EVALUATOR_FAMILY_NAME
 #define VERSION_DESCRIPTION "<version TODO>"
@@ -95,9 +96,6 @@ static struct option long_options[] = {
     {"version",              no_argument,       &show_version, 1},
     {0, 0, 0, 0}
 };
-
-/* defined in evaluator.h */
-_define_result_messages();
 
 /* used for composing error in response to getopt_long errors; see process_options() */
 static char message_buffer[100];
@@ -357,7 +355,7 @@ repl(void)
 
         switch (result) {
         case result_ok:
-            printf("%s\n", result_messages[result]);
+            printf("ok\n");
             break;
 
         case err_abort_message:
@@ -368,10 +366,8 @@ repl(void)
             break;
 
         default:
-            print_error(
-                evaluator,
-                (result <= next_error_code) ? "unknown_error" : result_messages[-result],
-                evaluator[ea_source_idx]);
+
+            print_error(evaluator, error_message(result), evaluator[ea_source_idx]);
             break;
         }
 
@@ -398,10 +394,7 @@ evaluate_file(cell *e, char *path)
 
     if (result) {
         printf("\nWhile reading %s at line %d: \n", path, line_no);
-        print_error(
-            e,
-            (result <= next_error_code) ? "unknown_error" : result_messages[-result],
-            e[ea_source_idx]);
+        print_error(e, error_message(result), e[ea_source_idx]);
     }
 
     if (fclose(file)) {
@@ -579,12 +572,13 @@ process_options(int argc, char *argv[])
 
         case 'r':
 
-            if (!is_valid_integer(optarg)) {
-                print_help("-r, --expected-result must have an integer argument.");
+            expected_result = is_valid_integer(optarg) ? atoi(optarg) : error_code(optarg);
+
+            if (!expected_result) {
+                print_help("-r, --expected-result must have a negative integer argument or an error symbol");
                 exit(1);
             }
 
-            expected_result = atoi(optarg);
             break;
 
         case 'S':
