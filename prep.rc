@@ -1,1 +1,2 @@
 export FORTHKIT=~/src/forthkit
+export FAMILIES="f79 f83"
