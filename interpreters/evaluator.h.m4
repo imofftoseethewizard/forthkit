@@ -166,10 +166,10 @@ do {                                                              \
        _store_data(*sp++);                                        \
                                                                   \
        /* Vocabulary list link.               */                  \
-       _store_data(*_to_ptr(tp[ta_current]));                      \
+       _store_data(*_to_ptr(tp[ta_current]));                     \
                                                                   \
        /* Add to current vocabulary.          */                  \
-       *_to_ptr(tp[ta_current]) = *rp++;                           \
+       *_to_ptr(tp[ta_current]) = *rp++;                          \
                                                                   \
        /* Word flags.                         */                  \
        _store_data(flags)
@@ -209,6 +209,13 @@ do {                                                              \
 
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
+
+#define _define_constant(s, v)                                    \
+        _info("defining constant %-16s %d\n", s, v);              \
+        _begin_define_word(s, c_value);                           \
+        _compile_pr(op_literal);                                  \
+        _compile_literal(v);                                      \
+        _compile_pr(op_exit);
 
 #define _primary_fiber 0
 #define _primary_task 0

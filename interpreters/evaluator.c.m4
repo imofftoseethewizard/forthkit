@@ -1,5 +1,6 @@
 include(__preamble)dnl
 include(__execution_model)dnl
+include(`./errors.m4')dnl
 include(__evaluator_primitives)dnl
 include(__compiled_words)dnl
 
