@@ -12,7 +12,7 @@ export BUNDLED_WORDS=" \
     $FORTHKIT/lib/common/core/bracket_compile.fs \
     $FORTHKIT/lib/common/core/sharp_s.fs \
     $FORTHKIT/lib/common/core/space.fs \
-    $FORTHKIT/lib/common/core/space.fs \
+    $FORTHKIT/lib/common/core/spaces.fs \
     $FORTHKIT/lib/common/core/u_dot.fs \
     $FORTHKIT/lib/common/core/dot.fs \
     $FORTHKIT/lib/common/core/question_mark.fs"
