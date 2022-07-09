@@ -7,7 +7,7 @@
         IF
             COMPILE,
         ELSE
-            err_unrecognized_word <abort>
+            err_undefined_word <abort>
         THEN
     ELSE
         ABORT
