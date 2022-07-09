@@ -1,7 +1,6 @@
 __include_compiled_word(`../compiled/core/word.m4')
 __include_compiled_word(`../compiled/core/forget.m4')
 __include_compiled_word(`../compiled/core/tick.m4')
-__include_compiled_word(`../compiled/core/bracket_compile.m4')
 __include_compiled_word(`../compiled/core/span.m4')
 __include_compiled_word(`../compiled/core/expect.m4')
 __include_compiled_word(`../compiled/core/query.m4')
