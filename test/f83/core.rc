@@ -1,9 +1,9 @@
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/cmove_up.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/do_plus_loop.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/floored_times_divide_mod.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/floored_two_divide.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/pick.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/roll.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/to_body.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/u_m_divide_mod.fs
-$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/u_m_times.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/cmove_up.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/do_plus_loop.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/floored_times_divide_mod.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/floored_two_divide.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/pick.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/roll.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/to_body.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/u_m_divide_mod.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/u_m_times.fs
