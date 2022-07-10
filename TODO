@@ -1,11 +1,6 @@
 c to fs
 
-  define constants
-    word
-
   order of final compiled words
-    forget
-      requires constants for word offsets
     tick
     tick-79
     word

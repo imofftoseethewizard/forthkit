@@ -91,6 +91,11 @@
         __define_constant("ea_source_idx",           _from_ptr(&e[ea_source_idx]));           divert`'dnl
         __define_constant("ea_source_len",           _from_ptr(&e[ea_source_len]));           divert`'dnl
 
+        __define_constant("wa_word_name",  0);              divert`'dnl
+        __define_constant("wa_word_link",  sizeof(cell));   divert`'dnl
+        __define_constant("wa_word_flags", 2*sizeof(cell)); divert`'dnl
+        __define_constant("wa_word_xt",    3*sizeof(cell)); divert`'dnl
+
         fp0 = fp = _to_ptr(e[ea_fp0]);
         *--fp = _primary_fiber;
 

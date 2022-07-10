@@ -13,6 +13,7 @@ export BUNDLED_WORDS=" \
     $FORTHKIT/lib/common/core/bracket_tick.fs \
     $FORTHKIT/lib/common/core/span.fs \
     $FORTHKIT/lib/common/core/expect.fs \
+    $FORTHKIT/lib/common/core/forget.fs \
     $FORTHKIT/lib/common/core/number_tib.fs \
     $FORTHKIT/lib/common/core/query.fs \
     $FORTHKIT/lib/common/core/sharp_s.fs \
