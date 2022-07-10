@@ -1,19 +1,19 @@
 c to fs
 
   define constants
-    errors
-    engine, task, and fiber attributes
     word
-  move compiled/ to lib/
+
+  order of final compiled words
+    forget
+      requires constants for word offsets
+    tick
+    tick-79
+    word
+
+  move interpreter to bootstrap?
+
   move some primitives to lib/
   tests
-
-  step 3
-    add constants to the compiled words via to __define_error_symbol
-
-  step 4
-    parse error symbols as arguments to -r/--expected-result
-
 
 refactor
   decompile.fs to isolate f79-specific core
@@ -382,3 +382,21 @@ wrappers
     ...
   sqlite
   blas
+
+16. replicate some tools from coreutils (yes, wc, ls, etc)
+  develop "modules" that can be easily included in an interpreter
+    eg, getopt
+    enable one-liner to have primitives/words to use getopt
+    in spec,
+      for m in $modules; do . $m; done
+    extends bundled words, primitives
+  sequence of steps to final product
+    1. develop with bundled interpreter with threads and debugging
+    2. create any modules that don't exist yet
+    3. implement tool, including any new primitives
+    4. implement unit tests in forth
+    5. create bundled version which auto-runs
+    6. implement integration tests without dependence on forth interpreter
+    7. change interpreter to remove fiber support, debugging
+    8. remove unused words, primitives, including interpreter
+    9. reduce dictionary, removing word names, links, flags, ie leave only code, variables

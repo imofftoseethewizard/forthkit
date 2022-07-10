@@ -112,17 +112,18 @@ ${BARE_INTERPRETER} : ${ERRORS_H} ${ERRORS_O} ${EVALUATOR_H} ${EVALUATOR_O} ${BI
 ${INTERPRETER} : ${ERRORS_H} ${ERRORS_O} ${EVALUATOR_IMAGE_O} ${EVALUATOR_H} ${EVALUATOR_O} ${BIN} interpreter.c
 	${CC} ${CFLAGS} -D BUNDLED=1 -o $@ interpreter.c ${LDFLAGS} ${ERRORS_O} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
 
-${EVALUATOR_IMAGE} : ${BOOTSTRAP_INTERPRETER}
-	${BOOTSTRAP_INTERPRETER} -q -C $@ ${BUNDLED_WORDS}
+${EVALUATOR_IMAGE} : ${BOOTSTRAP_INTERPRETER} ${BUNDLED_WORDS}
+	${BOOTSTRAP_INTERPRETER} -q -C $@ ${BUNDLED_WORDS} || echo "error: failed to build image ${@}"
 
 ${EVALUATOR_IMAGE_O} : ${EVALUATOR_IMAGE}
 	cd ${LIB} && ld ${EVALUATOR_IMAGE_LDFLAGS} -r -b binary evaluator.fi -o $@
 
 deps : ${BUILD}
-	echo ${m4_deps} | tr ' ' '\n'    >  ${BUILD}/deps.txt
-	ls ${FORTHKIT}/interpreters/*.c  >> ${BUILD}/deps.txt
-	ls ${FORTHKIT}/interpreters/*.h  >> ${BUILD}/deps.txt
-	ls ${FORTHKIT}/interpreters/*.m4 >> ${BUILD}/deps.txt
+	echo ${m4_deps}		| tr ' ' '\n'   >  ${BUILD}/deps.txt
+	echo ${BUNDLED_WORDS}	| tr ' ' '\n'   >> ${BUILD}/deps.txt
+	ls ${FORTHKIT}/interpreters/*.c		>> ${BUILD}/deps.txt
+	ls ${FORTHKIT}/interpreters/*.h		>> ${BUILD}/deps.txt
+	ls ${FORTHKIT}/interpreters/*.m4	>> ${BUILD}/deps.txt
 
 all : ${BARE_INTERPRETER} ${BOOTSTRAP_INTERPRETER} ${INTERPRETER}
 

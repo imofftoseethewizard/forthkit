@@ -6,6 +6,7 @@ export EVALUATOR_PRIMITIVES=$FORTHKIT/interpreters/f83/primitives.m4
 export COMPILED_WORDS=$FORTHKIT/interpreters/f83/compiled-words.m4
 
 export BUNDLED_WORDS=" \
+    $FORTHKIT/lib/f79/cell.fs \
     $FORTHKIT/lib/f83/core/forth-83.fs \
     $FORTHKIT/lib/common/core/abort.fs \
     $FORTHKIT/lib/common/core/bracket_compile.fs \
@@ -20,4 +21,8 @@ export BUNDLED_WORDS=" \
     $FORTHKIT/lib/common/core/tib.fs \
     $FORTHKIT/lib/common/core/u_dot.fs \
     $FORTHKIT/lib/common/core/dot.fs \
-    $FORTHKIT/lib/common/core/question_mark.fs "
+    $FORTHKIT/lib/common/core/question_mark.fs \
+    $FORTHKIT/lib/common/block/block.fs \
+    $FORTHKIT/lib/common/block/flush.fs \
+    $FORTHKIT/lib/common/block/list.fs \
+    $FORTHKIT/lib/common/block/load.fs "
