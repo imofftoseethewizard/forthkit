@@ -10,6 +10,6 @@
     ( condition exists if <name> is not found in the currently )
     ( active search order.                                     )
 
-    FIND
-    ?DUP 0= IF err_undefined_word <abort> THEN
-; IMMEDIATE
+    32 WORD FIND
+    0= IF err_undefined_word <abort> THEN
+;

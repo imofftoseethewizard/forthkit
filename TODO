@@ -1,3 +1,6 @@
+f83
+  colon semantics vs f79: add new word to dictionary only at ';', not initially
+
 c to fs
 
   order of final compiled words

@@ -59,4 +59,4 @@ __primitive(pr_find)
     }
 }
 __end
-__define_primitive("FIND", pr_find);
+__define_primitive("<find>", pr_find);

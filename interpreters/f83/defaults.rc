@@ -9,6 +9,8 @@ export BUNDLED_WORDS=" \
     $FORTHKIT/lib/f79/cell.fs \
     $FORTHKIT/lib/f83/core/forth-83.fs \
     $FORTHKIT/lib/common/core/abort.fs \
+    $FORTHKIT/lib/common/core/find.fs \
+    $FORTHKIT/lib/common/core/tick.fs \
     $FORTHKIT/lib/common/core/bracket_compile.fs \
     $FORTHKIT/lib/common/core/bracket_tick.fs \
     $FORTHKIT/lib/common/core/span.fs \
