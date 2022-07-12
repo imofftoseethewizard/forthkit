@@ -8,7 +8,7 @@ do
     do
         export VERSION_TAG=$(echo $f | sed -E 's|.*/([^.]*)\.rc$|\1|')
         . $f
-        FAMILY=$family make deps all 2>&1 | grep -E 'error: '
+        FAMILY=$family make deps all 2>&1 | grep -E ': error: '
 
         if [ $? = '0' ]
         then

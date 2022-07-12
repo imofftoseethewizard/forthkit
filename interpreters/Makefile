@@ -113,7 +113,7 @@ ${INTERPRETER} : ${ERRORS_H} ${ERRORS_O} ${EVALUATOR_IMAGE_O} ${EVALUATOR_H} ${E
 	${CC} ${CFLAGS} -D BUNDLED=1 -o $@ interpreter.c ${LDFLAGS} ${ERRORS_O} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
 
 ${EVALUATOR_IMAGE} : ${BOOTSTRAP_INTERPRETER} ${BUNDLED_WORDS}
-	${BOOTSTRAP_INTERPRETER} -q -C $@ ${BUNDLED_WORDS} || echo "error: failed to build image ${@}"
+	${BOOTSTRAP_INTERPRETER} -q -C $@ ${BUNDLED_WORDS} || echo "$@:" "error: failed to build image"
 
 ${EVALUATOR_IMAGE_O} : ${EVALUATOR_IMAGE}
 	cd ${LIB} && ld ${EVALUATOR_IMAGE_LDFLAGS} -r -b binary evaluator.fi -o $@
