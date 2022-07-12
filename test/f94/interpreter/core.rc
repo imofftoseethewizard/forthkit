@@ -1,0 +1,2 @@
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/bracket_tick.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/to_body.fs

@@ -59,10 +59,10 @@ m4_deps =											\
 ${BIN} ${BUILD} ${INCLUDE} ${LIB} ${SRC} :
 	mkdir -p $@
 
-${ERRORS_C} : errors.m4 errors.c.m4
+${ERRORS_C} : errors.m4 errors.c.m4 ${SRC}
 	M4PATH=${M4PATH} m4 errors.c.m4 | indent -kr -l128 >$@
 
-${ERRORS_H} : errors.m4 errors.h.m4
+${ERRORS_H} : errors.m4 errors.h.m4 ${INCLUDE}
 	M4PATH=${M4PATH} m4 errors.h.m4 | indent -kr -l96 >$@
 
 ${BOOTSTRAP_EVALUATOR_C} : ${m4_deps} evaluator.c.m4 ${SRC}

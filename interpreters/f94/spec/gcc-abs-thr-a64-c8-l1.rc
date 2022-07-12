@@ -1,0 +1,11 @@
+# -*- mode: sh; -*-
+
+. $FORTHKIT/interpreters/config/c8-l1.rc
+. $FORTHKIT/interpreters/f94/defaults.rc
+
+export CC=gcc
+export MEMORY_MODEL=$FORTHKIT/address/absolute.c
+export EXECUTION_MODEL=$FORTHKIT/execution-models/thr.m4
+export CFLAGS=-fPIC
+export LDFLAGS=-lreadline
+export EVALUATOR_IMAGE_LDFLAGS=

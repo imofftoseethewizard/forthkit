@@ -1,0 +1,2 @@
+export BUNDLED_WORDS=\
+       $FORTHKIT/lib/common/core/space.fs

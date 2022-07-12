@@ -2,7 +2,7 @@
 
 cd $FORTHKIT/interpreters
 
-export FAMILIES='f79 f83'
+export FAMILIES='f79 f83 f94'
 
 mkdir -p $FORTHKIT/log
 touch $FORTHKIT/log/build
