@@ -8,7 +8,10 @@ if __name__ == '__main__':
     symbols = {}
     for line in sys.stdin.readlines():
         if line.startswith('defining ') or line.startswith('operator '):
-            _, key, value = re.split(' +', line.strip())
+            try:
+                _, key, value = re.split(' +', line.strip())
+            except:
+                print(line)
             symbols[key] = value
         else:
             for key, value in symbols.items():
