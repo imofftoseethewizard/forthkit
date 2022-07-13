@@ -21,7 +21,7 @@ inotifywait -mr --exclude 'log|.*\.[cho]$' -e CLOSE_WRITE $FORTHKIT/build | \
                       $FORTHKIT/test/common/$file/*.rc  \
                       $FORTHKIT/test/$FAMILY/$file/*.rc"
 
-            echo $command >>$FORTHKIT/log/tests
+            echo VERSION_TAG=$version_tag $command >>$FORTHKIT/log/tests
             $command >>$log_file
 
         fi
