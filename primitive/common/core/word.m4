@@ -3,7 +3,7 @@ __primitive(pr_word)
     /* Word buffer is on the top of the stack, delimiter is next. */
     register char *word_buffer = (char *)_to_ptr(*sp++);
     register char delimiter    = *sp++;
-    register int word_idx      = sizeof(length_type);
+    register int word_idx      = 1;
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
     register cell source_idx   = e[ea_source_idx];
@@ -18,14 +18,14 @@ __primitive(pr_word)
            && (source[source_idx] != delimiter && source[source_idx] > 32))
         word_buffer[word_idx++] = source[source_idx++];
 
-    if (word_idx == sizeof(length_type)) {
+    if (word_idx == 1) {
         _debug("word: <none>\n");
         *--sp = 0;
 
     } else {
-        _debug("word: %.*s\n", (int)(word_idx - sizeof(length_type)), word_buffer + sizeof(length_type));
+        _debug("word: %.*s\n", (int)(word_idx - 1), word_buffer + sizeof(unsigned char));
         word_buffer[word_idx] = delimiter;
-        *(length_type *)word_buffer = (length_type)(word_idx - sizeof(length_type));
+        *(unsigned char *)word_buffer = (unsigned char)(word_idx - 1);
         *--sp = _from_ptr(word_buffer);
     }
 

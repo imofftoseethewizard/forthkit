@@ -9,7 +9,7 @@ __primitive(pr_type)
      */
 
     if ((number)*sp > 0)
-        fwrite(_to_ptr(*(sp+1)), sizeof(char), *sp, stdout);
+        fwrite(_to_ptr(*(sp+1)), 1, *sp, stdout);
 
     sp += 2;
 }

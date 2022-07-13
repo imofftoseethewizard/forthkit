@@ -1,0 +1,10 @@
+export CELL_TYPE=int
+export DOUBLE_TYPE="long long"
+
+# Diagnostic output control
+export LOG=1
+export TRACE=1
+export VERBOSE=1
+
+export DEBUG=1
+export BOUNDS_CHECKING=1

@@ -125,8 +125,8 @@ enum engine_attribute {
 #define _quote(x) #x
 #define _from_pr(x) _from_pv(_pr_value(x))
 
-#define _string_len(x)  *(length_type *)(x)
-#define _string_addr(x) (char *)((length_type *)(x) + 1)
+#define _string_len(x)  *(unsigned char *)(x)
+#define _string_addr(x) (char *)((unsigned char *)(x) + 1)
 
 #define _compile_pr(x) _store_data(_from_pr(x))
 #define _compile_cw(x) _store_data(e[e[ea_size] / sizeof(cell) - x - 1])
@@ -142,10 +142,10 @@ enum engine_attribute {
 do {                                                              \
     register cell name = _from_ptr(dp);                           \
     register cell *string_addr = _to_ptr(*sp);                    \
-    register length_type n = *(length_type *)string_addr;         \
+    register unsigned char n = *(unsigned char *)string_addr;         \
                                                                   \
-    memcpy(dp, string_addr, n + sizeof(length_type));             \
-    dp += n + sizeof(length_type);                                \
+    memcpy(dp, string_addr, n + 1);             \
+    dp += n + 1;                                \
                                                                   \
     *sp = name;                                                   \
                                                                   \

@@ -127,9 +127,9 @@ store_counted_string(const char *s, char *dp)
 
     dp = (char *)_align(dp);
 
-    *(length_type *)dp = n;
+    *(unsigned char *)dp = n;
 
-    strncpy((char *)((length_type *)dp + 1), s, n);
+    strncpy((char *)((unsigned char *)dp + 1), s, n);
 
     return dp + sizeof(cell) + n + 1;
 }

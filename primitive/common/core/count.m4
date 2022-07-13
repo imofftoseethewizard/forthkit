@@ -7,7 +7,7 @@ __primitive(pr_count)
        character count n.  Range of n is {0..255}.
      */
 
-    register length_type *lenp = (length_type *)_to_ptr(*sp);
+    register unsigned char *lenp = (unsigned char *)_to_ptr(*sp);
 
     *sp = _from_ptr(lenp + 1);
     *--sp = *lenp;
