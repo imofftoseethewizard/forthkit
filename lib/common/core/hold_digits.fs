@@ -1,4 +1,4 @@
-: #S ( ud -- 0 0 ; "sharp-s" )
+: #S ( ud -- 0 0 )
 
     ( ud is converted appending each resultant character into the   )
     ( pictured numeric output string until the quotient -- see # -- )

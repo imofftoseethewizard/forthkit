@@ -1,16 +1,15 @@
-/* ! ( n addr -- ) "store"
-
-   Store n at addr.
- */
-#define _store() *_to_ptr(*sp) = *(sp+1), sp += 2
-
 __primitive(pr_store)
 {
-    /* ! ( n addr -- ) "store"
+    /* ! ( n addr -- )
 
        Store n at addr.
+
+       module: core
      */
-    _store();
+
+    *_to_ptr(*sp) = *(sp+1);
+    sp += 2;
 }
 __end
+
 __define_primitive("!", pr_store);

@@ -1,7 +1,7 @@
 
-__primitive(pr_sharp_greater)
+__primitive(pr_end_convert_number)
 {
-    /* #> ( ud -- addr u ) "sharp-greater"
+    /* #> ( ud -- addr u )
 
        Pictured numeric output conversion is ended dropping ud.
        addr is the address of the resulting output string. u is
@@ -15,4 +15,4 @@ __primitive(pr_sharp_greater)
     *sp = _c_number_pad_size - *idx;
 }
 __end
-__define_primitive(`"#>"', pr_sharp_greater);
+__define_primitive(`"#>"', pr_end_convert_number);
