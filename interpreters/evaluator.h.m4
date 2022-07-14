@@ -95,7 +95,6 @@ enum engine_attribute {
     ea_fibers,
     ea_fp,
     ea_fp0,
-    ea_number_pad,
     ea_pad,
     ea_source_addr,
     ea_tasks,

@@ -1,1 +1,1 @@
-: SPACE 32 EMIT ;
+: SPACE BL EMIT ;

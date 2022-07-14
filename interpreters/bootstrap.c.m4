@@ -7,7 +7,6 @@
 
         e[ea_buffers]      = _reserve(e[ea_buffer_count] * e[ea_buffer_size]);
         e[ea_buffer_map]   = _reserve(e[ea_buffer_count] * sizeof(cell));
-        e[ea_number_pad]   = _reserve(_c_number_pad_size);
         e[ea_pad]          = _reserve(e[ea_pad_buffer_size]);
         e[ea_source_addr]  = _reserve(e[ea_source_size]);
         e[ea_word_buffer0] = _reserve(e[ea_word_buffer_size]);
@@ -22,7 +21,6 @@
         _debug("word_buffer1: %x\n", e[ea_word_buffer1]);
         _debug("word_buffer0: %x\n", e[ea_word_buffer0]);
         _debug("source_addr:  %x\n", e[ea_source_addr]);
-        _debug("number_pad:   %x\n", e[ea_number_pad]);
         _debug("buffer_map:   %x\n", e[ea_buffer_map]);
         _debug("buffers:      %x\n", e[ea_buffers]);
 
@@ -78,7 +76,6 @@
         __define_constant("ea_fibers",               _from_ptr(&e[ea_fibers]));               divert`'dnl
         __define_constant("ea_fp",                   _from_ptr(&e[ea_fp]));                   divert`'dnl
         __define_constant("ea_fp0",                  _from_ptr(&e[ea_fp0]));                  divert`'dnl
-        __define_constant("ea_number_pad",           _from_ptr(&e[ea_number_pad]));           divert`'dnl
         __define_constant("ea_pad",                  _from_ptr(&e[ea_pad]));                  divert`'dnl
         __define_constant("ea_source_addr",          _from_ptr(&e[ea_source_addr]));          divert`'dnl
         __define_constant("ea_tasks",                _from_ptr(&e[ea_tasks]));                divert`'dnl

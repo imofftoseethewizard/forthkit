@@ -61,10 +61,13 @@ base !
     dup word-xt 2 pick =
 ;
 
+' match-primitive? constant match-primitive?-xt
+' match-compiled? constant match-compiled?-xt
+
 : xt>word ( xt -- w | 0 )
 
     dup primitive?
-    if ['] match-primitive? else ['] match-compiled? then
+    if match-primitive?-xt else match-compiled?-xt then
     find-word
     swap drop ( remove xt from below the result )
 ;
