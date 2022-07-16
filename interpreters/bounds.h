@@ -19,8 +19,8 @@ do {                                                 \
 #define _check_loader_context_stack_bounds()
 
 #define _check_minimum_stack_depth(n)                \
-    do {                                             \
-if ((sp0 - sp) < (n))                                \
+do {                                                 \
+    if ((sp0 - sp) < (n))                            \
     _abort(err_parameter_stack_underflow);           \
 } while (0)
 
