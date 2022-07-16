@@ -1,9 +1,3 @@
-$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/task.fs
-$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tcontext.fs
-$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tcurrent.fs
-$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tdp.fs
-$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/tstate.fs
-$FORTHKIT/scripts/check.sh .    $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/fiber.fs $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/fiber/ttop.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs -r err_fiber_stack_underflow $FORTHKIT/lib/test/common/fiber/braid_err_fiber_stack_underflow.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs -r err_invalid_task_number $FORTHKIT/lib/test/common/fiber/done_err_invalid_task_number.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs -r err_fiber_stack_underflow $FORTHKIT/lib/test/common/fiber/f_at_err_fiber_stack_underflow.fs

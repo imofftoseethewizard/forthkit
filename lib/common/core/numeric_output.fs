@@ -17,8 +17,6 @@ VARIABLE number_pad
     C!
 ;
 
-: [CHAR] CHAR [COMPILE] LITERAL ; IMMEDIATE
-
 : compile-digits
     [CHAR] 9 1+ [CHAR] 0 DO I C, LOOP
     [CHAR] Z 1+ [CHAR] A DO I C, LOOP

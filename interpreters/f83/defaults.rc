@@ -6,25 +6,24 @@ export EVALUATOR_PRIMITIVES=$FORTHKIT/interpreters/f83/primitives.m4
 export COMPILED_WORDS=$FORTHKIT/interpreters/f83/compiled-words.m4
 
 export BUNDLED_WORDS=" \
+    $FORTHKIT/lib/common/core/text_input.fs \
     $FORTHKIT/lib/f79/cell.fs \
-    $FORTHKIT/lib/f83/core/forth-83.fs \
-    $FORTHKIT/lib/common/core/abort.fs \
-    $FORTHKIT/lib/common/core/find.fs \
-    $FORTHKIT/lib/common/core/word.fs \
     $FORTHKIT/lib/common/core/bl.fs \
     $FORTHKIT/lib/common/core/char.fs \
-    $FORTHKIT/lib/common/core/space.fs \
-    $FORTHKIT/lib/common/core/spaces.fs \
+    $FORTHKIT/lib/common/core/find.fs \
     $FORTHKIT/lib/common/core/tick.fs \
     $FORTHKIT/lib/common/core/bracket_compile.fs \
+    $FORTHKIT/lib/common/core/bracket_char.fs \
+    $FORTHKIT/lib/f83/core/forth-83.fs \
+    $FORTHKIT/lib/common/core/abort.fs \
+    $FORTHKIT/lib/common/core/space.fs \
+    $FORTHKIT/lib/common/core/spaces.fs \
     $FORTHKIT/lib/common/core/bracket_tick.fs \
     $FORTHKIT/lib/common/core/numeric_output.fs \
     $FORTHKIT/lib/common/core/span.fs \
     $FORTHKIT/lib/common/core/expect.fs \
     $FORTHKIT/lib/common/core/forget.fs \
-    $FORTHKIT/lib/common/core/number_tib.fs \
     $FORTHKIT/lib/common/core/query.fs \
-    $FORTHKIT/lib/common/core/tib.fs \
     $FORTHKIT/lib/common/core/question_mark.fs \
     $FORTHKIT/lib/common/block/block.fs \
     $FORTHKIT/lib/common/block/flush.fs \

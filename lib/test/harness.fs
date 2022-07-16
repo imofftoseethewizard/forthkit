@@ -1,9 +1,16 @@
-(  ---------------------------------------------------------  )
-(  Supplemental Words                                         )
-(                                                             )
-(  FORTH-79 doesn't have the words "cell" or "cells", since   )
-(  since the cell size was defined to be 16 bits. Forthkit    )
-(  supports compiling f79 with 16, 32, or 64 bit words.       )
+ea_source_idx  CONSTANT >IN
+ea_source_len  CONSTANT #TIB
+: \ #TIB @ >IN ! ; IMMEDIATE
+
+\ The lines above set up the test harness to support comments with
+\ minimal prep beyond the built-in primitives.
+
+\  ---------------------------------------------------------
+\  Supplemental Words
+\
+\  FORTH-79 doesn't have the words "cell" or "cells", since
+\  since the cell size was defined to be 16 bits. Forthkit
+\  supports compiling f79 with 16, 32, or 64 bit words.
 
 here 0 , here - dup allot negate constant cell
 
@@ -13,13 +20,13 @@ here 0 , here - dup allot negate constant cell
 : chars ;
 : <> = 0= ; : invert -1 xor ;
 
-(  ---------------------------------------------------------  )
-(  Test Harness Variables                                     )
-(                                                             )
-(  The test harness captures the depth of the stack before    )
-(  the test is run. After the subject code is executed, the   )
-(  depth of the stack is checked against this and any new     )
-( values are saved for comparison during verification.        )
+\  ---------------------------------------------------------
+\  Test Harness Variables
+\
+\  The test harness captures the depth of the stack before
+\  the test is run. After the subject code is executed, the
+\  depth of the stack is checked against this and any new
+\ values are saved for comparison during verification.
 
 variable start-depth
 variable actual-depth
@@ -68,8 +75,8 @@ create actual-results 32 cells allot
     then
 ;
 
-(  ---------------------------------------------------------  )
-(  Constants                                                  )
+\  ---------------------------------------------------------
+\  Constants
 
 0      0= constant <true>
 <true> 0= constant <false>

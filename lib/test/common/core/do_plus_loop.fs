@@ -6,7 +6,7 @@ T{ MID-UINT MID-UINT+1 GD2 -> MID-UINT+1 MID-UINT }T
 VARIABLE gditerations
 VARIABLE gdincrement
 
-: gd7 ( limit start increment -- )
+: gd7 \ ( limit start increment -- )
     gdincrement !
     0 gditerations !
     DO
@@ -36,7 +36,7 @@ T{  -20 30 -10 gd7 -> 30 20 10  0 -10 -20 6  }T
 T{  -20 31 -10 gd7 -> 31 21 11  1  -9 -19 6  }T
 T{  -20 29 -10 gd7 -> 29 19  9 -1 -11     5  }T
 
-( With large and small increments )
+\ With large and small increments
 
 MAX-UINT 8 RSHIFT 1+ CONSTANT ustep
 ustep NEGATE CONSTANT -ustep

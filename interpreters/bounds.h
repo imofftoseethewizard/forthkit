@@ -18,6 +18,12 @@ do {                                                 \
 
 #define _check_loader_context_stack_bounds()
 
+#define _check_minimum_stack_depth(n)                \
+    do {                                             \
+if ((sp0 - sp) < (n))                                \
+    _abort(err_parameter_stack_underflow);           \
+} while (0)
+
 #define _check_parameter_stack_bounds()              \
 do {                                                 \
     if (sp > sp0)                                    \
@@ -55,6 +61,7 @@ do {                                                 \
 #define _check_dictionary_bounds()
 #define _check_fiber_stack_bounds()
 #define _check_loader_context_stack_bounds()
+#define _check_minimum_stack_depth(n)
 #define _check_parameter_stack_bounds()
 #define _check_return_stack_bounds()
 #define _check_task_address()
