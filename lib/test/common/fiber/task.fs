@@ -1,1 +1,1 @@
-t{ 1000 dup reserve task -> 1 }t
+t{ 1000 DUP reserve task -> 1 }t
