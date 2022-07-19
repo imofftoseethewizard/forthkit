@@ -25,6 +25,9 @@ __primitive(pr_create)
     /* dp + 2 is the location immediately after the exit below. */
     _store_data(_from_ptr((cell *)dp + 2));
     _compile_pr(op_exit);
+
+    _end_define_word();
+
     _check_dictionary_bounds();
 }
 __end

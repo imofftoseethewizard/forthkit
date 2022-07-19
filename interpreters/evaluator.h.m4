@@ -166,8 +166,8 @@ do {                                                              \
        /* Vocabulary list link.               */                  \
        _store_data(*_to_ptr(tp[ta_current]));                     \
                                                                   \
-       /* Add to current vocabulary.          */                  \
-       *_to_ptr(tp[ta_current]) = *rp++;                          \
+       /* Save word address for _end_define_word */               \
+       *--sp = *rp++;                                             \
                                                                   \
        /* Word flags.                         */                  \
        _store_data(flags)
@@ -187,12 +187,17 @@ do {                                                              \
         _word_header(flags);                                      \
     } while(0)
 
+#define _end_define_word()                                        \
+       /* Add to current vocabulary.          */                  \
+       *_to_ptr(tp[ta_current]) = *sp++;
+
 #define _define_primitive_ext(s, l, cw_l, flags)                  \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));      \
         _begin_define_word(s, c_inline | c_primitive | (flags));  \
         _register_compiled_word(cw_l);                            \
         _compile_pr(l);                                           \
-        _compile_pr(op_exit);
+        _compile_pr(op_exit);                                     \
+        _end_define_word();
 
 #define _define_parsing_primitive(s, l, cw_l)                     \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));      \
@@ -203,7 +208,8 @@ do {                                                              \
         _compile_pr(pr_fetch);                                    \
         _compile_pr(pr_word);                                     \
         _compile_pr(l);                                           \
-        _compile_pr(op_exit);
+        _compile_pr(op_exit);                                     \
+        _end_define_word();
 
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
@@ -212,7 +218,8 @@ do {                                                              \
         _info("defining constant %-16s %d\n", s, v);              \
         _begin_define_word(s, c_value);                           \
         _compile_literal(v);                                      \
-        _compile_pr(op_exit);
+        _compile_pr(op_exit);                                     \
+        _end_define_word();
 
 #define _primary_fiber 0
 #define _primary_task 0

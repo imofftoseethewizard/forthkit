@@ -17,6 +17,8 @@ __primitive(pr_variable)
 
     _compile_variable();
 
+    _end_define_word();
+
     _check_dictionary_bounds();
 }
 __end

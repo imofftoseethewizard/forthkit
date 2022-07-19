@@ -13,8 +13,6 @@ __primitive(pr_semicolon)
     _compile_pr(op_exit);
     tp[ta_state] = 0;
 
-    _end_define_word();
-
     _check_dictionary_bounds();
 }
 __end

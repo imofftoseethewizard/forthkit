@@ -114,3 +114,4 @@ _compile_then();
 _compile_repeat();
 
 _compile_pr(op_exit);
+_end_define_word();
