@@ -4,6 +4,4 @@ log/
 deps.txt
 *.log
 *.trace
-\#*
-.#*
 *.fi
