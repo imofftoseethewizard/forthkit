@@ -1,17 +1,15 @@
+
+module definition
+  a unit of primitives, forth words, and data which provides....
+  ideally defined by an rc or m4 file
+  ideally
+
+testing
+  missing tests
+    <# # hold #s #>
+
 f83
   colon semantics vs f79: add new word to dictionary only at ';', not initially
-
-c to fs
-
-  order of final compiled words
-    tick
-    tick-79
-    word
-
-  move interpreter to bootstrap?
-
-  move some primitives to lib/
-  tests
 
 refactor
   decompile.fs to isolate f79-specific core
@@ -30,7 +28,7 @@ debugger
 order of generalization
   forth versions
     standards
-      94 (ansi), current standard, (check gforth compat works)
+      94 (ANS forth), current standard, (check gforth compat works)
 
   modules
     contains ops, primitives, compiled, tests for a unit of functionality

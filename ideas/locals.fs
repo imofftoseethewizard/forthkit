@@ -7,24 +7,6 @@
 ( simplest, conflicts with gforth locals however )
 : affine { a b c | a b + c * } ;
 
-
-( this word should always fail, right? )
-: this-shouldn't-work 10 >r 20 ;
-
-( more in line with control structures like begin while repeat )
-( conflicts with fiber's end )
-: foo
-    ' this-shouldn't-work fiber
-    local f in
-        f step
-        f fr>
-        f run
-    end
-;
-
-: step 1 over fsteps ! start ;
-: run -1 over fsteps ! start ;
-
 ( more in line with control structures like begin while repeat )
 ( conflicts with fiber's end )
 : foo
