@@ -1,0 +1,22 @@
+: CASE
+    POSTPONE <jump>
+    2 CELLS ,
+    HERE 0 ,
+; IMMEDIATE
+
+: OF
+    POSTPONE OVER
+    POSTPONE =
+    POSTPONE IF
+; IMMEDIATE
+
+: ENDOF
+    POSTPONE <jump-indirect>
+    OVER HERE - ,
+    POSTPONE THEN
+; IMMEDIATE
+
+: ENDCASE
+    HERE OVER - SWAP !
+    POSTPONE DROP
+; IMMEDIATE

@@ -89,9 +89,15 @@ base !
                 drop
                 space cell+ dup @ .
             else
-                has-op-ip-offset?
+                dup has-op-ip-offset?
                 if
+                    drop
                     space cell+ dup @ over + .
+                else
+                    has-op-indirect-ip-offset?
+                    if
+                        space cell+ dup @ over + dup @ + .
+                    then
                 then
             then
 

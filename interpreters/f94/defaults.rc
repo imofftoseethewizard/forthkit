@@ -20,6 +20,8 @@ export BUNDLED_WORDS=" \
     $FORTHKIT/lib/common/core/spaces.fs \
     $FORTHKIT/lib/common/core/bracket_tick.fs \
     $FORTHKIT/lib/common/core/numeric_output.fs \
+    $FORTHKIT/lib/common/core/postpone.fs \
+    $FORTHKIT/lib/common/core/case.fs \
     $FORTHKIT/lib/common/core/span.fs \
     $FORTHKIT/lib/common/core/expect.fs \
     $FORTHKIT/lib/common/core/forget.fs \

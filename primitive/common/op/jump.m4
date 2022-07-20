@@ -14,14 +14,23 @@
     *_to_ptr(*sp++) = (int)(dp - (char *)_to_ptr(*sp))
 
 /* op_jump expects the next location to be an offset. It is relative
-   to where the ip would normally be next, hence the "+ 2" to account
-   for advancing past op_jump and the offset.
-*/
+   to the cell where the offset is stored.
+ */
+
+#define _jump() (ip = (cell *)((char *)ip + (number)*ip))
 
 __primitive(op_jump)
 {
-    ip = (cell *)((char *)ip + (number)*ip);
+    _jump();
 }
 __end
 
 __define_primitive_ext("<jump>", op_jump, c_operand_ip_offset);
+
+__primitive(op_jump_indirect)
+{
+    _jump();
+    _jump();
+}
+__end
+__define_primitive_ext("<jump-indirect>", op_jump_indirect, c_operand_indirect_ip_offset);
