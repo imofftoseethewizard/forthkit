@@ -8,6 +8,8 @@ export COMPILED_WORDS=$FORTHKIT/interpreters/f94/compiled-words.m4
 export BUNDLED_WORDS=" \
     $FORTHKIT/lib/common/core/text_input.fs \
     $FORTHKIT/lib/f79/cell.fs \
+    $FORTHKIT/lib/common/core/aligned.fs \
+    $FORTHKIT/lib/common/core/align.fs \
     $FORTHKIT/lib/common/core/bl.fs \
     $FORTHKIT/lib/common/core/char.fs \
     $FORTHKIT/lib/common/core/find.fs \

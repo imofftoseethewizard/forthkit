@@ -1,0 +1,3 @@
+: ALIGNED
+    [ CELL 1- ] LITERAL + [ CELL 1- INVERT ] LITERAL AND
+;

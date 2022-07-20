@@ -7,9 +7,16 @@ module definition
 testing
   missing tests
     <# # hold #s #>
+    2/ 2@ 2OVER 2! 2SQAP 2*
+    2DROP 2DUP <>
+    ALIGN ALIGNED
+    M*
+    INVERT
+    POSTPONE
+    CASE OF ENDOF ENDCASE
 
-f83
-  colon semantics vs f79: add new word to dictionary only at ';', not initially
+f94
+  ENVIRONMENT?
 
 refactor
   decompile.fs to isolate f79-specific core
