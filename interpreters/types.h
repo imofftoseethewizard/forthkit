@@ -1,3 +1,5 @@
+typedef unsigned char byte;
+
 typedef unsigned CELL_TYPE cell;
 typedef CELL_TYPE number;
 

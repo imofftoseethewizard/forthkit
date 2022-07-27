@@ -2,9 +2,9 @@
 
 cd $FORTHKIT/interpreters
 
-for family in $FAMILIES
+for family in f94 # $FAMILIES
 do
-    for f in `ls $FORTHKIT/interpreters/$family/spec/*.rc`
+    for f in `ls $FORTHKIT/interpreters/$family/spec/gcc-rel-switch-a32-c4.rc`
     do
         export VERSION_TAG=$(echo $f | sed -E 's|.*/([^.]*)\.rc$|\1|')
         . $f

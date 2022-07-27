@@ -59,6 +59,7 @@ enum task_attribute {
     ta_base,
     ta_context,
     ta_current,
+    ta_latest_xt,
     ta_state,
     ta_interpret,
     ta_forth,
@@ -69,7 +70,7 @@ enum task_attribute {
 
 #define _task_size ((task_attribute_count + e[ea_parameter_stack_size]) * sizeof(cell))
 
-enum engine_attribute {
+enum evaluator_attribute {
     /* attributes set by init_evaluator */
 
     ea_size, /* from evaluator_size parameter */
@@ -100,6 +101,7 @@ enum engine_attribute {
     ea_tasks,
     ea_word_buffer0,
     ea_word_buffer1,
+    ea_word_shim,
 
     /* miscellaneous */
     ea_blk,
@@ -108,8 +110,12 @@ enum engine_attribute {
     ea_source_idx,
     ea_source_len,
 
-    /* must be last */
-    engine_attribute_count
+    ea_interpret,
+    ea_pr_interpret,
+    ea_state,
+
+    /* must be last in the enumeration*/
+    evaluator_attribute_count
 };
 
 #define c_immediate                  0b00000001
@@ -170,7 +176,11 @@ do {                                                              \
        *--sp = *rp++;                                             \
                                                                   \
        /* Word flags.                         */                  \
-       _store_data(flags)
+       _store_data(flags);                                        \
+                                                                  \
+       /* Update latest_xt                       */               \
+       tp[ta_latest_xt] = _from_ptr(dp)
+
 
 #define _next_word(x) *(_to_ptr(x) + 1)
 

@@ -1,0 +1,3 @@
+: RECURSE
+    latestxt COMPILE,
+; IMMEDIATE

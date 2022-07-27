@@ -1,5 +1,6 @@
-__primitive(pr_right_bracket)  
+__primitive(pr_right_bracket)
 {
+    e[ea_state] = 1;
     tp[ta_state] = 1;
 }
 __end

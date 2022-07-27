@@ -5,3 +5,7 @@
 
     BL WORD COUNT DROP C@
 ;
+
+: CHARS ;
+
+: CHAR+ 1+ ;

@@ -15,6 +15,16 @@ include(__compiled_words)dnl
 #include "evaluator.h"
 #include "errors.h"
 
+typedef struct {
+    const char *name;
+    cell value;
+} primitive_descriptor;
+
+typedef struct {
+    const char *name;
+    cell value;
+} constant_descriptor;
+
 char *store_counted_string(const char *s, char *dp);
 
 void
@@ -107,6 +117,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
     rp = rp_stop = rp0;
     *--rp = 0;
     ip = _to_ptr(tp[ta_interpret]);
+    ip = _to_ptr(e[ea_pr_interpret]);
 
     steps = -1;
 
@@ -208,7 +219,7 @@ create_data_image(cell *e, int *image_size)
     image = add_data_block(
         image, *image_size, _fiber_area, (cell)(data - (char *)e), data, image_size);
 
-    /* save task dictionaries (and engine attributes with task 0) */
+    /* save task dictionaries (and evaluator attributes with task 0) */
     for (register int i = 0; i < e[ea_task_count]; i++) {
 	register cell *t = _to_task_ptr(i), length = _align(t[ta_dp] - t[ta_bottom]);
         char *data = (char *)_to_ptr(t[ta_bottom]);

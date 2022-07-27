@@ -1,0 +1,507 @@
+    define(`__word_buffer_length', 0x80)
+    define(`__max_wordlist_length', 0x10)
+This is a strange sort of document. It is superficially a Markdown document,
+though the code blocks form a self-contained m4 macro processor script, the
+output of which is a f0 program which constructs the initial image for a Forth
+system. Including the English used to express all of this, it is simultaneously
+in five languages at once. And _that_ is the primary reason that it is in
+Markdown, to provide an easy way to describe at length how all of this fits
+together.
+
+The command `sed -E '/^ {0,3}[^ ]/d' interpret.f0 | m4` will
+convert this document to f0 code. `sed` can clean up the excess blank lines
+and 4 space indent left over from converting from markdown and evaluating m4:
+`sed -E 's/^    //' | sed -Ez 's/(\n *)+\n/\n\n/g' | sed -Ez 's/^( *(\n *)*)//g'`
+
+The m4 macro processor can easily make source code more opaque, but here we can
+use it to make the f0 code more readable to those familiar with Forth. Since the
+primitive interpreter has neither comments nor abstraction, much of what is easy
+to express in Forth is verbose and obscure in f0.
+
+The evaluator is initialized with `HERE` at the least available memory location,
+as a way to communicate the base of legal addresses to the primitive
+interpreter. It is important to note that there are important system values at
+and above that location that should not be changed. The primitive interpreter
+needs to save that value and `ALLOT` enough space to ensure that the definitions
+below do not overwrite this region. At the outset, the only location we have to
+store data is the parameter stack, so we'll save the initial value of the
+dictionary pointer as the lowest stack item.
+
+    HERE system-reserved ALLOT
+
+For the remainder of this document, we can retrieve this value by evaluating
+`SP0 CELL - @`. We will be storing more things we will need later in a similar
+manner, and this would be cumbersome and error prone to track manually, so it's
+worth a little m4 magic:
+
+    divert(-1)
+    define(`__idx', 0)
+    define(`__next_idx', `define(`__idx', eval(__idx + 1))'`__idx')
+    divert
+
+So that we can just
+
+    define(`__bottom', __next_idx)
+
+Next, we will also need a compact way to create new words.
+
+    divert(-1)
+    define(`__entry',`ALIGN HERE ROT , ROT , SWAP ,')
+    divert
+
+(NB: all m4 definitions will begin with two underscores.)
+
+At first glance, that is probably incomprehensible, so let's unpack it a couple
+words at a time. First of all `__entry` requires that the first 3 stack values
+are: the word's flags -- immediate, e.g. -- the address of a counted string
+holding the name of the new word, and finally the address of the most recently
+defined word. The objective is to create the header of a word definition in the
+dictionary. This consists of the name token -- that counted string address --
+the address of the previous word, the word's flags, and thereafter the code
+which the word will perform when executed. To begin, `ALIGN HERE` puts the
+dictionary pointer on a cell boundary and puts its value on the top of the
+stack. At this point, the address of the name is the third value on the stack,
+so `ROT ,` takes care of the first cell of the new word. The link address was
+fourth, but is now third, so another `ROT ,` will take care of that. We're left
+with the word's address and the flags, so `SWAP ,` puts the flags in the flags
+where they belong. We're left with the address of this word, which the next word
+will need on the top of the stack, and we have the dictionary pointer ready to
+compile code for this word.
+
+If this is a word we will want to refer to later, we should follow that with
+`HERE SWAP` to capture the xt and store it below the word's address. We'll also
+need to define a new index for it using `__next_idx`.
+
+    define(`__constant',                   0x0001)
+    define(`__immediate',                  0x0002)
+    define(`__inline',                     0x0004)
+    define(`__primitive',                  0x0008)
+    define(`__restrict',                   0x0010)
+    define(`__operand_ip_absolute',        0x0020)
+    define(`__operand_ip_offset',          0x0040)
+    define(`__operand_indirect_ip_offset', 0x0080)
+    define(`__operand_literal',            0x0100)
+
+The `__entry` macro presumes that the link to the previous word in the dictionary is
+on the top of the stack. Words are stored as a linked list terminated by 0, so we
+need to put a 0 on the stack to start defining words.
+
+    0
+
+With that, we can create the dictionary entry for `STATE`:
+
+    name: STATE __constant __entry HERE SWAP ]
+    <literal> [ SP0 __bottom CELLS - @ state + , ] EXIT
+
+`name:` is a primitive which reads the next space delimited word from the input
+stream, compiles it into the dictionary as a counted string, and leaves the
+address of that string on the stack. `__entry` was described immediately
+above. The final `__constant ,` stores the flags associated with this word, in
+this case, a flag indicating that the word's execution semantics is just to put
+a literal on the stack. The dictionary pointer is also currently the xt of this
+word -- a thing which will surely come in handy later -- and so we finish with
+`HERE SWAP`. Leaving the stack with the address of the new word on the top, and
+its xt just below.
+
+Now that the word's dicionary entry has been stored, the `HERE` returns the
+address of the execution token for `STATE`, which we will save on the stack.  At
+this point, the stack contains the link address to `STATE` at the top, the xt of
+`STATE`, and the value that state should return at the bottom.
+
+This line switches to compilation state, compiles the operand for a literal,
+then switches back interpretation state, rotates the stack to bring the address
+of the state variable to the top and then compiles it as the operand of the
+literal. After one more switch back to compiling to finish the word with `EXIT`,
+we have our first word in the dictionary.
+
+At this point, there are two values on the stack. On the top is the address of
+the word for `STATE` and below that, its xt. Throughout the definition of
+dictionary, we will keep the stack in a similar arrangement, accumulating xts
+below the address of the most recently defined word. In this way, we can
+relilably reference the xt for `STATE` using `SP0 1 CELLS - @`. This would be
+cumbersome and error prone to track manually, so it's worth a little m4 magic:
+
+
+    define(`__word_idx', 0)
+    define(`__next_word_idx', `define(`__word_idx', eval(__word_idx + 1))'`__word_idx')
+    divert
+
+So that we can just
+
+    define(`__state', __next_idx)
+
+
+    define(`__compile_constant', `<literal> [ SP0 $1 CELLS - @ CELL + @ `,' ]')
+
+    define(`STATE', __compile_constant(__state))
+
+Recall that the ultimate goal here is to bring up enough of the dictionary so
+that we can define the interpreter, and from there -- in a more convenient and
+forgiving language -- define the rest of the system. What will be implemented
+here in f0, versus as a primitive in C is a matter of taste. For this
+interpreter, the general idea is to implement words related to parsing and
+compilation in f0, and in C the words that would benefit from either the speed
+of a C implementation, or that would simply be impossible otherwise. For this
+interpreter we'll need `PARSE`, `FIND`, and `>NUMBER` before we can implement
+the interpreter. Those words will of course also need some component words.
+
+Let's start with `PARSE`. We'll need to define `BEGIN`, `WHILE`, `REPEAT`, `IF`, and
+`THEN`. The remainder are primitives.
+
+`BEGIN` leaves a destination -- aka `dest` -- on the stack. That's just `HERE`,
+the address of the next cell to be compiled.
+
+    [ name: BEGIN __immediate __entry HERE SWAP ]
+        HERE
+        EXIT
+
+`WHILE` compiles a primitive which branches when the top of the stack is 0. The
+destination of the branch is as yet undetermined, so we'll leave a placeholder
+of 0.  and pushes the address of the `<0branch>`s operand to the stack. This is
+known as an origin or `orig`. Additionally, it keeps the `dest` from the `BEGIN`
+on the top, requiring a `SWAP`.
+
+    [ name: WHILE __immediate __entry HERE SWAP ]
+        <literal> <0branch> ,
+        HERE <literal> 0 ,
+        SWAP
+        EXIT
+
+`REPEAT` completes the begin/while construction, consuming both the
+`dest` and the `orig`. It compiles a `<jump>` back to the `BEGIN` using the
+`dest`, and then finalizes the `orig` by storing the offset from the operand to
+the address of the next cell.
+
+    [ name: REPEAT __immediate __entry HERE SWAP ]
+        <literal> <jump> ,
+        HERE - ,
+        HERE OVER - SWAP !
+        EXIT
+
+    define(`__begin', __next_idx)
+    define(`__while', __next_idx)
+    define(`__repeat', __next_idx)
+
+Similar to `WHILE`, `IF` tests if the top of the stack is 0, and branches if it
+is, and so it also pushes an origin -- aka `orig` -- onto the stack.
+
+    [ name: IF __immediate __entry HERE SWAP ]
+        <literal> <0branch> ,
+        HERE <literal> 0 ,
+        EXIT
+
+    [ name: ELSE __immediate __entry HERE SWAP ]
+        <literal> <jump> ,
+        HERE <literal> 0 ,
+        SWAP HERE OVER - SWAP !
+        EXIT
+
+    [ name: THEN __immediate __entry HERE SWAP ]
+        HERE OVER - SWAP ! EXIT
+
+    define(`__if', __next_idx)
+    define(`__else', __next_idx)
+    define(`__then', __next_idx)
+
+    [ name: DO __immediate __entry HERE SWAP ]
+        <literal> <do> ,
+        <literal> 0 ,
+        HERE
+        EXIT
+
+    [ name: LOOP __immediate __entry HERE SWAP ]
+        <literal> <loop> ,
+        DUP HERE - ,
+        CELL - HERE SWAP !
+        EXIT
+
+    define(`__do', __next_idx)
+    define(`__loop', __next_idx)
+
+Since each of these is compile-only, we can safely and without much confusion
+use m4 to make the remainder a little easier to write
+
+    define(`__execute_immediate', `[ SP0 $1 CELLS - @ EXECUTE ]')
+
+    define(`BEGIN',  `__execute_immediate(__begin)')
+    define(`WHILE',  `__execute_immediate(__while)')
+    define(`REPEAT', `__execute_immediate(__repeat)')
+    define(`IF',     `__execute_immediate(__if)')
+    define(`ELSE',   `__execute_immediate(__else)')
+    define(`THEN',   `__execute_immediate(__then)')
+    define(`DO',     `__execute_immediate(__do)')
+    define(`LOOP',   `__execute_immediate(__loop)')
+
+We need three more things before we can define `PARSE`; `TIB`, `>IN`, and
+`#TIB`.
+
+    [ name: TIB __constant __entry HERE SWAP ]
+    <literal> [ SP0 CELL - @ source_addr + , ] EXIT
+    define(`__tib', __next_idx)
+
+The `__execute_immediate` macro above isn't appropriate here. We need a macro to
+compile a constant word.
+and then
+
+    define(`TIB', `__compile_constant(__tib)')
+
+Similarly for the other two:
+
+    [ name: >IN __constant __entry HERE SWAP ]
+    <literal> [ SP0 CELL - @ source_idx + , ] EXIT
+    define(`__to_in', __next_idx)
+    define(`TO_IN', `__compile_constant(__to_in)')
+
+    [ name: `#TIB' __constant __entry HERE SWAP ]
+    <literal> [ SP0 CELL - @ source_len + , ] EXIT
+    define(`__num_tib', __next_idx)
+    define(`NUM_TIB', `__compile_constant(__num_tib)')
+
+WORD
+SEARCH-WORDLIST
+CURRENT
+FIND
+
+With that we can define `PARSE`:
+
+    [ name: PARSE 0 __entry HERE SWAP ]
+
+        >R
+
+        TIB @
+        TO_IN @
+        OVER + SWAP
+        NUM_TIB @ +
+        OVER
+
+        BEGIN
+             2DUP >
+        WHILE
+                DUP C@ R@ <>
+            WHILE
+                    1+
+            REPEAT
+        THEN
+
+        NIP
+
+        DUP
+        DUP C@ R@ =
+
+        IF
+            1+
+        THEN
+
+        TIB @ - TO_IN !
+        OVER -
+
+        R> DROP
+
+        EXIT
+
+Finally, we'll need this, since we will refer to it again later:
+
+    define(`__parse', __next_idx)
+
+    define(`__compile_word', `[ SP0 $1 CELLS - @ `,' ]')
+
+    define(`PARSE', __compile_word(__parse))
+
+Let's define `WORD`.
+
+    [ HERE __word_buffer_length ALLOT SWAP ]
+    define(`__word_buffer', __next_idx)
+
+    [ name: WORD 0 __entry HERE SWAP ]
+
+        >R
+
+        TIB @
+        NUM_TIB @
+        OVER + SWAP
+        TO_IN @ +
+
+        BEGIN
+             2DUP >
+        WHILE
+                DUP C@ R@ =
+            WHILE
+                    1+
+            REPEAT
+        THEN
+
+        NIP
+
+        TIB @ - TO_IN !
+
+        R>
+
+        PARSE
+
+        DUP <literal> [ SP0 __word_buffer CELLS - @ , ] C!
+
+        <literal> [ SP0 __word_buffer CELLS - @ 1+ , ] SWAP CMOVE
+
+        <literal> [ SP0 __word_buffer CELLS - @ , ]
+
+        EXIT
+
+    define(`__word', __next_idx)
+    define(`WORD', __compile_word(__word))
+
+Next we'll need a definition of find.
+
+    [ name: SEARCH-WORDLIST 0 __entry HERE SWAP ]
+
+        @ >R
+        BEGIN
+            R@
+        WHILE
+            2DUP R@ @ COUNT
+            COMPARE 0=
+            IF
+                2DROP R@ <literal> 3 CELLS +
+                R> <literal> 2 CELLS + @ <literal> __immediate AND
+                IF <literal> 1 ELSE <literal> -1 THEN
+                EXIT
+            THEN
+            R> CELL + @ >R
+        REPEAT
+
+        2DROP R>
+        EXIT
+
+    define(`__search_wordlist', __next_idx)
+    define(`SEARCH_WORDLIST', __compile_word(__search_wordlist))
+
+    [ name: `#VOCS' __constant __entry HERE SWAP ]
+
+        <literal> 16 EXIT
+
+    define(`__num_vocs', __next_idx)
+    define(`NUM_VOCS', __compile_constant(__num_vocs))
+
+    [ name: `#ORDER' __constant __entry HERE SWAP ]
+
+        <literal> [ HERE 2 CELLS + , ]
+        EXIT
+        0
+
+    define(`__num_order', __next_idx)
+    define(`num_order', __compile_constant(__num_order))
+
+    [ name: CONTEXT __constant __entry HERE SWAP ]
+
+        <literal> [ HERE 2 CELLS + , ] EXIT [ __max_wordlist_length CELLS ALLOT ]
+
+    define(`__context', __next_idx)
+    define(`context', __compile_constant(__context))
+
+    [ name: FIND 0 __entry HERE SWAP ]
+
+       <literal> 0
+
+       num_order @ <literal> 0 DO
+         OVER COUNT
+         I CELLS CONTEXT + @
+         SEARCH_WORDLIST
+         ?DUP IF
+           2SWAP 2DROP LEAVE
+         THEN
+       LOOP
+       EXIT
+
+    define(`__find', __next_idx)
+    define(`FIND', __compile_word(__find))
+
+    [ name: BASE __constant __entry HERE SWAP ]
+      <literal> [ HERE 2 CELLS + , ]
+      EXIT
+      10
+
+    define(`__base', __next_idx)
+    define(`BASE', __compile_constant(__base))
+
+    [ name: CHAR 0 __entry HERE SWAP ]
+        <literal> 32 WORD DROP COUNT C@
+        EXIT
+
+    define(`__char', __next_idx)
+    define(`__execute_word', `SP0 $1 CELLS - @ EXECUTE')
+    define(`CHAR', __execute_word(__char))
+
+    [ name: >NUMBER 0 __entry HERE SWAP ]
+
+    define(`__to_number', __next_idx)
+    define(`TO_NUMBER', __compile_word(__to_number))
+
+        BEGIN
+            DUP
+        WHILE
+            SWAP
+            DUP C@ [ CHAR 0 , ] -
+            DUP <literal> 9 U>
+            IF
+                <literal> [ CHAR A CHAR 0 - , ] -
+                DUP <literal> 25 U>
+                IF
+                    <literal> [ CHAR a CHAR A - , ] -
+                    DUP <literal> 25 U>
+                    IF
+                        DROP
+                        SWAP
+                        EXIT
+                    THEN
+                THEN
+                <literal> 10 +
+            THEN
+
+            DUP BASE @ <
+            IF
+                >R 2SWAP
+                BASE @ <literal> 1 M*/
+                R> <literal> 0 D+
+                2SWAP
+            ELSE
+                DROP
+                SWAP
+                EXIT
+            THEN
+
+            1+
+            SWAP 1-
+        REPEAT
+
+        EXIT
+
+    [ name: interpret 0 __entry HERE SWAP ]
+
+        BEGIN
+            <literal> 32 WORD
+            ?DUP
+        WHILE
+                FIND DUP
+                IF
+                    0>
+                    STATE @ 0= OR
+                    IF
+                        EXECUTE
+                    ELSE
+                        COMPILE,
+                    THEN
+                ELSE
+                    <literal> 0 ROT COUNT TO_NUMBER
+                    0=
+                    IF
+                        DROP SWAP DROP
+                        STATE @
+                        IF
+                            <literal> <literal> , ,
+                        THEN
+                    ELSE
+                        <literal> err_undefined_word <abort>
+                    THEN
+                THEN
+        REPEAT
+
+        EXIT

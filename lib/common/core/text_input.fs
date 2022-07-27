@@ -6,42 +6,47 @@ ea_source_len  CONSTANT #TIB
     #TIB @ >IN !
 ; IMMEDIATE
 
+: PARSE \ ( char "ccc<char>" -- caddr u )
+
+    >R
+
+    TIB @ >IN @ OVER + SWAP #TIB @ + OVER
+    \ ( c-addr-in c-addr-last c-addr-in )
+
+    BEGIN
+        \ ( c-addr-last c-addr-current )
+        2DUP >
+    WHILE
+            DUP C@ R@ <>
+        WHILE
+                1+
+        REPEAT
+    THEN
+    \ ( c-addr-in c-addr-last c-addr-last-or-at-char )
+
+    NIP
+
+    DUP
+    DUP C@ R@ = IF 1+ THEN
+    \ ( c-addr-in c-addr-last-or-at-char c-addr-last-or-after-char )
+
+    TIB @ - >IN !
+    OVER -
+    \ ( c-addr count )
+
+    R> DROP
+;
+
 : ( \ ( "ccc<paren>" -- )
 
     \ Parse ccc delimited by ) (right parenthesis). ( is an
     \ immediate word. The number of characters in ccc may be zero
     \ to the number of characters in the parse area.
 
-    TIB @ #TIB @ OVER + SWAP >IN @ +
-    \ The stack now contains the address beyond the last character
-    \ in the text input buffer below the address of the next
-    \ character in the buffer.
-
-    BEGIN
-        \ ( c-addr-last c-addr-current )
-        2dup >
-    WHILE
-            \ `41` is used here instead of `[CHAR] )` to minimize
-            \ the amount of code before comments are fully
-            \ supported.
-            DUP C@ 41 <>
-        WHILE
-                1+
-        REPEAT
-
-        \ Execution continues here when a closing paren is found.
-        \ Set >IN to the index of the next character beyond that.
-        TIB @ - 1+
-        >IN !
-        DROP
-
-    ELSE
-        \ Execution continues here when the closing paren is not
-        \ found. Consume the rest of the buffer.
-        2DROP
-        #TIB @ >IN !
-
-    THEN
+    \ `41` is used here instead of `[CHAR] )` to minimize
+    \ the amount of code before comments are fully
+    \ supported.
+    41 PARSE 2DROP
 
 ; IMMEDIATE
 

@@ -1,3 +1,45 @@
+    static primitive_descriptor primitive_descs[] = {
+        stack_foreach(`__primitive_descs', `__show')};
+
+    __define_constant("size",                 sizeof(cell) * ea_size)
+    __define_constant("top",                  sizeof(cell) * ea_top)
+    __define_constant("buffer_size",          sizeof(cell) * ea_buffer_size)
+    __define_constant("buffer_count",         sizeof(cell) * ea_buffer_count)
+    __define_constant("fiber_count",          sizeof(cell) * ea_fiber_count)
+    __define_constant("fiber_stack_size",     sizeof(cell) * ea_fiber_stack_size)
+    __define_constant("pad_buffer_size",      sizeof(cell) * ea_pad_buffer_size)
+    __define_constant("parameter_stack_size", sizeof(cell) * ea_parameter_stack_size)
+    __define_constant("return_stack_size",    sizeof(cell) * ea_return_stack_size)
+    __define_constant("source_size",          sizeof(cell) * ea_source_size)
+    __define_constant("task_count",           sizeof(cell) * ea_task_count)
+    __define_constant("word_buffer_size",     sizeof(cell) * ea_word_buffer_size)
+
+    __define_constant("buffer_map",           sizeof(cell) * ea_buffer_map)
+    __define_constant("buffers",              sizeof(cell) * ea_buffers)
+    __define_constant("error_msg_addr",       sizeof(cell) * ea_error_msg_addr)
+    __define_constant("error_msg_len",        sizeof(cell) * ea_error_msg_len)
+    __define_constant("fibers",               sizeof(cell) * ea_fibers)
+    __define_constant("fp",                   sizeof(cell) * ea_fp)
+    __define_constant("fp0",                  sizeof(cell) * ea_fp0)
+    __define_constant("pad",                  sizeof(cell) * ea_pad)
+    __define_constant("source_addr",          sizeof(cell) * ea_source_addr)
+    __define_constant("tasks",                sizeof(cell) * ea_tasks)
+    __define_constant("word_buffer0",         sizeof(cell) * ea_word_buffer0)
+    __define_constant("word_buffer1",         sizeof(cell) * ea_word_buffer1)
+
+    __define_constant("blk",                  sizeof(cell) * ea_blk)
+    __define_constant("next_buffer",          sizeof(cell) * ea_next_buffer)
+    __define_constant("scr",                  sizeof(cell) * ea_scr)
+    __define_constant("source_idx",           sizeof(cell) * ea_source_idx)
+    __define_constant("source_len",           sizeof(cell) * ea_source_len)
+
+    __define_constant("state",                sizeof(cell) * ea_state)
+
+    __define_constant("system-reserved", sizeof(cell) * (evaluator_attribute_count+4))
+
+    static constant_descriptor constant_descs[] = {
+        stack_foreach(`__constant_descs', `__show')};
+
     if (!e[ea_top]) {
 
         top = (char *)e + e[ea_size] - sizeof(cell);
@@ -37,13 +79,31 @@
 
         for (register int i = 0; i < e[ea_task_count]; i++) {
             register cell *t = _to_task_ptr(i);
-            t[ta_bottom] = i == 0 ? _from_ptr(e) : 0;
-            t[ta_top] = i == 0 ? _from_ptr(top) : 0;
-            t[ta_dp] = i == 0 ? _from_ptr(&e[engine_attribute_count]) : 0;
+            if (i == 0) {
+                t[ta_bottom] =
+                  t[ta_dp] = _from_ptr(e);
+                t[ta_top] = _from_ptr(top);
+
+                /* reserved for use by pr_interpret */
+                e[evaluator_attribute_count] = 0;
+
+                e[evaluator_attribute_count+1] = _from_pv(pr_interpret);
+                e[evaluator_attribute_count+2] = _from_pv(op_exit);
+
+                e[ea_interpret] =
+                e[ea_pr_interpret] = _from_ptr(&e[evaluator_attribute_count+1]);
+
+                e[ea_state] = 0;
+            } else {
+                t[ta_bottom] = 0;
+                t[ta_top] = 0;
+                t[ta_dp] = 0;
+            }
             t[ta_sp] = t[ta_sp0] = _from_ptr(t) + _task_size;
             t[ta_forth] = 0;
             t[ta_context] =
-            t[ta_current] = _from_ptr(&t[ta_forth]);
+              t[ta_current] = _from_ptr(&t[ta_forth]);
+            t[ta_latest_xt] = 0;
             t[ta_base] = 10;
             t[ta_state] = 0;
             t[ta_interpret] = 0;
@@ -56,43 +116,6 @@
         e[ea_next_buffer]  = 0;
         e[ea_scr]          = 0;
 
-        __define_constant("ea_size",                 _from_ptr(&e[ea_size]));                 divert`'dnl
-        __define_constant("ea_top",                  _from_ptr(&e[ea_top]));                  divert`'dnl
-        __define_constant("ea_buffer_size",          _from_ptr(&e[ea_buffer_size]));          divert`'dnl
-        __define_constant("ea_buffer_count",         _from_ptr(&e[ea_buffer_count]));         divert`'dnl
-        __define_constant("ea_fiber_count",          _from_ptr(&e[ea_fiber_count]));          divert`'dnl
-        __define_constant("ea_fiber_stack_size",     _from_ptr(&e[ea_fiber_stack_size]));     divert`'dnl
-        __define_constant("ea_pad_buffer_size",      _from_ptr(&e[ea_pad_buffer_size]));      divert`'dnl
-        __define_constant("ea_parameter_stack_size", _from_ptr(&e[ea_parameter_stack_size])); divert`'dnl
-        __define_constant("ea_return_stack_size",    _from_ptr(&e[ea_return_stack_size]));    divert`'dnl
-        __define_constant("ea_source_size",          _from_ptr(&e[ea_source_size]));          divert`'dnl
-        __define_constant("ea_task_count",           _from_ptr(&e[ea_task_count]));           divert`'dnl
-        __define_constant("ea_word_buffer_size",     _from_ptr(&e[ea_word_buffer_size]));     divert`'dnl
-
-        __define_constant("ea_buffer_map",           _from_ptr(&e[ea_buffer_map]));           divert`'dnl
-        __define_constant("ea_buffers",              _from_ptr(&e[ea_buffers]));              divert`'dnl
-        __define_constant("ea_error_msg_addr",       _from_ptr(&e[ea_error_msg_addr]));       divert`'dnl
-        __define_constant("ea_error_msg_len",        _from_ptr(&e[ea_error_msg_len]));        divert`'dnl
-        __define_constant("ea_fibers",               _from_ptr(&e[ea_fibers]));               divert`'dnl
-        __define_constant("ea_fp",                   _from_ptr(&e[ea_fp]));                   divert`'dnl
-        __define_constant("ea_fp0",                  _from_ptr(&e[ea_fp0]));                  divert`'dnl
-        __define_constant("ea_pad",                  _from_ptr(&e[ea_pad]));                  divert`'dnl
-        __define_constant("ea_source_addr",          _from_ptr(&e[ea_source_addr]));          divert`'dnl
-        __define_constant("ea_tasks",                _from_ptr(&e[ea_tasks]));                divert`'dnl
-        __define_constant("ea_word_buffer0",         _from_ptr(&e[ea_word_buffer0]));         divert`'dnl
-        __define_constant("ea_word_buffer1",         _from_ptr(&e[ea_word_buffer1]));         divert`'dnl
-
-        __define_constant("ea_blk",                  _from_ptr(&e[ea_blk]));                  divert`'dnl
-        __define_constant("ea_next_buffer",          _from_ptr(&e[ea_next_buffer]));          divert`'dnl
-        __define_constant("ea_scr",                  _from_ptr(&e[ea_scr]));                  divert`'dnl
-        __define_constant("ea_source_idx",           _from_ptr(&e[ea_source_idx]));           divert`'dnl
-        __define_constant("ea_source_len",           _from_ptr(&e[ea_source_len]));           divert`'dnl
-
-        __define_constant("wa_word_name",  0);              divert`'dnl
-        __define_constant("wa_word_link",  sizeof(cell));   divert`'dnl
-        __define_constant("wa_word_flags", 2*sizeof(cell)); divert`'dnl
-        __define_constant("wa_word_xt",    3*sizeof(cell)); divert`'dnl
-
         fp0 = fp = _to_ptr(e[ea_fp0]);
         *--fp = _primary_fiber;
 
@@ -100,8 +123,8 @@
 
         /*_check_thread_memory();*/
 
-        undivert(__primitive_word_definitions)
-        undivert(__compiled_word_definitions)dnl
+/* #        undivert(__primitive_word_definitions) */
+/* #        undivert(__compiled_word_definitions)dnl */
 
         _save_fiber_state();
     }

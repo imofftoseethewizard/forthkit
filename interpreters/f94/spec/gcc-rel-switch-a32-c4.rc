@@ -1,6 +1,6 @@
 # -*- mode: sh; -*-
 
-. $FORTHKIT/interpreters/config/c4.rc
+. $FORTHKIT/interpreters/config/debug-c4.rc
 . $FORTHKIT/interpreters/f94/defaults.rc
 
 export CC=gcc

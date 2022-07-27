@@ -30,7 +30,6 @@ __primitive(pr_word)
     }
 
     e[ea_source_idx] = source_idx;
-
 }
 __end
 __define_primitive("<word>", pr_word);

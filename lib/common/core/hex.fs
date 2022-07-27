@@ -1,0 +1,3 @@
+: HEX
+    [ BASE @ DECIMAL 16 SWAP BASE ! ] LITERAL BASE !
+;
