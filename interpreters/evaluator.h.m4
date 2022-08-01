@@ -25,7 +25,7 @@ extern cell *create_evaluator_image(cell *e0, cell *e1, int *image_size);
 extern cell *load_evaluator_image(const char *image, int image_size);
 
 #define _from_high_word(x) ((x) >> (sizeof(number)*8))
-#define _from_low_word(x)  ((number)(x))
+#define _from_low_word(x)  ((x) & (((double_number)1 << (sizeof(number)*8)) - 1))
 #define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
 #define _to_low_word(x)    ((double_number)(x))
 
