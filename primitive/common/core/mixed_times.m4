@@ -6,4 +6,4 @@ __primitive(pr_m_times)
     *sp = _from_low_word(d);
 }
 __end
-__define_primitive("M*", pr_m_times);
+__define_primitive("m*", pr_m_times);

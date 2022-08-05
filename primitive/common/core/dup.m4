@@ -9,4 +9,4 @@ __primitive(pr_dup)
     *--sp = n;
 }
 __end
-__define_primitive("DUP", pr_dup);
+__define_primitive("dup", pr_dup);

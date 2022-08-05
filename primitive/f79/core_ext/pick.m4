@@ -17,4 +17,4 @@ __primitive(pr_pick)
         *--sp = *(sp + n - 1);
 }
 __end
-__define_primitive("PICK", pr_pick);
+__define_primitive("pick", pr_pick);

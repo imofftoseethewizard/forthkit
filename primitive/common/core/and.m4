@@ -8,4 +8,4 @@ __primitive(pr_and)
     *++sp = *(sp+1) & *sp;
 }
 __end
-__define_primitive("AND", pr_and);
+__define_primitive("and", pr_and);

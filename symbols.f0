@@ -1,0 +1,24 @@
+eliminating parsing words. syntax '' symbolic recognizer
+
+    [ 'system define ]
+        lit [ , ]
+        exit
+
+    [ 'variable define ]
+        lit lit                ,
+            here lit 2 cells + ,
+        lit exit               ,
+        exit
+
+    [ 'constant define ]
+        lit lit  ,
+                 ,
+        lit exit ,
+        exit
+
+    [ '2constant define ]
+        lit 2lit  ,
+                  ,
+                  ,
+        lit exit ,
+        exit

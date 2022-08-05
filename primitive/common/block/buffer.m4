@@ -34,4 +34,4 @@ __primitive(pr_buffer)
     ;
 }
 __end
-__define_primitive("BUFFER", pr_buffer);
+__define_primitive("buffer", pr_buffer);

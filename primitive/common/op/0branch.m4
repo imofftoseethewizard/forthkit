@@ -12,4 +12,4 @@ __primitive(op_0branch)
 }
 __end
 
-__define_primitive_ext("<0branch>", op_0branch, c_operand_ip_offset);
+__define_primitive_ext("0branch:", op_0branch, c_operand_ip_offset);

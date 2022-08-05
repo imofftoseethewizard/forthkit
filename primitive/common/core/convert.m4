@@ -47,4 +47,4 @@ __primitive(pr_convert)
 
 }
 __end
-__define_primitive("CONVERT", pr_convert);
+__define_primitive("convert", pr_convert);

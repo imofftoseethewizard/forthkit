@@ -26,4 +26,4 @@ __primitive(pr_compile_do)
     _check_dictionary_bounds();
 }
 __end
-__define_immediate_primitive("DO", pr_compile_do);
+__define_immediate_primitive("do", pr_compile_do);

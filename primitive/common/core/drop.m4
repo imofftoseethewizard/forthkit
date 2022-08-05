@@ -7,4 +7,4 @@ __primitive(pr_drop)
     ++sp;
 }
 __end
-__define_primitive("DROP", pr_drop);
+__define_primitive("drop", pr_drop);

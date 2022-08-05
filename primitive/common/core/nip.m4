@@ -6,4 +6,4 @@ __primitive(pr_nip)
     _nip();
 }
 __end
-__define_primitive("NIP", pr_nip);
+__define_primitive("nip", pr_nip);

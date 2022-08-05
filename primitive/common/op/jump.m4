@@ -25,7 +25,7 @@ __primitive(op_jump)
 }
 __end
 
-__define_primitive_ext("<jump>", op_jump, c_operand_ip_offset);
+__define_primitive_ext("jump:", op_jump, c_operand_ip_offset);
 
 __primitive(op_jump_indirect)
 {
@@ -33,4 +33,4 @@ __primitive(op_jump_indirect)
     _jump();
 }
 __end
-__define_primitive_ext("<jump-indirect>", op_jump_indirect, c_operand_indirect_ip_offset);
+__define_primitive_ext("jump-indirect:", op_jump_indirect, c_operand_indirect_ip_offset);

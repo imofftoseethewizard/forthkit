@@ -192,6 +192,7 @@ prepare_evaluator(int argc, char *argv[])
     int idx;
     number result = 0;
 
+    evaluate(0, 0, 0, NULL);
     if (BUNDLED)
         e = load_bundled_evaluator();
 
@@ -366,7 +367,7 @@ repl(void)
             break;
 
         default:
-
+            fprintf(stderr, "%d\n", result);
             print_error(evaluator, error_message(result), evaluator[ea_source_idx]);
             break;
         }
@@ -394,6 +395,7 @@ evaluate_file(cell *e, char *path)
 
     if (result) {
         printf("\nWhile reading %s at line %d: \n", path, line_no);
+        fprintf(stderr, "%d\n", result);
         print_error(e, error_message(result), e[ea_source_idx]);
     }
 

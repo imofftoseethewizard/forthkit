@@ -11,4 +11,4 @@ __primitive(pr_literal)
     _check_dictionary_bounds();
 }
 __end
-__define_primitive_ext("LITERAL", pr_literal, c_immediate);
+__define_primitive_ext("literal", pr_literal, c_immediate);

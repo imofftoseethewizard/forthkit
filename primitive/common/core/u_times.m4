@@ -11,4 +11,4 @@ __primitive(pr_u_times)
 
 }
 __end
-__define_primitive("U*", pr_u_times);
+__define_primitive("u*", pr_u_times);

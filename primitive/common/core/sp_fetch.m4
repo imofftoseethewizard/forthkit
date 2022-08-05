@@ -6,4 +6,4 @@ __primitive(pr_sp_fetch)
     _sp_fetch();
 }
 __end
-__define_primitive("SP@", pr_sp_fetch);
+__define_primitive("sp@", pr_sp_fetch);

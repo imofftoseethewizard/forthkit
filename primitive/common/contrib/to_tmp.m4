@@ -6,4 +6,4 @@ __primitive(pr_to_tmp)
     _to_tmp();
 }
 __end
-__define_primitive(">T", pr_to_tmp);
+__define_primitive(">t", pr_to_tmp);

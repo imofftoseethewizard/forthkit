@@ -26,4 +26,4 @@ __primitive(pr_store_compiled)
     _check_dictionary_bounds();
 }
 __end
-__define_primitive(`"COMPILE,"', pr_store_compiled);
+__define_primitive(`"compile,"', pr_store_compiled);

@@ -1,5 +1,8 @@
-    static primitive_descriptor primitive_descs[] = {
-        stack_foreach(`__primitive_descs', `__show')};
+
+    static definitions defs = { .count = 0, .size = 0, .entries = NULL };
+    if (defs.count == 0) {
+        stack_foreach(`__primitive_defs', `__show')
+    }
 
     __define_constant("size",                 sizeof(cell) * ea_size)
     __define_constant("top",                  sizeof(cell) * ea_top)
@@ -34,8 +37,9 @@
     __define_constant("source_len",           sizeof(cell) * ea_source_len)
 
     __define_constant("state",                sizeof(cell) * ea_state)
+    __define_constant("interpret",            sizeof(cell) * ea_interpret)
 
-    __define_constant("system-reserved", sizeof(cell) * (evaluator_attribute_count+4))
+    __define_constant("system_reserved", sizeof(cell) * (evaluator_attribute_count+4))
 
     static constant_descriptor constant_descs[] = {
         stack_foreach(`__constant_descs', `__show')};

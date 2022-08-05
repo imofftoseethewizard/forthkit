@@ -9,4 +9,4 @@ __primitive(pr_r_from)
     _check_return_stack_bounds();
 }
 __end
-__define_primitive("R>", pr_r_from);
+__define_primitive("r>", pr_r_from);

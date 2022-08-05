@@ -4,4 +4,4 @@ __primitive(pr_unloop)
     rp += 3;
 }
 __end
-__define_primitive("UNLOOP", pr_unloop);
+__define_primitive("unloop", pr_unloop);

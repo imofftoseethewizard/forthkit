@@ -27,4 +27,4 @@ __primitive(pr_constant)
     _check_dictionary_bounds();
 }
 __end
-__define_parsing_primitive("CONSTANT", pr_constant);
+__define_parsing_primitive("constant", pr_constant);

@@ -4,4 +4,4 @@ __primitive(pr_c_comma)
     _check_dictionary_bounds();
 }
 __end
-__define_primitive(`"C,"', pr_c_comma);
+__define_primitive(`"c,"', pr_c_comma);

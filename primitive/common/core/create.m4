@@ -31,4 +31,4 @@ __primitive(pr_create)
     _check_dictionary_bounds();
 }
 __end
-__define_parsing_primitive("CREATE", pr_create);
+__define_parsing_primitive("create", pr_create);

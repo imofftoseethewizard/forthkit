@@ -14,4 +14,4 @@ __primitive(pr_type)
     sp += 2;
 }
 __end
-__define_primitive("TYPE", pr_type);
+__define_primitive("type", pr_type);

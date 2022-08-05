@@ -9,4 +9,4 @@ __primitive(pr_min)
     *++sp = (number)*(sp+1) > (number)*sp ? *sp : *(sp+1);
 }
 __end
-__define_primitive("MIN", pr_min);
+__define_primitive("min", pr_min);

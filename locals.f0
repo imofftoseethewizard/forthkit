@@ -1,0 +1,172 @@
+Local variables make stack-based languages more
+readable, they serve as documentation.
+
+    [ #foo define ]
+
+        [ locals ]
+            [ #a local ]
+            [ #b local ]
+
+            a a * b +
+            exit
+
+        [ end ]
+
+Adds a scope to the context stack.
+
+    [ #locals define ]
+        exit
+
+Pops a scope from the context stack, forgetting any local defs
+
+    [ #end define ]
+        exit
+
+Define a new local
+
+    [ #name local ]
+
+From ~/src/spire/generic.fs
+stack notation `( s_n ... s_1 &generic -- s_n ... s_1 m_k ... m_1 k )`
+one problem: locals compiled naively will be relatively -- to stack
+ops -- inefficient since it will have to be a nested execution of something
+like
+
+    l@ ( local-idx cells+ ) @ exit
+
+which will be slower than something like `dup` or `over`. To make it like
+that it would need to compile to a `<local>` operator which derefs the
+top of the local context and uses its operand to fetch the value so the
+reference to a local would need to compile to
+
+    <local> [ local-index , ]
+
+with that, what is reasonable syntax for `<local> [ ? , ]`? possibilities
+1. a single character "sigil" as Perl would put it. such as `'` or `&`.
+
+    [ #local-example define ]
+
+        [ locals ]
+
+            dup cell+ [ #f local ]
+            'f @
+
+another option would be to have a locals dictionary that is put on the
+context stack above the compilation dictionary which contains the code
+to compile the local.
+
+    [ #find-applicable-methods define ]
+        [ locals ]
+
+                                  [ #glocal ]
+            sp@                   [ #&call-siglocal ]
+            g generic-signature @ [ #gen-sig local ]
+            g generic-method-list [ #method-list local ]
+
+            0
+            method-list sa-items @
+
+            method-list sa-length @
+            0
+            [ do ]
+                                  [ #countlocal ]
+                                  [ #&methodlocal ]
+                &method @         [ #mlocal ]
+
+                &call-sig m method-signature-types gen-sig applicable-method?
+                [ if ]
+                    m
+                    count 1+
+                [ else ]
+                    count
+                [ then ]
+
+                &method cell+
+
+            [ loop ]
+            drop
+            exit
+
+        [ end ]
+
+
+from preamble.f0
+
+     [ #store-symbol-text define ]
+        ( symbol-used ) @ over 2>r
+        drop 2r@ cmove
+        2r@ + ( symbol-unused ) !
+        2r>
+        exit
+
+with locals
+
+    [ #store-symbol-text define ]
+        [ locals ]
+            [ #u         local ]
+            [ #caddr-in  local ]
+
+            ( symbol-used ) @ [ #caddr-out local ]
+
+            caddr-in caddr-out u cmove
+            caddr-out u + ( symbol-unused ) !
+            caddr-out u
+        [ end ]
+        exit
+
+    [ #store-symbol-text define ]
+        [ locals ]
+            ( symbol-used ) @ swap [ #caddr-out-u 2local ]
+
+            caddr-out-u cmove
+            caddr-out-u + ( symbol-unused ) !
+            caddr-out-u
+        [ end ]
+        exit
+
+with extra stack words
+
+     \sig caddr u store-symbol-text | usym
+     [ #store-symbol-text define ]
+        ( symbol-unused ) @
+        |ab.ab.cbab|
+        copy
+        + ( symbol-unused ) !
+        exit
+
+     [ #store-symbol-text define ]
+        ( symbol-unused ) @ over 2tuck rem: (2)
+        cmove
+        2dup + ( symbol-unused ) !
+        exit
+
+     [ #store-symbol-text define ]
+        ( symbol-unused ) @ over 2tuck
+        copy
+        2dup + ( symbol-unused ) !
+        exit
+
+with locals along the lines of the above
+
+    [ #store-symbol-text define ]
+        [ locals ]
+            [ #u         local ]
+            [ #caddr-in  local ]
+
+            ( symbol-used ) @ [ #caddr-out local ]
+
+            caddr-in caddr-out u cmove
+            caddr-out u 2dup + ( symbol-unused ) !
+        [ end ]
+        exit
+
+what about established "registers"... r0....rn?
+
+    [ #store-symbol-text define ]
+        u1! a1!
+
+        ( symbol-used ) @ a2!
+
+        a1@ a2@ u1@ cmove
+        a2@ u1@ 2dup + ( symbol-unused ) !
+        exit

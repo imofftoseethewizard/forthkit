@@ -12,6 +12,7 @@ typedef void (native_word)(void);
 
 #pragma GCC diagnostic ignored "-Wint-conversion"
 #define _pr_value(x)        ((void *)&(x))
+#define _pr_execute(x)      ((native_word *)(_to_pv(x)))()
 
 __evaluator_variables
     void const * _pr_value_base  = (void *)&evaluator;

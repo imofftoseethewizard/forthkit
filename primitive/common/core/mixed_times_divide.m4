@@ -19,4 +19,4 @@ __primitive(pr_mixed_times_divide)
     *--sp = _from_high_word(q);
 }
 __end
-__define_primitive("M*/", pr_mixed_times_divide);
+__define_primitive("m*/", pr_mixed_times_divide);

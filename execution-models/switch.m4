@@ -15,6 +15,7 @@ divert(__header_definitions)
 #define _pr_value(x)       x
 #define _pr_value_base     primitive_start
 #define _pr_value_limit    primitive_count
+#define _pr_execute(x)     do { w = (x); goto execute_primitive; } while (0)
 
 define(`__implement_evaluator_core', `
 
@@ -36,7 +37,9 @@ define(`__implement_evaluator_core', `
                 _enter();
 
             else {
-                switch (_to_pv(*ip++)) {
+                cell w = *ip++;
+              execute_primitive:
+                switch (_to_pv(w)) {
                 undivert(__primitive_implementations)
                 default:
                     result = err_unknown_primitive;

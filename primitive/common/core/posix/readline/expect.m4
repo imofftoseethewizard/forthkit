@@ -17,4 +17,4 @@ __primitive(pr_expect)
 
 }
 __end
-__define_primitive("EXPECT", pr_expect);
+__define_primitive("expect", pr_expect);

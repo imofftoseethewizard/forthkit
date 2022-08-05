@@ -15,7 +15,7 @@ __primitive(pr_unloop)
     rp += 2;
 }
 __end
-__define_primitive("UNLOOP", pr_unloop);
+__define_primitive("unloop", pr_unloop);
 
 __primitive(pr_leave)
 {
@@ -52,4 +52,4 @@ __primitive(pr_leave)
     leave_link = _from_ptr(dp - sizeof(cell));
 }
 __end
-__define_immediate_primitive("LEAVE", pr_leave);
+__define_immediate_primitive("leave", pr_leave);

@@ -14,4 +14,4 @@ __primitive(pr_emit)
     _emit();
 }
 __end
-__define_primitive("EMIT", pr_emit);
+__define_primitive("emit", pr_emit);

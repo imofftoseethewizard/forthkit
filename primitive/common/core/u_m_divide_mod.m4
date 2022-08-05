@@ -35,4 +35,4 @@ __primitive(pr_u_m_divide_mod)
     }
 }
 __end
-__define_primitive("UM/MOD", pr_u_m_divide_mod)
+__define_primitive("um/mod", pr_u_m_divide_mod)

@@ -29,4 +29,4 @@ __primitive(pr_compile_else)
     _compile_else();
 }
 __end
-__define_immediate_primitive("ELSE", pr_compile_else);
+__define_immediate_primitive("else", pr_compile_else);

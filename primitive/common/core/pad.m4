@@ -12,4 +12,4 @@ __primitive(pr_pad)
     *--sp = e[ea_pad];
 }
 __end
-__define_primitive("PAD", pr_pad);
+__define_primitive("pad", pr_pad);

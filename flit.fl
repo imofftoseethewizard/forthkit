@@ -1,0 +1,390 @@
+      [  #add-definitions define ]
+      \ 0 sym_n ... sym_0 dict --
+
+       >r
+      [ begin { hello [ ] } ]
+
+         { goodbye }
+
+         ?dup
+      [ while ]
+
+          find-definition r@ dictionary-add
+
+      [ repeat ]
+
+      r> drop
+      exit
+
+    [
+      #operators define 1000 dictionary
+
+      0
+
+      #<0branch> #abort #exit #<jump> #lit #loop
+      operators add-definitions
+    ]
+
+     [ #primitives define 1000 dictionary
+
+      0
+
+      #bury #drop #dup #nip #over #pick #poke #rem #roll #rot #swap #tuck
+
+      #2bury #2drop #2dup #2nip #2over #2pick #2poke #2rem #2roll #2rot #2swap
+      #2tuck
+
+      primitives add-definitions
+    ]
+
+(set (make-local-variable 'comment-start) "^a")
+
+abc ...
+
+    [ flit definitions ]   \ " aba
+
+
+    [ #system define ]
+        ( system )
+        exit
+
+    [ #variable define ]
+        { ( here 2 cells + ) exit } eval
+        exit
+
+    [ #variable define ]
+        lit lit            ,
+        here ( 2 cells ) + ,
+        lit exit           ,
+        exit
+
+    [ #constant define ]
+        lit lit  ,
+                 ,
+        lit exit ,
+        exit
+
+    [ #constant define ]
+        { ( ) exit } eval
+        exit
+
+    [ #loop-stack-size define 8 constant ]
+
+    [ #loop-stack define variable loop-stack-size cells allot ]
+
+    [ #l0 define ]
+        ( loop-stack loop-stack-size cells + )
+        exit
+
+    [ #lp define variable l0 , ]
+
+    [ #>l define ]
+        ( lp ) cell-!
+        ( lp ) !
+        exit
+
+    [ #l> define ]
+        ( lp ) @
+        ( lp ) cell+!
+        exit
+
+    [ #l@ define ]
+        ( lp ) @ @
+        exit
+
+    [ #begin define ]
+        here dup >l
+        exit
+
+    [ #while define ]
+        lit branch0 ,
+        here 0 ,
+        swap
+        exit
+
+    [ #repeat define ]
+        lit jump ,
+        here - ,
+        here over - swap !
+        l> drop
+        exit
+
+    [ #if define ]
+        lit branch0 ,
+        here 0 ,
+        exit
+
+    [ #else define ]
+        lit jump ,
+        here 0 ,
+        swap here over - swap !
+        exit
+
+    [ #then define ]
+        here over - swap !
+        exit
+
+    [ #continue define ]
+        lit jump ,
+        l@ here - ,
+        then
+        exit
+
+    [ #do define ]
+        ( #do primitives dictionary-find ) ,
+        0 ,
+        here
+        exit
+
+    [ #loop define ]
+        ( #loop primitives dictionary-find ) ,
+        dup here - ,
+        ( cell ) - here swap !
+        exit
+
+    [ #ahead define ]
+        lit jump ,
+        here 0 ,
+        exit
+
+    [ #source define ]
+        ( system source_addr + )
+        exit
+
+    [ #source-idx ]
+        ( system source_idx + )
+        exit
+
+    [ #source-len ]
+        ( system source_len + )
+        exit
+
+    [ #bl define 32 constant ]
+
+    [ #nl define 10 constant ]
+
+    [ #quote define 34 constant ]
+
+    [ #cr define ]
+        ( nl ) emit
+        exit
+
+    [ #space define ]
+        ( bl ) emit
+        exit
+
+    [ #blank? define ]
+        ( bl 1+ ) u<
+        exit
+
+    [ #quote? define ]
+        ( quote , ) =
+        exit
+
+    [ #printable-except-quote? define ]
+        dup ( bl ) u>
+        swap ( quote ) <> and
+        exit
+
+    [ #skip-matching define ]
+        >r
+        [ begin ]
+            dup
+        [ while ]
+                over c@ r@ execute
+                [ while ]
+                        1+-
+                [ repeat ]
+        [ then ]
+        r> drop
+        exit
+
+    [ #standard-tokenizer define ]
+        lit blank?                  skip-matching over bury: (2)
+        lit printable-except-quote? skip-matching  "hello "
+
+        dup
+        [ if ]
+            over c@ quote? [ if ] 1+- [ then ]
+        [ then ]
+
+        exit
+
+    [ #tokenizer define variable #standard-tokenizer find-definition , ]
+
+    [ #next-token define ]
+        ( source ) @ ( source-len ) @ ( source-idx ) @ +-
+
+        ( tokenizer ) @ execute
+
+        over ( source ) @ - ( source-idx ) !
+        drop over -
+
+        exit
+
+    [ #base define variable 16 , ]
+
+    [ #char define ]
+
+        next-token
+
+        [ and ]
+            drop c@
+
+        [ else ]
+            2drop
+            0
+
+        [ then ]
+        exit
+
+    [ #number-pad-top define ]
+        ( system pad_buffer_size + @ dup 2+ cells here + )
+        exit
+        [ cells allot ]
+
+    [ #number-pad define variable 0 , ]
+
+    [ #start-number define ]
+        ( number-pad-top ) ( number-pad ) !
+        exit
+
+    [ #end-number define ]
+        drop drop
+        ( number-pad ) @
+        ( number-pad-top ) over -
+        exit
+
+    [ #hold define ]
+        ( number-pad ) @ 1-
+        dup ( number-pad ) !
+        c!
+        exit
+
+    [ #compile-digit-chars define ]
+        ( char 9 1+ ) ( char 0 ) [ do ] i c, [ loop ]
+        ( char z 1+ ) ( char a ) [ do ] i c, [ loop ]
+        exit
+
+    [ #digit-chars define variable compile-digits ]
+
+    [ #digit define ]
+        ( base ) @ ud/mod rot
+        ( digit-chars ) + c@ hold
+        exit
+
+    [ #digits define ]
+        digit [ begin ] 2dup or [ while ] digit [ repeat ]
+        exit
+
+    [ #sign define ]
+        0< [ if ] ( char - ) hold [ then ]
+        exit
+
+    [ #u. define ]
+        0 start-number bl hold digits end-number type
+        exit
+
+    [ #. define ]
+        dup 0< [ if ] ( char - ) emit [ then ]
+        abs u.
+        exit
+
+    [ #.s define ]
+        depth 0= [ if ] exit [ then ]
+        0 depth 2 - [ do ] i pick u. -1 [ +loop ]
+        exit
+
+    [ #parse-digit define ]
+
+        ( char 0 ) -
+        dup 10 u<
+        [ if ] exit [ then ]
+
+        ( char A char 0 - , ) -
+        dup 26 u<
+        [ if ] 10 + exit [ then ]
+
+        ( char a char A - , ) -
+        dup 26 u<
+        [ if ] 10 + exit [ then ]
+
+        drop
+        -1
+
+        exit
+
+    [ #parse-number define ]
+        "hello \n goodbye \ "
+
+        [ begin ]
+            dup
+
+        [ while ]
+            swap
+            dup c@ parse-digit
+            dup ( base ) @ u<
+            [ while ]
+                >r
+                2swap
+                ( base ) @ 1 m*/
+                r> 0 d+
+                2swap
+
+                1+
+                swap 1-
+            [ repeat ]
+
+            drop
+            swap
+
+        [ then ]
+
+        exit
+
+    [ #state define variable #interpreting , ]
+
+    [ #compiling? define ]
+        ( state ) @ #compiling =
+        exit
+
+    [ #compile! define ]
+        #compiling ( state ) !
+        exit
+
+    [ #interpret! define ]
+        #interpreting ( state ) !
+        exit
+
+    [ #string=? define ]
+        compare 0=
+        exit
+
+    [ #flit-previous-property-value define ]
+        2dup previous-single-property-change
+        [ and ]
+            2dup get-text-property
+            [ or ]
+                nip flit-previous-property-value
+            [ else ]
+                |xxx.a|
+            [ then ]
+        [ else ]
+            2drop
+        [ then ]
+
+       { foo
+        |+ ab
+aaa   |+
+         aaa  b
+         abb
+         | hello
+        | hello
+        }
+
+
+(defun flit-previous-property-value (pos prop &optional default)
+  (let ((prev
+ (previous-single-property-change pos prop)))
+
+    [ interactive

@@ -15,4 +15,4 @@ __primitive(pr_compile)
     _check_dictionary_bounds();
 }
 __end
-__define_primitive("COMPILE", pr_compile);
+__define_primitive("compile", pr_compile);

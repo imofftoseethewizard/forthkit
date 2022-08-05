@@ -21,4 +21,4 @@ __primitive(pr_mod)
         *sp = n1 % n2;
 }
 __end
-__define_primitive("MOD", pr_mod);
+__define_primitive("mod", pr_mod);

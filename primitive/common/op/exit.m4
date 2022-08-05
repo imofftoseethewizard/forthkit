@@ -17,4 +17,4 @@ __primitive(op_exit)
     _check_return_stack_bounds();
 }
 __end
-__define_primitive("EXIT", op_exit);
+__define_primitive("exit", op_exit);

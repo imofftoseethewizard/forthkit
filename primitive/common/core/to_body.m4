@@ -13,4 +13,4 @@ __primitive(pr_to_body)
     *sp += 3 * sizeof(cell);
 }
 __end
-__define_primitive(">BODY", pr_to_body);
+__define_primitive(">body", pr_to_body);

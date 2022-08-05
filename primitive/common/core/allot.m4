@@ -10,4 +10,4 @@ __primitive(pr_allot)
     _check_dictionary_bounds();
 }
 __end
-__define_primitive("ALLOT", pr_allot);
+__define_primitive("allot", pr_allot);

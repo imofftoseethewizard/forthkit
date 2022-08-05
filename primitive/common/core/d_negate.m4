@@ -11,4 +11,4 @@ __primitive(pr_d_negate)
     *--sp = _from_high_word(-x);
 }
 __end
-__define_primitive("DNEGATE", pr_d_negate);
+__define_primitive("dnegate", pr_d_negate);

@@ -18,6 +18,17 @@ include(__compiled_words)dnl
 typedef struct {
     const char *name;
     cell value;
+} definition;
+
+typedef struct {
+    int count;
+    int size;
+    definition *entries;
+} definitions;
+
+typedef struct {
+    const char *name;
+    cell value;
 } primitive_descriptor;
 
 typedef struct {
@@ -116,9 +127,9 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
 
     rp = rp_stop = rp0;
     *--rp = 0;
-    ip = _to_ptr(tp[ta_interpret]);
-    ip = _to_ptr(e[ea_pr_interpret]);
-
+    /* ip = _to_ptr(tp[ta_interpret]); */
+    ip = _to_ptr(e[ea_interpret]);
+          /* fprintf(stderr, "interpret: %x\n", e[ea_interpret]); */
     steps = -1;
 
     _save_fiber_state();
@@ -452,6 +463,55 @@ load_evaluator_image(const char *image0, int image_size)
     free(image);
 
     return e;
+}
+
+void add_definition(definitions * pdefs, const char *name, cell value)
+{
+    if (pdefs->count == pdefs->size) {
+	pdefs->size = pdefs->size == 0 ? 100 : 2 * pdefs->size;
+	pdefs->entries = realloc(pdefs->entries, pdefs->size * sizeof(definition));
+    }
+
+    pdefs->entries[pdefs->count].name = name;
+    pdefs->entries[pdefs->count].value = value;
+
+    pdefs->count++;
+}
+
+void add_primitive_definition(definitions * pdefs, const char *name, cell value)
+{
+    add_definition(pdefs, name, value);
+}
+
+void add_compiled_definition(definitions * pdefs, const char *name, int len, cell value)
+{
+    char *new_name = malloc(len + 1);
+
+    strncpy(new_name, name, len);
+    new_name[len] = 0;
+
+    /* fprintf(stderr, "adding compiled definition |%s|\n", new_name); */
+    add_definition(pdefs, new_name, value);
+}
+
+int
+next_word(const char *source, int *idx, int len, int *w_idx, int *w_len)
+{
+    while (source[*idx] <= 32 && *idx < len)
+        (*idx)++;
+
+    if (*idx == len)
+        return 0;
+
+    *w_idx = *idx;
+    char *word = &source[*idx];
+
+    while (source[*idx] > 32 && *idx < len)
+        (*idx)++;
+
+    *w_len = *idx - *w_idx;
+
+    return 1;
 }
 
 __discard_all_diversions()dnl

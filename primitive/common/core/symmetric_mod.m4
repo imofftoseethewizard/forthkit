@@ -9,4 +9,4 @@ __primitive(pr_mod)
     *++sp = (number)*(sp+1) % (number)*sp;
 }
 __end
-__define_primitive("MOD", pr_mod);
+__define_primitive("mod", pr_mod);

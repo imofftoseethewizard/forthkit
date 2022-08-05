@@ -12,4 +12,4 @@ __primitive(pr_update)
     *(_to_ptr(e[ea_buffer_map]) + i) |= c_msb;
 }
 __end
-__define_primitive("UPDATE", pr_update);
+__define_primitive("update", pr_update);

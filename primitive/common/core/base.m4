@@ -10,4 +10,4 @@ __primitive(pr_base)
     *--sp = _from_ptr(&tp[ta_base]);
 }
 __end
-__define_primitive("BASE", pr_base);
+__define_primitive("base", pr_base);

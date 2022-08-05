@@ -13,4 +13,4 @@ __primitive(pr_count)
     *--sp = *lenp;
 }
 __end
-__define_primitive("COUNT", pr_count);
+__define_primitive("count", pr_count);

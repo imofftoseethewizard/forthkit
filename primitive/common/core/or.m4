@@ -8,4 +8,4 @@ __primitive(pr_or)
     *++sp = *(sp+1) | *sp;
 }
 __end
-__define_primitive("OR", pr_or);
+__define_primitive("or", pr_or);

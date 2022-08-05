@@ -1,0 +1,82 @@
+principles
+
+1. Things that are challenging to implement syntax highlighting for
+are also challenging for code reading.
+
+2. The difference between compiled and interpreted code should be
+statically simple to determine.
+
+
+In the primitive interpreter, lit is used a great deal
+
+    [ define string-unused-bytes ]
+        lit [ string-storage , ] @ lit [ string-storage-size , ] +
+        lit [ string-unused , ] @ -
+        exit
+
+The `lit [ x , ]` is so common it deserves some syntax in the
+interpreter (not the primitive interpreter btw)
+
+    [ define string-unused-bytes ]
+        ( string-storage ) @ ( string-storage-size ) +
+        ( string-unused ) @ -
+        exit
+
+The downside is with respect to comparisons to Forth where that syntax
+is used for stack comments. For double length literals one option
+would be to use the `2` prefix, but then we'd have `2( ... )` which
+has an asymmetry in the delimiters, and `2( ... )2` just seems
+weird. Therefore use of `(( ... ))`,
+
+
+    [ define interpret ]
+
+        [ begin ]
+
+            next-token
+            ?dup
+        [ while ]
+
+                2dup (( "[" )) string-= compiling? and     [ if ] lit 0 state ! [ continue ]
+                2dup (( "]" )) string-= compiling? not and [ if ] lit 1 state ! [ continue ]
+
+                find-definition dup
+                [ if ] compiling? [ if ] , [ else ] execute [ then ] [ continue ]
+
+                2lit 0 0 2swap parse-number
+                dup 0=
+                [ if ]
+                    2drop drop
+                    compiling? [ if ] lit lit , , [ then ]
+                [ continue ]
+
+                "." string-=
+                [ if ]
+                    compiling? [ if ] lit 2lit , , , [ then ]
+                [ continue ]
+
+                err_undefined_word abort
+
+        [ repeat ]
+
+        exit
+
+multiline strings... yaml style
+
+    [ #multiline-string-end-delimiter-symbol define variable #--- , ]
+
+    [ #greeting define ]
+      |aa.abba.c|
+        |+
+            Enter text here, keeping newlines. Indentation in the result
+            is relative to the | in the opening delimiter. Text will
+            be ignored in the remainder of the line following the opening
+            delimiter, and in columns before the + character in subsequent
+            lines.
+        ---
+
+Only available during compilation or quoting. In the case of
+compilation, creates a `2lit`. The de-dented multiline quote is
+interred as a symbol with null value.
+
+Bare numbers,

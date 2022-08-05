@@ -16,4 +16,4 @@ __primitive(pr_compare)
         *--sp = (cell)(((c1 - c2) > 0) - ((c1 - c2) < 0));
 }
 __end
-__define_primitive("COMPARE", pr_compare);
+__define_primitive("compare", pr_compare);

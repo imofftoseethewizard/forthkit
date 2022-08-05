@@ -12,4 +12,4 @@ __primitive(pr_quit)
     tp[ta_state] = 0;
 }
 __end
-__define_primitive("QUIT", pr_quit);
+__define_primitive("quit", pr_quit);

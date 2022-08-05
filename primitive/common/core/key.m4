@@ -10,4 +10,4 @@ __primitive(pr_key)
     *--sp = getc(stdin);
 }
 __end
-__define_primitive("KEY", pr_key);
+__define_primitive("key", pr_key);

@@ -11,4 +11,4 @@ __primitive(pr_to_r)
     _check_return_stack_bounds();
 }
 __end
-__define_primitive(">R", pr_to_r);
+__define_primitive(">r", pr_to_r);

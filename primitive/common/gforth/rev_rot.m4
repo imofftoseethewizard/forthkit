@@ -6,4 +6,4 @@ if (0)
     _rev_rot();
     next();
   }
-__define_primitive("-ROT", pr_rev_rot);
+__define_primitive("-rot", pr_rev_rot);

@@ -9,4 +9,4 @@ __primitive(pr_rot)
     *sp = *(sp+2), *(sp+2) = *(sp+1), *(sp+1) = tmp;
 }
 __end
-__define_primitive("ROT", pr_rot);
+__define_primitive("rot", pr_rot);

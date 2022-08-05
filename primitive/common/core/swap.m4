@@ -14,4 +14,4 @@ __primitive(pr_swap)
     _swap();
 }
 __end
-__define_primitive("SWAP", pr_swap);
+__define_primitive("swap", pr_swap);

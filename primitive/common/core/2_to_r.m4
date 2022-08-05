@@ -6,4 +6,4 @@ __primitive(pr_2_to_r)
     sp += 2;
 }
 __end
-__define_primitive("2>R", pr_2_to_r);
+__define_primitive("2>r", pr_2_to_r);

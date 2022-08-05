@@ -55,4 +55,4 @@ __primitive(pr_abort_quote)
     e[ea_source_idx] = source_idx + 1; /* skip final quote */
 }
 __end
-__define_immediate_primitive("ABORT\"", pr_abort_quote);
+__define_immediate_primitive("abort\"", pr_abort_quote);

@@ -10,6 +10,7 @@ divert(__header_definitions)
 #define _pr_value(x)       ((void *)&&x)
 #define _pr_value_base     (void *)&&__first
 #define _pr_value_limit    (void *)&&__last
+#define _pr_execute(x)     goto *_to_pv(x)
 
 #define _next()                           \
     do {                                  \

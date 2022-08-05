@@ -1,5 +1,95 @@
+naming convention for primitives which expect a value in the input stream.
+angle brakets, eg <jump> ; a colon eg jump: ; The colon suffix has a use in
+Forth as signalling a defining word, but flit doesn't have that convention.
+in C a prepended underscore means that it derives from a lower level of
+abstraction (generally) eg. _jump. Or it could have a prefix of op_ eg
+op_jump. Or there could be no naming convention. There are few enough that
+memorization is possible, though there woudl be some conflicts to resolve, eg
+do and <do>.
+
+Define operators (with ip stream operands) for common stack ops which take
+a typically fixed numeric argument... pick: poke: bury: roll:
+also for loop: Also since numeric symbols are automatically preceded by
+the literal operator, there needs to be a way to to specify raw
+compilation ... (digits) will compile without the literal operator.
+
+stack manipulation
+  dup x -- x x
+  drop  x --
+  swap x y -- y x
+  over x y -- x y x
+  rot x y z -- y z x
+  pick ... n -- ... nth ; 0 pick is dup, 1 pick is over
+  poke ... x n -- ... x ... x ; 0 poke is dup ; 1 poke is tuck
+  bury ... x n -- ... x ... equiv to poke drop
+  nip x y -- y equiv swap drop
+  tuck x y -- y x y equiv swap over
+  roll
+  rem  ... x ... n -- ... ... ; 0 rem is drop , 1 rem is nip
+
+  2<x> where <x> is one of the above operates on pairs of cells
+  also those which take a numeric argument may have an operator
+  version in which the argument is an operand, not a value on the
+  stack. These will have a ":" suffix and in bury:
+
+memory access
+  char: c@ c! c+! c, c^
+  cell: @ ! +! ^ 1+! 1-! cell+! cell-! ,
+  2 cell: 2@ 2! 2, 2+! 2^
+  @ ! +! , c@ c! c+! c, 2@ 2! 2+! 2,
+  other: copy fill here allot reserve
+
+logical operators
+  and or not xor nand nor
+
+numeric comparison
+  > < >= <= <> 0= 0> 0< u< u> u<= u>= also with "d" prefix for double length
+  and (optionally) "%" prefix for rationals
+
+arithmetic
+  + - 1+ 2+ 1- 2- cell+ cell- * / mod +- 1+- 1-+ 2+- 2-+ cell+- cell-+
+
+string
+  take from scheme standard
+
+flit string handling
+  when symbol starting with " '  is encountered in the input stream,
+    set interpret to string reader
+
+  string reader copies characters to the dictionary until a matching "
+  is found. A " may be escaped by doubling it. If in literate mode,
+  comment lines and the first four blanks of any line are omitted.
+
+  when interpreting
+    store jump ahead to end of string
+    store chars in dictionary, put addr u on stack
+
+  when compiling
+    store jump ahead to end of string
+    store chars
+    * put addr u on stack
+
+reserve/release/compact
+  upper memory blocks of 16 cells
+  n reserve -> handle  -- finds contiguous area of at least n bytes, returns addr of addr of
+  handle release -> -- marks continuous area unused
+  compact -- moves blocks up to collect unused space below
+
+  repr bitmap of used blocks
+  array of addrs
+  array of lengths
+
 i0
   minimal f0 required to write interpret
+  set up initial wordlist
+  add primitives to initial wordlist
+  FM/MOD
+  S>D
+  sm/rem
+  0<>
+  refill
+  tuck
+  unused
 
 module definition
   a unit of primitives, forth words, and data which provides....

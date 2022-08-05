@@ -10,4 +10,4 @@ __primitive(pr_to_in)
     *--sp = _from_ptr(&e[ea_source_idx]);
 }
 __end
-__define_primitive(">IN", pr_to_in);
+__define_primitive(">in", pr_to_in);

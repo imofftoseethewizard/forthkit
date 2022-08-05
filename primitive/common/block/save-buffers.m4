@@ -38,4 +38,4 @@ __primitive(pr_save_buffers)
     }
 }
 __end
-__define_primitive("SAVE-BUFFERS", pr_save_buffers);
+__define_primitive("save-buffers", pr_save_buffers);

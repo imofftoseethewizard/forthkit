@@ -22,4 +22,4 @@ __primitive(pr_variable)
     _check_dictionary_bounds();
 }
 __end
-__define_parsing_primitive("VARIABLE", pr_variable);
+__define_parsing_primitive("variable", pr_variable);

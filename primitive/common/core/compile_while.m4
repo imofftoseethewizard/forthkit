@@ -12,4 +12,4 @@ __primitive(pr_compile_while)
     _check_dictionary_bounds();
 }
 __end
-__define_immediate_primitive("WHILE", pr_compile_while);
+__define_immediate_primitive("while", pr_compile_while);

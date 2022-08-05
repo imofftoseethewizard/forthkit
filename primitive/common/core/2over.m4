@@ -11,4 +11,4 @@ __primitive(pr_2over)
     *--sp = *(p+2);
 }
 __end
-__define_primitive("2OVER", pr_2over);
+__define_primitive("2over", pr_2over);

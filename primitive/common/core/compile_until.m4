@@ -10,4 +10,4 @@ __primitive(pr_compile_until)
     _check_dictionary_bounds();
 }
 __end
-__define_immediate_primitive("UNTIL", pr_compile_until);
+__define_immediate_primitive("until", pr_compile_until);

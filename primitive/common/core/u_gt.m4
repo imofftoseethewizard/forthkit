@@ -8,4 +8,4 @@ __primitive(pr_u_gt)
     *++sp = *(sp+1) > *sp;
 }
 __end
-__define_primitive("U>", pr_u_gt);
+__define_primitive("u>", pr_u_gt);

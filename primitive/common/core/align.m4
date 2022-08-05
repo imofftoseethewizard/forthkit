@@ -10,4 +10,4 @@ __primitive(pr_align)
     dp = (char *)_align(dp);
 }
 __end
-__define_primitive("ALIGN", pr_align);
+__define_primitive("align", pr_align);

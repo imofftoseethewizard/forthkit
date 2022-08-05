@@ -16,4 +16,4 @@ __primitive(pr_u_m_times)
     *--sp = _from_high_word(ud);
 }
 __end
-__define_primitive("UM*", pr_u_m_times);
+__define_primitive("um*", pr_u_m_times);

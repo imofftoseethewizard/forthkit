@@ -8,4 +8,4 @@ __primitive(pr_here)
     *--sp = _from_ptr(dp);
 }
 __end
-__define_primitive("HERE", pr_here);
+__define_primitive("here", pr_here);

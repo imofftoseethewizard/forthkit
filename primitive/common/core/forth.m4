@@ -13,4 +13,4 @@ __primitive(pr_forth)
     tp[ta_context] = _from_ptr(&tp[ta_forth]);
 }
 __end
-__define_primitive("FORTH", pr_forth);
+__define_primitive("forth", pr_forth);

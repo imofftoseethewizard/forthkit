@@ -10,4 +10,4 @@ if (0)
 }
 __end
   }
-__define_primitive("REFILL", pr_refill);
+__define_primitive("refill", pr_refill);

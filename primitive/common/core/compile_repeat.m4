@@ -22,4 +22,4 @@ __primitive(pr_compile_repeat)
     _check_dictionary_bounds();
 }
 __end
-__define_immediate_primitive("REPEAT", pr_compile_repeat);
+__define_immediate_primitive("repeat", pr_compile_repeat);

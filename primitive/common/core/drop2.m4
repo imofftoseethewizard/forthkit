@@ -6,4 +6,4 @@ __primitive(pr_drop2)
     _drop2();
 }
 __end
-__define_primitive("2DROP", pr_drop2);
+__define_primitive("2drop", pr_drop2);

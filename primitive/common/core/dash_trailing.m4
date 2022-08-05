@@ -18,4 +18,4 @@ __primitive(pr_dash_trailing)
     *sp = n;
 }
 __end
-__define_primitive("-TRAILING", pr_dash_trailing);
+__define_primitive("-trailing", pr_dash_trailing);

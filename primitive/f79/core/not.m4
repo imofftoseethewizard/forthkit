@@ -8,4 +8,4 @@ __primitive(pr_not)
     *sp = *sp == 0;
 }
 __end
-__define_primitive("NOT", pr_not);
+__define_primitive("not", pr_not);

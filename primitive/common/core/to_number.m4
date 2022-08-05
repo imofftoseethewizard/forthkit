@@ -38,4 +38,4 @@ __primitive(pr_to_number)
 
 }
 __end
-__define_primitive(">NUMBER", pr_to_number);
+__define_primitive(">number", pr_to_number);

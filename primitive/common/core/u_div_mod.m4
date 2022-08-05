@@ -8,4 +8,4 @@ __primitive(pr_u_div_mod)
 
 }
 __end
-__define_primitive("U/MOD", pr_u_div_mod);
+__define_primitive("u/mod", pr_u_div_mod);

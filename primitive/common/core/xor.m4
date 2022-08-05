@@ -8,4 +8,4 @@ __primitive(pr_xor)
     *++sp = *(sp+1) ^ *sp;
 }
 __end
-__define_primitive("XOR", pr_xor);
+__define_primitive("xor", pr_xor);

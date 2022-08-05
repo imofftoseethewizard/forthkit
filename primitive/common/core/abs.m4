@@ -15,4 +15,4 @@ __primitive(pr_abs)
     if ((number)*sp < 0) *sp = -(number)*sp;
 }
 __end
-__define_primitive("ABS", pr_abs);
+__define_primitive("abs", pr_abs);

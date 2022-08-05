@@ -35,4 +35,4 @@ __primitive(pr_divide_mod)
     }
 }
 __end
-__define_primitive("/MOD", pr_divide_mod);
+__define_primitive("/mod", pr_divide_mod);

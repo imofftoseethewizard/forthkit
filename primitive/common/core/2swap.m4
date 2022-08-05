@@ -18,4 +18,4 @@ __primitive(pr_2swap)
     *(sp+3) = tmp;
 }
 __end
-__define_primitive("2SWAP", pr_2swap);
+__define_primitive("2swap", pr_2swap);

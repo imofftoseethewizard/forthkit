@@ -9,4 +9,4 @@ __primitive(pr_over)
     *--sp = n;
 }
 __end
-__define_primitive("OVER", pr_over);
+__define_primitive("over", pr_over);

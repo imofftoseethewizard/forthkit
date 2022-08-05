@@ -14,4 +14,4 @@ __primitive(pr_d_plus)
     *--sp = _from_high_word(sum);
 }
 __end
-__define_primitive("D+", pr_d_plus);
+__define_primitive("d+", pr_d_plus);

@@ -1,0 +1,56 @@
+    [ define dbg-dict-size ]
+        <literal> 1000
+        exit
+
+    [ define dbg-dict-start ]
+        <literal> [ dbg-dict-size reserve , ]
+        exit
+
+    [ define dbg-task ]
+        <literal> [ dbg-dict-size dbg-dict-start task , ]
+        exit
+
+    [ define dbg-fiber ]
+        <literal> [ here 2 cells + , ]
+        exit
+        -1
+
+    [ define debug ]
+        fiber
+        dbg-task over ftask !
+        dbg-fiber !
+        exit
+
+    [ define \m ]
+        dbg-fiber @ fsteps !
+        dbg-fiber @ start
+        exit
+
+    [ define \r ]
+        dbg-fiber @ frp0 @ dbg-fiber @ fstop !
+        <literal> -1 \m
+        exit
+
+    [ define \o ]
+        dbg-fiber @ frp @ cell+ dbg-fiber @ fstop !
+        <literal> -1 \m
+        exit
+
+    [ define \s ]
+        <literal> 1 \m
+        exit
+
+    [ define \n ]
+        dbg-fiber @ >r
+
+        r@ fip @ @
+        primitive?
+        [ if ]
+            \s
+        [ else ]
+            r@ frp @ r@ fstop !
+            <literal> -1 \m
+        [ then ]
+
+        r> drop
+        exit

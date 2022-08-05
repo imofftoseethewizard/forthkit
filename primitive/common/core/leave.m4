@@ -8,4 +8,4 @@ __primitive(pr_leave)
     ip = _to_ptr(*rp++);
 }
 __end
-__define_primitive("LEAVE", pr_leave);
+__define_primitive("leave", pr_leave);

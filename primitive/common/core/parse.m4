@@ -16,4 +16,4 @@ __primitive(pr_parse)
 
 }
 __end
-__define_primitive("PARSE", pr_parse);
+__define_primitive("parse", pr_parse);

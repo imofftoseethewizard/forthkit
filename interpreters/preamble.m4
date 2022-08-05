@@ -14,21 +14,25 @@ define(`__include_compiled_word', `divert(__compiled_word_definitions)include(`$
 
 define(`__primitive_count', 0)
 define(`__define_primitive_ext',`define(`__primitive_count', eval(__primitive_count + 1))
+pushdef(`__primitive_defs', `add_primitive_definition(&defs, $1, _from_pv($2));')dnl
 pushdef(`__primitive_descs', `{$1, _from_pv($2)},')dnl
 divert(__compiled_word_declarations)    cw_$2,
 divert(__primitive_word_definitions)        _define_primitive_ext($1, $2, cw_$2, $3)')
 
 define(`__define_parsing_primitive',`define(`__primitive_count', eval(__primitive_count + 1))
+pushdef(`__primitive_defs', `add_primitive_definition(&defs, $1, _from_pv($2));')dnl
 pushdef(`__primitive_descs', `{$1, _from_pv($2)},')dnl
 divert(__compiled_word_declarations)    cw_$2,
 divert(__primitive_word_definitions)        _define_parsing_primitive($1, $2, cw_$2)')
 
 define(`__define_primitive',`define(`__primitive_count', eval(__primitive_count + 1))
+pushdef(`__primitive_defs', `add_primitive_definition(&defs, $1, _from_pv($2));')dnl
 pushdef(`__primitive_descs', `{$1, _from_pv($2)},')dnl
 divert(__compiled_word_declarations)    cw_$2,
 divert(__primitive_word_definitions)        _define_primitive($1, $2, cw_$2)')
 
 define(`__define_immediate_primitive',`define(`__primitive_count', eval(__primitive_count + 1))
+pushdef(`__primitive_defs', `add_primitive_definition(&defs, $1, _from_pv($2));')dnl
 pushdef(`__primitive_descs', `{$1, _from_pv($2)},')dnl
 divert(__compiled_word_declarations)    cw_$2,
 divert(__primitive_word_definitions)        _define_immediate_primitive($1, $2, cw_$2)')

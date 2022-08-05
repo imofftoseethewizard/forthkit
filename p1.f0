@@ -1,0 +1,691 @@
+The flit interpreter starts with the dictionary pointer at the lowest
+addressable cell. There may be, however, important system values stored
+in low memory. The number of bytes will be in the pre-defined constant
+`system-reserved`, so the first this to do is to capture the dictionary
+pointer and reserve space for the system.
+
+    [ here system_reserved allot ]
+
+    [ #system define ]
+        ( )
+        exit
+
+    [ #variable define ]
+        { lit \0 exit }
+        here over + lit 2 put
+        lit 1 compile
+        exit
+
+    [ #variable define ]
+        lit lit                ,
+            here lit 2 cells + ,
+        lit exit               ,
+        exit
+
+    [ #constant define ]
+        { lit \0 exit } lit 1 compile
+        exit
+
+    [ define constant ]
+        lit lit  ,
+                 ,
+        lit exit ,
+        exit
+
+    [ #2constant define ]
+        { 2lit \0 \1 exit } lit 2 compile
+        exit
+
+    [ define 2constant ]
+        lit 2lit  ,
+                  ,
+                  ,
+        lit exit ,
+        exit
+
+Allow up to 8 nested begin loops
+
+    [ define loop-stack-size 8 constant ]
+
+    [ define loop-stack variable loop-stack-size cells allot ]
+
+    [ define l0 ]
+        ( loop-stack loop-stack-size cells + , )
+        exit
+
+    [ define lp variable l0 , ]
+
+    [ define >l ]
+        ( lp ) dup @ cell - dup rot ! !
+        exit
+
+    [ define l> ]
+        ( lp ) dup @ dup cell + rot ! @
+        exit
+
+    [ define l@ ]
+        ( lp ) @ @
+        exit
+
+    [ define begin ]
+        here
+        dup >l
+        exit
+
+    [ define while ]
+        lit <0branch> ,
+        here lit 0 ,
+        swap
+        exit
+
+    [ define repeat ]
+        lit <jump> ,
+        here - ,
+        here over - swap !
+        l> drop
+        exit
+
+    [ define if ]
+        lit <0branch> ,
+        here lit 0 ,
+        exit
+
+    [ define else ]
+        lit <jump> ,
+        here lit 0 ,
+        swap here over - swap !
+        exit
+
+    [ define then ]
+        here over - swap !
+        exit
+
+    [ define continue ]
+        lit <jump> ,
+        l@ here - ,
+        then
+        exit
+
+    [ define do ]
+        lit <do> ,
+        lit 0 ,
+        here
+        exit
+
+    [ define loop ]
+        lit <loop> ,
+        dup here - ,
+        cell - here swap !
+        exit
+
+    [ define ahead ]
+        lit <jump> ,
+        here lit 0 ,
+        exit
+
+    [ define source ]
+        ( system source_addr + )
+        exit
+
+    [ define source-idx ]
+        ( system source_idx + )
+        exit
+
+    [ define source-len ]
+        ( system source_len + )
+        exit
+
+    [ define +- ]
+        swap over 2>r +
+        2r> -
+        exit
+
+    [ define bl 32 constant ]
+
+    [ define blank? ]
+        ( bl 1+ ) u<
+        exit
+
+    [ define printable? ]
+        ( bl ) u>
+        exit
+
+    [ define skip-matching ]
+        >r
+        [ begin ]
+            dup
+        [ while ]
+                over c@ r@ execute
+                [ while ]
+                        lit 1 +-
+                [ repeat ]
+        [ then ]
+        r> drop
+        exit
+
+    [ define next-token ]
+
+        ( source ) @ ( source-len ) @ ( source-idx ) @ +-
+
+        ( ' blank?     ) skip-matching over >r
+        ( ' printable? ) skip-matching
+
+        2dup lit 1 min + ( source ) @ - ( source-idx ) !
+        drop r> swap over -
+
+        exit
+
+    [ define base variable ] 10
+
+    [ define char ]
+
+        next-token
+
+        ?dup
+        [ if ]
+            drop c@
+
+        [ else ]
+            2drop
+            lit 0
+
+        [ then ]
+        exit
+
+    [ define number-pad-top ]
+
+        ( system pad_buffer_size + @ dup 2+ cells here + )
+        exit
+        [ cells allot ]
+
+    [ define number-pad variable ] 0
+
+    [ define <# ]
+        number-pad-top number-pad !
+        exit
+
+    [ define #> ]
+        drop drop
+        number-pad @
+        number-pad-top over -
+        exit
+
+    [ define hold ]
+        number-pad @ 1-
+        dup number-pad !
+        c!
+        exit
+
+    [ define compile-digits ]
+        ( char 9 1+ ) ( char 0 ) [ do ] i c, [ loop ]
+        ( char z 1+ ) ( char a ) [ do ] i c, [ loop ]
+        exit
+
+    [ define digits variable compile-digits ]
+
+    [ define # ]
+        ( base ) @ ud/mod rot
+        digits + c@ hold
+        exit
+
+    [ define #s ]
+        # [ begin ] 2dup or [ while ] # [ repeat ]
+        exit
+
+    [ define sign ]
+        0< [ if ] ( char - ) hold [ then ]
+        exit
+
+    [ define u. ]
+        lit 0 <# bl hold #s #> type
+        exit
+
+    [ define . ]
+        dup 0< [ if ] ( char - ) emit [ then ]
+        abs u.
+        exit
+
+    [ define parse-digit ]
+
+        ( char 0 ) -
+        dup lit 10 u<
+        [ if ]
+            exit
+        [ then ]
+
+        ( char A char 0 - ) -
+        dup lit 26 u<
+        [ if ]
+            lit 10 +
+            exit
+        [ then ]
+
+        ( char a char A - ) -
+        dup lit 26 u<
+        [ if ]
+            lit 10 +
+            exit
+        [ then ]
+
+        drop
+        lit -1
+
+        exit
+
+    [ define parse-number ]
+
+        [ begin ]
+            dup
+
+        [ while ]
+            swap
+            dup c@ parse-digit
+
+            dup ( base ) @ u<
+            [ while ]
+                >r
+                2swap
+                ( base ) @ lit 1 m*/
+                r> lit 0 d+
+                2swap
+
+                1+
+                swap 1-
+            [ repeat ]
+
+        [ then ]
+
+        exit
+
+    [ define compiling? ]
+        ( here 3 cells + )
+        @
+        exit
+        [ here ] 0
+
+    [ define state ]
+        ( )
+        exit
+
+    [ define compile! ]
+        lit 1 ( state ) !
+        exit
+
+    [ define interpret! ]
+        lit 0 ( state ) !
+        exit
+
+    [ define string-= ]
+        compare not
+        exit
+
+    [ define context-stack-size 16 constant ]
+
+    [ define c0 variable ]
+        ( context-stack-size @ 2+ cells here + dup )
+        exit
+        [ cells allot ]
+
+    [ define cp variable c0 , ]
+
+    [ define dictionary ]
+        variable
+        lit 3 cells allot
+        exit
+
+    [ define d0 dictionary ]
+
+    [ define >c ]
+        ( cp ) @ cell -
+        dup ( cp ) !
+        !
+        exit
+
+    [ d0 >c ]
+
+    [ define d variable d0 , ]
+
+String storage consists of a character area where the contents of the strings
+are stored, and an index array containing the offset and length into the
+character area. Access to and use of stored strings uses the following definitions.
+
+    [ define symbol-storage-size 10000 constant ]
+    [ define max-symbol-count 1000 constant ]
+
+    [ define symbol-storage variable symbol-storage-size allot ]
+    [ define symbol-unused variable symbol-storage , ]
+    [ define symbol-index variable max-symbol-count cells allot ]
+    [ define symbol-count variable ] 0
+
+    [ define symbols-full? ]
+        ( symbol-count ) @ ( max-symbol-count @ ) =
+        exit
+
+    [ define symbol-unused-bytes ]
+        ( symbol-storage ) @ ( symbol-storage-size ) +
+        ( symbol-unused ) @ -
+        exit
+
+    [ define store-symbol-text ]
+        ( symbol-unused ) @ >r
+        r@ over 2swap
+        r> swap cmove
+        2dup + ( symbol-unused ) !
+        exit
+
+    [ define next-symbol-index ]
+        ( symbol-index ) ( symbol-count ) @ ( 2 cells ) * +
+        lit 1 ( symbol-count ) +!
+        exit
+
+    [ define err-symbol-index-full   -5000 constant ]
+    [ define err-symbol-storage-full -5001 constant ]
+
+    [ define add-symbol ]
+
+        symbols-full?
+        [ if ]
+            err-symbol-index-full <abort>
+        [ then ]
+
+        dup symbol-unused-bytes >
+        [ if ]
+            err-symbol-storage-full <abort>
+        [ then ]
+
+        store-symbol-text 2dup
+        next-symbol-index 2!
+
+        exit
+
+    [ define find-symbol ]
+        ( symbol-index cell + ) @ ( symbol-index ) @
+        [ do ]
+            i 2@ string-=
+            [ if ]
+                2drop i 2@
+                unloop
+                exit
+            ( 2 cells )
+        [ +loop ]
+
+        2lit 0 0
+        exit
+
+    [ define store-symbol ]
+        find-symbol not [ if ] add-symbol [ then ]
+        exit
+
+    [ define dictionary-add ]
+        dup @ ( 3 cells ) - dup >r swap ! r>
+        swap over ( 2 cells ) + !
+        swap over ( cell ) + !
+        !
+        exit
+
+    [ define dictionary-find ]
+
+        dup ( cell ) + @ swap @
+        [ do ]
+            2dup i 2@ string-=
+            [ if ]
+                i ( 2 cells ) + @
+                unloop
+                exit
+            [ then ]
+            ( 3 cells )
+        [ +loop ]
+
+        lit 0
+        exit
+
+    [ define err-zero-length-name -5002 constant ]
+
+    [ define interpreter-define ]
+        next-token
+        dup 0=
+        [ if ]
+            err-zero-length-name <abort>
+        [ then ]
+
+        store-symbol here d @ dictionary-add
+
+    [ compiler-dictionary >c ]
+
+    [ interpret-define ] ]
+        compile!
+        exit
+
+    [ interpret-define ) ]
+        , compile!
+        exit
+
+    [ interpret-define )) ]
+        , , compile!
+        exit
+
+    [ c> drop interpreter-dictionary >c ]
+
+    [ interpret-define [ ]
+        interpret!
+        exit
+
+    [ interpret-define ( ]
+        lit lit , interpret!
+        exit
+
+    [ interpret-define (( ]
+        lit 2lit , interpret!
+        exit
+
+    [ c> drop ]
+
+    [ define find-definition ]
+
+        c0 cp @
+        [ do ]
+            2dup i @ dictionary-find
+            [ if ]
+                >r 2drop r>
+                unloop
+                exit
+            [ then ]
+            cell
+        [ +loop ]
+
+        lit 0
+        exit
+
+    [ here char [ c, align 1 ]
+    [ define "[" 2constant ]
+
+    [ here char ] c, align 1 ]
+    [ define "]" 2constant ]
+
+    [ here char ( c, align 1 ]
+    [ define "(" 2constant ]
+
+    [ here char ) c, align 1 ]
+    [ define ")" 2constant ]
+
+    [ here char ( dup c, c, align 2 ]
+    [ define "((" 2constant ]
+
+    [ here char ) dup c, c, align 2 ]
+    [ define "))" 2constant ]
+
+    [ here char . c, align 1 ]
+    [ define "." 2constant ]
+
+    [ define token-= ]
+        2over string-=
+        [ if ]
+            2drop lit 1
+        [ else ]
+            lit 0
+        [ then ]
+
+    [ define interpret ]
+
+        [ begin ]
+
+            next-token
+            ?dup
+        [ while ]
+                (( "[" ))  token-= compiling? and     [ if ]            interpret! [ continue ]
+                (( "]" ))  token-= compiling? not and [ if ]            compile!   [ continue ]
+
+                (( "(" ))  token-= compiling? and     [ if ] lit lit ,  interpret! [ continue ]
+                (( ")" ))  token-= compiling? not and [ if ] ,          compile!   [ continue ]
+
+                (( "((" )) token-= compiling? and     [ if ] lit 2lit , interpret! [ continue ]
+                (( "))" )) token-= compiling? not and [ if ] , ,        compile!   [ continue ]
+
+                find-definition dup
+                [ if ] compiling? [ if ] , [ else ] execute [ then ] [ continue ]
+
+                2lit 0 0 2swap parse-number
+                dup 0=
+                [ if ]
+                    2drop drop
+                    compiling? [ if ] lit lit , , [ then ]
+                [ continue ]
+
+                "." string-= compiling? and [ if ] lit 2lit , , , [ continue ]
+
+                err_undefined_word <abort>
+
+        [ repeat ]
+
+        exit
+
+    [ define interpret-parse-number ]
+        2lit 0 0 2swap parse-number
+        dup 0=
+        [ if ]
+            2drop drop
+            lit 1
+        [ else ]
+            2lit [ "." , , ] token-=
+            [ if ]
+                lit 2
+            [ else ]
+                lit 0
+            [ then ]
+        [ then ]
+        exit
+
+    [ define
+
+
+    [ define literals ]
+        dup lit 2 mod [ if ] lit lit , , [ then ]
+        2/ lit 0 [ do ] lit 2lit , , , [ loop ]
+        exit
+
+    [ define interpret ]
+
+        [ begin ]
+
+            next-token inter-symbol
+            ?dup
+        [ while ]
+
+            lit [ state , ] @
+            [ if ]
+
+                lit [ compiler-dictionary , ] dictionary-find
+                ?dup [ if ] execute [ continue ]
+
+                find-definition ?dup [ if ] , [ continue ]
+
+                symbol>string parse-value ?dup [ if ] literals [ continue ]
+
+            [ else ]
+
+                lit [ interpreter-dictionary , ] dictionary-find
+                ?dup [ if ] execute [ continue ]
+
+                find-definition ?dup [ if ] execute [ continue ]
+
+                symbol>string parse-value [ if ] [ continue ]
+
+            [ then ]
+
+            err_undefined_word <abort>
+
+        [ repeat ]
+
+        exit
+
+templates...
+
+    [
+        {
+            ( \0 , ) dictionary-find
+            ?dup [ if ] execute [ continue ]
+
+            find-definition ?dup [ if ] \1 [ continue ]
+
+            symbol>string parse-value ?dup [ if ] \2 [ continue ]
+        }
+        #symbol-action-stx define 2constant
+    ]
+
+    [ define eval-symbol-action-stx ]
+        3 symbol-action-stx stx-eval
+        exit
+
+    [ define eval-compile-symbol-stx ]
+        #literals #, #compiler-dictionary eval-symbol-action-stx
+        exit
+
+    [ define eval-interpret-symbol-stx ]
+        #noop #execute #interpreter-dictionary eval-symbol-action-stx
+        exit
+
+    [ define noop ]
+        exit
+
+    [ define interpret ]
+
+        [ begin ]
+
+            next-token >symbol
+            ?dup
+        [ while ]
+
+            ( state ) @ #compiling =
+            [ if ]
+
+                [ eval-compile-symbol-stx ]
+
+            [ else ]
+
+                [ eval-interpret-symbol-stx ]
+
+            [ then ]
+
+            err_undefined_word <abort>
+
+        [ repeat ]
+
+        exit
+
+
+    [ #string-tokenizer define ]
+        ( source ) @ ( source-len ) @ ( source-idx ) @ +-
+
+        [ begin ]
+            dup
+        [ while ]
+                over c@ ( char \ ) =
+                [ if ] dup 2 min +- [ continue ]
+
+                over c@ ( char " ) <>
+                [ while ]
+                        1 +-
+                [ repeat ]
+        [ then ]
+
+        exit

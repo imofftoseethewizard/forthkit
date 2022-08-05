@@ -6,4 +6,4 @@ __primitive(op_literal)
 }
 __end
 
-__define_primitive_ext("<literal>", op_literal, c_operand_literal);
+__define_primitive_ext("lit:", op_literal, c_operand_literal);

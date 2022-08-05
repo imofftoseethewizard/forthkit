@@ -13,4 +13,4 @@ __primitive(pr_d_lt)
     *--sp = (cell)(y < x);
 }
 __end
-__define_primitive("D<", pr_d_lt);
+__define_primitive("d<", pr_d_lt);

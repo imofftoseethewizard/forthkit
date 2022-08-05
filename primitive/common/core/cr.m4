@@ -12,4 +12,4 @@ __primitive(pr_cr)
     _emit();
 }
 __end
-__define_primitive("CR", pr_cr);
+__define_primitive("cr", pr_cr);

@@ -30,4 +30,4 @@ __primitive(pr_compile_if)
     _check_dictionary_bounds();
 }
 __end
-__define_immediate_primitive("IF", pr_compile_if);
+__define_immediate_primitive("if", pr_compile_if);

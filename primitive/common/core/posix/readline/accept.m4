@@ -14,4 +14,4 @@ __primitive(pr_accept)
     *--sp = len;
 }
 __end
-__define_primitive("ACCEPT", pr_accept);
+__define_primitive("accept", pr_accept);

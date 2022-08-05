@@ -4,4 +4,4 @@ __primitive(pr_empty_buffers)
         *(_to_ptr(e[ea_buffer_map]) + i) = -1;
 }
 __end
-__define_primitive("EMPTY-BUFFERS", pr_empty_buffers);
+__define_primitive("empty-buffers", pr_empty_buffers);

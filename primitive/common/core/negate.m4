@@ -9,4 +9,4 @@ __primitive(pr_negate)
     *sp = -(number)*sp;
 }
 __end
-__define_primitive("NEGATE", pr_negate);
+__define_primitive("negate", pr_negate);

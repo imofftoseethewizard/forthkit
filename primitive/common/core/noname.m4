@@ -6,4 +6,4 @@ __primitive(pr_noname)
     sp--;
 }
 __end
-__define_primitive(":NONAME", pr_noname);
+__define_primitive(":noname", pr_noname);

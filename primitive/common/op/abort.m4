@@ -9,7 +9,7 @@ __primitive(op_abort)
        input source.
      */
 
-    _abort(*sp);
+    _abort(*ip);
 }
 __end
-__define_primitive("<abort>", op_abort);
+__define_primitive("abort:", op_abort);

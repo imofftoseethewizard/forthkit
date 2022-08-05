@@ -81,4 +81,4 @@ __primitive(pr_does)
     _check_dictionary_bounds();
 }
 __end
-__define_immediate_primitive("DOES>", pr_does);
+__define_immediate_primitive("does>", pr_does);

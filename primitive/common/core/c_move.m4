@@ -9,7 +9,10 @@ __primitive(pr_c_move)
     register cell u = *sp++;
     register char *dest = (char *)_to_ptr(*sp++);
     register char *src = (char *)_to_ptr(*sp++);
+    /* fprintf(stderr, "u: %d\n", u); */
+    /* fprintf(stderr, "dest: %x (%lx)\n", _from_ptr(dest), dest); */
+    /* fprintf(stderr, "src: %x (%lx)\n", _from_ptr(src), src); */
     for (; u != 0; u--) *dest++ = *src++;
 }
 __end
-__define_primitive("CMOVE", pr_c_move);
+__define_primitive("cmove", pr_c_move);

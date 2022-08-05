@@ -1,0 +1,24 @@
+    [ define ahead ]
+        <literal> <jump> ,
+        here <literal> 0 ,
+        exit
+
+    [ define then ]
+        here over - swap ! exit
+
+    [ define " ]
+        ahead
+        here >r
+        char " parse
+        dup allot align
+        swap over r@ swap cmove
+        swap
+        then
+        <literal> <literal> , r> ,
+        <literal> <literal> , ,
+        exit
+
+    [ define test-" ]
+        [ " hello, world!" ]
+        type
+        exit

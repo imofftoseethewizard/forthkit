@@ -6,4 +6,4 @@ __primitive(pr_2dup)
     *sp = *(sp+2);
 }
 __end
-__define_primitive("2DUP", pr_2dup);
+__define_primitive("2dup", pr_2dup);

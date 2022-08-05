@@ -5,4 +5,4 @@ __primitive(pr_scr)
     _scr();
 }
 __end
-__define_primitive("SCR", pr_scr);
+__define_primitive("scr", pr_scr);

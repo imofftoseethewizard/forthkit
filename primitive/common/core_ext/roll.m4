@@ -31,4 +31,4 @@ __primitive(pr_roll)
     }
 }
 __end
-__define_primitive("ROLL", pr_roll);
+__define_primitive("roll", pr_roll);

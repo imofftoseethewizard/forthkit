@@ -23,4 +23,4 @@ __primitive(pr_compile_begin)
     _compile_begin();
 }
 __end
-__define_immediate_primitive("BEGIN", pr_compile_begin);
+__define_immediate_primitive("begin", pr_compile_begin);

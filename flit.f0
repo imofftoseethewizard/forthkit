@@ -1,0 +1,1067 @@
+The flit interpreter starts with the dictionary pointer at the lowest
+addressable cell. There may be, however, important system values stored
+in low memory. The number of bytes will be in the pre-defined constant
+`system-reserved`, so the first this to do is to capture the dictionary
+pointer and reserve space for the system.
+(put-text-property (point) (+ (point) 10) 'face 'flit-comment)
+
+    [ here system_reserved allot ]
+
+    [ define system ]
+        lit: [ , ]
+        exit
+
+    [ define variable ]
+        lit: lit:               ,
+            here lit: 2 cells + ,
+        lit: exit               ,
+        exit
+
+    [ define constant ]
+        lit: lit:  ,
+                   ,
+        lit: exit  ,
+        exit
+
+Allow up to 8 nested begin loops
+
+    [ define loop-stack-size 8 constant ]
+
+    [ define loop-stack variable loop-stack-size cells allot ]
+
+    [ define l0 ]
+        lit: [ loop-stack loop-stack-size cells + , ]
+        exit
+
+    [ define lp variable l0 , ]
+
+    [ define >l ]
+        lit: [ lp , ] dup @ cell - dup rot ! !
+        exit
+
+    [ define l> ]
+        lit: [ lp , ] dup @ dup cell + rot ! @
+        exit
+
+    [ define l@ ]
+        lit: [ lp , ] @ @
+        exit
+
+    [ define begin ]
+        here
+        dup >l
+        exit
+
+    [ define while ]
+        lit: 0branch: ,
+        here lit: 0 ,
+        swap
+        exit
+
+    [ define repeat ]
+        lit: jump: ,
+        here - ,
+        here over - swap !
+        l> drop
+        exit
+
+    [ define if ]
+        lit: 0branch: ,
+        here lit: 0 ,
+        exit
+
+    [ define else ]
+        lit: jump: ,
+        here lit: 0 ,
+        swap here over - swap !
+        exit
+
+    [ define then ]
+        here over - swap !
+        exit
+
+    [ define continue ]
+        lit: jump: ,
+        l@ here - ,
+        then
+        exit
+
+    [ define do ]
+        lit: do: ,
+        lit: 0 ,
+        here
+        exit
+
+    [ define loop ]
+        lit: <loop> ,
+        dup here - ,
+        cell - here swap !
+        exit
+
+    [ define ahead ]
+        lit: jump: ,
+        here lit: 0 ,
+        exit
+
+    [ define source ]
+        lit: [ system source_addr + , ]
+        exit
+
+    [ define source-idx ]
+        lit: [ system source_idx + , ]
+        exit
+
+    [ define source-len ]
+        lit: [ system source_len + , ]
+        exit
+
+    [ define +- ]
+        swap over 2>r +
+        2r> -
+        exit
+
+    [ define bl 32 constant ]
+
+    [ define nl 10 constant ]
+
+    [ define quote 34 constant ]
+
+    [ define cr ]
+        nl emit
+        exit
+
+    [ define space ]
+        bl emit
+        exit
+
+    [ define blank? ]
+        lit: [ bl 1+ , ] u<
+        exit
+
+    [ define quote? ]
+        lit: [ quote , ] =
+        exit
+
+    [ define printable-except-quote? ]
+        dup lit: [ bl , ] u>
+        swap lit: [ quote , ] <> and
+        exit
+
+    [ define skip-matching ]
+        >r
+        [ begin ]
+            dup
+        [ while ]
+                over c@ r@ execute
+                [ while ]
+                        lit: 1 +-
+                [ repeat ]
+        [ then ]
+        r> drop
+        exit
+
+    [ define standard-tokenizer ]
+        lit: [ ' blank? ,                  ] skip-matching over lit: 2 bury
+        lit: [ ' printable-except-quote? , ] skip-matching
+
+        dup
+        [ if ]
+            over c@ quote? [ if ] lit: 1 +- [ then ]
+        [ then ]
+
+        exit
+
+    [ define tokenizer variable ' standard-tokenizer , ]
+
+    [ define next-token ]
+        lit: [ source , ] @ lit: [ source-len , ] @ lit: [ source-idx , ] @ +-
+
+        lit: [ tokenizer , ] @ execute
+
+        over lit: [ source , ] @ - lit: [ source-idx , ] !
+        drop over -
+
+        exit
+
+    [ define base variable ] 16
+
+    [ define char ]
+
+        next-token
+
+        ?dup
+        [ if ]
+            drop c@
+
+        [ else ]
+            2drop
+            lit: 0
+
+        [ then ]
+        exit
+
+    [ define string-tokenizer ]
+
+        over lit: 2 bury
+
+        [ begin ]
+            dup
+        [ while ]
+                over c@ lit: [ char \\ , ] =
+                [ if ] dup lit: 2 min +- [ continue ]
+
+                over c@ lit: [ char " , ] <>
+                [ while ]
+                        lit: 1 +-
+                [ repeat ]
+        [ then ]
+
+        dup
+        [ if ]
+            over c@ quote? [ if ] lit: 1 +- [ then ]
+        [ then ]
+
+        exit
+
+    [ define number-pad-top ]
+
+        lit: [ system pad_buffer_size + @ dup 2+ cells here + , ]
+        exit
+        [ cells allot ]
+
+    [ define number-pad variable ] 0
+
+    [ define <# ]
+        number-pad-top number-pad !
+        exit
+
+    [ define #> ]
+        drop drop
+        number-pad @
+        number-pad-top over -
+        exit
+
+    [ define hold ]
+        number-pad @ 1-
+        dup number-pad !
+        c!
+        exit
+
+    [ define compile-digits ]
+        lit: [ char 9 1+ , ] lit: [ char 0 , ] [ do ] i c, [ loop ]
+        lit: [ char z 1+ , ] lit: [ char a , ] [ do ] i c, [ loop ]
+        exit
+
+    [ define digits variable compile-digits ]
+
+    [ define # ]
+        lit: [ base , ] @ ud/mod rot
+        digits + c@ hold
+        exit
+
+    [ define #s ]
+        # [ begin ] 2dup or [ while ] # [ repeat ]
+        exit
+
+    [ define sign ]
+        0< [ if ] lit: [ char - , ] hold [ then ]
+        exit
+
+    [ define u. ]
+        lit: 0 <# bl hold #s #> type
+        exit
+
+    [ define . ]
+        dup 0< [ if ] lit: [ char - , ] emit [ then ]
+        abs u.
+        exit
+
+    [ define .s ]
+        depth 0= [ if ] exit [ then ]
+        lit: 0 depth lit: 2 - [ do ] i pick u. lit: [ -1 , ] [ +loop ]
+        exit
+
+    [ define parse-digit ]
+
+        lit: [ char 0 , ] -
+        dup lit: 10 u<
+        [ if ]
+            exit
+        [ then ]
+
+        lit: [ char A char 0 - , ] -
+        dup lit: 26 u<
+        [ if ]
+            lit: 10 +
+            exit
+        [ then ]
+
+        lit: [ char a char A - , ] -
+        dup lit: 26 u<
+        [ if ]
+            lit: 10 +
+            exit
+        [ then ]
+
+        drop
+        lit: -1
+
+        exit
+
+    [ define parse-number ]
+
+        [ begin ]
+            dup
+
+        [ while ]
+            swap
+            dup c@ parse-digit
+
+            dup lit: [ base , ] @ u<
+            [ while ]
+                >r
+                2swap
+                lit: [ base , ] @ lit: 1 m*/
+                r> lit: 0 d+
+                2swap
+
+                1+
+                swap 1-
+            [ repeat ]
+
+            drop
+            swap
+
+        [ then ]
+
+        exit
+
+    [ define compiling? ]
+        lit: [ here 3 cells + , ]
+        @
+        exit
+        [ here ] 0
+
+    [ define state ]
+        lit: [ , ]
+        exit
+
+    [ define compile! ]
+        lit: 1 lit: [ state , ] !
+        exit
+
+    [ define interpret! ]
+        lit: 0 lit: [ state , ] !
+        exit
+
+    [ define string=? ]
+        compare 0=
+        exit
+
+    [ define context-stack-size 16 constant ]
+
+    [ define context-stack variable context-stack-size cells allot ]
+
+    [ define ctx0 context-stack context-stack-size cells + constant ]
+
+    [ define ctx variable ctx0 , ]
+
+    [ define dictionary-entry-size 2 cells constant ]
+
+    [ define dictionary ]
+        variable
+        here swap
+        lit: [ dictionary-entry-size , ] * lit: [ 3 cells , ] + dup allot
+        over + swap
+        2dup !
+        lit: [ cell , ] + !
+        exit
+
+    [ define dictionary-head-addr ]
+        exit
+
+    [ define dictionary-head ]
+        dictionary-head-addr @
+        exit
+
+    [ define dictionary-end ]
+        lit: [ cell , ] + @
+        exit
+
+    [ define dictionary-add-entry ]
+        dictionary-head-addr lit: [ -2 cells , ] swap +!
+        exit
+
+    [ define dictionary-entry-symbol ]
+        exit
+
+    [ define dictionary-entry-value ]
+        lit: [ cell , ] +
+        exit
+
+    [ define err-dictionary-full -5002 constant ]
+
+    [ define dictionary-full? ]
+        drop lit: 0
+        exit
+
+    [ define dictionary-add ]
+        dup dictionary-full?
+        [ if ]
+            lit: [ err-dictionary-full , ] abort:
+        [ then ]
+
+        dup dictionary-add-entry
+        dictionary-head swap over
+        dictionary-entry-value !
+        dictionary-entry-symbol !
+
+        exit
+
+    [ define d0 1000 dictionary ]
+
+    [ define >ctx ]
+        lit: [ -1 cells , ] lit: [ ctx , ] +!
+        lit: [ ctx , ] @ !
+        exit
+
+    [ define ctx> ]
+        lit: [ ctx , ] @ @
+        lit: [ cell , ] lit: [ ctx , ] +!
+        exit
+
+    [ d0 >ctx ]
+
+    [ define d variable d0 , ]
+
+String storage consists of a character area where the contents of the strings
+are stored, and an index array containing the offset and length into the
+character area. Access to and use of stored strings uses the following definitions.
+
+    [ define symbol-storage-size 10000 constant ]
+    [ define max-symbol-count 1000 constant ]
+
+    [ define symbol-storage variable symbol-storage-size allot ]
+    [ define symbol-unused variable symbol-storage , ]
+    [ define symbol-index variable max-symbol-count cells allot ]
+    [ define symbol-count variable ] 1
+
+    [ symbol-storage symbol-index ! ]
+
+    [ define symbols-full? ]
+        lit: [ symbol-count , ] @ lit: [ max-symbol-count @ , ] =
+        exit
+
+    [ define symbol-unused-bytes ]
+        lit: [ symbol-storage , ] lit: [ symbol-storage-size , ] +
+        lit: [ symbol-unused , ] @ -
+        exit
+
+    [ define store-symbol-text ]
+        lit: [ symbol-unused , ] @ >r
+        r@ over + lit: [ symbol-unused , ] !
+        r@ swap cmove
+        r>
+        exit
+
+    [ define next-symbol-index ]
+        lit: [ symbol-index , ] lit: [ symbol-count , ] @ cells * +
+        lit: 1 lit: [ symbol-count , ] +!
+        exit
+
+    [ define err-symbol-index-full   -5000 constant ]
+    [ define err-symbol-storage-full -5001 constant ]
+
+    [ define is-valid-symbol? ]
+        dup 0> swap lit: [ symbol-count , ] @ < and
+        exit
+
+    [ define last-symbol? ]
+        lit: [ symbol-count , ] @ 1- =
+        exit
+
+    [ define symbol-index-entry ]
+        lit: [ cell , ] * lit: [ symbol-index , ] +
+        exit
+
+    [ define symbol-addr ]
+        symbol-index-entry @
+        exit
+
+    [ define symbol-length ]
+        dup last-symbol?
+        [ if ]
+            symbol-addr lit: [ symbol-unused , ] @ swap -
+        [ else ]
+            symbol-index-entry dup lit: [ cell , ] + @ swap @ -
+        [ then ]
+        exit
+
+    [ define symbol> ]
+        dup is-valid-symbol?
+        [ if ]
+            dup symbol-addr swap symbol-length
+        [ else ]
+            drop 2lit: 0 0
+        [ then ]
+
+        exit
+
+    [ define add-symbol ]
+
+        symbols-full?
+        [ if ]
+            lit: [ err-symbol-index-full , ] abort:
+        [ then ]
+
+        dup symbol-unused-bytes >
+        [ if ]
+            lit: [ err-symbol-storage-full , ] abort:
+        [ then ]
+
+        store-symbol-text
+        lit: [ symbol-count , ] @ dup >r symbol-index-entry !
+        r@ 1+ lit: [ symbol-count , ] !
+        r>
+
+        exit
+
+    [ define find-symbol ]
+        lit: [ symbol-count , ] @ lit: 1
+        [ do ]
+            2dup i symbol> string=?
+            [ if ]
+                2drop i
+                unloop
+                exit
+            [ then ]
+
+        [ loop ]
+
+        lit: 0
+        exit
+
+    [ define >symbol ]
+        ?dup
+        [ if ]
+            find-symbol ?dup 0= [ if ] add-symbol [ then ]
+        [ else ]
+            drop
+            lit: 0
+        [ then ]
+        exit
+
+    [ define dictionary-find ]
+
+        dup dictionary-end swap dictionary-head
+        2dup >
+        [ if ]
+            [ do ]
+                dup i dictionary-entry-symbol @ =
+                [ if ]
+                    drop
+                    i dictionary-entry-value @
+                    unloop
+                    exit
+                [ then ]
+                lit: [ dictionary-entry-size , ]
+            [ +loop ]
+        [ else ]
+            2drop
+        [ then ]
+
+        lit: 0
+        exit
+
+    [ define err-zero-length-name -5003 constant ]
+
+    [ define flit-define ]
+        next-token
+        dup 0=
+        [ if ]
+            lit: [ err-zero-length-name , ] abort:
+        [ then ]
+
+        >symbol here ctx @ @ dictionary-add
+        exit
+
+    [ define compiler-dictionary 3 dictionary ]
+
+    [ compiler-dictionary >ctx ]
+
+    [ flit-define [ ]
+        interpret!
+        exit
+
+    [ flit-define ( ]
+        lit: lit: , interpret!
+        exit
+
+    [ flit-define (( ]
+        lit: 2lit: , interpret!
+        exit
+
+    [ define interpreter-dictionary 3 dictionary ]
+
+    [ ctx> drop interpreter-dictionary >ctx ]
+
+    [ flit-define ] ]
+        compile!
+        exit
+
+    [ flit-define ) ]
+        , compile!
+        exit
+
+    [ flit-define )) ]
+        , , compile!
+        exit
+
+    [ ctx> drop ]
+
+    [ define current variable d0 , ]
+
+    [ define definitions ]
+        lit: [ current , ] !
+        exit
+
+    [ flit-define define ]
+        here lit: [ current , ] @ dictionary-add
+        exit
+
+    [ define find-definition ]
+
+        ctx0 ctx @
+        [ do ]
+            dup i @ dictionary-find
+            ?dup
+            [ if ]
+                swap drop
+                unloop
+                exit
+            [ then ]
+            cell
+        [ +loop ]
+
+        drop
+        lit: 0
+        exit
+
+    [ define dot-symbol next-token . >symbol constant ]
+
+    [ define s>d ]
+        dup 0< [ if ] lit: -1 [ else ] lit: 0 [ then ]
+        exit
+
+    [ define parse-numeric-value ]
+        dup
+        [ if ]
+            over c@ lit: [ char - , ] =
+            [ if ]
+                lit: 1 +-
+                lit: -1 >r
+            [ else ]
+                lit: 0 >r
+            [ then ]
+        [ then ]
+
+        2lit: 0 0 2over parse-number
+        dup 0=
+        [ if ]
+            2drop 2swap 2drop drop r> [ if ] negate [ then ]
+            lit: 1
+        [ else ]
+            dot-symbol symbol> string=?
+            [ if ]
+                2swap 2drop r> [ if ] dnegate [ then ]
+                lit: 2
+            [ else ]
+                2drop
+                r> drop
+                lit: 0
+            [ then ]
+        [ then ]
+        exit
+
+    [ define parse-symbolic-value ]
+        dup 0>
+        [ if ]
+            over c@ lit: [ char # , ] =
+            [ if ]
+                lit: 1 +-
+                >symbol lit: 1
+                exit
+            [ then ]
+        [ then ]
+
+        lit: 0
+        exit
+
+    [ define err-parsers-full -5004 constant ]
+    [ define max-parser-count 2 constant ]
+    [ define parsers variable max-parser-count cells allot ]
+    [ define parser-count variable ] 0
+
+    [ define parsers-full? ]
+        lit: [ parser-count , ] @ lit: [ max-parser-count , ] =
+        exit
+
+    [ define add-parser ]
+        parsers-full?
+        [ if ]
+            lit: [ err-parsers-full , ] abort:
+        [ then ]
+
+        lit: [ parser-count , ] @ lit: [ cell , ] * lit: [ parsers , ] + !
+        lit: 1 lit: [ parser-count , ] +!
+
+        exit
+
+    [ ' parse-numeric-value  add-parser ]
+    [ ' parse-symbolic-value add-parser ]
+
+    [ define parse-value ]
+
+        lit: [ parsers , ] lit: [ parser-count , ] @ lit: [ cell , ] *
+        over + swap
+        [ do ]
+            i @ execute ?dup
+            [ if ]
+                unloop
+                exit
+            [ then ]
+            lit: [ cell , ]
+        [ +loop ]
+
+        lit: 0
+        exit
+
+    [ define literals ]
+        dup >r
+        dup lit: 2 mod
+        [ if ]
+            dup pick lit: lit: , , 1-
+        [ then ]
+
+        ?dup
+        [ if ]
+            lit: 2 - lit: 0 swap
+            [ do ]
+                lit: 2lit: ,
+                i pick ,
+                i 1+ pick ,
+                lit: -2
+            [ +loop ]
+        [ then ]
+
+        r> ?dup
+        [ if ]
+            lit: 0 [ do ] drop [ loop ]
+        [ then ]
+        exit
+
+    [ define set-interpreter ]
+        lit: [ system interpret + , ] !
+        exit
+
+    [ define get-interpreter ]
+        lit: [ system interpret + , ] @
+        exit
+
+    [ define interpret ]
+
+        [ begin ]
+
+            next-token >symbol
+            ?dup
+        [ while ]
+
+            lit: [ state , ] @
+            [ if ]
+
+                lit: [ compiler-dictionary , ] dictionary-find
+                ?dup [ if ] execute [ continue ]
+
+                find-definition ?dup [ if ] , [ continue ]
+
+                symbol> parse-value ?dup [ if ] literals [ continue ]
+
+            [ else ]
+
+                lit: [ interpreter-dictionary , ] dictionary-find
+                ?dup [ if ] execute [ continue ]
+
+                find-definition ?dup [ if ] execute [ continue ]
+
+                symbol> parse-value [ if ] [ continue ]
+
+            [ then ]
+
+            lit: err_undefined_word abort:
+
+        [ repeat ]
+
+        exit
+
+    [ define d0-define ]
+        next-token >symbol swap d0 dictionary-add
+        exit
+
+    [
+
+        ' interpret               d0-define interpret
+        ' get-interpreter         d0-define get-interpreter
+        ' set-interpreter         d0-define set-interpreter
+        ' literals                d0-define literals
+        ' parse-value             d0-define parse-value
+        ' parse-numeric-value     d0-define parse-numeric-value
+        ' parse-symbolic-value    d0-define parse-symbolic-value
+        ' add-parser              d0-define add-parser
+        ' parsers-full?           d0-define parsers-full?
+        ' parser-count            d0-define parser-count
+        ' parsers                 d0-define parsers
+        ' max-parser-count        d0-define max-parser-count
+        ' err-parsers-full        d0-define err-parsers-full
+        ' find-definition         d0-define find-definition
+        ' definitions             d0-define definitions
+        ' current                 d0-define current
+        ' interpreter-dictionary  d0-define interpreter-dictionary
+        ' compiler-dictionary     d0-define compiler-dictionary
+        ' err-zero-length-name    d0-define err-zero-length-name
+        ' dictionary-find         d0-define dictionary-find
+        ' >symbol                 d0-define >symbol
+        ' find-symbol             d0-define find-symbol
+        ' add-symbol              d0-define add-symbol
+        ' symbol>                 d0-define symbol>
+        ' symbol-length           d0-define symbol-length
+        ' symbol-addr             d0-define symbol-addr
+        ' last-symbol?            d0-define last-symbol?
+        ' is-valid-symbol?        d0-define is-valid-symbol?
+        ' err-symbol-storage-full d0-define err-symbol-storage-full
+        ' err-symbol-index-full   d0-define err-symbol-index-full
+        ' next-symbol-index       d0-define next-symbol-index
+        ' store-symbol-text       d0-define store-symbol-text
+        ' symbol-unused-bytes     d0-define symbol-unused-bytes
+        ' symbols-full?           d0-define symbols-full?
+        ' symbol-count            d0-define symbol-count
+        ' symbol-index            d0-define symbol-index
+        ' symbol-unused           d0-define symbol-unused
+        ' symbol-storage          d0-define symbol-storage
+        ' d0                      d0-define d0
+        ' ctx>                    d0-define ctx>
+        ' >ctx                    d0-define >ctx
+        ' dictionary-add          d0-define dictionary-add
+        ' dictionary-full?        d0-define dictionary-full?
+        ' err-dictionary-full     d0-define err-dictionary-full
+        ' dictionary-entry-value  d0-define dictionary-entry-value
+        ' dictionary-entry-symbol d0-define dictionary-entry-symbol
+        ' dictionary-add-entry    d0-define dictionary-add-entry
+        ' dictionary-end          d0-define dictionary-end
+        ' dictionary-head         d0-define dictionary-head
+        ' dictionary-head-addr    d0-define dictionary-head-addr
+        ' dictionary              d0-define dictionary
+        ' dictionary-entry-size   d0-define dictionary-entry-size
+        ' ctx                     d0-define ctx
+        ' ctx0                    d0-define ctx0
+        ' context-stack           d0-define context-stack
+        ' context-stack-size      d0-define context-stack-size
+        ' string=?                d0-define string=?
+        ' interpret!              d0-define interpret!
+        ' compile!                d0-define compile!
+        ' state                   d0-define state
+        ' compiling?              d0-define compiling?
+        ' parse-number            d0-define parse-number
+        ' parse-digit             d0-define parse-digit
+        ' .s                      d0-define .s
+        ' .                       d0-define .
+        ' u.                      d0-define u.
+        ' sign                    d0-define sign
+        ' #s                      d0-define #s
+        ' #                       d0-define #
+        ' digits                  d0-define digits
+        ' hold                    d0-define hold
+        ' #>                      d0-define #>
+        ' <#                      d0-define <#
+        ' number-pad              d0-define number-pad
+        ' number-pad-top          d0-define number-pad-top
+        ' base                    d0-define base
+        ' char                    d0-define char
+        ' next-token              d0-define next-token
+        ' skip-matching           d0-define skip-matching
+;        ' printable?              d0-define printable?
+        ' blank?                  d0-define blank?
+        ' space                   d0-define space
+        ' cr                      d0-define cr
+        ' nl                      d0-define nl
+        ' bl                      d0-define bl
+        ' source-len              d0-define source-len
+        ' source-idx              d0-define source-idx
+        ' source                  d0-define source
+        ' ahead                   d0-define ahead
+        ' +loop                   d0-define +loop
+        ' loop                    d0-define loop
+        ' do                      d0-define do
+        ' continue                d0-define continue
+        ' then                    d0-define then
+        ' else                    d0-define else
+        ' if                      d0-define if
+        ' repeat                  d0-define repeat
+        ' while                   d0-define while
+        ' begin                   d0-define begin
+        ' l@                      d0-define l@
+        ' l>                      d0-define l>
+        ' >l                      d0-define >l
+        ' lp                      d0-define lp
+        ' l0                      d0-define l0
+        ' loop-stack              d0-define loop-stack
+        ' loop-stack-size         d0-define loop-stack-size
+        ' constant                d0-define constant
+        ' variable                d0-define variable
+        ' system                  d0-define system
+
+        ' 0branch:                d0-define 0branch:
+        ' abort:                  d0-define abort:
+        ' do:                     d0-define do:
+        ' does:                   d0-define does:
+        ' exit                    d0-define exit
+        ' jump:                   d0-define jump:
+        ' jump-indirect:          d0-define jump-indirect:
+        ' lit:                    d0-define lit:
+        ' 2lit:                   d0-define 2lit:
+        ' <loop>                  d0-define <loop>
+        ' <+loop>                 d0-define <+loop>
+        ' abort"                  d0-define abort"
+        ' abs                     d0-define abs
+        ' align                   d0-define align
+        ' allot                   d0-define allot
+        ' and                     d0-define and
+        ' c,                      d0-define c,
+        ' c@                      d0-define c@
+        ' cmove                   d0-define cmove
+        ' cmove>                  d0-define cmove>
+        ' c!                      d0-define c!
+        ' cell                    d0-define cell
+        ' cell+                   d0-define cell+
+        ' cells                   d0-define cells
+        ' compare                 d0-define compare
+        ' convert                 d0-define convert
+        ' create                  d0-define create
+        ' d<                      d0-define d<
+        ' dnegate                 d0-define dnegate
+        ' d+                      d0-define d+
+        ' -trailing               d0-define -trailing
+        ' decimal                 d0-define decimal
+        ' depth                   d0-define depth
+        ' 2/                      d0-define 2/
+        ' <do-does>               d0-define <do-does>
+        ' does>                   d0-define does>
+        ' drop                    d0-define drop
+        ' 2drop                   d0-define 2drop
+        ' dup                     d0-define dup
+        ' 2dup                    d0-define 2dup
+        ' emit                    d0-define emit
+        ' =                       d0-define =
+        ' execute                 d0-define execute
+        ' @                       d0-define @
+        ' 2@                      d0-define 2@
+        ' fill                    d0-define fill
+        ' /                       d0-define /
+        ' /mod                    d0-define /mod
+        ' mod                     d0-define mod
+        ' */                      d0-define */
+        ' */mod                   d0-define */mod
+        ' 2/                      d0-define 2/
+        ' >                       d0-define >
+        ' here                    d0-define here
+        ' i                       d0-define i
+        ' invert                  d0-define invert
+        ' j                       d0-define j
+        ' key                     d0-define key
+        ' lshift                  d0-define lshift
+        ' <                       d0-define <
+        ' max                     d0-define max
+        ' min                     d0-define min
+        ' m*                      d0-define m*
+        ' m*/                     d0-define m*/
+        ' ud/mod                  d0-define ud/mod
+        ' -                       d0-define -
+        ' move                    d0-define move
+        ' negate                  d0-define negate
+        ' nip                     d0-define nip
+        ' not                     d0-define not
+        ' <>                      d0-define <>
+        ' 1-                      d0-define 1-
+        ' 1+                      d0-define 1+
+        ' or                      d0-define or
+        ' over                    d0-define over
+        ' 2over                   d0-define 2over
+        ' pad                     d0-define pad
+        ' +                       d0-define +
+        ' +!                      d0-define +!
+        ' ?dup                    d0-define ?dup
+        ' quit                    d0-define quit
+        ' r@                      d0-define r@
+        ' 2r@                     d0-define 2r@
+        ' r>                      d0-define r>
+        ' 2r>                     d0-define 2r>
+        ' rot                     d0-define rot
+        ' rshift                  d0-define rshift
+        ' sp0                     d0-define sp0
+        ' !                       d0-define !
+        ' 2!                      d0-define 2!
+        ' ,                       d0-define ,
+        ' swap                    d0-define swap
+        ' 2swap                   d0-define 2swap
+        ' *                       d0-define *
+        ' 2*                      d0-define 2*
+        ' >body                   d0-define >body
+        ' >r                      d0-define >r
+        ' 2>r                     d0-define 2>r
+        ' 2-                      d0-define 2-
+        ' 2+                      d0-define 2+
+        ' type                    d0-define type
+        ' unloop                  d0-define unloop
+        ' u/mod                   d0-define u/mod
+        ' u>                      d0-define u>
+        ' u<                      d0-define u<
+        ' um/mod                  d0-define um/mod
+        ' um*                     d0-define um*
+        ' u*                      d0-define u*
+        ' xor                     d0-define xor
+        ' 0=                      d0-define 0=
+        ' 0>                      d0-define 0>
+        ' 0<                      d0-define 0<
+        ' bury                    d0-define bury
+        ' pick                    d0-define pick
+        ' poke                    d0-define poke
+        ' roll                    d0-define roll
+        ' braid                   d0-define braid
+        ' done                    d0-define done
+        ' end                     d0-define end
+        ' f@                      d0-define f@
+        ' fiber                   d0-define fiber
+        ' fip                     d0-define fip
+        ' frp0                    d0-define frp0
+        ' frp                     d0-define frp
+        ' fr>                     d0-define fr>
+        ' fsteps                  d0-define fsteps
+        ' fstop                   d0-define fstop
+        ' ftask                   d0-define ftask
+        ' ftask@                  d0-define ftask@
+        ' primitive?              d0-define primitive?
+        ' lay                     d0-define lay
+        ' #f                      d0-define #f
+        ' snip                    d0-define snip
+        ' start                   d0-define start
+        ' task                    d0-define task
+        ' tdp                     d0-define tdp
+        ' >fr                     d0-define >fr
+        ' >t                      d0-define >t
+        ' tsp                     d0-define tsp
+        ' tsp0                    d0-define tsp0
+        ' ttop                    d0-define ttop
+        ' t>                      d0-define t>
+        ' reserve                 d0-define reserve
+        ' top                     d0-define top
+
+        ' interpret set-interpreter

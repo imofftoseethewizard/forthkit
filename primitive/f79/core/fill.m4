@@ -13,4 +13,4 @@ __primitive(pr_fill)
     sp += 3;
 }
 __end
-__define_primitive("FILL", pr_fill);
+__define_primitive("fill", pr_fill);

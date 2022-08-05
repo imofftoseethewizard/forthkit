@@ -9,4 +9,4 @@ __primitive(pr_c_store)
     sp += 2;
 }
 __end
-__define_primitive("C!", pr_c_store);
+__define_primitive("c!", pr_c_store);

@@ -29,4 +29,4 @@ __primitive(pr_compile_loop)
     _check_dictionary_bounds();
 }
 __end
-__define_immediate_primitive("LOOP", pr_compile_loop);
+__define_immediate_primitive("loop", pr_compile_loop);
