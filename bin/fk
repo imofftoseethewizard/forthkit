@@ -1,0 +1,57 @@
+#! /usr/bin/env python3
+
+__schema_version__ = 1
+
+table_defs = [
+    'address_mode(name, created_at, updated_at, from_ptr, to_ptr, is_primitive, from_pv, to_pv)',
+    'artifact(target, path)',
+    'artifact_version(target, version, path)',
+    'build(target, version, created_at, pid, completed_at)',
+    'completed_process(pid, created_at, completed_at, exit_code, stdout, stderr)',
+    'dependency(target, path)',
+    'env(name, created_at, updated_at, dir, vars)',
+    'evaluator(name, created_at, updated_at, target)',
+    'execution_model(name, created_at, updated_at, decl_template, impl_template, local_decls, local_init, evaluator_core)',
+    'interpreter(name, created_at, updated_at, target)',
+    'image(name, created_at, updated_at, target)',
+    'module(name, created_at, updated_at, decls, init, final, local_decls, local_init, local_final)',
+    'module_primitive(module, primitive)',
+    'primitive(name, created_at, updated_at, label, body)',
+    'project(name, created_at, updated_at)',
+    'project_target(project, target)',
+    'project_version(project, version)',
+    'target(name, created_at, updated_at, makefile, make_target, build_env, test_env)',
+    'target_test_suite(target, test_suite)',
+    'target_version(target, version, created_at, pid, completed_at)',
+    'test(name, created_at, updated_at, path)',
+    'test_run(test_suite, test, target, version, created_at, pid, completed_at)',
+    'test_suite(name, created_at, updated_at)',
+    'test_suite_test(test_suite, test)',
+    'version(id, created_at, updated_at, major, minor, build, commit, diff)',
+]
+
+import click
+import sqlite3
+
+from pathlib import Path
+
+@click.group()
+def fk():
+    ...
+
+
+@fk.command()
+@fk.argument('path', type=Path)
+def init(path):
+    path.parent.mkdir(exist_ok=True, parents=True)
+    provision_schema(sqlite3.connect(path))
+
+
+def provision_schema(cx):
+    c = cx.cursor()
+
+    c.execute('create_table schema(version)')
+    c.execute(f"insert into schema values ('{__schema_version__}')")
+
+    for d in table_defs:
+        c.execute(f'create table {d}')

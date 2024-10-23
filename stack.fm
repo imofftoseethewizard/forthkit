@@ -1,0 +1,132 @@
+name: stack
+primitives:
+  - name: bury
+    label: bury
+    body: |
+      register number n = *sp++;
+      register i;
+
+      if (!_is_valid_stack_index(n))
+          _abort(err_invalid_numeric_argument);
+
+      for (i = 0; i <= n; i++)
+          *(sp + i - 1) = *(sp + i);
+
+      *(sp + n) = *(sp-1);
+
+  - name: drop
+    label: drop
+    body: |
+      _check_minimum_stack_depth(1);
+      sp++;
+
+  - name: dup
+    label: dup
+    body: |
+      _check_minimum_stack_depth(1);
+      sp--;
+      *sp = *(sp+1);
+
+  - name: nip
+    label: nip
+    body: |
+      _check_minimum_stack_depth(2);
+      sp++;
+      *sp = *(sp-1);
+
+  # - name: op_rearrange
+  #   label: "rearrange:"
+  #   body: |
+
+  - name: over
+    label: over
+    body: |
+      register cell n = *(sp+1);
+      *--sp = n;
+
+  - name: pick
+    label: pick
+    body: |
+      register number n = *sp++;
+
+      if (!_is_valid_stack_index(n))
+          _abort(err_invalid_numeric_argument);
+
+      else
+          *--sp = *(sp + n);
+
+  - name: poke
+    label: poke
+    body: |
+      register number n = *sp++;
+      register i;
+
+      if (!_is_valid_stack_index(n))
+          _abort(err_invalid_numeric_argument);
+
+      for (i = 0; i <= n; i++)
+          *(sp + i - 1) = *(sp + i);
+
+      *(sp + n) = *(sp-1);
+
+      sp--;
+
+  - name: query_dup
+    label: ?dup
+    body: |
+      _check_minimum_stack_depth(1);
+      register cell n = *sp;
+
+      if (n) *--sp = n;
+
+  # - name: rem
+  #   label: rem
+  #   body: |
+
+  - name: roll
+    label: roll
+    body: |
+      register number n = *sp++;
+
+      if (!n)
+          ;
+
+      else if (!_is_valid_stack_index(n))
+          _abort(err_invalid_numeric_argument);
+
+      else {
+          register cell tmp = *(sp+n);
+          register cell *src = sp + n - 1;
+          register cell *dest = sp + n;
+
+          for (; n > 0; n--)
+              *dest-- = *src--;
+
+          *sp = tmp;
+      }
+
+  - name: rot
+    label: rot
+    body: |
+      _check_minimum_stack_depth(3);
+      register cell tmp = *sp;
+      *sp = *(sp+2);
+      *(sp+2) = *(sp+1);
+      *(sp+1) = tmp;
+
+  - name: swap
+    label: swap
+    body: |
+      _check_minimum_stack_depth(2);
+      register cell tmp = *sp;
+      *sp = *(sp+1);
+      *(sp+1) = tmp;
+
+  - name: tuck
+    label: tuck
+    body: |
+      _check_minimum_stack_depth(2);
+      *(sp-1) = *sp;
+      *sp = *(sp+1);
+      *(sp+1) = *(sp-1);
+      sp--;

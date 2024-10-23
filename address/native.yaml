@@ -1,0 +1,6 @@
+name: native
+to_ptr: "((cell *)(x))"
+from_ptr: "((cell)(x))"
+is_primitive: "((void *)(x) >= _pr_value_base && (void *)(x) <= _pr_value_limit)"
+from_pv: "x"
+to_pv: "x"

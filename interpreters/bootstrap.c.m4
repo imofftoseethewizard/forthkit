@@ -124,11 +124,4 @@
         *--fp = _primary_fiber;
 
         _load_fiber_state();
-
-        /*_check_thread_memory();*/
-
-/* #        undivert(__primitive_word_definitions) */
-/* #        undivert(__compiled_word_definitions)dnl */
-
-        _save_fiber_state();
     }

@@ -1,3 +1,185 @@
+move code generation from m4 to Python
+  module syntax
+    safe yaml
+
+  parameters
+    name
+    global_decls
+    global_init
+    global_finals
+    local_decls
+    local_init
+    local_finals
+    primitives
+    requirements
+
+cli specification
+
+  command name fk
+
+  objects
+    f0
+    execution model
+    addressing model
+    primitive
+    image
+    signature
+    version
+    evaluator
+    interpreter
+    configuration
+    suite
+    target
+    architecture
+    native address
+    virtual address
+
+    sqlite db schema
+
+    project
+      id
+      name
+      created_at
+      updated_at
+
+    version
+      id
+      name
+      created_at
+      updated_at
+      project_id
+      major
+      minor
+      build
+      commit
+      diff
+
+    project_version
+      project_id
+      version_id
+
+    target
+      id
+      name
+      created_at
+      updated_at
+      cc
+      cflags
+      ldflags
+      ld
+
+    test
+      id
+      name
+      created_at
+      updated_at
+      path
+
+    test_suite
+      id
+      name
+      created_at
+      updated_at
+
+    test_suite_test
+      test_suite_id
+      test_id
+
+    test_run
+
+    test_suite_run
+
+    primitive
+      id
+      name
+      body
+    image
+    module
+    evaluator
+
+
+  activities
+    create new project
+    add new project version
+    specify build targets
+    change build targets
+    monitor changes and rebuild
+    specify tests
+    modify test
+    add test
+    different tests for different platforms, targets, versions
+    add primitive
+    modify primitive
+    add test
+    build image
+    test image
+    run with image
+    define module
+
+    build f0
+      update makefile
+      run make
+    specify configuration
+      add primitive
+      change execution model
+      change addressing model
+      change evaluator loop
+      change interpreter
+    build image
+      specify image
+    run tests
+    sign image
+    built evaluator for image
+
+
+  subcommands
+
+
+evaluator memory layout
+
+struct evaluator {
+    char version[4];
+    const char *version_hash;
+    cell *memory;
+}
+
+memory layout (cells)
+    size
+    entrypoint
+    result
+    source buffer address
+    source buffer length
+    source length
+    message buffer address
+    message buffer length
+    message length
+
+f0 requirements
+
+flit plan:
+  1. rework build to produce only f0
+    a. streamline primitive syntax
+    b. provide for conditional null body
+    c. reorganize primitives
+  2. add primitives + tests in f0
+  3. write flit in f0
+  4. write f79, f83, f94 in flit
+  5. write scheme in flit
+
+desired primitive syntax, should be standard C compilable
+
+    typedef void primitive;
+
+    <header macros/decls>
+
+    /* [<groupo> [<seq #>]] */
+    primitive <id>()
+    {
+        <body>
+    }
+
+
+
 naming convention for primitives which expect a value in the input stream.
 angle brakets, eg <jump> ; a colon eg jump: ; The colon suffix has a use in
 Forth as signalling a defining word, but flit doesn't have that convention.
@@ -33,14 +215,17 @@ stack manipulation
   stack. These will have a ":" suffix and in bury:
 
 memory access
+  +!: n -!: n ...
   char: c@ c! c+! c, c^
   cell: @ ! +! ^ 1+! 1-! cell+! cell-! ,
   2 cell: 2@ 2! 2, 2+! 2^
   @ ! +! , c@ c! c+! c, 2@ 2! 2+! 2,
-  other: copy fill here allot reserve
+  other: copy fill here allot reserve top
 
 logical operators
   and or not xor nand nor
+
+shorthand for ?dup 0= if (boolean short-circuit or) and ?dup if (boolean short-circuit and)
 
 numeric comparison
   > < >= <= <> 0= 0> 0< u< u> u<= u>= also with "d" prefix for double length

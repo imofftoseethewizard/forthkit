@@ -2,7 +2,8 @@ __primitive(pr_bury)
 {
     /* bury ( +n -- w )
            0 bury is equivalent to dup
-           1 bury is equivalent to swap
+           1 bury is equivalent to dup
+           2 bury is equivalent to swap over
            x bury is equivalent to x poke drop
      */
 

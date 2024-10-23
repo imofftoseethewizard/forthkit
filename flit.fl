@@ -98,7 +98,7 @@ abc ...
 
     [ #while define ]
         lit branch0 ,
-        here 0 ,
+        here ( 0 ) ,
         swap
         exit
 
@@ -111,12 +111,12 @@ abc ...
 
     [ #if define ]
         lit branch0 ,
-        here 0 ,
+        here ( 0 ) ,
         exit
 
     [ #else define ]
         lit jump ,
-        here 0 ,
+        here ( 0 ) ,
         swap here over - swap !
         exit
 
@@ -132,7 +132,7 @@ abc ...
 
     [ #do define ]
         ( #do primitives dictionary-find ) ,
-        0 ,
+        ( 0 ) ,
         here
         exit
 
@@ -144,7 +144,7 @@ abc ...
 
     [ #ahead define ]
         lit jump ,
-        here 0 ,
+        here ( 0 ) ,
         exit
 
     [ #source define ]
@@ -178,7 +178,7 @@ abc ...
         exit
 
     [ #quote? define ]
-        ( quote , ) =
+        ( quote ) =
         exit
 
     [ #printable-except-quote? define ]
@@ -233,7 +233,7 @@ abc ...
 
         [ else ]
             2drop
-            0
+            ( 0 )
 
         [ then ]
         exit
@@ -262,8 +262,8 @@ abc ...
         exit
 
     [ #compile-digit-chars define ]
-        ( char 9 1+ ) ( char 0 ) [ do ] i c, [ loop ]
-        ( char z 1+ ) ( char a ) [ do ] i c, [ loop ]
+        ( '9' 1+ ) ( '0' ) [ do ] i c, [ loop ]
+        ( 'z' 1+ ) ( 'a' ) [ do ] i c, [ loop ]
         exit
 
     [ #digit-chars define variable compile-digits ]
@@ -278,39 +278,39 @@ abc ...
         exit
 
     [ #sign define ]
-        0< [ if ] ( char - ) hold [ then ]
+        0< [ if ] ( '-' ) hold [ then ]
         exit
 
     [ #u. define ]
-        0 start-number bl hold digits end-number type
+        ( 0 ) start-number bl hold digits end-number type
         exit
 
     [ #. define ]
-        dup 0< [ if ] ( char - ) emit [ then ]
+        dup 0< [ if ] ( '-' ) emit [ then ]
         abs u.
         exit
 
     [ #.s define ]
         depth 0= [ if ] exit [ then ]
-        0 depth 2 - [ do ] i pick u. -1 [ +loop ]
+        ( 0 ) depth ( 2 ) - [ do ] i pick u. ( -1 ) [ +loop ]
         exit
 
     [ #parse-digit define ]
 
-        ( char 0 ) -
-        dup 10 u<
+        ( '0' ) -
+        dup ( 10 ) u<
         [ if ] exit [ then ]
 
-        ( char A char 0 - , ) -
-        dup 26 u<
-        [ if ] 10 + exit [ then ]
+        ( 'A' '0' - ) -
+        dup ( 26 ) u<
+        [ if ] ( 10 ) + exit [ then ]
 
-        ( char a char A - , ) -
-        dup 26 u<
-        [ if ] 10 + exit [ then ]
+        ( 'a' 'A' - ) -
+        dup ( 26 ) u<
+        [ if ] ( 10 ) + exit [ then ]
 
         drop
-        -1
+        ( -1 )
 
         exit
 
@@ -327,8 +327,8 @@ abc ...
             [ while ]
                 >r
                 2swap
-                ( base ) @ 1 m*/
-                r> 0 d+
+                ( base ) @ ( 1 ) m*/
+                r> ( 0 ) d+
                 2swap
 
                 1+
@@ -373,14 +373,17 @@ abc ...
             2drop
         [ then ]
 
-       { foo
-        |+ ab
-aaa   |+
-         aaa  b
-         abb
-         | hello
-        | hello
-        }
+       { foo }
+
+        \ alternate multiline string
+        ((
+          null-string
+          "Hello, World!"
+          ""
+          "This is a multiline string."
+          ""
+          '\n' inplace-string-join/char*
+        ))
 
 
 (defun flit-previous-property-value (pos prop &optional default)
