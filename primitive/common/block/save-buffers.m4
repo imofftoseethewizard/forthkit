@@ -17,7 +17,7 @@ __primitive(pr_save_buffers)
         block = *(_to_ptr(e[ea_buffer_map]) + n);
 
         /* empty */
-        if (block == -1)
+        if (block == (cell)-1)
             continue;
 
         /* dirty bit */

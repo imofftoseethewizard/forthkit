@@ -26,7 +26,7 @@ divert(__header_definitions)
         if (!_is_primitive(*ip))          \
             goto op_enter;                \
         else                              \
-            goto *_to_pv(*ip++);          \
+            goto *(cell *)_to_pv(*ip++);  \
     }                                     \
     while (1)
 

@@ -14,7 +14,7 @@ __primitive(pr_buffer)
     register cell n = e[ea_next_buffer];
     register cell old_block = *(_to_ptr(e[ea_buffer_map]) + n);
 
-    if (old_block != -1 && old_block & c_msb) {
+    if (old_block != (cell)-1 && old_block & c_msb) {
 
         if (   storage_fd < 0
                || lseek(storage_fd, (old_block ^ c_msb)*e[ea_buffer_size], SEEK_SET) == -1

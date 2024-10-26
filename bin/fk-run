@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+
+# Run create-test-image.sh prior to running this command.  It will
+# create the fk-test image.
+
+docker run -it --rm \
+    --mount type=bind,src=$(pwd),dst=$(pwd) \
+    -w $(pwd) \
+    --hostname fk \
+    -e FORTHKIT=$FORTHKIT \
+    -e FAMILIES="$FAMILIES" \
+    fk-test $*
