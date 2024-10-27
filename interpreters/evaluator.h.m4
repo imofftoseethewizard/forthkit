@@ -113,9 +113,11 @@ enum engine_attribute {
 };
 
 #define c_immediate                  0b00000001
-#define c_inline                     0b00000010
-#define c_primitive                  0b00000100
-#define c_value                      0b00001000
+#define c_inline1                    0b00000010
+#define c_inline2                    0b00000100
+#define c_inline3                    0b00000110
+#define c_inline_mask                0b00000110
+#define c_primitive                  0b00001000
 #define c_operand_ip_absolute        0b00010000
 #define c_operand_ip_offset          0b00100000
 #define c_operand_indirect_ip_offset 0b01000000
@@ -193,7 +195,7 @@ do {                                                              \
 
 #define _define_primitive_ext(s, l, cw_l, flags)                  \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));      \
-        _begin_define_word(s, c_inline | c_primitive | (flags));  \
+        _begin_define_word(s, c_inline1 | c_primitive | (flags)); \
         _register_compiled_word(cw_l);                            \
         _compile_pr(l);                                           \
         _compile_pr(op_exit);                                     \
@@ -216,7 +218,7 @@ do {                                                              \
 
 #define _define_constant(s, v)                                    \
         _info("defining constant %-16s %d\n", s, v);              \
-        _begin_define_word(s, c_value);                           \
+        _begin_define_word(s, c_inline2);                         \
         _compile_literal(v);                                      \
         _compile_pr(op_exit);                                     \
         _end_define_word();

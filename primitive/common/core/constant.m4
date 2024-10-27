@@ -14,7 +14,7 @@ __primitive(pr_constant)
     _store_word_name();
 
     /* Indicates that this word can be inlined as 2 cells during compilation. */
-    _word_header(c_value);
+    _word_header(c_inline2);
 
     /* adds the word to the current vocabulary */
     _end_define_word();

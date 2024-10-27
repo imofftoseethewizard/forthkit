@@ -9,13 +9,23 @@ __primitive(pr_store_compiled)
         register cell *code = _to_ptr(xt);
         register cell flags = *(code - 1);
 
-        if (flags & c_inline)
-            _store_data(*code);
+        if (flags & c_inline_mask) {
 
-        else if (flags & c_value) {
+            if (flags & c_inline1)
+              _store_data(*code);
 
-            _store_data(*code);        /* op_literal */
-            _store_data(*(code + 1));  /* ...        */
+            else if (flags & c_inline2) {
+
+                _store_data(*code);
+                _store_data(*(code + 1));
+
+            } else {
+
+                _store_data(*code);
+                _store_data(*(code + 1));
+                _store_data(*(code + 2));
+
+            }
 
         } else
             _store_data(xt);
