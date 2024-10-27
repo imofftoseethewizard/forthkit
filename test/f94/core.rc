@@ -8,3 +8,4 @@ $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/co
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/u_m_divide_mod.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/u_m_times.fs
 $FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/2constant.fs
+$FORTHKIT/build/$FAMILY/$VERSION_TAG/bin/$INTERPRETER -q $FORTHKIT/lib/common/core/abort.fs $FORTHKIT/lib/test/harness.fs $FORTHKIT/lib/test/common/core/2variable.fs
