@@ -112,16 +112,17 @@ enum engine_attribute {
     engine_attribute_count
 };
 
-#define c_immediate                  0b00000001
-#define c_inline1                    0b00000010
-#define c_inline2                    0b00000100
-#define c_inline3                    0b00000110
-#define c_inline_mask                0b00000110
-#define c_primitive                  0b00001000
-#define c_operand_ip_absolute        0b00010000
-#define c_operand_ip_offset          0b00100000
-#define c_operand_indirect_ip_offset 0b01000000
-#define c_operand_literal            0b10000000
+#define c_immediate                  0b000000001
+#define c_inline1                    0b000000010
+#define c_inline2                    0b000000100
+#define c_inline3                    0b000000110
+#define c_inline_mask                0b000000110
+#define c_primitive                  0b000001000
+#define c_operand_ip_absolute        0b000010000
+#define c_operand_ip_offset          0b000100000
+#define c_operand_indirect_ip_offset 0b001000000
+#define c_operand_literal            0b010000000
+#define c_operand_2literal           0b100000000
 
 #define _quote(x) #x
 #define _from_pr(x) _from_pv(_pr_value(x))
@@ -135,6 +136,7 @@ enum engine_attribute {
 #define _set_word_flags(x, flags)       *((cell *)(x) + 2) |= (flags)
 #define _clear_word_flags(x, flags)     *((cell *)(x) + 2) &= ~(flags)
 #define _get_word_flags(x)              *((cell *)(x) + 2)
+#define _get_inline_flag(flags)         (flags & c_inline_mask)
 
 #define _get_word_interpretation_ptr(x) ((cell *)(x) + 3)
 #define _get_word_interpretation(x)     _from_ptr(_get_word_interpretation_ptr(x))

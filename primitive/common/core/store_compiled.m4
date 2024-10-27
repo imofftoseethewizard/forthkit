@@ -7,14 +7,15 @@ __primitive(pr_store_compiled)
 
     else {
         register cell *code = _to_ptr(xt);
-        register cell flags = *(code - 1);
+        register cell inline_flags = _get_inline_flag(*(code - 1));
 
-        if (flags & c_inline_mask) {
+        if (inline_flags) {
 
-            if (flags & c_inline1)
+            if (inline_flags == c_inline1)
+
               _store_data(*code);
 
-            else if (flags & c_inline2) {
+            else if (inline_flags == c_inline2) {
 
                 _store_data(*code);
                 _store_data(*(code + 1));
