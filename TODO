@@ -15,6 +15,11 @@ testing
     POSTPONE
     CASE OF ENDOF ENDCASE
 
+missing words
+  f83
+    vocabulary
+    2rot
+
 f94
   ENVIRONMENT?
 

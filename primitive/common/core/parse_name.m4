@@ -1,5 +1,6 @@
+// DEAD CODE
 
-__primitive(pr_parse_name)  
+__primitive(pr_parse_name)
 {
 
     /* ASCII space */

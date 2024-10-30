@@ -1,3 +1,5 @@
+// DEAD CODE
+
 __primitive(pr_do_does)
 {
     register cell *word = _to_ptr(*_to_ptr(tp[ta_current]));
