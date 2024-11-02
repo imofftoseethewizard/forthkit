@@ -1,6 +1,6 @@
 def primitive_implementation(p):
 
-    return f'case {p.symbol}:{p.body.strip()}\nbreak;\n'
+    return f'case {p.symbol}:\n{p.body.strip()}\nbreak;\n'
 
 def primitive_declarations(primitives):
 

@@ -1,21 +1,12 @@
-#include "bounds.h"
-#include "log.h"
-#include "types.h"
+typedef unsigned CELL_TYPE cell;
+typedef CELL_TYPE number;
 
-/*{ memory_model }*/
+typedef DOUBLE_TYPE double_number;
+typedef unsigned DOUBLE_TYPE double_cell;
+
+/*{ address_model }*/
 
 #define c_msb ((cell)1 << (sizeof(cell) * 8 - 1))
-
-extern void init_evaluator(
-    cell *evaluator,
-    cell buffer_count,
-    cell buffer_size,
-    cell evaluator_size,
-    cell pad_buffer_size,
-    cell parameter_stack_size,
-    cell return_stack_size,
-    cell source_size,
-    cell word_buffer_size);
 
 extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitive_registry);
 extern cell *create_evaluator_image(cell *e0, cell *e1, int *image_size);
@@ -33,41 +24,8 @@ enum block_type {
     bt_relocation_table,
 };
 
-enum engine_attribute {
-    /* attributes set by init_evaluator */
-
-    ea_size, /* from evaluator_size parameter */
-    ea_top,  /* == 0 implies that the evaluator's memory has not been set
-                up yet */
-
-    ea_buffer_size,
-    ea_buffer_count,
-    ea_pad_buffer_size,
-    ea_parameter_stack_size,
-    ea_return_stack_size,
-    ea_source_size,
-    ea_word_buffer_size,
-
-    /* attributes referencing reserved memory areas */
-    ea_buffer_map,
-    ea_buffers,
-    ea_error_msg_addr,
-    ea_error_msg_len,
-    ea_pad,
-    ea_source_addr,
-    ea_word_buffer0,
-    ea_word_buffer1,
-
-    /* miscellaneous */
-    ea_blk,
-    ea_next_buffer,
-    ea_scr,
-    ea_source_idx,
-    ea_source_len,
-
-    /* must be last */
-    engine_attribute_count
-};
+/*{ declare_init_evaluator }*/
+/*{ declare_engine_attributes }*/
 
 #define c_immediate                  0b000000001
 #define c_inline1                    0b000000010
@@ -191,5 +149,172 @@ do {                                                              \
     _check_return_stack_bounds();                                 \
 } while (0)
 
+#if VERBOSE
+
+#define _info(...) fprintf(stderr, __VA_ARGS__)
+#define _debug(...) fprintf(stderr, __VA_ARGS__)
+
+#define _print_stack()                                                   \
+do {                                                                     \
+    register cell *spx = sp0;                                            \
+                                                                         \
+   _debug("stack: ");                                                    \
+                                                                         \
+    while (sp < spx)                                                     \
+        _debug("%lx ", (long)*--spx);                                    \
+                                                                         \
+    _debug("\n");                                                        \
+} while(0)
+
+#define _print_fiber_stack()                                             \
+do {                                                                     \
+    register cell *fpx = fp0;                                            \
+                                                                         \
+    _debug("fiber stack: ");                                             \
+                                                                         \
+    while (fp < fpx)                                                     \
+        _debug("%d ", (int)*--fpx);                                      \
+                                                                         \
+    _debug("\n");                                                        \
+} while(0)
+
+#define _print_return_stack()                                            \
+do {                                                                     \
+    register cell *rpx = rp0;                                            \
+                                                                         \
+    _debug("return stack: ");                                            \
+                                                                         \
+    while (rp < rpx)                                                     \
+        _debug("%lx ", (long)*--rpx);                                    \
+                                                                         \
+    _debug("\n");                                                        \
+} while(0)
+
+#define _print_registers()                                               \
+do {                                                                     \
+    _debug("s: %8lx, ip: %8lx; *ip: %8lx, *(ip+1): %8lx, rp: %8lx, *rp: %8lx, sp: %8lx, *sp: %8lx, dp: %8lx src: %.*s\n",  \
+           steps, \
+           _from_ptr(ip), ip?*ip:0, ip?*(ip+1):0,        \
+           _from_ptr(rp), rp?*rp:0,                      \
+           _from_ptr(sp), sp?*sp:0,                      \
+           (long)_from_ptr(dp),                          \
+           e[ea_source_len]-e[ea_source_idx], \
+           (char *)_to_ptr(e[ea_source_addr]) + e[ea_source_idx]);      \
+} while (0)
+
+
+#else
+
+#if LOG
+#define _info(...) fprintf(stderr, __VA_ARGS__)
+#else
+#define _info(...)
+#endif
+
+#define _debug(...)
+#define _print_stack()
+#define _print_fiber_stack()
+#define _print_return_stack()
+#define _print_registers()
+#endif
+
+#if TRACE
+
+#define _trace(label)                                                    \
+    do {                                                                 \
+        _debug("%40s", label);                                          \
+        _print_registers();                                             \
+    } while(0)
+
+#else
+
+#define _trace(label)
+
+#endif
+
+#ifdef BOUNDS_CHECKING
+
+#define _check_buffer_address(x)
+
+#define _check_dictionary_bounds()                   \
+do {                                                 \
+    if (dp >= top)                                   \
+        _abort(err_dictionary_overflow);             \
+} while (0)
+
+#define _check_fiber_stack_bounds()                  \
+do {                                                 \
+    if (fp < fp0 - e[ea_fiber_stack_size])           \
+        _abort(err_fiber_stack_overflow);            \
+    else if (fp > fp0)                               \
+        _abort(err_fiber_stack_underflow);           \
+} while (0)
+
+#define _check_loader_context_stack_bounds()
+
+#define _check_minimum_stack_depth(n)                \
+do {                                                 \
+    if ((sp0 - sp) < (n))                            \
+    _abort(err_parameter_stack_underflow);           \
+} while (0)
+
+#define _check_parameter_stack_bounds()              \
+do {                                                 \
+    if (sp > sp0)                                    \
+        _abort(err_parameter_stack_underflow);       \
+    else if (sp < sp0 - e[ea_parameter_stack_size])  \
+        _abort(err_parameter_stack_overflow);        \
+} while (0)
+
+#define _check_return_stack_bounds()                 \
+do {                                                 \
+    if (rp > rp0)                                    \
+        _abort(err_return_stack_underflow);          \
+    else if (rp < rp0 - e[ea_return_stack_size])     \
+        _abort(err_return_stack_overflow);           \
+} while (0)
+
+#define _check_task_address(t)
+#define _check_task_memory()
+#define _check_thread_memory()
+
+#define _is_active_fiber_number(x) ((x) == *fp)
+#define _is_fiber_stack_full() (fp0 - fp == e[ea_fiber_stack_size])
+#define _is_valid_fiber_number(x) ((cell)(x) < e[ea_fiber_count])
+
+#define _is_active_task_number(x) ((x) == _to_fiber_ptr(*fp)[fa_task])
+#define _is_primary_task_number(x) ((x) == _primary_task)
+#define _is_valid_task_number(x) ((cell)(x) < e[ea_task_count])
+
+#define _is_valid_0_based_stack_index(n) ((n) >= 0 && sp + (n) < sp0)
+#define _is_valid_1_based_stack_index(n) ((n) > 0 && sp + (n) <= sp0)
+
+#else
+
+#define _check_buffer_address()
+#define _check_dictionary_bounds()
+#define _check_fiber_stack_bounds()
+#define _check_loader_context_stack_bounds()
+#define _check_minimum_stack_depth(n)
+#define _check_parameter_stack_bounds()
+#define _check_return_stack_bounds()
+#define _check_task_address()
+#define _check_task_memory()
+#define _check_thread_memory()
+
+#define _is_active_fiber_number() 0
+#define _is_fiber_stack_full() 0
+#define _is_valid_fiber_number() 1
+
+#define _is_active_task_number(x) 0
+#define _is_primary_task_number(x) 0
+#define _is_valid_task_number(x) 1
+
+#define _is_valid_0_based_stack_index(n) 1
+#define _is_valid_1_based_stack_index(n) 1
+
+#endif
+
+/*{ feature_header_material }*/
 /*{ execution_model_header_definitions }*/
 /*{ primitive_header_definitions }*/

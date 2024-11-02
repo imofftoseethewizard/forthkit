@@ -31,7 +31,7 @@ def generate_primitive_implementations(primitives, generate_primitive_implementa
 
 def parse_primitive(text):
 
-    m = re.search(r'primitive *([a-z_0-9]+) *\(\)[\s]*(.*)', text, re.DOTALL)
+    m = re.search(r'^([a-z_0-9]+):[\s]*(.*)', text, re.DOTALL)
 
     assert m
     return Primitive(*m.groups())
