@@ -5,3 +5,4 @@ deps.txt
 *.log
 *.trace
 *.fi
+__pycache__
