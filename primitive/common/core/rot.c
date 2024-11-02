@@ -1,4 +1,4 @@
-primitive pr_rot()
+pr_rot:
 {
     /* ROT ( n1 n2 n3 -- n2 n3 n1 ) "rote"
 

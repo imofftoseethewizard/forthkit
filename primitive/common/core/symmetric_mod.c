@@ -1,4 +1,4 @@
-primitive pr_mod()
+pr_mod:
 {
     /* mod ( n1 n2 -- n3 )
 

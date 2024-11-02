@@ -1,4 +1,4 @@
-primitive pr_read_block()
+pr_read_block:
 {
     register char *buffer = (char *)_to_ptr(*sp++);
     register cell n = *sp++;

@@ -1,4 +1,4 @@
-primitive pr_find()
+pr_find:
 {
     /* FIND ( addr1 -- addr1 n | addr2 n )
 

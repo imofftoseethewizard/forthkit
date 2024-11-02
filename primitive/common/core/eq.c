@@ -1,4 +1,4 @@
-primitive pr_eq()
+pr_eq:
 {
     /* = ( w1 w2 -- flag ) "equals"
 

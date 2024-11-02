@@ -1,4 +1,4 @@
-primitive pr_compile_begin()
+pr_compile_begin:
 {
     /* BEGIN ( -- ) compiling: ( -- sys )
 

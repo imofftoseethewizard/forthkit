@@ -1,4 +1,4 @@
-primitive pr_fetch()
+pr_fetch:
 {
     /* @ ( addr -- n ) "fetch"
 

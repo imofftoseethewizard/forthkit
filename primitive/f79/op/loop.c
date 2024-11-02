@@ -2,7 +2,7 @@
    loop index, resp. op_loop performs the run time activity for LOOP: increment, compare and
    branch ahead 2, allowing space to compile a jump to the top of the loop.
 */
-primitive op_loop()
+op_loop:
 {
 
     (*rp)++;

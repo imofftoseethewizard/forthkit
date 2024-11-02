@@ -1,4 +1,4 @@
-primitive pr_r_from()
+pr_r_from:
 {
     /* R> ( -- n ) "r-from"
 

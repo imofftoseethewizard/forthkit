@@ -1,4 +1,4 @@
-primitive pr_allot()
+pr_allot:
 {
     /* ALLOT ( n -- )
 

@@ -1,4 +1,4 @@
-primitive pr_dot_paren()
+pr_dot_paren:
 {
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];

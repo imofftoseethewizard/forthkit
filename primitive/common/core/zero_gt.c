@@ -1,4 +1,4 @@
-primitive pr_zero_gt()
+pr_zero_gt:
 {
     /* 0> ( n -- flag ) "zero-greater"
 

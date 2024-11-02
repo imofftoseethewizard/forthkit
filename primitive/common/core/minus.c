@@ -1,4 +1,4 @@
-primitive pr_minus()
+pr_minus:
 {
     /* - ( n1 n2 -- n3 ) "minus"
 

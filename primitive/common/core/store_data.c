@@ -1,4 +1,4 @@
-primitive pr_store_data()
+pr_store_data:
 {
     /* , ( n -- ) "comma"
 

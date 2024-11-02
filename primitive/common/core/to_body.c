@@ -1,4 +1,4 @@
-primitive pr_to_body()
+pr_to_body:
 {
     /* >BODY ( addr1 -- addr2 ) "to-body"
 

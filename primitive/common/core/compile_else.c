@@ -1,4 +1,4 @@
-primitive pr_compile_else()
+pr_compile_else:
 {
     /* ELSE ( -- ) compiling: ( sys1 -- sys2 )
 

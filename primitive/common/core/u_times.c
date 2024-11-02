@@ -1,4 +1,4 @@
-primitive pr_u_times()
+pr_u_times:
 {
 
     register double_cell

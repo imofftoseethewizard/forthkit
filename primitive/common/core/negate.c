@@ -1,4 +1,4 @@
-primitive pr_negate()
+pr_negate:
 {
     /* NEGATE ( n1 -- n2 )
 

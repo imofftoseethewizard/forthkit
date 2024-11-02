@@ -1,4 +1,4 @@
-primitive pr_buffer()
+pr_buffer:
 {
     /* BUFFER ( u -- addr )
 

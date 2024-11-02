@@ -1,4 +1,4 @@
-primitive op_literal()
+op_literal:
 {
     *--sp = (cell)*ip++;
 }

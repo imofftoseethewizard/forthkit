@@ -1,4 +1,4 @@
-primitive pr_execute()
+pr_execute:
 {
     /* EXECUTE ( addr -- )
 

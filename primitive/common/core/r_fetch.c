@@ -1,4 +1,4 @@
-primitive pr_r_fetch()
+pr_r_fetch:
 {
     /* R@ ( -- n ) "r-fetch"
 

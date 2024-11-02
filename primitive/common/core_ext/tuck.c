@@ -1,4 +1,4 @@
-primitive pr_tuck()
+pr_tuck:
 {
     _tuck();
 }

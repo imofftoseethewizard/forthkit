@@ -1,4 +1,4 @@
-primitive pr_pick()
+pr_pick:
 {
     /* PICK ( +n -- w )
 

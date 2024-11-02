@@ -1,4 +1,4 @@
-primitive pr_start()
+pr_start:
 {
     register cell idx = *sp++;
 

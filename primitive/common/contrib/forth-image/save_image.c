@@ -1,4 +1,4 @@
-primitive pr_save_image()
+pr_save_image:
 {
     /* save-image ( caddr u -- )
 

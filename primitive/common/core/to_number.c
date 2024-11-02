@@ -1,4 +1,4 @@
-primitive pr_to_number()
+pr_to_number:
 {
 
     register number base, digit, len, result;

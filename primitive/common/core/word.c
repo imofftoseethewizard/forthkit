@@ -1,4 +1,4 @@
-primitive pr_word()
+pr_word:
 {
     /* Word buffer is on the top of the stack, delimiter is next. */
     register char *word_buffer = (char *)_to_ptr(*sp++);

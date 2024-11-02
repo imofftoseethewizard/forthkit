@@ -1,4 +1,4 @@
-primitive pr_cr()
+pr_cr:
 {
     /* CR ( -- ) "c-r"
 

@@ -1,4 +1,4 @@
-primitive pr_abort_quote()
+pr_abort_quote:
 {
     /* ABORT" ( flag -- )
               compiling: ( -- )

@@ -1,4 +1,4 @@
-primitive pr_t_from()
+pr_t_from:
 {
     register cell idx = *sp;
 

@@ -1,4 +1,4 @@
-primitive pr_ttop()
+pr_ttop:
 {
     register cell idx = *sp;
 

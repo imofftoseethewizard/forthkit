@@ -1,4 +1,4 @@
-primitive pr_tcontext()
+pr_tcontext:
 {
     register cell idx = *sp;
 

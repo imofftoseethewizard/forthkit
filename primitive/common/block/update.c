@@ -1,4 +1,4 @@
-primitive pr_update()
+pr_update:
 {
     /* UPDATE ( -- )
 

@@ -1,4 +1,4 @@
-primitive pr_to_in()
+pr_to_in:
 {
     /* >IN ( -- addr ) "to-in"
 

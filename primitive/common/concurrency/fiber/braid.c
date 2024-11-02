@@ -1,4 +1,4 @@
-primitive pr_braid()
+pr_braid:
 {
     register cell f_tmp;
     register cell n = *sp++;

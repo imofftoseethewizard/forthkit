@@ -1,4 +1,4 @@
-primitive pr_swap()
+pr_swap:
 {
     /* SWAP ( n1 n2 -- n2 n1 )
 

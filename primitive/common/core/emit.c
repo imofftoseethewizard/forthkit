@@ -1,4 +1,4 @@
-primitive pr_emit()
+pr_emit:
 {
     /* EMIT ( char -- )
 

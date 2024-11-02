@@ -1,4 +1,4 @@
-primitive pr_fill()
+pr_fill:
 {
     /* FILL ( addr u b -- )
 

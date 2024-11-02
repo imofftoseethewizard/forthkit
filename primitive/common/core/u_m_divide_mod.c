@@ -1,4 +1,4 @@
-primitive pr_u_m_divide_mod()
+pr_u_m_divide_mod:
 {
     /* UM/MOD ( ud u1 -- u2 u3 ) "u-m-divide-mod"
 

@@ -1,4 +1,4 @@
-primitive op_abort()
+op_abort:
 {
     /* ABORT ( n -- <empty> )
 

@@ -1,4 +1,4 @@
-primitive pr_definitions()
+pr_definitions:
 {
     /* DEFINITIONS ( -- )
 

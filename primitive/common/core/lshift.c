@@ -1,4 +1,4 @@
-primitive pr_lshift()
+pr_lshift:
 {
     _lshift();
 }

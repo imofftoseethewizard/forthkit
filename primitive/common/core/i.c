@@ -1,4 +1,4 @@
-primitive pr_i()
+pr_i:
 {
     /* I ( -- w )
 

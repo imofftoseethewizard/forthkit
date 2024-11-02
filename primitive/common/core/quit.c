@@ -1,4 +1,4 @@
-primitive pr_quit()
+pr_quit:
 {
     /* QUIT ( -- )
 

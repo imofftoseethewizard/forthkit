@@ -1,4 +1,4 @@
-primitive pr_tsp0()
+pr_tsp0:
 {
     register cell idx = *sp;
 

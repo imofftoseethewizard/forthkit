@@ -1,4 +1,4 @@
-primitive pr_decimal()
+pr_decimal:
 {
     /* DECIMAL ( -- )
 

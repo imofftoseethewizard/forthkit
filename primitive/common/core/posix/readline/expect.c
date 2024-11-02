@@ -1,4 +1,4 @@
-primitive pr_expect()
+pr_expect:
 {
     register number n = (number)*sp++;
     register char *addr = (char *)_to_ptr(*sp++);

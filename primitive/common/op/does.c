@@ -1,4 +1,4 @@
-primitive op_does()
+op_does:
 {
     /* Note ip points to the cell after op_does. That cell contains
        the address of the code following does>. After that is the

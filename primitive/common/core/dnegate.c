@@ -1,4 +1,4 @@
-primitive pr_d_negate()
+pr_d_negate:
 {
     /* DNEGATE ( d1 -- d2 ) "d-negate"
 

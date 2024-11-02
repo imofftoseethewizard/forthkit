@@ -1,4 +1,4 @@
-primitive pr_query_dup()
+pr_query_dup:
 {
     /* ?DUP ( n -- n [ n ] ) "query-dupe"
 

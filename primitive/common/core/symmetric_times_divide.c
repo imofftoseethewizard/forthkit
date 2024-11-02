@@ -1,4 +1,4 @@
-primitive pr_times_divide()
+pr_times_divide:
 {
     /*  * / ( n1 n2 n3 -- n4 ) "times-divide"
 

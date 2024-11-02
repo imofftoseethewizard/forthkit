@@ -1,4 +1,4 @@
-parsing_primitive pr_variable()
+pr_variable:
 {
     _store_word_name();
 

@@ -1,4 +1,4 @@
-primitive pr_to_t()
+pr_to_t:
 {
     register cell idx = *sp++;
 

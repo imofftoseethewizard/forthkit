@@ -1,4 +1,4 @@
-primitive pr_depth()
+pr_depth:
 {
     /* DEPTH ( -- n )
 

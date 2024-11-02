@@ -1,4 +1,4 @@
-primitive pr_two_divide()
+pr_two_divide:
 {
     /* 2/ ( n1 -- n2 ) "two-divide"
 

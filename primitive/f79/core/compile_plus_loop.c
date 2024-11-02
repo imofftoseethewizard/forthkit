@@ -1,4 +1,4 @@
-primitive pr_compile_plus_loop()
+pr_compile_plus_loop:
 {
     /* +LOOP ( n -- ) "plus-loop"
              compiling: ( sys -- )

@@ -1,4 +1,4 @@
-primitive pr_over()
+pr_over:
 {
     /* OVER ( n1 n2 -- n1 n2 n1 )
 

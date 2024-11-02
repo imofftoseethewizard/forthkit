@@ -1,4 +1,4 @@
-primitive pr_drop()
+pr_drop:
 {
     /* DROP ( n -- )
 

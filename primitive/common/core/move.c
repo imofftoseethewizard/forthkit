@@ -1,4 +1,4 @@
-primitive pr_move()
+pr_move:
 {
     register number n = *sp++;
     register cell *dest = _to_ptr(*sp++);

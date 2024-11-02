@@ -1,4 +1,4 @@
-primitive pr_max()
+pr_max:
 {
     /* MAX ( n1 n2 -- n3 ) "max"
 

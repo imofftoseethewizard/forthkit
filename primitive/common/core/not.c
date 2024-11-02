@@ -1,4 +1,4 @@
-primitive pr_not()
+pr_not:
 {
     /* NOT ( w1 -- w2 )
 

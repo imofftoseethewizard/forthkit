@@ -1,4 +1,4 @@
-primitive pr_blk()
+pr_blk:
 {
     /* BLK ( -- addr ) "b-l-k"
 

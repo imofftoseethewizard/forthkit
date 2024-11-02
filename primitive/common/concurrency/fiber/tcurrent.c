@@ -1,4 +1,4 @@
-primitive pr_tcurrent()
+pr_tcurrent:
 {
     register cell idx = *sp;
 

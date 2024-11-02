@@ -1,4 +1,4 @@
-primitive pr_tinterpret()
+pr_tinterpret:
 {
     register cell idx = *sp;
 

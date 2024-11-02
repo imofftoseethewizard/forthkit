@@ -1,4 +1,4 @@
-primitive pr_f_at()
+pr_f_at:
 {
     register cell n = *sp;
 

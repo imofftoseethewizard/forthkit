@@ -1,4 +1,4 @@
-primitive pr_or()
+pr_or:
 {
     /* OR ( n1 n2 -- n3 )
 

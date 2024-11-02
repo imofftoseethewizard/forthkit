@@ -1,4 +1,4 @@
-primitive pr_convert()
+pr_convert:
 {
     /* CONVERT ( ud1 addr1 -- ud2 addr2 )
 

@@ -1,4 +1,4 @@
-primitive pr_dot_quote()
+pr_dot_quote:
 {
     /* ." ( -- ) "dot-quote"
 

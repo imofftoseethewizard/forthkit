@@ -1,4 +1,4 @@
-primitive pr_dup()
+pr_dup:
 {
     /* DUP ( n -- n n ) "dupe"
 

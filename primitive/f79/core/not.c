@@ -1,4 +1,4 @@
-primitive pr_not()
+pr_not:
 {
     /* NOT ( flag1 -- flag2 )
 

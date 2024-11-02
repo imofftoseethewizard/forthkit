@@ -1,4 +1,4 @@
-primitive pr_leave()
+pr_leave:
 {
     /* LEAVE ( -- )
 

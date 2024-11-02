@@ -1,4 +1,4 @@
-primitive pr_compile_if()
+pr_compile_if:
 {
     /* IF ( flag -- ) compiling ( -- sys )
 

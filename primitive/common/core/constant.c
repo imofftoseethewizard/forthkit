@@ -1,4 +1,4 @@
-parsing_primitive pr_constant()
+pr_constant:
 {
     /* CONSTANT ( n -- )
 

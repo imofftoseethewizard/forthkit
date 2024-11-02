@@ -1,4 +1,4 @@
-primitive pr_do_does()
+pr_do_does:
 {
     register cell *word = _to_ptr(*_to_ptr(tp[ta_current]));
     register cell *origp = _get_word_interpretation_ptr(word);

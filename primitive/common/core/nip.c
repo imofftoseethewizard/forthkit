@@ -1,4 +1,4 @@
-primitive pr_nip()
+pr_nip:
 {
     _nip();
 }

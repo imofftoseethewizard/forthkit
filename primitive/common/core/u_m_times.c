@@ -1,4 +1,4 @@
-primitive pr_u_m_times()
+pr_u_m_times:
 {
     /* UM* ( u1 u2 -- ud ) "u-m-times"
 

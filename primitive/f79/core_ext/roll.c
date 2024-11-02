@@ -1,4 +1,4 @@
-primitive pr_roll()
+pr_roll:
 {
     /* ROLL ( n -- )
 

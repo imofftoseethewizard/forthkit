@@ -1,4 +1,4 @@
-primitive pr_ftask_fetch()
+pr_ftask_fetch:
 {
     register cell idx = *sp;
 

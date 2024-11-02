@@ -1,4 +1,4 @@
-primitive pr_zero_eq()
+pr_zero_eq:
 {
     /* 0= ( w -- flag ) "zero-equals"
 

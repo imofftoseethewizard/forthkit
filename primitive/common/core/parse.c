@@ -1,4 +1,4 @@
-primitive pr_parse()
+pr_parse:
 {
 
     register char delimiter = *sp++;

@@ -1,4 +1,4 @@
-primitive op_plus_loop()
+op_plus_loop:
 {
     /* <+loop> "op-plus-loop"
 

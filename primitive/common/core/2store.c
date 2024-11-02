@@ -1,4 +1,4 @@
-primitive pr_2store()
+pr_2store:
 {
     /* ! ( x1 x2 addr -- )
 

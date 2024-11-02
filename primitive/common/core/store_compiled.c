@@ -1,4 +1,4 @@
-primitive pr_store_compiled()
+pr_store_compiled:
 {
     register cell xt = *sp;
 

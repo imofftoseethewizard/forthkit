@@ -1,4 +1,4 @@
-primitive pr_2swap()
+pr_2swap:
 {
     /* 2SWAP ( x1 x2 x3 x4 -- x3 x4 x1 x2 )
 

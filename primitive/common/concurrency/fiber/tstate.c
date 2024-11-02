@@ -1,4 +1,4 @@
-primitive pr_tstate()
+pr_tstate:
 {
     register cell idx = *sp;
 

@@ -1,4 +1,4 @@
-primitive pr_zero_lt()
+pr_zero_lt:
 {
     /* 0< ( n -- flag ) "zero-less"
 

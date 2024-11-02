@@ -1,4 +1,4 @@
-primitive pr_u_lt()
+pr_u_lt:
 {
     /* U< ( u1 u2 -- flag ) "u-less-than"
 

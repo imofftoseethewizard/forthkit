@@ -1,4 +1,4 @@
-primitive pr_rshift()
+pr_rshift:
 {
     _rshift();
 }

@@ -1,4 +1,4 @@
-primitive pr_to_fr()
+pr_to_fr:
 {
     register cell idx = *sp++;
 

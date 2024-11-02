@@ -1,4 +1,4 @@
-primitive pr_store()
+pr_store:
 {
     /* ! ( n addr -- )
 

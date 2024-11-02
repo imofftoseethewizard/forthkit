@@ -1,4 +1,4 @@
-primitive pr_pad()
+pr_pad:
 {
     /* PAD ( -- addr )
 

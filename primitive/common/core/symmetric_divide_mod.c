@@ -1,4 +1,4 @@
-primitive pr_divide_mod()
+pr_divide_mod:
 {
     /* /MOD ( n1 n2 -- n3 n4 ) "divide-mod"
        Divide  n1 by n2 and leave the remainder n3 and quotient n4.

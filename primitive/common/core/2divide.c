@@ -1,4 +1,4 @@
-primitive pr_2divide()
+pr_2divide:
 {
     *(number *)sp /= 2;
 }

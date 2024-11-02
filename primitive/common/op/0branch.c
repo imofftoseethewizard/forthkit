@@ -2,7 +2,7 @@
    path, and immediately following that is the beginning of the
    consequent code path.
 */
-primitive op_0branch()
+op_0branch:
 {
     if (*sp++)
         /* skip over offset to alternate */

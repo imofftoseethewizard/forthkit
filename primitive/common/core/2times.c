@@ -1,4 +1,4 @@
-primitive pr_2times()
+pr_2times:
 {
     *sp *= 2;
 }

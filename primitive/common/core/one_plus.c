@@ -1,4 +1,4 @@
-primitive pr_one_plus()
+pr_one_plus:
 {
     /* 1+ ( w1 -- w2 ) "one-plus"
 

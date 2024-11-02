@@ -1,4 +1,4 @@
-primitive pr_fstop()
+pr_fstop:
 {
     register cell idx = *sp;
 

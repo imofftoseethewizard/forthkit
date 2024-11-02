@@ -1,4 +1,4 @@
-primitive pr_compile_do()
+pr_compile_do:
 {
     /* DO ( w1 w2 -- ) compiling: ( -- sys )
 

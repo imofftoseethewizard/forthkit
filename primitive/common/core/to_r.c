@@ -1,4 +1,4 @@
-primitive pr_to_r()
+pr_to_r:
 {
     /* >R ( n -- ) "to-r"
 

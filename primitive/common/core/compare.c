@@ -1,4 +1,4 @@
-primitive pr_compare()
+pr_compare:
 {
     register char *s1, *s2;
     register cell c1, c2;

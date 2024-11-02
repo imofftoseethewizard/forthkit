@@ -1,4 +1,4 @@
-primitive pr_c_store()
+pr_c_store:
 {
     /* C! ( n addr -- ) "c-store"
 

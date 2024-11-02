@@ -1,4 +1,4 @@
-primitive pr_immediate()
+pr_immediate:
 {
     /* IMMEDIATE ( -- )
 

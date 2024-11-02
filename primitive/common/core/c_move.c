@@ -1,4 +1,4 @@
-primitive pr_c_move()
+pr_c_move:
 {
     /* CMOVE ( addr1 addr2 u -- ) "c-move"
 

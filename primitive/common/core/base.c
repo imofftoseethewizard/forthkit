@@ -1,4 +1,4 @@
-primitive pr_base()
+pr_base:
 {
     /* BASE ( -- addr )
 

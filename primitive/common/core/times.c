@@ -1,4 +1,4 @@
-primitive pr_times()
+pr_times:
 {
     /* * ( n1 n2 -- n3 ) "times"
 

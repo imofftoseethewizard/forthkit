@@ -1,4 +1,4 @@
-primitive pr_2fetch()
+pr_2fetch:
 {
     /* @ ( addr -- x1 x2 )
 

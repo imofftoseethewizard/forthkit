@@ -1,4 +1,4 @@
-primitive pr_type()
+pr_type:
 {
     /* TYPE ( addr n -- )
 

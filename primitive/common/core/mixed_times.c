@@ -1,4 +1,4 @@
-primitive pr_m_times()
+pr_m_times:
 {
     double_number d = *(number *)sp * *(number *)(sp+1);
 

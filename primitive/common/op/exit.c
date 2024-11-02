@@ -1,4 +1,4 @@
-primitive op_exit()
+op_exit:
 {
     /* EXIT ( -- )
 

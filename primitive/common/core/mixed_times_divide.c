@@ -1,4 +1,4 @@
-primitive pr_mixed_times_divide()
+pr_mixed_times_divide:
 {
     register number
       n2 = *sp++,

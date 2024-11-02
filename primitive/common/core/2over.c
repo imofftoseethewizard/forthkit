@@ -1,4 +1,4 @@
-primitive pr_2over()
+pr_2over:
 {
     /* 2OVER ( x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2 )
 

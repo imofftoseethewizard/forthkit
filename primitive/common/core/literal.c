@@ -1,4 +1,4 @@
-primitive pr_literal()
+pr_literal:
 {
     /* LITERAL compiling: ( n -- ) run-time ( -- n )
 

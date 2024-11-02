@@ -1,4 +1,4 @@
-primitive pr_state()
+pr_state:
 {
     _state();
 }

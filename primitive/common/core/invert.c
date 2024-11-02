@@ -1,4 +1,4 @@
-primitive pr_invert()
+pr_invert:
 {
     *sp = ~*sp;
 }

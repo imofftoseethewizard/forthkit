@@ -1,4 +1,4 @@
-parsing_primitive pr_colon()
+pr_colon:
 {
     /* : ( -- sys ) "colon"
 

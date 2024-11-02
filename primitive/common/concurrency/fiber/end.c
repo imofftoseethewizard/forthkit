@@ -1,4 +1,4 @@
-primitive pr_end()
+pr_end:
 {
     _save_fiber_state();
 

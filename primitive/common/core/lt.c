@@ -1,4 +1,4 @@
-primitive pr_lt()
+pr_lt:
 {
     /* < ( n1 n2 -- flag ) "less-than"
 

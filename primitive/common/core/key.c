@@ -1,4 +1,4 @@
-primitive pr_key()
+pr_key:
 {
     /* KEY ( -- char )
 

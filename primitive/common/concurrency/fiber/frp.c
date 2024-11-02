@@ -1,4 +1,4 @@
-primitive pr_frp()
+pr_frp:
 {
     register cell idx = *sp;
 

@@ -1,4 +1,4 @@
-primitive pr_d_plus()
+pr_d_plus:
 {
     /* D+ ( d1 d2 --- d3 )  "d-plus"
 

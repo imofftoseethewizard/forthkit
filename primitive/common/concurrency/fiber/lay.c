@@ -1,4 +1,4 @@
-primitive pr_lay()
+pr_lay:
 {
     register cell idx = *sp++;
 

@@ -1,4 +1,4 @@
-primitive pr_here()
+pr_here:
 {
     /* HERE ( -- addr )
 

@@ -1,4 +1,4 @@
-parsing_primitive pr_2constant()
+pr_2constant:
 {
     /* 2CONSTANT ( x1 x2 -- )
 

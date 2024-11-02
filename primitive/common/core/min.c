@@ -1,4 +1,4 @@
-primitive pr_min()
+pr_min:
 {
     /* MIN ( n1 n2 -- n3 ) "min"
 

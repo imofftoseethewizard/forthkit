@@ -1,4 +1,4 @@
-primitive pr_gt()
+pr_gt:
 {
     /* > ( n1 n2 -- flag ) "greater-than"
 

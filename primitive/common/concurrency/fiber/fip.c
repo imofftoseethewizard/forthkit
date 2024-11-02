@@ -1,4 +1,4 @@
-primitive pr_fip()
+pr_fip:
 {
     register cell idx = *sp;
 

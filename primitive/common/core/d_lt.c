@@ -1,4 +1,4 @@
-primitive pr_d_lt()
+pr_d_lt:
 {
     /* D< ( d1 d2 -- flag ) "d-less-than"
 

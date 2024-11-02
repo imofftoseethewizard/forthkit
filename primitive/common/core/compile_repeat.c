@@ -1,4 +1,4 @@
-primitive pr_compile_repeat()
+pr_compile_repeat:
 {
     /* REPEAT compiling: ( sys -- )
 

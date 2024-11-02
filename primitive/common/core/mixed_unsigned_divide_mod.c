@@ -1,4 +1,4 @@
-primitive pr_mixed_unsigned_divide_mod()
+pr_mixed_unsigned_divide_mod:
 {
     /* ud/mod ( ud1 u2 -- urem udquot )
 

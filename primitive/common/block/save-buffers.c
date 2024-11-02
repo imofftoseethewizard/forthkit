@@ -1,4 +1,4 @@
-primitive pr_save_buffers()
+pr_save_buffers:
 {
     /* SAVE-BUFFERS ( -- )
 

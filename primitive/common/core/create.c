@@ -1,4 +1,4 @@
-parsing_primitive pr_create()
+pr_create:
 {
     /* CREATE ( -- )
 

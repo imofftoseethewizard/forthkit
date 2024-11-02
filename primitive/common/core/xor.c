@@ -1,4 +1,4 @@
-primitive pr_xor()
+pr_xor:
 {
     /* XOR ( w1 w2 -- w3 ) "x-or"
 

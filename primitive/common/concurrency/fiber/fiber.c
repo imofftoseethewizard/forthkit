@@ -1,4 +1,4 @@
-primitive pr_fiber()
+pr_fiber:
 {
     register int idx;
 

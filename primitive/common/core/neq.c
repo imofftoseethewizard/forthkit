@@ -1,4 +1,4 @@
-primitive pr_neq()
+pr_neq:
 {
     _neq();
 }

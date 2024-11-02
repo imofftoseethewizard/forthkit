@@ -1,4 +1,4 @@
-primitive pr_one_minus()
+pr_one_minus:
 {
     /* 1- ( w1 -- w2 ) "one-minus"
 

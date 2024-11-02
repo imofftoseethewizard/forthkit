@@ -1,4 +1,4 @@
-primitive pr_count()
+pr_count:
 {
     /* COUNT ( addr -- addr+1 n )
 

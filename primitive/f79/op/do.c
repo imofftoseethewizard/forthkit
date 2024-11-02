@@ -3,7 +3,7 @@
    this as a primitive operation simplifies a common operation. Otherwise, this would be SWAP >R
    >R. That's the overhead of two additional _next() transitions.
 */
-primitive op_do()
+op_do:
 {
     *--rp = *(sp+1);
     *--rp = *sp;

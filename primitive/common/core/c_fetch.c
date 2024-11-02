@@ -1,4 +1,4 @@
-primitive pr_c_fetch()
+pr_c_fetch:
 {
     /* C@ ( addr -- byte ) "c-fetch"
 

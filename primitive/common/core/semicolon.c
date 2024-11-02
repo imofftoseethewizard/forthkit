@@ -1,4 +1,4 @@
-primitive pr_semicolon()
+pr_semicolon:
 {
     /* ; ( -- ) "semi-colon"
          compiling: ( sys -- )

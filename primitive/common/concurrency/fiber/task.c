@@ -1,4 +1,4 @@
-primitive pr_task()
+pr_task:
 {
     /* task ( u addr -- t )
 

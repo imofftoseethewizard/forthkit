@@ -1,4 +1,4 @@
-primitive pr_compile()
+pr_compile:
 {
     /* COMPILE ( -- )
 

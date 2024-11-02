@@ -1,4 +1,4 @@
-primitive pr_cells()
+pr_cells:
 {
     *sp = *sp * sizeof(cell);
 }

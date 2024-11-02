@@ -1,4 +1,4 @@
-primitive pr_compile_loop()
+pr_compile_loop:
 {
     /* LOOP
 

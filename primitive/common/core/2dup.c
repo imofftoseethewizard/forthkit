@@ -1,4 +1,4 @@
-primitive pr_2dup()
+pr_2dup:
 {
     _check_minimum_stack_depth(2);
     sp -= 2;

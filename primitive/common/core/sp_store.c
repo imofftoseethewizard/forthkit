@@ -1,4 +1,4 @@
-primitive pr_sp_store()
+pr_sp_store:
 {
     _sp_store();
 }

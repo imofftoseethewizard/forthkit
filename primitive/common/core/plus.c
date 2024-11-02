@@ -1,4 +1,4 @@
-primitive pr_plus()
+pr_plus:
 {
     _plus();
 }

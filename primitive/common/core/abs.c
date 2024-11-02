@@ -1,4 +1,4 @@
-primitive pr_abs()
+pr_abs:
 {
     /* ABS ( n -- u ) "absolute"
 

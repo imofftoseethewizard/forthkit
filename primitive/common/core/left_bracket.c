@@ -1,4 +1,4 @@
-primitive pr_left_bracket()
+pr_left_bracket:
 {
     tp[ta_state] = 0;
 }

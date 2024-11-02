@@ -1,4 +1,4 @@
-primitive pr_unloop()
+pr_unloop:
 {
     rp += 2;
 }

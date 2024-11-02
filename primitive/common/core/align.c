@@ -1,4 +1,4 @@
-primitive pr_align()
+pr_align:
 {
     dp = (char *)_align(dp);
 }

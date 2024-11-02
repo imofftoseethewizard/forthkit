@@ -1,4 +1,4 @@
-primitive op_do()
+op_do:
 {
     /* DO et al use the top two cells of the return stack to store
        the loop limit and the current loop index, resp. op_do and

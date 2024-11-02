@@ -1,4 +1,4 @@
-primitive pr_not_equals()
+pr_not_equals:
 {
     _check_minimum_stack_depth(2);
     sp++;

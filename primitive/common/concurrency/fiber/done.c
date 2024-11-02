@@ -1,4 +1,4 @@
-primitive pr_done()
+pr_done:
 {
     register cell idx = *sp++;
 

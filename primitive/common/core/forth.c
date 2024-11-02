@@ -1,4 +1,4 @@
-primitive pr_forth()
+pr_forth:
 {
     /* FORTH ( -- )
 

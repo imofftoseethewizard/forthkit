@@ -1,4 +1,4 @@
-primitive pr_does()
+pr_does:
 {
     /* DOES> ( -- addr ) compiling: ( -- ) "does"
 

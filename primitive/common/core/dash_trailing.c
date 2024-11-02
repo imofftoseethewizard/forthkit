@@ -1,4 +1,4 @@
-primitive pr_dash_trailing()
+pr_dash_trailing:
 {
     /* -TRAILING ( addr u1 -- addr u2 ) "dash-trailing"
 

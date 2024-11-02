@@ -1,4 +1,4 @@
-primitive pr_snip()
+pr_snip:
 {
     *(fp+1) = *fp;
     fp++;

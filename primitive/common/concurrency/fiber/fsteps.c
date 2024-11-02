@@ -1,4 +1,4 @@
-primitive pr_fsteps()
+pr_fsteps:
 {
     register cell idx = *sp;
 
