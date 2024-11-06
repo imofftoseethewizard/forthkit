@@ -1,0 +1,129 @@
+#! /usr/bin/env python3
+
+import argparse
+
+from pathlib import Path
+from pprint import *
+
+templates = Path(__file__).parent / '../codegen/templates'
+
+address_models   = templates / 'address_models'
+evaluator        = templates / 'evaluator'
+execution_models = templates / 'execution_models'
+threading        = templates / 'threading'
+
+def main():
+    parser = create_parser()
+    args = parser.parse_args()
+    args.command(args)
+
+def create_parser():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
+
+    init_parser = subparsers.add_parser('init', help='initialize forthkit project')
+    init_parser.set_defaults(command='init')
+
+    gen_parser = subparsers.add_parser('gen', help='generate source files')
+    gen_parser.set_defaults(command=generate_source)
+
+    gen_parser.add_argument('-a', '--address-model', default='absolute',
+                            choices=('a', 'r', 'absolute', 'relocatable'))
+
+    gen_parser.add_argument('-c', '--concurrency', default='single',
+                            choices=('f', 's', 'fibered', 'single'))
+
+    gen_parser.add_argument('-e', '--execution-model', default='switch',
+                            choices=('g', 'l', 's', 'computed-goto', 'local-subroutine', 'switch'))
+
+    gen_parser.add_argument('-t', '--threading', default='indirect',
+                            choices=('d', 'i', 'direct', 'indirect'))
+
+    build_parser = subparsers.add_parser('build', help='build source files')
+    build_parser.set_defaults(command='build')
+
+    run_parser = subparsers.add_parser('run', help='run an interpreter')
+    run_parser.set_defaults(command='run')
+
+    return parser
+
+std_concurrency = {
+    'f':       'fibered',
+    'fibered': 'fibered',
+    's':       'single',
+    'single':  'single'
+}
+
+std_execution_model = {
+    'g':                'computed_goto',
+    'computed-goto':    'computed_goto',
+    'l':                'local_subroutine',
+    'local-subroutine': 'local_subroutine',
+    's':                'switch',
+    'switch':           'switch',
+}
+
+std_address_model = {
+    'a':           'absolute',
+    'absolute':    'absolute',
+    'r':           'relocatable',
+    'relocatable': 'relocatable',
+}
+
+std_threading = {
+    'd':        'direct',
+    'direct':   'direct',
+    'i':        'indirect',
+    'indirect': 'indirect',
+}
+
+def generate_source(args):
+
+    concurrency     = std_concurrency[args.concurrency]
+    execution_model = std_execution_model[args.execution_model]
+    address_model   = std_address_model[args.address_model]
+    threading       = std_threading[args.threading]
+
+    print((concurrency, execution_model, address_model, threading))
+
+    evaluator_h_tmpl        = try_read(templates / 'evaluator.h')
+
+    address_model_h         = try_read((address_models / address_model).with_suffix('.h'))
+    evaluator_decls_h       = try_read(evaluator / concurrency / 'evaluator_decls.h')
+    execution_model_decls_h = try_read(execution_models / execution_model / 'evaluator_decls.h')
+
+    h_values = {
+        'address_model': address_model_h,
+        'evaluator_decls': evaluator_decls_h,
+        'execution_model_decls': execution_model_decls_h,
+        'primitive_decls': ''
+    }
+
+    pprint({k: len(v) for k, v in h_values.items()})
+    evaluator_h = fill_template(evaluator_h_tmpl, h_values)
+
+    print(len(evaluator_h_tmpl))
+    print(len(evaluator_h))
+
+def try_read(path):
+
+    try:
+        return path.open().read()
+    except:
+        print(f'not found: {path}')
+        return ''
+
+def fill_template(tmpl, values):
+
+    result = tmpl
+
+    for k, v in values.items():
+
+        pattern = '/*{ ' + k + ' }*/'
+        result = result.replace(pattern, v)
+
+    return result
+
+
+if __name__ == '__main__':
+    main()

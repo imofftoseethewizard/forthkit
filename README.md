@@ -98,16 +98,15 @@ While this could be built with standard libraries, the `click` package
 makes this very easy.  That will be the one non-standard dependency.
 
 Options for `fk gen`
-* memory model: relative or absolute addressing. -m, --memory-model
-  r(elative), a(bsolute) -mr or -ma
+* address model: relative or absolute addressing. -a, --address-model
+  r(elative), a(bsolute)
 
 * execution model: computed goto, local subroutine, switch, -e,
-  --execution-model (computed-)g(oto), (local-)su(broutine), sw(itch)
-  -eg -esu -esw
+  --execution-model (computed-)g(oto), l(ocal-subroutine), s(witch)
 
 * threading model: direct or indirect, --t, --threading d(irect) i(ndirect)
 
-* evaluator features: optional tasks/fibers -f, --feature, fiber
+* concurrency: fibered, single, -c, --concurrency, f(ibered), s(ingle)
 
 * word size: 2, 4, or 8, -w -word-size
 * arch: 32-bit or 64-bit, -a --architecture

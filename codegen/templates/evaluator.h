@@ -263,11 +263,11 @@ do {                                                 \
 
 #endif
 
-/*{ declare_evaluator }*/
+/*{ evaluator_decls }*/
 
 extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitive_registry);
 extern cell *create_evaluator_image(cell *e0, cell *e1, int *image_size);
 extern cell *load_evaluator_image(const char *image, int image_size);
 
-/*{ execution_model_header_definitions }*/
-/*{ primitive_header_definitions }*/
+/*{ execution_model_decls }*/
+/*{ primitive_decls }*/
