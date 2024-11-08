@@ -143,3 +143,41 @@ do the following
     fk run
 
 and have a running Forth environment.
+
+## Specifications
+
+### Primitive Definition
+
+Primitives are small pieces of C code that are parsed and contribute
+information to various data structures and are interpolated into the
+.c source file of the evaluator.  There is a strict form they must
+follow for this to work properly, for example
+
+    // LITERAL immediate
+
+    pr_literal:
+    {
+        /* LITERAL compiling: ( n -- ) run-time ( -- n )
+
+           If compiling, then compile the stack value n as a single cell
+           literal, which when later executed, will leave n on the stack.
+         */
+
+        _compile_pr(op_literal);
+        _store_data(*sp++);
+        _check_dictionary_bounds();
+    }
+
+If the first non-blank line is a line-based comment, it must contain
+the name of the dictionary entry the primitive will have, and it may
+optionally include "immediate" after the name to indicate that the
+word will be an immediate word.  If the first non-blank line is not a
+line comment, then the primitive will not have a dictionary entry,
+though it may still be used to compose words internally (TODO
+reference for internal word composition).  The next non-blank line
+must be the internal name of the primitive followed by a colon.  The
+name must follow C identifier rules.  The remainder of the file forms
+the body of the primitive.  It must be a brace-enclosed block of code
+and it may not contain a `break`, `continue`, or `return`
+statement. (TODO reference for identifiers available within
+primitives)

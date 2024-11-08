@@ -14,7 +14,7 @@
                                           \
         _trace("early main loop: ");      \
                                           \
-        /*{ execute_thread_step }*/       \
+        /*{ thread_step }*/       \
     }                                     \
     while (1)
 

@@ -1,0 +1,2 @@
+void /*{ label }*/(void)
+/*{ body }*/

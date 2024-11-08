@@ -1,9 +1,29 @@
 #! /usr/bin/env python3
 
 import argparse
+import configparser
+import re
+import sys
 
+from collections import namedtuple
 from pathlib import Path
 from pprint import *
+
+Env = namedtuple('Env', ('name'))
+
+Config = namedtuple('Config', ('name',
+                               'address_model', 'concurrency', 'execution_model', 'thread_model',
+                               'definitions', 'primitives'))
+
+Params = namedtuple('Params', ('address_model', 'concurrency', 'execution_model', 'thread_model',
+                               'definitions', 'primitives'))
+
+Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'body'))
+
+Primitives = namedtuple('Primitives', ('decls', 'impls', 'init_registry', 'word_defs'))
+
+EmptyEnv = Env(None)
+EmptyConfig = Config(None, None, None, None, None, None, None)
 
 templates = Path(__file__).parent / '../codegen/templates'
 
@@ -13,9 +33,21 @@ execution_models = templates / 'execution_models'
 threading        = templates / 'threading'
 
 def main():
+
+    env = get_env()
+
     parser = create_parser()
     args = parser.parse_args()
-    args.command(args)
+
+    config = read_config(args.config or env.config_path)
+    print(config)
+
+    # Look for cmd_* functions below to see what values args.command
+    # can have.
+    args.command(args, config, env)
+
+def get_env():
+    return EmptyEnv
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -25,19 +57,23 @@ def create_parser():
     init_parser.set_defaults(command='init')
 
     gen_parser = subparsers.add_parser('gen', help='generate source files')
-    gen_parser.set_defaults(command=generate_source)
+    gen_parser.set_defaults(command=cmd_generate)
 
-    gen_parser.add_argument('-a', '--address-model', default='absolute',
-                            choices=('a', 'r', 'absolute', 'relocatable'))
+    gen_parser.add_argument('-a', '--address-model', default='host',
+                            choices=('h', 'v', 'host', 'virtual'))
 
     gen_parser.add_argument('-c', '--concurrency', default='single',
                             choices=('f', 's', 'fibered', 'single'))
 
     gen_parser.add_argument('-e', '--execution-model', default='switch',
-                            choices=('g', 'l', 's', 'computed-goto', 'local-subroutine', 'switch'))
+                            choices=('g', 'l', 's', 'computed_goto', 'local_subroutine', 'switch'))
 
-    gen_parser.add_argument('-t', '--threading', default='indirect',
+    gen_parser.add_argument('-t', '--thread-model', default='indirect',
                             choices=('d', 'i', 'direct', 'indirect'))
+
+    gen_parser.add_argument('-C', '--config')
+    gen_parser.add_argument('-d', '--definitions', nargs='*', default=[])
+    gen_parser.add_argument('-p', '--primitives', nargs='*', default=[])
 
     build_parser = subparsers.add_parser('build', help='build source files')
     build_parser.set_defaults(command='build')
@@ -46,6 +82,13 @@ def create_parser():
     run_parser.set_defaults(command='run')
 
     return parser
+
+std_address_model = {
+    'h':       'host',
+    'host':    'host',
+    'v':       'virtual',
+    'virtual': 'virtual',
+}
 
 std_concurrency = {
     'f':       'fibered',
@@ -57,46 +100,103 @@ std_concurrency = {
 std_execution_model = {
     'g':                'computed_goto',
     'computed-goto':    'computed_goto',
+    'computed_goto':    'computed_goto',
     'l':                'local_subroutine',
     'local-subroutine': 'local_subroutine',
+    'local_subroutine': 'local_subroutine',
     's':                'switch',
     'switch':           'switch',
 }
 
-std_address_model = {
-    'a':           'absolute',
-    'absolute':    'absolute',
-    'r':           'relocatable',
-    'relocatable': 'relocatable',
-}
-
-std_threading = {
+std_thread_model = {
     'd':        'direct',
     'direct':   'direct',
     'i':        'indirect',
     'indirect': 'indirect',
 }
 
-def generate_source(args):
+def read_config(config_path):
 
-    concurrency     = std_concurrency[args.concurrency]
-    execution_model = std_execution_model[args.execution_model]
-    address_model   = std_address_model[args.address_model]
-    threading       = std_threading[args.threading]
+    if config_path is None:
+        return EmptyConfig
 
-    print((concurrency, execution_model, address_model, threading))
+    config = configparser.ConfigParser()
+    config.read(config_path)
 
-    evaluator_h_tmpl        = try_read(templates / 'evaluator.h')
+    if 'general' not in config:
+        return EmptyConfig
 
-    address_model_h         = try_read((address_models / address_model).with_suffix('.h'))
-    evaluator_decls_h       = try_read(evaluator / concurrency / 'evaluator_decls.h')
+    general = config['general']
+
+    name            = general.get('name')
+    address_model   = general.get('address_model')
+    concurrency     = general.get('concurrency')
+    execution_model = general.get('execution_model')
+    thread_model    = general.get('thread_model')
+
+    definitions     = parse_config_list_value(general.get('definitions', ''))
+    primitives      = parse_config_list_value(general.get('primitives', ''))
+
+    return Config(name,
+                  address_model, concurrency, execution_model,
+                  thread_model, definitions, primitives)
+
+def parse_config_list_value(s):
+
+    return [
+        v for v in (
+            part.strip() for part in s.split('\n')
+        )
+        if v
+    ]
+
+def cmd_generate(args, config, env):
+
+    params = coalesce_generate_params(args, config, env)
+
+    concurrency     = params.concurrency
+    execution_model = params.execution_model
+    address_model   = params.address_model
+    thread_model    = params.thread_model
+
+    definitions = '\n'.join(params.definitions)
+    primitives  = process_primitives(params.primitives, execution_model)
+
+    print((concurrency, execution_model, address_model, thread_model))
+
+    evaluator_h_tmpl = read(templates / 'evaluator.h')
+    evaluator_c_tmpl = read(templates / 'evaluator.c')
+
+    address_model_h   = read((address_models / address_model).with_suffix('.h'))
+    evaluator_decls_h = read(evaluator / concurrency / 'evaluator_decls.h')
+
+    # May be empty for some execution models
     execution_model_decls_h = try_read(execution_models / execution_model / 'evaluator_decls.h')
 
     h_values = {
+        'additional_definitions': definitions,
         'address_model': address_model_h,
         'evaluator_decls': evaluator_decls_h,
         'execution_model_decls': execution_model_decls_h,
-        'primitive_decls': ''
+    }
+
+    evaluator_impl_c = read(evaluator / concurrency / 'evaluator_impl.c')
+    evaluator_core_c = read(evaluator / concurrency / 'execution_models' / execution_model / 'evaluator_core.c')
+    thread_step_c    = read(threading / thread_model / 'execution_models' / execution_model / 'thread_step.c')
+
+    evaluator_variables_c  = try_read(execution_models / execution_model / 'evaluator_variables.c')
+    evaluator_variables_c += try_read(threading / thread_model / 'evaluator_variables.c')
+
+    c_values = {
+        'compiled_word_definitions': 'TODO:V1',
+        'primitives_decls': primitives.decls,
+        'evaluator_core': evaluator_core_c,
+        'evaluator_impl': evaluator_impl_c,
+        'evaluator_variables': evaluator_variables_c,
+        'initialize_primitive_registry': primitives.init_registry,
+        'primitive_implementations': primitives.impls,
+        'primitive_word_definitions': primitives.word_defs,
+        'thread_step': thread_step_c,
     }
 
     pprint({k: len(v) for k, v in h_values.items()})
@@ -104,23 +204,118 @@ def generate_source(args):
 
     print(len(evaluator_h_tmpl))
     print(len(evaluator_h))
+    print(evaluator_h, file=open('evaluator_h.out', 'w'))
+
+    pprint({k: len(v) for k, v in c_values.items()})
+    evaluator_c = fill_template(evaluator_c_tmpl, c_values)
+
+    print(len(evaluator_c_tmpl))
+    print(len(evaluator_c))
+    print(evaluator_c, file=open('evaluator_c.out', 'w'))
+
+def coalesce_generate_params(args, config, env):
+
+    raw_address_model   = args.address_model   or config.address_model
+    raw_concurrency     = args.concurrency     or config.concurrency
+    raw_execution_model = args.execution_model or config.execution_model
+    raw_thread_model    = args.thread_model    or config.thread_model
+
+    address_model   = std_address_model[raw_address_model]
+    concurrency     = std_concurrency[raw_concurrency]
+    execution_model = std_execution_model[raw_execution_model]
+    thread_model    = std_thread_model[raw_thread_model]
+
+    definitions = config.definitions + args.definitions
+    primitives  = config.primitives  + args.primitives
+
+    return Params(address_model, concurrency, execution_model, thread_model,
+                  definitions, primitives)
+
+def process_primitives(primitive_paths, execution_model):
+
+    primitives = [
+        parse_primitive(path)
+        for path in primitive_paths
+    ]
+
+    primitive_decl_tmpl = try_read(execution_models / execution_model / 'primitive_decl.c')
+
+    if primitive_decl_tmpl:
+
+        decls = '\n'.join([
+            fill_template(primitive_decl_tmpl, {'label': p.label})
+            for p in primitives
+        ])
+
+    else:
+        decls = ''
+
+    print(decls)
+
+    primitive_impl_tmpl = read(execution_models / execution_model / 'primitive_impl.c')
+
+    impls = '\n'.join([
+        fill_template(primitive_impl_tmpl, {'label': p.label, 'body': p.body})
+        for p in primitives
+    ])
+
+    print(impls)
+
+    return Primitives(decls, impls, 'TODO:P3', 'TODO:P4')
+
+primitive_re_text = r'\s*'.join([        # join all parts below with whitespace
+    '',                                  # match whitespace at the beginning
+    '(?://',                             # begin non-capturing group, discards //, whitespace, etc
+    r'(?P<word_name>[^\s]+)',            # FORTH word name, whitespace delimited
+    '(?P<immediate_flag>immediate)?',    # optional "immediate"
+    ')?',                                # closes non-capturing group, entire line is optional
+    '(?P<label>[_a-zA-Z][_a-zA-Z0-9]*)', # std C identifier
+    ':',                                 # keeps primitive roughly C syntax compliant
+    r'(?P<body>\{.*\})',                 # the actual implementation
+    '$'                                  # ensure only whitespace after closing brace
+])
+
+# DOTALL allows body and whitespace matches to include newlines.
+primitive_re = re.compile(primitive_re_text, re.DOTALL)
+
+def parse_primitive(path):
+
+    text = open(path).read()
+
+    m = re.match(primitive_re, text)
+
+    if not m:
+        print(f'unable to parse primitive: {path}', file=sys.stderr)
+        exit(1)
+
+    return Primitive(m.group('word_name'),
+                     m.group('immediate_flag') is not None,
+                     m.group('label'),
+                     m.group('body'))
+
+def read(path):
+    return path.open().read()
 
 def try_read(path):
 
     try:
-        return path.open().read()
+        return read(path)
     except:
-        print(f'not found: {path}')
         return ''
 
 def fill_template(tmpl, values):
 
+    prior_result = ''
     result = tmpl
 
-    for k, v in values.items():
+    while len(prior_result) != len(result):
 
-        pattern = '/*{ ' + k + ' }*/'
-        result = result.replace(pattern, v)
+        prior_result = result
+
+        for k, v in values.items():
+
+            pattern = '/*{ ' + k + ' }*/'
+            result = result.replace(pattern, v)
 
     return result
 

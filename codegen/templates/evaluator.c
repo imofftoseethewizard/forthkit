@@ -11,7 +11,7 @@
 
 char *store_counted_string(const char *s, char *dp);
 
-/*{ impl_evaluator }*/
+/*{ evaluator_impl }*/
 
 char *
 store_counted_string(const char *s, char *dp)

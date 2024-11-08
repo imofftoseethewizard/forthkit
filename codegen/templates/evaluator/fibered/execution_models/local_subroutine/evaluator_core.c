@@ -1,4 +1,6 @@
-    while (fp < fp0 && !result) {
+    /*{ primitive_implementations }*/
+
+    while (fp < fp0) {
 
         _print_fiber_stack();
         _load_fiber_state();
@@ -12,11 +14,11 @@
 
             _trace("early main loop: ");
 
-            /*{ execute_thread_step }*/
+            /*{ thread_step }*/
 
             _check_parameter_stack_bounds();
             _print_stack();
-       }
+        }
 
         if (fp < fp0) {
             _debug("saving fiber %d\n", *fp);

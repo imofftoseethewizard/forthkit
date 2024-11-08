@@ -1,0 +1,3 @@
+case /*{ label }*/:
+/*{ body }*/
+break;
