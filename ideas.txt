@@ -11,3 +11,17 @@ codegen:
     #define _compile_pr(x) _store_data(_pw_from_pr(x))
     ? how to define _pw_from_pr
     #define _pw_from_pr(x) _pw_lookup[w_##x]
+
+
+    enum _primitive_word {
+        pw_pr_xxx = 0
+        ...,
+        primitive_word_count
+    }
+
+    /*{ evaluator_variables }*/
+    _reserve(primitive_word_count*sizeof(cell))
+    cell *pwp = _to_ptr(<base of reserved area>);
+
+    /*{ primitive_word_registry }*/
+    pwp++ = <cfa of primitive word>

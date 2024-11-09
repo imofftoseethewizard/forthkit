@@ -6,6 +6,14 @@ thereof.  It's currently in a rough state with little documentation,
 though it can create working FORTH-79, FORTH-83 (incomplete), and
 FORTH-94 (incomplete) languages.
 
+## Goals
+
+Forthkit will provide a toolkit for generating, building, and
+understanding Forth-like languages.  It will generate all-in-one C
+files with a narrative structure and comments providing comprehensive
+explanations, allowing the user to read, understand, and experiment
+with them.
+
 ## Roadmap
 
 The this project evolved from an effort to understand how stack-based
@@ -13,16 +21,16 @@ interpreters are implemented.  Presently, it uses M4 for template
 instantiation and builds directly on the host which contains the repo,
 and it is largely undocumented.  The next obvious steps are to move
 the development environment into a docker container, and to switch
-from M4 to Python.  I'll add documentation as I go.  I haven't looked
-at this project much in the last two years, and much of the details
-have been swapped out. (See
+from M4 to Python (in progress).  I'll add documentation as I go.  I
+haven't looked at this project much in the last two years, and much of
+the details have been swapped out. (See
 [plguile3](https://github.com/imofftoseethewizard/plguile3) for what
 had my attention most recently.)
 
 I'll fill out the README, and this section in particular more later.
 Beyond the obvious bits of adding the rest of the vocabularies for
 FORTH-83 and FORTH-94, there are some hints of the future in the
-[f0](https://github.com/imofftoseethewizard/plguile3) branch.
+[f0](https://github.com/imofftoseethewizard/forthkit/tree/f0) branch.
 
 ## Development
 
@@ -146,6 +154,19 @@ and have a running Forth environment.
 
 ## Specifications
 
+### Configuration Files
+
+Config files use the INI syntax.  I want the Python tooling to use
+only standard modules that come with Python, and I didn't want to
+write my own DSL for configuration.  Taking only reasonable formats,
+that left INI, JSON, TOML, and XML.  JSON doesn't support comments,
+and TOML wasn't expressive enough, in particular for lists.  XML is
+too verbose.  I would have preferred (safe) YAML, but it's not part of
+the standard CPython distribution.
+
+The content of configuration files is in flux, and will be for some
+time.
+
 ### Primitive Definition
 
 Primitives are small pieces of C code that are parsed and contribute
@@ -181,3 +202,30 @@ the body of the primitive.  It must be a brace-enclosed block of code
 and it may not contain a `break`, `continue`, or `return`
 statement. (TODO reference for identifiers available within
 primitives)
+
+### Artifacts
+
+Project initialization produces a directory structure containing a
+copy of all templates and primitives selected in the configuration.
+TODO
+
+Code generation produces two files: `evaluator.c` and `evaluator.h`.
+`evaluator.c` implements the inner and outer evaluators and built-in
+primitives.  `evaluator.h` provides definitions to include and use the
+evaluator in another file.  The provided `interpreter.c` does just
+that and implements command line interface and REPL for the evaluator.
+This is but one embodiment, and like Guile or Lua, it could be used as
+an extension language for your favorite C project.
+
+Building the default artifacts produces two objects and three
+executables. The bootstrapping code, which allows the creation of
+evaluator memory images, can be optionally included, so there are two
+versions produced by compiling `evaluator.c`: `evaluator.o` and
+`bootstrap-evaluator.o`.  From these, there three versions of the
+default interpreter: `bootstrap-interpreter`, `bare-interpreter`, and
+(bundled) `interpreter`.  The bootstrap interpreter contains the
+bootstrap code and is used to create evaluator memory images.  The
+bare interpreter has no memory image and no means to create one, and
+must be started with one specified on the command line.  The ordinary
+interpreter has the default bootstrap image bundled with it, but no
+bootstrapping code.
