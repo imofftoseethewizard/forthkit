@@ -38,7 +38,7 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
 
 	/*{ primitive_decls }*/
 
-	static cell internal_primitives[__primitive_count]; // TODO __primitive_count
+	static cell internal_primitives[/*{ primitive_count }*/];
 
     if (!evaluator) {
 

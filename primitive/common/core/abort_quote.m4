@@ -32,6 +32,7 @@ __primitive(pr_abort_quote)
     while (source_idx < source_len && source[source_idx] != '"')
         *s++ = source[source_idx++];
 
+    // This seems like it should run at run time, not compile time.
     e[ea_error_msg_addr] = _from_ptr(s0);
     e[ea_error_msg_len] = s - s0;
 

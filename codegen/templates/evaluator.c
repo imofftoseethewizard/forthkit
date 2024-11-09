@@ -163,7 +163,7 @@ create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int 
 
     /* Get the evaluator's list of primitives. */
 
-    cell *primitives = malloc(__primitive_count * sizeof(cell));
+    cell *primitives = malloc(/*{ primitive_count }*/ * sizeof(cell));
     evaluate(NULL, NULL, 0, primitives);
 
     /* Check the data blocks for primitives, using a linear search of the
@@ -191,7 +191,7 @@ create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int 
             ridx++;
 
         else
-            for (int i = 0; i < __primitive_count; i++)
+            for (int i = 0; i < /*{ primitive_count }*/; i++)
 
                 /* Check to see if the cell at this location is a primitive.
                  */

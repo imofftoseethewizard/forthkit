@@ -13,14 +13,14 @@ Env = namedtuple('Env', ('name'))
 
 Config = namedtuple('Config', ('name',
                                'address_model', 'concurrency', 'execution_model', 'thread_model',
-                               'definitions', 'primitives'))
+                               'definitions', 'primitives', 'compiled_words'))
 
 Params = namedtuple('Params', ('address_model', 'concurrency', 'execution_model', 'thread_model',
-                               'definitions', 'primitives'))
+                               'definitions', 'primitives', 'compiled_words'))
 
 Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'body'))
 
-Primitives = namedtuple('Primitives', ('decls', 'impls', 'init_registry', 'word_defs'))
+Primitives = namedtuple('Primitives', ('decls', 'impls', 'registry', 'word_defs'))
 
 EmptyEnv = Env(None)
 EmptyConfig = Config(None, None, None, None, None, None, None)
@@ -160,7 +160,7 @@ def cmd_generate(args, config, env):
     thread_model    = params.thread_model
 
     definitions = '\n'.join(params.definitions)
-    primitives  = process_primitives(params.primitives, execution_model)
+    primitives  = process_primitives(params.primitives, execution_model, thread_model)
 
     print((concurrency, execution_model, address_model, thread_model))
 
@@ -188,12 +188,13 @@ def cmd_generate(args, config, env):
     evaluator_variables_c += try_read(threading / thread_model / 'evaluator_variables.c')
 
     c_values = {
-        'compiled_word_definitions': 'TODO:V1',
+        'compiled_word_definitions': 'TODO:compiled_word_definitions',
         'primitives_decls': primitives.decls,
         'evaluator_core': evaluator_core_c,
         'evaluator_impl': evaluator_impl_c,
         'evaluator_variables': evaluator_variables_c,
-        'initialize_primitive_registry': primitives.init_registry,
+        'initialize_primitive_registry': primitives.registry,
+        'primitive_count': str(len(params.primitives)),
         'primitive_implementations': primitives.impls,
         'primitive_word_definitions': primitives.word_defs,
         'thread_step': thread_step_c,
@@ -211,6 +212,7 @@ def cmd_generate(args, config, env):
 
     print(len(evaluator_c_tmpl))
     print(len(evaluator_c))
+    # indent --no-tabs -kr -l128 <evaluator_c.out >evaluator.c
     print(evaluator_c, file=open('evaluator_c.out', 'w'))
 
 def coalesce_generate_params(args, config, env):
@@ -231,7 +233,7 @@ def coalesce_generate_params(args, config, env):
     return Params(address_model, concurrency, execution_model, thread_model,
                   definitions, primitives)
 
-def process_primitives(primitive_paths, execution_model):
+def process_primitives(primitive_paths, execution_model, thread_model):
 
     primitives = [
         parse_primitive(path)
@@ -250,8 +252,6 @@ def process_primitives(primitive_paths, execution_model):
     else:
         decls = ''
 
-    print(decls)
-
     primitive_impl_tmpl = read(execution_models / execution_model / 'primitive_impl.c')
 
     impls = '\n'.join([
@@ -259,9 +259,27 @@ def process_primitives(primitive_paths, execution_model):
         for p in primitives
     ])
 
-    print(impls)
+    register_primitive_tmpl = read(templates / 'register_primitive.c')
 
-    return Primitives(decls, impls, 'TODO:P3', 'TODO:P4')
+    registry = '\n'.join([
+        fill_template(register_primitive_tmpl, {'label': p.label})
+        for p in primitives
+    ])
+
+    primitive_word_def_tmpl = read(threading / thread_model / 'primitive_word_def.c')
+
+    word_defs = '\n'.join([
+        fill_template(primitive_word_def_tmpl,
+                      {
+                          'label': p.label,
+                          'word_name': f'"{p.word_name}"',
+                          'flags': 'c_immediate' if p.is_immediate else '0',
+                      })
+        for p in primitives
+        if p.word_name
+    ])
+
+    return Primitives(decls, impls, registry, word_defs)
 
 primitive_re_text = r'\s*'.join([        # join all parts below with whitespace
     '',                                  # match whitespace at the beginning

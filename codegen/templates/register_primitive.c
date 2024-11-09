@@ -1,0 +1,1 @@
+*prp++ = _from_pr(/*{ label }*/);

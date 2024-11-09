@@ -1,0 +1,13 @@
+codegen:
+
+  direct threading
+    _compile_pr(pr_xxx)
+    stores addr of executable code directly in def
+    #define _compile_pr(x) _store_data(_from_pr(x))
+
+  indirect threading
+    _compile_pr(pr_xxx)
+    stores addr of primitive word (defined with primitive in cfa)
+    #define _compile_pr(x) _store_data(_pw_from_pr(x))
+    ? how to define _pw_from_pr
+    #define _pw_from_pr(x) _pw_lookup[w_##x]
