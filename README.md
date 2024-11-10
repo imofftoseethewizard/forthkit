@@ -154,6 +154,14 @@ and have a running Forth environment.
 
 ## Specifications
 
+### Templates
+
+Template files should be C syntax so that formatters and syntax
+highlighters work correctly.  Template parameters are delimited by
+braced multiline comments: `/*{` and `}*/`.  Files should have a `.c`
+or a `.h` suffix corresponding to the suffix of the destination of
+their content.
+
 ### Configuration Files
 
 Config files use the INI syntax.  I want the Python tooling to use
