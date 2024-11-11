@@ -162,6 +162,18 @@ braced multiline comments: `/*{` and `}*/`.  Files should have a `.c`
 or a `.h` suffix corresponding to the suffix of the destination of
 their content.
 
+Templates are structured such that the generated C files can be easily
+translated into markdown files.  Block comments begin with `/*|` and
+end with `|*/`, both surrounded by blank lines.  To translate a file
+to markdown, opening comments are translated to ` ```C ` and the
+closing comments to ` ``` `, each consuming the blank line adjacent to
+the code block.  There is a little nuance in handling the beginning of
+the file, but in general the opening comment delimiter will be dropped
+since all generated files will start with a comment.  Original
+template files also indent code blocks 4 spaces.  The `indent` utility
+removes this during code generation, but a small Python utility
+restores it prior to finalizing generated code.  (TODO)
+
 ### Configuration Files
 
 Config files use the INI syntax.  I want the Python tooling to use

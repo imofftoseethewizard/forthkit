@@ -1,0 +1,187 @@
+#! /usr/bin/env python3
+
+import argparse
+import re
+import sys
+
+from pprint import *
+
+token_specs = (
+    ('block_start', r'[ \t]*\|\*/[ \t]*'),  #   |*/
+    ('block_end', r'[ \t]*/\*\|[ \t]*'),    # /*|
+    ('text', r'.*'),
+)
+
+token_re = (
+    '(?:' +  # begin non-capturing group
+    r'|'.join(
+        fr'(?P<{label}>{pattern}\n)'
+        for label, pattern in token_specs
+    ) +
+    ')'      # end non-capturing group
+)
+
+def main():
+
+    fmt = sys.argv[1]
+
+    if len(sys.argv) == 3:
+        text = open(sys.argv[2]).read()
+    else:
+        text = sys.stdin.read()
+
+    tokens = tokenize_text(text)
+    stx = parse_tokens(tokens)
+
+    emit(stx, fmt)
+
+def tokenize_text(text):
+
+    return [token_from_match(m) for m in re.finditer(token_re, text)]
+
+def token_from_match(m):
+
+    for group, (label, pattern) in zip(m.groups(), token_specs):
+        if group:
+            return (label, m)
+
+def parse_tokens(ts):
+
+    state = initial
+    i = 0
+    stx = []
+
+    while state not in (done, error):
+
+        state, i, stx = state(ts, i, stx)
+
+    return stx if state == done else raise_error(stx[-1])
+
+done = object()
+error = object()
+
+def raise_error(msg):
+    raise Exception(msg)
+
+def initial(ts, i, stx):
+
+    if i == len(ts):
+        return done, i, stx
+
+    label = ts[i][0]
+
+    if label == 'block_start':
+
+        stx.append('syntax error: block start at beginning of file.')
+        return error, i, stx
+
+    if label == 'block_end':
+
+        stx.append(['comment'])
+        return in_comment, i+1, stx
+
+    if label == 'text':
+
+        stx.append(['code', ts[i]])
+        return in_code, i+1, stx
+
+    assert False
+
+def in_comment(ts, i, stx):
+
+    if i == len(ts):
+        return done, i, stx
+
+    label = ts[i][0]
+
+    if label == 'block_start':
+
+        stx.append(['code'])
+        return in_code, i+1, stx
+
+    if label == 'block_end':
+
+        stx.append('syntax error: two block end markers in succession.')
+        return error, i, stx
+
+    if label == 'text':
+
+        stx[-1].append(ts[i])
+        return in_comment, i+1, stx
+
+    assert False
+
+def in_code(ts, i, stx):
+
+    if i == len(ts):
+        return done, i, stx
+
+    label = ts[i][0]
+
+    if label == 'block_start':
+
+        stx.append('syntax error: two block start markers in succession.')
+        return error, i, stx
+
+    if label == 'block_end':
+
+        stx[-1].append(ts[i])
+
+        stx.append(['comment'])
+        return in_comment, i+1, stx
+
+    if label == 'text':
+
+        stx[-1].append(ts[i])
+        return in_code, i+1, stx
+
+    assert False
+
+def emit(stx, fmt):
+
+    for elt in stx:
+
+        tag = elt[0]
+
+        if tag == 'code':
+            emit_begin_code(fmt)
+            emit_code(elt, fmt)
+            emit_end_code(fmt)
+
+        elif tag == 'comment':
+            emit_begin_comment(fmt)
+            emit_comment(elt, fmt)
+            emit_end_comment(fmt)
+
+def emit_begin_code(fmt):
+    if fmt == 'markdown':
+        print()
+        print('```C')
+
+def emit_end_code(fmt):
+    if fmt == 'markdown':
+        print('```')
+        print()
+
+def emit_begin_comment(fmt):
+    if fmt == 'C':
+        print('/*')
+
+def emit_end_comment(fmt):
+    if fmt == 'C':
+        print(' */')
+
+def emit_code(elt, fmt):
+    for t in elt[1:]:
+        label, m = t
+        if label == 'text':
+            print('    ' + m.string[slice(*m.span())], end='')
+
+def emit_comment(elt, fmt):
+    for t in elt[1:]:
+        label, m = t
+        if label == 'text':
+            print(m.string[slice(*m.span())], end='')
+
+if __name__ == '__main__':
+    main()

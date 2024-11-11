@@ -22,8 +22,10 @@ Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'body
 
 Primitives = namedtuple('Primitives', ('decls', 'impls', 'registry', 'word_defs'))
 
+ErrorData = namedtuple('ErrorData', ('id', 'symbol', 'desc'))
+
 EmptyEnv = Env(None)
-EmptyConfig = Config(None, None, None, None, None, None, None)
+EmptyConfig = Config(None, None, None, None, None, None, None, None)
 
 templates = Path(__file__).parent / '../codegen/templates'
 
@@ -136,10 +138,11 @@ def read_config(config_path):
 
     definitions     = parse_config_list_value(general.get('definitions', ''))
     primitives      = parse_config_list_value(general.get('primitives', ''))
+    compiled_words  = None
 
     return Config(name,
                   address_model, concurrency, execution_model,
-                  thread_model, definitions, primitives)
+                  thread_model, definitions, primitives, compiled_words)
 
 def parse_config_list_value(s):
 
@@ -170,12 +173,17 @@ def cmd_generate(args, config, env):
     address_model_h   = read((address_models / address_model).with_suffix('.h'))
     evaluator_decls_h = read(evaluator / concurrency / 'evaluator_decls.h')
 
+    error_data = load_error_data()
+
+    error_code_defs_h = error_code_definitions(error_data)
+
     # May be empty for some execution models
     execution_model_decls_h = try_read(execution_models / execution_model / 'evaluator_decls.h')
 
     h_values = {
         'additional_definitions': definitions,
         'address_model': address_model_h,
+        'error_code_definitions': error_code_defs_h,
         'evaluator_decls': evaluator_decls_h,
         'execution_model_decls': execution_model_decls_h,
     }
@@ -187,9 +195,12 @@ def cmd_generate(args, config, env):
     evaluator_variables_c  = try_read(execution_models / execution_model / 'evaluator_variables.c')
     evaluator_variables_c += try_read(threading / thread_model / 'evaluator_variables.c')
 
+    error_descs_c = error_descriptors(error_data)
+
     c_values = {
         'compiled_word_definitions': 'TODO:compiled_word_definitions',
         'primitives_decls': primitives.decls,
+        'error_descriptors': error_descs_c,
         'evaluator_core': evaluator_core_c,
         'evaluator_impl': evaluator_impl_c,
         'evaluator_variables': evaluator_variables_c,
@@ -230,8 +241,36 @@ def coalesce_generate_params(args, config, env):
     definitions = config.definitions + args.definitions
     primitives  = config.primitives  + args.primitives
 
+    compiled_words = None
+
     return Params(address_model, concurrency, execution_model, thread_model,
-                  definitions, primitives)
+                  definitions, primitives, compiled_words)
+
+def load_error_data():
+
+    lines = read(templates / 'errors.md').split('\n')
+
+    data_lines = [l for l in lines if l.startswith('    ')]
+
+    return [ErrorData(*re.split(' +', l.strip(), 2)) for l in data_lines]
+
+def error_code_definitions(error_data):
+
+    return '\n'.join([f'{e.symbol} = {e.id},' for e in error_data])
+
+def error_descriptors(error_data):
+
+    return '\n'.join([
+        f'''{{
+            {e.symbol},
+            "{e.symbol}",
+            "{e.desc}"
+        }},
+        '''
+        for e in error_data
+    ])
+
+
 
 def process_primitives(primitive_paths, execution_model, thread_model):
 

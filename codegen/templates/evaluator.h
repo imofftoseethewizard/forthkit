@@ -16,13 +16,18 @@ compilation target.  These are known to work on 64-bit Linux
 
   |*/
 
-	typedef unsigned CELL_TYPE cell;
-	typedef unsigned DOUBLE_TYPE double_cell;
+    typedef unsigned CELL_TYPE cell;
+    typedef unsigned DOUBLE_TYPE double_cell;
 
-	typedef CELL_TYPE number;
-	typedef DOUBLE_TYPE double_number;
+    typedef CELL_TYPE number;
+    typedef DOUBLE_TYPE double_number;
 
-/*{ declare_error_codes }*/
+enum error_codes {
+	/*{ error_code_definitions }*/
+};
+
+extern const char *error_message(number code);
+extern int error_code(const char *symbol);
 
 /*{ declare_init_evaluator }*/
 
@@ -32,7 +37,7 @@ compilation target.  These are known to work on 64-bit Linux
 
   |*/
 
-	extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitive_registry);
+    extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitive_registry);
 
 /*|
 
@@ -40,7 +45,7 @@ compilation target.  These are known to work on 64-bit Linux
 
   |*/
 
-	extern cell *create_evaluator_image(cell *e0, cell *e1, int *image_size);
+    extern cell *create_evaluator_image(cell *e0, cell *e1, int *image_size);
 
 /*|
 
@@ -48,4 +53,4 @@ compilation target.  These are known to work on 64-bit Linux
 
   |*/
 
-	extern cell *load_evaluator_image(const char *image, int image_size);
+    extern cell *load_evaluator_image(const char *image, int image_size);
