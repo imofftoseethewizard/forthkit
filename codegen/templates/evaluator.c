@@ -450,7 +450,91 @@ do {                                                 \
 /*{ additional_definitions }*/
 char *store_counted_string(const char *s, char *dp);
 
-/*{ evaluator_impl }*/
+/*|
+
+This is the internal entrypoint to the evaluator.  It operates in
+several distinct modes depending on which parameters are present and
+which are NULL.
+
+The primary mode of operation is to call `evaluate` with non-NULL
+values or the first two parameters -- `evaluator` and `source` -- and
+optionally a non-zero value for the third -- `storage_fd`.  The first
+parameter must be an evaluator memory image that has been previously
+initialized.  The second is the null-terminated string of text that is
+to be evaluated.  The third parameter is a file descriptor for block
+storage which if non-null will allow the use of the block word set.
+
+A second mode is triggered by providing NULL, NULL, 0, and an out
+parameter for a cell pointer.  It returns the number of primitives.
+If the pointer is non-null, then the evaluator will allocate memory
+and copy the cell representation of the primitive values the evaluator
+was built with.  It is the caller's responsibillity to free this
+memory block.  This is used internally during image loading to replace
+placeholder references to the actual values of primitives in this
+process.  In the switch execution model, these will be the same from
+run to run, but in the computed goto and local subroutine models,
+these will be different.
+
+  |*/
+
+/*{ init_evaluator }*/
+
+int
+evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
+{
+	static cell internal_primitives[/*{ primitive_count }*/];
+
+    if (!evaluator) {
+
+	    /*{ initialize_primitive_registry }*/
+
+	    if (primitives)
+		    *primitives = &internal_primitives;
+
+	    return /*{ primitive_count }*/;
+    }
+
+    int result = 0;
+
+    register cell *e = evaluator;
+
+    register char *top;
+
+    register cell *rp0;
+    register cell *sp0;
+
+    register char *dp;
+    register cell *sp;
+
+    register cell *ip;
+    register cell *rp;
+
+	/*{ evaluator_variables }*/
+
+	/*{ primitive_decls }*/
+
+#ifdef BOOTSTRAP
+    if (!e[ea_top]) {
+	    /*{ bootstrap }*/
+    }
+#endif
+
+    _debug("interpreting source '%s'\n", source);
+
+    /* copy source into evaluator memory */
+
+    memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
+    e[ea_source_idx] = 0;
+
+    /*{ prepare_evaluation }*/
+
+    /*{ evaluator_core }*/
+
+    _debug("done with run: result: %d\n", result);
+    _print_stack();
+
+    return result;
+}
 
 int
 evaluate_source(cell *evaluator, const char *source, int storage_fd)
