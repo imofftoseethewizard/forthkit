@@ -1,3 +1,3 @@
 if (!_is_primitive(*ip))          \
-	goto op_enter;                \
+	_enter(); \
 goto *(cell *)_to_pv(*ip++);

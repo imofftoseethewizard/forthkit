@@ -40,12 +40,6 @@ __first:
             _load_fiber_state();
         }
         _next();
-
-      op_enter:
-        {
-            _enter();
-        }
-        _next();
     }
 
     _next();

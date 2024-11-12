@@ -10,6 +10,7 @@ init_evaluator(
     cell source_size,
     cell word_buffer_size)
 {
+	/* transfer configuration to appropriate locations in evaluator image */
     e[ea_buffer_count]         = buffer_count;
     e[ea_buffer_size]          = buffer_size;
     e[ea_pad_buffer_size]      = pad_buffer_size;
@@ -19,8 +20,5 @@ init_evaluator(
     e[ea_source_size]          = source_size;
     e[ea_word_buffer_size]     = word_buffer_size;
 
-    /* signals to evalute() that the evaluator's memory is uninitialized */
-    e[ea_top] = 0;
-
-    evaluate(e, "", -1, NULL);
+    bootstrap_evaluator(e);
 }

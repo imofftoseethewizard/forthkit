@@ -16,12 +16,6 @@ __first:
 
     if (0) {
 	    /*{ primitive_implementations }*/
-
-      op_enter:
-        {
-            _enter();
-        }
-        _next();
     }
 
     _next();

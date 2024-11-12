@@ -12,6 +12,30 @@
 
 	#include "evaluator.h"
 
+	static void bootstrap_evaluator(cell *e);
+    static int evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives);
+
+/*{ init_evaluator }*/
+
+	int
+	evaluate_source(cell *evaluator, const char *source, int storage_fd)
+	{
+		if (!evaluator)
+			return 0;
+
+		return evaluate(evaluator, source, storage_fd, NULL);
+	}
+
+	void
+	bootstrap_evaluator(cell *e)
+	{
+		/* signals to evaluate() that the evaluator's memory is uninitialized */
+		e[ea_top] = 0;
+
+		/* trigger bootstrap */
+		evaluate(e, "", -1, NULL);
+	}
+
 /*|
 
 The address model is either host or virtual.  (See the
@@ -248,13 +272,7 @@ TODO
 
   |*/
 
-#define _define_primitive_ext(s, l, cw_l, flags)                  \
-        _info("defining %-16s %lx\n", s, (long)_from_pr(l));      \
-        _begin_define_word(s, (flags));                           \
-        _register_compiled_word(cw_l);                            \
-        _compile_pr(l);                                           \
-        _compile_pr(op_exit);                                     \
-        _end_define_word();
+/*{ define_define_primitive }*/
 
 /*|
 
@@ -289,8 +307,7 @@ TODO
 
   |*/
 
-#define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
-#define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
+#define _define_immediate_primitive(name, lable) _define_primitive_ext(name, label, c_immediate)
 
 /*|
 
@@ -319,12 +336,13 @@ TODO
 
   |*/
 
-#define _enter()                                                  \
-do {                                                              \
-    *--rp = _from_ptr(ip+1);                                      \
-    ip = _to_ptr(*ip);                                            \
-    _check_return_stack_bounds();                                 \
-} while (0)
+/*{ define_enter }*/
+
+/*|
+
+Debugging support.
+
+  |*/
 
 #if VERBOSE
 
@@ -452,9 +470,9 @@ char *store_counted_string(const char *s, char *dp);
 
 /*|
 
-This is the internal entrypoint to the evaluator.  It operates in
-several distinct modes depending on which parameters are present and
-which are NULL.
+This is the internal entrypoint to the evaluator.  It operates in two
+distinct modes depending on which parameters are present and which are
+NULL.
 
 The primary mode of operation is to call `evaluate` with non-NULL
 values or the first two parameters -- `evaluator` and `source` -- and
@@ -468,16 +486,14 @@ A second mode is triggered by providing NULL, NULL, 0, and an out
 parameter for a cell pointer.  It returns the number of primitives.
 If the pointer is non-null, then the evaluator will allocate memory
 and copy the cell representation of the primitive values the evaluator
-was built with.  It is the caller's responsibillity to free this
-memory block.  This is used internally during image loading to replace
-placeholder references to the actual values of primitives in this
-process.  In the switch execution model, these will be the same from
-run to run, but in the computed goto and local subroutine models,
-these will be different.
+was built with.  This memory block is statically defined and should
+not be modified or freed.  This mode is used internally during image
+loading to replace placeholder references with the actual values of
+primitives in this process.  In the switch execution model, these will
+be the same from run to run, but in the computed goto and local
+subroutine models, these will be different.
 
   |*/
-
-/*{ init_evaluator }*/
 
 int
 evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
@@ -534,12 +550,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
     _print_stack();
 
     return result;
-}
-
-int
-evaluate_source(cell *evaluator, const char *source, int storage_fd)
-{
-	return evaluate(evaluator, source, storage_fd, NULL);
 }
 
 char *
