@@ -25,8 +25,35 @@ init_evaluator(
     evaluate(e, "", -1, NULL);
 }
 
+/*|
+
+This is the internal entrypoint to the evaluator.  It operates in
+several distinct modes depending on which parameters are present and
+which are NULL.
+
+The primary mode of operation is to call `evaluate` with non-NULL
+values or the first two parameters -- `evaluator` and `source` -- and
+optionally a non-zero value for the third -- `storage_fd`.  The first
+parameter must be an evaluator memory image that has been previously
+initialized.  The second is the null-terminated string of text that is
+to be evaluated.  The third parameter is a file descriptor for block
+storage which if non-null will allow the use of the block word set.
+
+A second mode is triggered by providing NULL, NULL, 0, and an out
+parameter for a cell pointer.  It returns the number of primitives.
+If the pointer is non-null, then the evaluator will allocate memory
+and copy the cell representation of the primitive values the evaluator
+was built with.  It is the caller's responsibillity to free this
+memory block.  This is used internally during image loading to replace
+placeholder references to the actual values of primitives in this
+process.  In the switch execution model, these will be the same from
+run to run, but in the computed goto and local subroutine models,
+these will be different.
+
+  |*/
+
 int
-evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
+evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
 {
     int result = 0;
 
@@ -53,8 +80,10 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
 
 	    /*{ initialize_primitive_registry }*/
 
-        if (primitives)
-            memcpy(primitives, &internal_primitives, sizeof(internal_primitives));
+	    if (primitives) {
+		    *primitives = malloc(sizeof(internal_primitives));
+            memcpy(*primitives, &internal_primitives, sizeof(internal_primitives));
+	    }
 
         return sizeof(internal_primitives)/sizeof(cell);
     }

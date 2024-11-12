@@ -22,14 +22,35 @@ compilation target.  These are known to work on 64-bit Linux
     typedef CELL_TYPE number;
     typedef DOUBLE_TYPE double_number;
 
-enum error_codes {
-	/*{ error_code_definitions }*/
-};
+/*|
 
-extern const char *error_message(number code);
-extern int error_code(const char *symbol);
+See templates/errors.md for more information about errors and error
+codes.
 
-/*{ declare_init_evaluator }*/
+  |*/
+
+	enum error_codes {
+		/*{ error_code_definitions }*/
+	};
+
+/*|
+
+Given an error code, return the associated message.  This is useful
+`evalautate` below returns a non-zero value.
+
+  |*/
+
+	extern const char *error_message(number code);
+
+/*|
+
+Given an error symbol, return the error code. This is useful to
+understand the values the evaluator might return from an error code
+that appears in Forth code.
+
+  |*/
+
+	extern int error_code(const char *symbol);
 
 /*|
 
@@ -37,7 +58,14 @@ extern int error_code(const char *symbol);
 
   |*/
 
-    extern int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitive_registry);
+/*{ declare_init_evaluator }*/
+
+/*|
+
+
+  |*/
+
+    extern int evaluate_source(cell *evaluator, const char *source, int storage_fd);
 
 /*|
 

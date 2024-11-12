@@ -25,3 +25,7 @@ codegen:
 
     /*{ primitive_word_registry }*/
     pwp++ = <cfa of primitive word>
+
+  templates/evaluator/{fibered,single}/evaluator_impl.c:
+    add additional template parameters and merge into
+    templates/evaluator.c

@@ -1,3 +1,7 @@
+/*{ title_block }*/
+
+/*{ generation_details }*/
+
 	#include <errno.h>
 	#include <fcntl.h>
 	#include <stdlib.h>
@@ -70,16 +74,61 @@ execution model.
 
 /*|
 
-These are some utility macros used in the implementation of primitives
+`c_msb` is a cell value with a 1 in the most significant bit and
+zeroes elsewhere.
 
   |*/
 
     #define c_msb ((cell)1 << (sizeof(cell) * 8 - 1))
 
+/*|
+
+These are some utility macros used to pack and unpack double numbers,
+primarily used in the implementation of primitives.
+
+`_from_high_word` accepts a `double number` and returns a `double
+number` containing the upper half of the `double number` in its lower
+half, the upper half being 0.
+
+`_from_low_word` is similar, but the source is the low word.
+
+The result of these two functions can be safely cast to a `number`.
+
+The other two macros accept a `number` and return a `double number`,
+performing the reverse operation to those above.
+
+  |*/
+
 	#define _from_high_word(x) ((x) >> (sizeof(number)*8))
 	#define _from_low_word(x)  ((x) & (((double_number)1 << (sizeof(number)*8)) - 1))
 	#define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
 	#define _to_low_word(x)    ((double_number)(x))
+
+/*|
+
+Built-in string handling for use with storing and retrieving the names
+of words uses a length-prefixed format.  Given the limited intended
+use, the length is just a single byte and refers the the length of
+data stored, not the number of characters.
+
+`_string_len` accepts the address of a string and returns its length.
+
+`_string_addr` accepts the address of a string and returns the address
+of the contents of the string.
+
+  |*/
+
+    #define _string_len(x)  *(unsigned char *)(x)
+    #define _string_addr(x) (char *)((unsigned char *)(x) + 1)
+
+/*|
+
+TODO
+
+  |*/
+
+#define _compile_pr(x) _store_data(_from_pr(x))
+#define _compile_cw(x) _store_data(e[e[ea_size] / sizeof(cell) - x - 1])
 
 /*|
 
@@ -89,20 +138,26 @@ could be set on a word.  Over the evolution of the project all but
 
   |*/
 
-#define c_immediate                  0b1
-
-#define _string_len(x)  *(unsigned char *)(x)
-#define _string_addr(x) (char *)((unsigned char *)(x) + 1)
-
-#define _compile_pr(x) _store_data(_from_pr(x))
-#define _compile_cw(x) _store_data(e[e[ea_size] / sizeof(cell) - x - 1])
+#define c_immediate 0b1
 
 #define _set_word_flags(x, flags)       *((cell *)(x) + 2) |= (flags)
 #define _clear_word_flags(x, flags)     *((cell *)(x) + 2) &= ~(flags)
 #define _get_word_flags(x)              *((cell *)(x) + 2)
 
+/*|
+
+TODO
+
+  |*/
+
 #define _get_word_interpretation_ptr(x) ((cell *)(x) + 3)
 #define _get_word_interpretation(x)     _from_ptr(_get_word_interpretation_ptr(x))
+
+/*|
+
+TODO
+
+  |*/
 
 #define _store_word_name()                                        \
 do {                                                              \
@@ -116,6 +171,12 @@ do {                                                              \
     *sp = name;                                                   \
                                                                   \
 } while (0)
+
+/*|
+
+TODO
+
+  |*/
 
 #define _word_header(flags)                                       \
        /* _word_header: ( n -- addr ) [xp]    */                  \
@@ -138,13 +199,31 @@ do {                                                              \
        /* Word flags.                         */                  \
        _store_data(flags)
 
+/*|
+
+TODO
+
+  |*/
+
 #define _next_word(x) *(_to_ptr(x) + 1)
+
+/*|
+
+TODO
+
+  |*/
 
 #define _compiled_word_ref(e, l) e[e[ea_size] / sizeof(cell) - l - 1]
 #define _register_compiled_word(l) _compiled_word_ref(e, l) = _from_ptr(dp)
 #define _compiled_word(s, l, flags)                               \
         _begin_define_word(s, flags);                             \
         _register_compiled_word(l)
+
+/*|
+
+TODO
+
+  |*/
 
 #define _begin_define_word(s, flags)                              \
     do {                                                          \
@@ -153,9 +232,21 @@ do {                                                              \
         _word_header(flags);                                      \
     } while(0)
 
+/*|
+
+TODO
+
+  |*/
+
 #define _end_define_word()                                        \
        /* Add to current vocabulary.          */                  \
        *_to_ptr(tp[ta_current]) = *sp++;
+
+/*|
+
+TODO
+
+  |*/
 
 #define _define_primitive_ext(s, l, cw_l, flags)                  \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));      \
@@ -165,11 +256,23 @@ do {                                                              \
         _compile_pr(op_exit);                                     \
         _end_define_word();
 
+/*|
+
+TODO
+
+  |*/
+
 #define _compile_parse_word()                                     \
         _compile_literal(32);                                     \
         _compile_literal(_from_ptr(&e[ea_word_buffer1]));         \
         _compile_pr(pr_fetch);                                    \
         _compile_pr(pr_word)
+
+/*|
+
+TODO
+
+  |*/
 
 #define _define_parsing_primitive(s, l, cw_l)                     \
         _info("defining %-16s %lx\n", s, (long)_from_pr(l));      \
@@ -180,8 +283,20 @@ do {                                                              \
         _compile_pr(op_exit);                                     \
         _end_define_word();
 
+/*|
+
+TODO
+
+  |*/
+
 #define _define_primitive(s, l, cw_l)           _define_primitive_ext(s, l, cw_l, 0)
 #define _define_immediate_primitive(s, l, cw_l) _define_primitive_ext(s, l, cw_l, c_immediate)
+
+/*|
+
+TODO
+
+  |*/
 
 #define _define_constant(s, v)                                    \
         _info("defining constant %-16s %d\n", s, v);              \
@@ -190,7 +305,19 @@ do {                                                              \
         _compile_pr(op_exit);                                     \
         _end_define_word();
 
+/*|
+
+TODO
+
+  |*/
+
 #define _to_buffer_ptr(n) ((char *)_to_ptr(e[ea_buffers] + n * e[ea_buffer_size]))
+
+/*|
+
+TODO
+
+  |*/
 
 #define _enter()                                                  \
 do {                                                              \
@@ -324,6 +451,12 @@ do {                                                 \
 char *store_counted_string(const char *s, char *dp);
 
 /*{ evaluator_impl }*/
+
+int
+evaluate_source(cell *evaluator, const char *source, int storage_fd)
+{
+	return evaluate(evaluator, source, storage_fd, NULL);
+}
 
 char *
 store_counted_string(const char *s, char *dp)
@@ -594,18 +727,14 @@ load_evaluator_image(const char *image0, int image_size)
 {
     char *image = malloc(image_size);
     cell size = *(cell *)image0;
-    cell *e = NULL;
+    cell *e = (cell *)malloc(size);
     int idx = sizeof(cell);
     cell block_type, length, offset;
 
     memcpy(image, image0, image_size);
 
-    e = (cell *)malloc(size);
-
-    int primitive_count = evaluate(NULL, NULL, 0, NULL);
-    cell *primitives = malloc(primitive_count * sizeof(cell));
-
-    primitive_count = evaluate(NULL, NULL, 0, primitives);
+    cell *primitives;
+    int primitive_count = evaluate(NULL, NULL, 0, &primitives);
 
     while (idx < image_size) {
 

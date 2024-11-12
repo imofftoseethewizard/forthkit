@@ -260,17 +260,10 @@ def error_code_definitions(error_data):
 
 def error_descriptors(error_data):
 
-    return '\n'.join([
-        f'''{{
-            {e.symbol},
-            "{e.symbol}",
-            "{e.desc}"
-        }},
-        '''
+    return ',\n'.join([
+        f'''{{{e.symbol}, "{e.symbol}", "{e.desc}"}}'''
         for e in error_data
     ])
-
-
 
 def process_primitives(primitive_paths, execution_model, thread_model):
 

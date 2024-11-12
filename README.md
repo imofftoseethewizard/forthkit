@@ -154,6 +154,15 @@ and have a running Forth environment.
 
 ## Specifications
 
+### Notation
+
+Pre-processor definitions that are intended to be specified during
+compilation are in all caps, eg, `CELL_TYPE`.
+
+Constants defined by pre-processor macros begin with `c_`.
+
+Pre-processor macros that act as functions begin with an underscore.
+
 ### Templates
 
 Template files should be C syntax so that formatters and syntax
