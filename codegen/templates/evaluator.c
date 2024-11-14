@@ -99,7 +99,7 @@ execution model.
 /*|
 
 `c_msb` is a cell value with a 1 in the most significant bit and
-zeroes elsewhere.
+zeroes elsewhere.  It's used mostly in double number arithmetic.
 
   |*/
 
@@ -332,7 +332,9 @@ TODO
 
 /*|
 
-TODO
+.. c:macro: _enter
+
+The
 
   |*/
 
@@ -541,8 +543,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
 
     memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
     e[ea_source_idx] = 0;
-
-    /*{ prepare_evaluation }*/
 
     /*{ evaluator_core }*/
 

@@ -49,8 +49,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
     memcpy(_to_ptr(e[ea_source_addr]), source, e[ea_source_len] = strlen(source));
     e[ea_source_idx] = 0;
 
-    /*{ prepare_evaluate_source }*/
-
     /*{ evaluator_core }*/
 
     _debug("done with run: result: %d\n", result);

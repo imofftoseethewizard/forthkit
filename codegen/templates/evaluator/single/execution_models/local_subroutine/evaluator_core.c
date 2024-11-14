@@ -1,5 +1,7 @@
     /*{ primitive_implementations }*/
 
+    /*{ prepare_evaluation }*/
+
 	while (ip && !result) {
 
 		_trace("early main loop: ");

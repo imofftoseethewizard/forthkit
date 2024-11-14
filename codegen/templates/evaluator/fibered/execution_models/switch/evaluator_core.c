@@ -1,3 +1,5 @@
+    /*{ prepare_evaluation }*/
+
     while (fp < fp0 && !result) {
 
         _print_fiber_stack();

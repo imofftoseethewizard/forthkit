@@ -20,7 +20,7 @@ Params = namedtuple('Params', ('address_model', 'concurrency', 'execution_model'
 
 Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'body'))
 
-Primitives = namedtuple('Primitives', ('decls', 'impls', 'registry', 'word_defs'))
+Primitives = namedtuple('Primitives', ('count', 'decls', 'impls', 'registry', 'word_defs'))
 
 ErrorData = namedtuple('ErrorData', ('id', 'symbol', 'desc'))
 
@@ -170,9 +170,6 @@ def cmd_generate(args, config, env):
     evaluator_h_tmpl = read(templates / 'evaluator.h')
     evaluator_c_tmpl = read(templates / 'evaluator.c')
 
-    address_model_h   = read((address_models / address_model).with_suffix('.h'))
-    evaluator_decls_h = read(evaluator / concurrency / 'evaluator_decls.h')
-
     error_data = load_error_data()
 
     error_code_defs_h = error_code_definitions(error_data)
@@ -182,30 +179,45 @@ def cmd_generate(args, config, env):
 
     h_values = {
         'additional_definitions': definitions,
-        'address_model': address_model_h,
         'error_code_definitions': error_code_defs_h,
-        'evaluator_decls': evaluator_decls_h,
-        'execution_model_decls': execution_model_decls_h,
     }
 
-    evaluator_impl_c = read(evaluator / concurrency / 'evaluator_impl.c')
-    evaluator_core_c = read(evaluator / concurrency / 'execution_models' / execution_model / 'evaluator_core.c')
-    thread_step_c    = read(threading / thread_model / 'execution_models' / execution_model / 'thread_step.c')
+    address_model_c           = read((address_models / address_model).with_suffix('.c'))
 
-    evaluator_variables_c  = try_read(execution_models / execution_model / 'evaluator_variables.c')
-    evaluator_variables_c += try_read(threading / thread_model / 'evaluator_variables.c')
+    define_define_primitive_c = read(threading / thread_model / 'define_define_primitive.c')
+    define_enter_c            = read(threading / thread_model / 'define_enter.c')
+    thread_step_c             = read(threading / thread_model / 'execution_models' / execution_model / 'thread_step.c')
+
+    bootstrap_c               = read(evaluator / concurrency / 'bootstrap.c')
+    evaluator_core_c          = read(evaluator / concurrency / 'execution_models' / execution_model / 'evaluator_core.c')
+    evaluator_decls_c         = read(evaluator / concurrency / 'evaluator_decls.c')
+    init_evaluator_c          = read(evaluator / concurrency / 'init_evaluator.c')
+    prepare_evaluation_c      = read(evaluator / concurrency / 'prepare_evaluation.c')
+
+    execution_model_decls     = try_read(execution_models / execution_model / 'decls.c')
+
+    evaluator_variables_c  = try_read(threading / thread_model / 'evaluator_variables.c')
+    evaluator_variables_c += try_read(execution_models / execution_model / 'evaluator_variables.c')
 
     error_descs_c = error_descriptors(error_data)
 
     c_values = {
+        'additional_definitions': 'TODO:additional_definitions',
+        'address_model': address_model_c,
+        'bootstrap': bootstrap_c,
         'compiled_word_definitions': 'TODO:compiled_word_definitions',
-        'primitives_decls': primitives.decls,
+        'define_define_primitive': define_define_primitive_c,
+        'define_enter': define_enter_c,
         'error_descriptors': error_descs_c,
         'evaluator_core': evaluator_core_c,
-        'evaluator_impl': evaluator_impl_c,
+        'evaluator_decls': evaluator_decls_c,
         'evaluator_variables': evaluator_variables_c,
+        'execution_model_decls': execution_model_decls,
+        'init_evaluator': init_evaluator_c,
         'initialize_primitive_registry': primitives.registry,
-        'primitive_count': str(len(params.primitives)),
+        'prepare_evaluation': prepare_evaluation_c,
+        'primitive_count': str(primitives.count),
+        'primitive_decls': primitives.decls,
         'primitive_implementations': primitives.impls,
         'primitive_word_definitions': primitives.word_defs,
         'thread_step': thread_step_c,
@@ -223,7 +235,7 @@ def cmd_generate(args, config, env):
 
     print(len(evaluator_c_tmpl))
     print(len(evaluator_c))
-    # indent --no-tabs -kr -l128 <evaluator_c.out >evaluator.c
+    # indent --no-tabs -psl -kr -l128 <evaluator_c.out | codegen/format_c C >evaluator.c
     print(evaluator_c, file=open('evaluator_c.out', 'w'))
 
 def coalesce_generate_params(args, config, env):
@@ -311,7 +323,7 @@ def process_primitives(primitive_paths, execution_model, thread_model):
         if p.word_name
     ])
 
-    return Primitives(decls, impls, registry, word_defs)
+    return Primitives(len(primitives), decls, impls, registry, word_defs)
 
 primitive_re_text = r'\s*'.join([        # join all parts below with whitespace
     '',                                  # match whitespace at the beginning

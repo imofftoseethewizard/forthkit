@@ -18,6 +18,8 @@
     }                                     \
     while (1)
 
+    /*{ prepare_evaluation }*/
+
 __first:
 
     if (0) {

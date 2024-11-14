@@ -1,5 +1,7 @@
     /*{ primitive_implementations }*/
 
+    /*{ prepare_evaluation }*/
+
     while (fp < fp0) {
 
         _print_fiber_stack();
