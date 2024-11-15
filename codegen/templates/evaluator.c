@@ -272,7 +272,7 @@ TODO
 
   |*/
 
-/*{ define_define_primitive }*/
+/*{ word_structure }*/
 
 /*|
 
@@ -283,8 +283,8 @@ TODO
 #define _compile_parse_word()                                     \
         _compile_literal(32);                                     \
         _compile_literal(_from_ptr(&e[ea_word_buffer1]));         \
-        _compile_pr(pr_fetch);                                    \
-        _compile_pr(pr_word)
+        _compile_pw(pr_fetch);                                    \
+        _compile_pw(pr_word)
 
 /*|
 
@@ -478,28 +478,31 @@ NULL.
 
 The primary mode of operation is to call `evaluate` with non-NULL
 values or the first two parameters -- `evaluator` and `source` -- and
-optionally a non-zero value for the third -- `storage_fd`.  The first
-parameter must be an evaluator memory image that has been previously
-initialized.  The second is the null-terminated string of text that is
-to be evaluated.  The third parameter is a file descriptor for block
-storage which if non-null will allow the use of the block word set.
+optionally a non-negative value for the third -- `storage_fd`.  The
+first parameter must be an evaluator memory image that has been
+previously initialized.  The second is the null-terminated string of
+text that is to be evaluated.  The third parameter is a file
+descriptor for block storage which if non-negative will allow the use
+of the block word set.
 
-A second mode is triggered by providing NULL, NULL, 0, and an out
+A second mode is triggered by providing NULL, NULL, -1, and an out
 parameter for a cell pointer.  It returns the number of primitives.
 If the pointer is non-null, then the evaluator will allocate memory
 and copy the cell representation of the primitive values the evaluator
 was built with.  This memory block is statically defined and should
 not be modified or freed.  This mode is used internally during image
 loading to replace placeholder references with the actual values of
-primitives in this process.  In the switch execution model, these will
-be the same from run to run, but in the computed goto and local
-subroutine models, these will be different.
+primitives in this process.  In the switch execution model, primitive
+values will be the same from run to run, but in the computed goto and
+local subroutine models they will be different.
 
   |*/
 
 int
 evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
 {
+	/*{ declare_primitives }*/
+
 	static cell internal_primitives[/*{ primitive_count }*/];
 
     if (!evaluator) {
@@ -529,11 +532,21 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
 
 	/*{ evaluator_variables }*/
 
-	/*{ primitive_decls }*/
-
 #ifdef BOOTSTRAP
     if (!e[ea_top]) {
+
 	    /*{ bootstrap }*/
+
+	    /*{ compiled_word_defs }*/
+
+	    // *INDENT-OFF* `indent` makes a mess of the following.
+
+	    const char *built_in_words =
+		    /*{ built_in_word_defs }*/;
+
+	    // *INDENT-ON*
+
+	    return evaluate(evaluator, built_in_words, -1, NULL);
     }
 #endif
 
@@ -674,7 +687,7 @@ create_relocation_table(cell *e0, cell *e1, cell *im0, cell *im1, int image_size
         return NULL;
 
     /* If the evaluators use relocatable addressing, then they should be
-     * identical. If the use absolute addressing, then they will differ
+     * identical. If they use absolute addressing, then they will differ
      * at all places where there is an address, and that difference will be
      * be the same for every address and also equal to the difference between
      * the memory blocks of the two evaluators.
@@ -710,7 +723,7 @@ create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int 
     /* Get the evaluator's list of primitives. */
 
     cell *primitives = malloc(/*{ primitive_count }*/ * sizeof(cell));
-    evaluate(NULL, NULL, 0, primitives);
+    evaluate(NULL, NULL, -1, primitives);
 
     /* Check the data blocks for primitives, using a linear search of the
      * primitives at each location, skipping relocated cells (because
@@ -828,7 +841,7 @@ load_evaluator_image(const char *image0, int image_size)
     memcpy(image, image0, image_size);
 
     cell *primitives;
-    int primitive_count = evaluate(NULL, NULL, 0, &primitives);
+    int primitive_count = evaluate(NULL, NULL, -1, &primitives);
 
     while (idx < image_size) {
 

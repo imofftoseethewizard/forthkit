@@ -232,6 +232,73 @@ and it may not contain a `break`, `continue`, or `return`
 statement. (TODO reference for identifiers available within
 primitives)
 
+### Compiled Word Definitions
+
+Compiled words are created using preprocessor macros to create C code
+to build definitions during bootstrap without using the outer
+interpreter.  This is used to create a few defining words which enable
+later words to be defined using the outer interpreter.  They have a similar
+file format to primitives.  For example, the implementation of `:`
+
+    // :
+    cw_colon:
+    {
+        _compile_parse_word();
+        _compile_pw(pr_do_colon);
+    }
+
+The first line above is a line comment which gives the name of the
+word.  It may optionally include the word "immediate" to specify that
+the new word is an immediate word.  The next non-comment line must be
+a C label giving the internal name of the compiled word.  It is
+strongly suggested that this begin with `cw_`.  This must be followed
+by a single block which contains statements which will build the
+definition of the word at bootstrap.  These statements are surrounded
+by macros to define the word.  In the example above, this expands to
+
+    _define_compiled_word(":", cw_colon, 0);
+    {
+        _compile_parse_word();
+        _compile_pw(pr_do_colon);
+    }
+    _end_compiled_word();
+
+The two macros that bookend the implementation provided in the
+definition of `cw_colon` above are essentially the functionality of
+`:` and `;`, with the additional detail that the start of the compiled
+word is saved and can later be referenced for compilation by
+
+    _compile_cw(cw_colon);
+
+
+
+### Prelude Word Definitions
+
+Prelude words are specified as Forth source and are interpreted during
+bootstrap.  For example, the canonical Forth-79/Forth-83 definition of
+`CONSTANT`
+
+    : CONSTANT
+        >R : R>
+        [COMPILE] LITERAL
+        [COMPILE] ;
+    ;
+
+is processed into
+
+    const char *prelude[] = {
+            ...
+            ": CONSTANT",
+            "    >R : R>",
+            "    [COMPILE] LITERAL",
+            "    [COMPILE] ;",
+            ";",
+            ...
+        };
+
+where the ellipses represent stringified forms of other built-in
+words.
+
 ### Artifacts
 
 Project initialization produces a directory structure containing a

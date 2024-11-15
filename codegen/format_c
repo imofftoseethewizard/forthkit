@@ -30,6 +30,10 @@ def main():
     else:
         text = sys.stdin.read()
 
+    # indent doesn't know that "cell" is a type, so it adds a space
+    # between the "*" and the parameter name in function declarations.
+    text = text.replace('cell * ', 'cell *')
+
     tokens = tokenize_text(text)
     stx = parse_tokens(tokens)
 
