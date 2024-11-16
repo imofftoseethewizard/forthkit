@@ -499,7 +499,7 @@ local subroutine models they will be different.
   |*/
 
 int
-evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
+evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
 {
 	/*{ declare_primitives }*/
 
@@ -507,10 +507,12 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
 
     if (!evaluator) {
 
-	    /*{ initialize_primitive_registry }*/
+	    if (primitives) {
 
-	    if (primitives)
-		    *primitives = &internal_primitives;
+		    cell *prp = primitives;
+
+		    /*{ initialize_primitive_registry }*/
+	    }
 
 	    return /*{ primitive_count }*/;
     }
@@ -535,18 +537,27 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell **primitives)
 #ifdef BOOTSTRAP
     if (!e[ea_top]) {
 
-	    /*{ bootstrap }*/
+	    /*{ begin_bootstrap }*/
 
-	    /*{ compiled_word_defs }*/
+        /*{ primitive_word_definitions }*/
 
-	    // *INDENT-OFF* `indent` makes a mess of the following.
+        /*{ compiled_word_definitions }*/
 
-	    const char *built_in_words =
-		    /*{ built_in_word_defs }*/;
+	    const char *builtin_word_definitions[] = {
+		    /*{ builtin_word_definitions }*/
+	    };
 
-	    // *INDENT-ON*
+	    for (int i = 0; i < /*{ library_word_count */; i++) {
 
-	    return evaluate(evaluator, built_in_words, -1, NULL);
+		    result = evaluate(evaluator, library_word_definitions[i], -1, NULL);
+
+		    if (result)
+			    break;
+	    }
+
+	    /*{ finish_bootstrap }*/
+
+	    return result;
     }
 #endif
 
@@ -716,9 +727,8 @@ create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int 
      * portion less any relocations. In practice it will be a lot less.
      */
 
-    cell
-      *pt = malloc(image_size - rt_size),
-      *ptp = pt;
+	cell *pt = malloc(image_size - rt_size);
+	cell *ptp = pt;
 
     /* Get the evaluator's list of primitives. */
 
@@ -840,7 +850,7 @@ load_evaluator_image(const char *image0, int image_size)
 
     memcpy(image, image0, image_size);
 
-    cell *primitives;
+    cell *primitives = malloc(/*{ primitive_count }*/ * sizeof(cell));
     int primitive_count = evaluate(NULL, NULL, -1, &primitives);
 
     while (idx < image_size) {
@@ -886,6 +896,7 @@ load_evaluator_image(const char *image0, int image_size)
         idx += length;
     }
 
+    free(primitives);
     free(image);
 
     return e;

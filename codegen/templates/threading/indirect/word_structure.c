@@ -4,3 +4,5 @@
         _register_compiled_word(cw_ ## label);                       \
         _compile_pr(label);                                          \
         _end_define_word();
+
+#define _compile_pw(label) (compiled_words[cw_ ## label])

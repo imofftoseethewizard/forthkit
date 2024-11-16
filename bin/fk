@@ -13,10 +13,10 @@ Env = namedtuple('Env', ('name'))
 
 Config = namedtuple('Config', ('name',
                                'address_model', 'concurrency', 'execution_model', 'thread_model',
-                               'definitions', 'primitives', 'compiled_words'))
+                               'definitions', 'primitives', 'compiled_words', 'library_words'))
 
 Params = namedtuple('Params', ('address_model', 'concurrency', 'execution_model', 'thread_model',
-                               'definitions', 'primitives', 'compiled_words'))
+                               'definitions', 'primitives', 'compiled_words', 'library_words'))
 
 Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'body'))
 
@@ -29,7 +29,7 @@ CompiledWords = namedtuple('CompiledWords', ('count', 'registry', 'word_defs'))
 ErrorData = namedtuple('ErrorData', ('id', 'symbol', 'desc'))
 
 EmptyEnv = Env(None)
-EmptyConfig = Config(None, None, None, None, None, None, None, None)
+EmptyConfig = Config(None, None, None, None, None, None, None, None, None)
 
 templates = Path(__file__).parent / '../codegen/templates'
 
@@ -81,6 +81,7 @@ def create_parser():
     gen_parser.add_argument('-d', '--definitions', nargs='*', default=[])
     gen_parser.add_argument('-p', '--primitives', nargs='*', default=[])
     gen_parser.add_argument('-w', '--compiled-words', nargs='*', default=[])
+    gen_parser.add_argument('-b', '--built-in-words', nargs='*', default=[])
 
     build_parser = subparsers.add_parser('build', help='build source files')
     build_parser.set_defaults(command='build')
@@ -144,10 +145,11 @@ def read_config(config_path):
     definitions     = parse_config_list_value(general.get('definitions', ''))
     primitives      = parse_config_list_value(general.get('primitives', ''))
     compiled_words  = parse_config_list_value(general.get('compiled_words', ''))
+    library_words   = parse_config_list_value(general.get('library_words', ''))
 
     return Config(name,
-                  address_model, concurrency, execution_model,
-                  thread_model, definitions, primitives, compiled_words)
+                  address_model, concurrency, execution_model, thread_model,
+                  definitions, primitives, compiled_words, library_words)
 
 def parse_config_list_value(s):
 
@@ -170,6 +172,7 @@ def cmd_generate(args, config, env):
     additional_defs = '\n'.join(params.definitions)
     primitives      = process_primitives(params.primitives, execution_model, thread_model)
     compiled_words  = process_compiled_words(params.compiled_words)
+    library_words   = process_library_words(params.library_words)
 
     print(params.compiled_words)
     print((concurrency, execution_model, address_model, thread_model))
@@ -194,7 +197,8 @@ def cmd_generate(args, config, env):
     thread_step_c         = read(threading / thread_model / 'execution_models' / execution_model / 'thread_step.c')
     word_structure_c      = read(threading / thread_model / 'word_structure.c')
 
-    bootstrap_c           = read(evaluator / concurrency / 'bootstrap.c')
+    begin_bootstrap_c     = read(evaluator / concurrency / 'begin_bootstrap.c')
+    finish_bootstrap_c    = read(evaluator / concurrency / 'finish_bootstrap.c')
     evaluator_core_c      = read(evaluator / concurrency / 'execution_models' / execution_model / 'evaluator_core.c')
     evaluator_decls_c     = read(evaluator / concurrency / 'evaluator_decls.c')
     init_evaluator_c      = read(evaluator / concurrency / 'init_evaluator.c')
@@ -211,9 +215,8 @@ def cmd_generate(args, config, env):
     c_values = {
         'additional_defs': additional_defs,
         'address_model': address_model_c,
-        'bootstrap': bootstrap_c,
-        'built_in_word_defs': '"TODO:built_in_word_defs"',
-        'compiled_word_defs': compiled_words.word_defs,
+        'begin_bootstrap': begin_bootstrap_c,
+        'compiled_word_definitions': compiled_words.word_defs,
         'compiled_word_decls': '// TODO:compiled_word_decls',
         'declare_primitives': declare_primitives_c,
         'define_enter': define_enter_c,
@@ -222,8 +225,10 @@ def cmd_generate(args, config, env):
         'evaluator_decls': evaluator_decls_c,
         'evaluator_variables': evaluator_variables_c,
         'execution_model_decls': execution_model_decls,
+        'finish_bootstrap': finish_bootstrap_c,
         'init_evaluator': init_evaluator_c,
         'initialize_primitive_registry': primitives.registry,
+        'library_word_definitions': library_words,
         'prepare_evaluation': prepare_evaluation_c,
         'primitive_count': str(primitives.count),
         'primitive_decls': primitives.decls,
@@ -263,9 +268,10 @@ def coalesce_generate_params(args, config, env):
     definitions    = config.definitions    + args.definitions
     primitives     = config.primitives     + args.primitives
     compiled_words = config.compiled_words + args.compiled_words
+    library_words  = config.library_words + args.library_words
 
     return Params(address_model, concurrency, execution_model, thread_model,
-                  definitions, primitives, compiled_words)
+                  definitions, primitives, compiled_words, library_words)
 
 def load_error_data():
 
@@ -424,6 +430,16 @@ def parse_compiled_word(path):
                         m.group('immediate_flag') is not None,
                         m.group('label'),
                         m.group('body'))
+
+def process_library_words(library_word_paths):
+
+    lines = [
+        line.rstrip().replace('\\', '\\\\').replace('"', '\\"')
+        for path in library_word_paths or []
+        for line in open(path).readlines()
+    ]
+
+    return ',\n'.join([f'"{line}"' for line in lines])
 
 def read(path):
     return path.open().read()

@@ -5,3 +5,5 @@
         _compile_pr(label);                                          \
         _compile_pr(op_exit);                                        \
         _end_define_word();
+
+#define _compile_pw(label) _compile_pr(label)
