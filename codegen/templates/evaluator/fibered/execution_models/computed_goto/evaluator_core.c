@@ -1,7 +1,3 @@
-#define _pr_value(x)       ((void *)&&x)
-#define _pr_value_base     (void *)&&__first
-#define _pr_value_limit    (void *)&&__last
-
 #define _next()                           \
     do {                                  \
         if (!ip || !steps || result )     \
@@ -14,7 +10,7 @@
                                           \
         _trace("early main loop: ");      \
                                           \
-        /*{ thread_step }*/       \
+        /*{ thread_step }*/               \
     }                                     \
     while (1)
 

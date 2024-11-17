@@ -1,3 +1,11 @@
+/*|
+
+TODO
+
+  |*/
+
+#define _current() e[ea_current]
+
 enum engine_attribute {
     /* attributes set by init_evaluator */
 
@@ -10,7 +18,6 @@ enum engine_attribute {
     ea_rp0,
 
     ea_bottom,
-    ea_top,
     ea_dp,
     ea_sp,
     ea_sp0,
@@ -52,8 +59,6 @@ enum engine_attribute {
 
 #define _save_evaluator_state()                \
 do {                                           \
-    register cell *fiber = _to_fiber_ptr(*fp); \
-                                               \
     e[ea_dp]  = _from_ptr(dp);                 \
     e[ea_ip]  = rp == rp0 ? 0 : _from_ptr(ip); \
     e[ea_rp0] = _from_ptr(rp0);                \

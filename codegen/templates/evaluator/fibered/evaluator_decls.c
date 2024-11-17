@@ -1,72 +1,10 @@
-#if VERBOSE
+/*|
 
-#define _print_fiber_stack()                                             \
-do {                                                                     \
-    register cell *fpx = fp0;                                            \
-                                                                         \
-    _debug("fiber stack: ");                                             \
-                                                                         \
-    while (fp < fpx)                                                     \
-        _debug("%d ", (int)*--fpx);                                      \
-                                                                         \
-    _debug("\n");                                                        \
-} while(0)
+TODO
 
-#define _print_registers()                                               \
-do {                                                                     \
-    _debug("s: %8lx, ip: %8lx; *ip: %8lx, *(ip+1): %8lx, rp: %8lx, *rp: %8lx, sp: %8lx, *sp: %8lx, dp: %8lx src: %.*s\n",  \
-           steps, \
-           _from_ptr(ip), ip?*ip:0, ip?*(ip+1):0,        \
-           _from_ptr(rp), rp?*rp:0,                      \
-           _from_ptr(sp), sp?*sp:0,                      \
-           (long)_from_ptr(dp),                          \
-           e[ea_source_len]-e[ea_source_idx], \
-           (char *)_to_ptr(e[ea_source_addr]) + e[ea_source_idx]);      \
-} while (0)
+  |*/
 
-#else
-
-#define _print_fiber_stack()
-
-#endif
-#ifdef BOUNDS_CHECKING
-
-#define _check_fiber_stack_bounds()                  \
-do {                                                 \
-    if (fp < fp0 - e[ea_fiber_stack_size])           \
-        _abort(err_fiber_stack_overflow);            \
-    else if (fp > fp0)                               \
-        _abort(err_fiber_stack_underflow);           \
-} while (0)
-
-#define _check_task_address(t)
-#define _check_task_memory()
-#define _check_thread_memory()
-
-#define _is_active_fiber_number(x) ((x) == *fp)
-#define _is_fiber_stack_full() (fp0 - fp == e[ea_fiber_stack_size])
-#define _is_valid_fiber_number(x) ((cell)(x) < e[ea_fiber_count])
-
-#define _is_active_task_number(x) ((x) == _to_fiber_ptr(*fp)[fa_task])
-#define _is_primary_task_number(x) ((x) == _primary_task)
-#define _is_valid_task_number(x) ((cell)(x) < e[ea_task_count])
-
-#else
-
-#define _check_fiber_stack_bounds()
-#define _check_task_address()
-#define _check_task_memory()
-#define _check_thread_memory()
-
-#define _is_active_fiber_number() 0
-#define _is_fiber_stack_full() 0
-#define _is_valid_fiber_number() 1
-
-#define _is_active_task_number(x) 0
-#define _is_primary_task_number(x) 0
-#define _is_valid_task_number(x) 1
-
-#endif
+#define _current() tp[ta_current]
 
 enum engine_attribute {
     /* attributes set by init_evaluator */
@@ -193,3 +131,73 @@ do {                                                              \
     _save_fiber_state();                                          \
     fp++;                                                         \
 } while (0)
+
+#if VERBOSE
+
+#define _print_fiber_stack()                                             \
+do {                                                                     \
+    register cell *fpx = fp0;                                            \
+                                                                         \
+    _debug("fiber stack: ");                                             \
+                                                                         \
+    while (fp < fpx)                                                     \
+        _debug("%d ", (int)*--fpx);                                      \
+                                                                         \
+    _debug("\n");                                                        \
+} while(0)
+
+#define _print_registers()                                               \
+do {                                                                     \
+    _debug("s: %8lx, ip: %8lx; *ip: %8lx, *(ip+1): %8lx, rp: %8lx, *rp: %8lx, sp: %8lx, *sp: %8lx, dp: %8lx src: %.*s\n",  \
+           steps, \
+           _from_ptr(ip), ip?*ip:0, ip?*(ip+1):0,        \
+           _from_ptr(rp), rp?*rp:0,                      \
+           _from_ptr(sp), sp?*sp:0,                      \
+           (long)_from_ptr(dp),                          \
+           e[ea_source_len]-e[ea_source_idx], \
+           (char *)_to_ptr(e[ea_source_addr]) + e[ea_source_idx]);      \
+} while (0)
+
+#else
+
+#define _print_fiber_stack()
+
+#endif
+#ifdef BOUNDS_CHECKING
+
+#define _check_fiber_stack_bounds()                  \
+do {                                                 \
+    if (fp < fp0 - e[ea_fiber_stack_size])           \
+        _abort(err_fiber_stack_overflow);            \
+    else if (fp > fp0)                               \
+        _abort(err_fiber_stack_underflow);           \
+} while (0)
+
+#define _check_task_address(t)
+#define _check_task_memory()
+#define _check_thread_memory()
+
+#define _is_active_fiber_number(x) ((x) == *fp)
+#define _is_fiber_stack_full() (fp0 - fp == e[ea_fiber_stack_size])
+#define _is_valid_fiber_number(x) ((cell)(x) < e[ea_fiber_count])
+
+#define _is_active_task_number(x) ((x) == _to_fiber_ptr(*fp)[fa_task])
+#define _is_primary_task_number(x) ((x) == _primary_task)
+#define _is_valid_task_number(x) ((cell)(x) < e[ea_task_count])
+
+#else
+
+#define _check_fiber_stack_bounds()
+#define _check_task_address()
+#define _check_task_memory()
+#define _check_thread_memory()
+
+#define _is_active_fiber_number() 0
+#define _is_fiber_stack_full() 0
+#define _is_valid_fiber_number() 1
+
+#define _is_active_task_number(x) 0
+#define _is_primary_task_number(x) 0
+#define _is_valid_task_number(x) 1
+
+#endif

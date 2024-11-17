@@ -5,5 +5,5 @@
 
 #define _is_primitive(x)  (((long)(x)) & c_primitive_flag)
 
-#define _from_pv(x) (void *)((x) - _pr_value_base | c_primitive_flag)
+#define _from_pv(x) (cell)((x) - _pr_value_base | c_primitive_flag)
 #define _to_pv(x) (((x) & ~ c_primitive_flag) + _pr_value_base)
