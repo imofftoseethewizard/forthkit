@@ -1,0 +1,35 @@
+# -*- mode: sh; -*-
+
+# words implemented directly in C
+FK_PRIMITIVES="$FK_PRIMITIVES \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/braid.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/done.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/end.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/f_at.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/fiber.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/fip.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/frp0.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/frp.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/fr_from.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/fsteps.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/fstop.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/ftask.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/ftask_fetch.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/is_primitive.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/lay.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/num_f.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/snip.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/start.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/task.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/tbase.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/tcontext.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/tcurrent.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/tdp.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/tinterpret.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/to_fr.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/to_t.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/tsp.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/tsp0.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/tstate.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/ttop.m4 \
+    $FORTHKIT/src/primitives/common/concurrency/fiber/t_from.m4"

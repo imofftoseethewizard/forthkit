@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 import argparse
-import configparser
+import os
 import re
 import subprocess
 import sys
@@ -10,30 +10,27 @@ from collections import namedtuple
 from pathlib import Path
 from pprint import *
 
-Env = namedtuple('Env', ('name'))
+Env = namedtuple('Env', ('name', 'description',
+                         'address_model', 'concurrency', 'execution_model', 'thread_model',
+                         'definitions', 'primitives', 'compiled_words', 'library_words'))
 
-Config = namedtuple('Config', ('name',
-                               'address_model', 'concurrency', 'execution_model', 'thread_model',
-                               'definitions', 'primitives', 'compiled_words', 'library_words'))
+GenParams = namedtuple('GenParams', ('address_model', 'concurrency', 'execution_model', 'thread_model',
+                                     'definitions', 'primitives', 'compiled_words', 'library_words',
+                                     'base_name', 'target_dir'))
 
-Params = namedtuple('Params', ('address_model', 'concurrency', 'execution_model', 'thread_model',
-                               'definitions', 'primitives', 'compiled_words', 'library_words',
-                               'base_name', 'target_dir'))
+BuildParams = namedtuple('BuildParams', ('todo'))
 
-Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'body'))
+Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'block_comment', 'body'))
 
 Primitives = namedtuple('Primitives', ('count', 'decls', 'impls', 'registry', 'word_defs'))
 
-CompiledWord = namedtuple('CompiledWord', ('word_name', 'is_immediate', 'label', 'body'))
+CompiledWord = namedtuple('CompiledWord', ('word_name', 'is_immediate', 'label', 'block_comment', 'body'))
 
 CompiledWords = namedtuple('CompiledWords', ('count', 'registry', 'word_defs'))
 
 LibraryWords = namedtuple('LibraryWords', ('count', 'word_defs'))
 
 ErrorData = namedtuple('ErrorData', ('id', 'symbol', 'desc'))
-
-EmptyEnv = Env(None)
-EmptyConfig = Config(None, None, None, None, None, None, None, None, None)
 
 templates = Path(__file__).parent / '../codegen/templates'
 
@@ -49,17 +46,103 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    config = read_config(args.config or env.config_path)
-
     # Look for cmd_* functions below to see what values args.command
     # can have.
-    args.command(args, config, env)
+    args.command(args, env)
 
 def get_env():
-    return EmptyEnv
+
+    name            = os.environ.get('FK_NAME', 'Forthkit FORTH')
+    description     = os.environ.get('FK_DESCRIPTION', '')
+
+    address_model   = parse_address_model(os.environ.get('FK_ADDRESS_MODEL', 'host'))
+    concurrency     = parse_concurrency(os.environ.get('FK_CONCURRENCY', 'single'))
+    execution_model = parse_execution_model(os.environ.get('FK_EXECUTION_MODEL', 'switch'))
+    thread_model    = parse_thread_model(os.environ.get('FK_THREAD_MODEL', 'indirect'))
+
+    definitions     = parse_definitions(os.environ.get('FK_DEFINITIONS', ''))
+    primitives      = parse_primitives(os.environ.get('FK_PRIMITIVES', ''))
+    compiled_words  = parse_compiled_words(os.environ.get('FK_COMPILED_WORDS', ''))
+    library_words   = parse_library_words(os.environ.get('FK_LIBRARY_WORDS', ''))
+
+    target_dir      = os.environ.get('FK_TARGET_DIR', './')
+    base_name       = os.environ.get('FK_BASE_NAME', 'evaluator')
+
+    return Env(
+        name, description,
+        address_model, concurrency, execution_model, thread_model,
+        definitions, primitives, compiled_words, library_words
+    )
+
+class InvalidConfigValue(Exception):
+
+    def __init__(self, env_name, choices, value):
+        self.env_name = env_name
+        self.choices = choices
+        self.values = values
+
+    def __str__(self):
+
+        choices = ', '.join(f'"{c}"' for c in choices)
+
+        return (
+            f'InvalidConfigValue: {self.env_name} '
+            f'expects one of ({choices}): '
+            f'received: "{choices}"'
+        )
+
+def parse_address_model(s):
+
+    try:
+        return std_address_model[s.lower()]
+
+    except:
+        raise InvalidConfigValue('FK_ADDRESS_MODEL', ('host', 'virtual'), s)
+
+def parse_concurrency(s):
+
+    try:
+        return std_concurrency[s.lower()]
+
+    except:
+        raise InvalidConfigValue('FK_CONCURRENCY', ('single', 'fibered'), s)
+
+def parse_execution_model(s):
+
+    try:
+        return std_execution_model[s.lower()]
+
+    except:
+        raise InvalidConfigValue(
+            'FK_EXECUTION_MODEL', ('computed-goto', 'local-subroutine', 'switch'), s)
+
+def parse_thread_model(s):
+
+    try:
+        return std_thread_model[s.lower()]
+
+    except:
+        raise InvalidConfigValue('FK_THREAD_MODEL', ('direct', 'indirect'), s)
+
+def parse_definitions(s):
+
+    return [part.strip() for part in re.split(r'\s+', s) if part]
+
+def parse_primitives(s):
+
+    return [part.strip() for part in re.split(r'\s+', s) if part]
+
+def parse_compiled_words(s):
+
+    return [part.strip() for part in re.split(r'\s+', s) if part]
+
+def parse_library_words(s):
+
+    return [part.strip() for part in re.split(r'\s+', s) if part]
 
 def create_parser():
     parser = argparse.ArgumentParser()
+
     subparsers = parser.add_subparsers()
 
     init_parser = subparsers.add_parser('init', help='initialize forthkit project')
@@ -80,7 +163,6 @@ def create_parser():
     gen_parser.add_argument('-t', '--thread-model', default='indirect',
                             choices=('d', 'i', 'direct', 'indirect'))
 
-    gen_parser.add_argument('-C', '--config')
     gen_parser.add_argument('-N', '--base-name', default='evaluator')
     gen_parser.add_argument('-T', '--target-dir', default='./')
     gen_parser.add_argument('-d', '--definitions', nargs='*', default=[])
@@ -89,12 +171,45 @@ def create_parser():
     gen_parser.add_argument('-l', '--library-words', nargs='*', default=[])
 
     build_parser = subparsers.add_parser('build', help='build source files')
-    build_parser.set_defaults(command='build')
+    build_parser.set_defaults(command=cmd_build)
+
+    build_parser.add_argument('-b', '--bootstrap', default=False,
+                              type=parse_boolean_option)
+
+    build_parser.add_argument('-c', '--cell-type', default='int',
+                              choices=('short', 'int', 'long long'))
+
+    build_parser.add_argument('-d', '--double-type', default='long long',
+                              choices=('int', 'long long', '__int128'))
+
+    build_parser.add_argument('-N', '--base-name', default='evaluator')
+
+    build_parser.add_argument('-f', '--cflags')
+    build_parser.add_argument('-l', '--ldflags')
+
+    build_parser.add_argument('-S', '--source-dir', default='./')
+    build_parser.add_argument('-T', '--target-dir', default='./')
 
     run_parser = subparsers.add_parser('run', help='run an interpreter')
     run_parser.set_defaults(command='run')
 
     return parser
+
+boolean_option_value_re = (
+    '(?P<true>(y(es)?)|(t(rue)?)|1)'
+    '|'
+    '(?P<false>(no?)|(f(alse)?)|0)'
+)
+
+def parse_boolean_option(s):
+
+    m = re.fullmatch(boolean_option_value_re, s.lower())
+
+    if not m:
+        raise argparse.ArgumentError(f'invalid boolean value: "{s}"')
+
+    return m.group('true') is not None
+
 
 std_address_model = {
     'h':       'host',
@@ -128,53 +243,16 @@ std_thread_model = {
     'indirect': 'indirect',
 }
 
-def read_config(config_path):
+def cmd_generate(args, env):
 
-    if config_path is None:
-        return EmptyConfig
-
-    config = configparser.ConfigParser()
-    config.read(config_path)
-
-    if 'general' not in config:
-        return EmptyConfig
-
-    general = config['general']
-
-    name            = general.get('name')
-    address_model   = general.get('address_model')
-    concurrency     = general.get('concurrency')
-    execution_model = general.get('execution_model')
-    thread_model    = general.get('thread_model')
-
-    definitions     = parse_config_list_value(general.get('definitions', ''))
-    primitives      = parse_config_list_value(general.get('primitives', ''))
-    compiled_words  = parse_config_list_value(general.get('compiled_words', ''))
-    library_words   = parse_config_list_value(general.get('library_words', ''))
-
-    return Config(name,
-                  address_model, concurrency, execution_model, thread_model,
-                  definitions, primitives, compiled_words, library_words)
-
-def parse_config_list_value(s):
-
-    return [
-        v for v in (
-            part.strip() for part in s.split('\n')
-        )
-        if v
-    ]
-
-def cmd_generate(args, config, env):
-
-    params = coalesce_generate_params(args, config, env)
+    params = coalesce_generate_params(args, env)
 
     concurrency     = params.concurrency
     execution_model = params.execution_model
     address_model   = params.address_model
     thread_model    = params.thread_model
 
-    additional_defs = '\n'.join(params.definitions)
+    additional_defs = process_definitions(params.definitions)
     primitives      = process_primitives(params.primitives, execution_model, thread_model)
     compiled_words  = process_compiled_words(params.compiled_words)
     library_words   = process_library_words(params.library_words)
@@ -256,26 +334,26 @@ def cmd_generate(args, config, env):
     print(reformat(evaluator_h), file=open(h_path, 'w'))
     print(reformat(evaluator_c), file=open(c_path, 'w'))
 
-def coalesce_generate_params(args, config, env):
+def coalesce_generate_params(args, env):
 
-    raw_address_model   = args.address_model   or config.address_model
-    raw_concurrency     = args.concurrency     or config.concurrency
-    raw_execution_model = args.execution_model or config.execution_model
-    raw_thread_model    = args.thread_model    or config.thread_model
+    raw_address_model   = args.address_model   or env.address_model
+    raw_concurrency     = args.concurrency     or env.concurrency
+    raw_execution_model = args.execution_model or env.execution_model
+    raw_thread_model    = args.thread_model    or env.thread_model
 
     address_model   = std_address_model[raw_address_model]
     concurrency     = std_concurrency[raw_concurrency]
     execution_model = std_execution_model[raw_execution_model]
     thread_model    = std_thread_model[raw_thread_model]
 
-    definitions    = config.definitions    + args.definitions
-    primitives     = config.primitives     + args.primitives
-    compiled_words = config.compiled_words + args.compiled_words
-    library_words  = config.library_words  + args.library_words
+    definitions    = env.definitions    + args.definitions
+    primitives     = env.primitives     + args.primitives
+    compiled_words = env.compiled_words + args.compiled_words
+    library_words  = env.library_words  + args.library_words
 
-    return Params(address_model, concurrency, execution_model, thread_model,
-                  definitions, primitives, compiled_words, library_words,
-                  args.base_name, args.target_dir)
+    return GenParams(address_model, concurrency, execution_model, thread_model,
+                     definitions, primitives, compiled_words, library_words,
+                     args.base_name, args.target_dir)
 
 def load_error_data():
 
@@ -295,6 +373,13 @@ def error_descriptors(error_data):
         f'''{{{e.symbol}, "{e.symbol}", "{e.desc}"}}'''
         for e in error_data
     ])
+
+def process_definitions(definition_paths):
+
+    return '\n'.join(
+        open(path).read()
+        for path in definition_paths
+    )
 
 def process_primitives(primitive_paths, execution_model, thread_model):
 
@@ -317,8 +402,15 @@ def process_primitives(primitive_paths, execution_model, thread_model):
 
     primitive_impl_tmpl = read(execution_models / execution_model / 'primitive_impl.c')
 
-    impls = '\n'.join([
-        fill_template(primitive_impl_tmpl, {'label': p.label, 'body': p.body})
+    impls = '\n' + '\n'.join([
+        fill_template(
+            primitive_impl_tmpl,
+            {
+                'label':         p.label,
+                'block_comment': p.block_comment or '',
+                'body':          p.body
+            }
+        )
         for p in primitives
     ])
 
@@ -332,12 +424,14 @@ def process_primitives(primitive_paths, execution_model, thread_model):
     primitive_word_def_tmpl = read(threading / thread_model / 'primitive_word_def.c')
 
     word_defs = '\n'.join([
-        fill_template(primitive_word_def_tmpl,
-                      {
-                          'label': p.label,
-                          'word_name': f'"{p.word_name}"',
-                          'flags': 'c_immediate' if p.is_immediate else '0',
-                      })
+        fill_template(
+            primitive_word_def_tmpl,
+            {
+                'label':     p.label,
+                'word_name': f'"{escape_for_c_string(p.word_name)}"',
+                'flags':     'c_immediate' if p.is_immediate else '0',
+            }
+        )
         for p in primitives
         if p.word_name
     ])
@@ -346,7 +440,8 @@ def process_primitives(primitive_paths, execution_model, thread_model):
 
 primitive_re_text = r'\s*'.join([        # join all parts below with whitespace
     '',                                  # match whitespace at the beginning
-    '(?://',                             # begin non-capturing group, discards //, whitespace, etc
+    r'(?P<block_comment>/\*([^*]|\*[^/])*\*/)?',
+    '(?://',                             # begin non-capturing group, discards //, whitespace, etcj
     r'(?P<word_name>[^\s]+)',            # FORTH word name, whitespace delimited
     '(?P<immediate_flag>immediate)?',    # optional "immediate"
     ')?',                                # closes non-capturing group, entire line is optional
@@ -372,6 +467,7 @@ def parse_primitive(path):
     return Primitive(m.group('word_name'),
                      m.group('immediate_flag') is not None,
                      m.group('label'),
+                     m.group('block_comment'),
                      m.group('body'))
 
 def process_compiled_words(compiled_word_paths):
@@ -394,7 +490,7 @@ def process_compiled_words(compiled_word_paths):
         fill_template(compiled_word_def_tmpl,
                       {
                           'label': cw.label,
-                          'word_name': f'"{cw.word_name}"',
+                          'word_name': f'"{escape_for_c_string(cw.word_name)}"',
                           'flags': 'c_immediate' if cw.is_immediate else '0',
                           'body': cw.body,
                       })
@@ -406,6 +502,7 @@ def process_compiled_words(compiled_word_paths):
 
 compiled_word_re_text = r'\s*'.join([    # join all parts below with whitespace
     '',                                  # match whitespace at the beginning
+    r'(?P<block_comment>/\*([^*]|\*[^/])*\*/)?',
     '(?://',                             # begin non-capturing group, discards //, whitespace, etc
     r'(?P<word_name>[^\s]+)',            # FORTH word name, whitespace delimited
     '(?P<immediate_flag>immediate)?',    # optional "immediate"
@@ -432,6 +529,7 @@ def parse_compiled_word(path):
     return CompiledWord(m.group('word_name'),
                         m.group('immediate_flag') is not None,
                         m.group('label'),
+                        m.group('block_comment'),
                         m.group('body'))
 
 def process_library_words(library_word_paths):
@@ -453,6 +551,21 @@ def try_read(path):
         return read(path)
     except:
         return ''
+
+def escape_for_c_string(v: str) -> str:
+    escapes = {
+        '\\': '\\\\',
+        '"': '\\"',
+        '\n': '\\n',
+        '\r': '\\r',
+        '\t': '\\t',
+        '\b': '\\b',
+        '\f': '\\f',
+        '\v': '\\v',
+        '\a': '\\a',
+        '\0': '\\0'
+    }
+    return ''.join(escapes.get(c, c) if c >= ' ' else f'\\x{ord(c):02x}' for c in v)
 
 def fill_template(tmpl, values):
 
@@ -479,13 +592,57 @@ def reformat(c_text):
     ]
 
     p = subprocess.run(indent_cmd, input=c_text, text=True, capture_output=True)
-    p.check_returncode()
+
+    if p.returncode:
+        print(p.stderr)
+        exit(p.returncode)
 
     p = subprocess.run(format_c_cmd, input=p.stdout, text=True, capture_output=True)
-    p.check_returncode()
+
+    if p.returncode:
+        print(p.stderr)
+        exit(p.returncode)
 
     return p.stdout
 
+def cmd_build(args, env):
+
+    target_dir = args.target_dir
+    source_dir = args.source_dir
+    base_name = args.base_name
+    cell_type = args.cell_type
+    double_type = args.double_type
+
+    source_path = (Path(source_dir) / base_name).with_suffix('.c')
+
+    target_base_name = base_name
+
+    target_path = (Path(target_dir) / target_base_name).with_suffix('.o')
+
+    compile_cmd = [
+        'gcc',
+        '-D', f'CELL_TYPE={cell_type}',
+        '-D', f'DOUBLE_TYPE={double_type}',
+        '-c',
+        '-o', str(target_path),
+        str(source_path)
+    ]
+
+    p = subprocess.run(compile_cmd)
+    p.check_returncode()
+
+    target_base_name = f'bootstrap_{base_name}'
+
+    target_path = (Path(target_dir) / target_base_name).with_suffix('.o')
+
+    compile_cmd = [
+        'gcc',
+        '-D', f'CELL_TYPE={cell_type}',
+        '-D', f'DOUBLE_TYPE={double_type}',
+        '-c',
+        '-o', str(target_path),
+        str(source_path)
+    ]
 
 
 if __name__ == '__main__':

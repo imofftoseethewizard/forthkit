@@ -1,0 +1,30 @@
+/*|
+
+`DO ( w1 w2 -- ) compiling: ( -- sys )`
+
+Used in the form:
+
+    DO ... LOOP
+
+or
+
+    DO ... +LOOP
+
+Begins a loop which terminates based on control parameters.  The loop
+index begins at `w2`, and terminates based on the limit `w1`. See
+`LOOP` and `+LOOP` for details on how the loop is terminated. The loop
+is always executed at least once. sys is balanced with its
+corresponding `LOOP` or `+LOOP`.
+
+An error condition exists if insufficient space is available for at
+least three nesting levels.
+
+  |*/
+
+// DO immediate
+
+pr_do:
+{
+    _compile_do();
+    _check_dictionary_bounds();
+}

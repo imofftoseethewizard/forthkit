@@ -1,0 +1,4 @@
+# -*- mode: sh; -*-
+
+export CC=clang
+export LDFLAGS=-lreadline

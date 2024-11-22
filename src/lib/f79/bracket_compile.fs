@@ -1,0 +1,3 @@
+: [COMPILE]
+    ' ' [ COMPILE, ] COMPILE,
+; IMMEDIATE

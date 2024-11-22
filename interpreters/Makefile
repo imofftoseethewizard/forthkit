@@ -2,7 +2,7 @@
 #   from shell env (generally)
 #     FORTHKIT
 #     SOURCE
-#     VERSION_TAG
+#     VARIANT_TAG
 #   from spec file
 #     CONFIG_H
 #     PREAMBLE
@@ -14,11 +14,11 @@
 # Usage
 #   $ export FORTHKIT=~/src/forthkit
 #   $ export SOURCE=$FORTHKIT/interpreters/f79
-#   $ export VERSION_TAG=rel-switch-a32-c4-l1
+#   $ export VARIANT_TAG=rel-switch-a32-c4-l1
 #   $ cd $SOURCE
-#   $ source spec/$VERSION_TAG.rc && make all
+#   $ source spec/$VARIANT_TAG.rc && make all
 
-BUILD   = ${FORTHKIT}/build/${FAMILY}/${VERSION_TAG}
+BUILD   = ${FORTHKIT}/build/${FAMILY}/${VARIANT_TAG}
 
 BIN	= ${BUILD}/bin
 INCLUDE = ${BUILD}/include

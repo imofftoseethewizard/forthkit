@@ -267,8 +267,8 @@ The two macros that bookend the implementation provided in the
 definition of `cw_colon` above are essentially the functionality of
 `:` and `;`, with the additional detail that the start of the compiled
 word is saved and can later be referenced for compilation by
-
-    _compile_cw(cw_colon);
+n
+ n   _compile_cw(cw_colon);
 
 
 
@@ -303,7 +303,54 @@ words.
 
 Project initialization produces a directory structure containing a
 copy of all templates and primitives selected in the configuration.
-TODO
+
+Initial directory structure:
+
+    root
+      bin/
+        <tools>
+      build/
+        <family>/
+          <variant>/
+            src/
+              evaluator.c
+              evaluator.h
+            arch/
+              <target architecture>
+                bin/
+                  <built executables>
+                lib/
+                  <static and shared libraries>
+                obj/
+                  <intermediate artifacts>
+      conf/
+        <various configuration files>
+      config.rc
+      doc/
+      log/
+      Makefile
+      src/
+        interpreter.c
+        compiled/
+          <c files direct compiling words>
+        lib/
+          <forth files>
+        primitives/
+          <c files implementing primitives>
+        templates/
+          <c templates>
+      test/
+
+`<family>` could be f79, f83, f94, f2012, or f-std or one of the
+standard Forth versions.  Variant is a tag composed of the address
+model, evaluator concurrency, execution model, and threading model, eg
+`virt-fib-switch-ind` would be a template instantiation with a virtual
+address model, a multi-fiber evaluator, using a switch to implement
+the evaluator's core, and using an indirect-threaded next.  The
+`<targeted architecture>` describes the choice of compiler, cell type,
+and other details about what architecture the artifacts below were
+built for, eg, `gcc-c4-x86` would be a 4-byte cell compiled with gcc
+for a 32-bit Intel architecture.
 
 Code generation produces two files: `evaluator.c` and `evaluator.h`.
 `evaluator.c` implements the inner and outer evaluators and built-in

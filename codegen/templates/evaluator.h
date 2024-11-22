@@ -213,13 +213,16 @@ compiled, eliminating an enter operation.
 
   |*/
 
-#define c_immediate 0b01
-#define c_inline    0b10
+#define c_immediate   0b01
+#define c_inline1     0b000000010
+#define c_inline2     0b000000100
+#define c_inline3     0b000000110
+#define c_inline_mask 0b000000110
 
 #define _set_word_flags(x, flags)       *((cell *)(x) + 2) |= (flags)
 #define _clear_word_flags(x, flags)     *((cell *)(x) + 2) &= ~(flags)
 #define _get_word_flags(x)              *((cell *)(x) + 2)
-
+#define _get_inline_flag(flags)         (flags & c_inline_mask)
 /*|
 
 TODO

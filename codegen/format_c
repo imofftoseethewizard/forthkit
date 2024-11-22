@@ -65,7 +65,8 @@ done = object()
 error = object()
 
 def raise_error(msg):
-    raise Exception(msg)
+    print(msg, file=sys.stderr)
+    exit(1)
 
 def initial(ts, i, stx):
 
@@ -105,7 +106,7 @@ def in_comment(ts, i, stx):
 
     if label == 'block_end':
 
-        stx.append('syntax error: two block end markers in succession.')
+        stx.append(f'syntax error: two block end markers in succession at position {i}')
         return error, i, stx
 
     if label == 'text':
@@ -124,7 +125,7 @@ def in_code(ts, i, stx):
 
     if label == 'block_start':
 
-        stx.append('syntax error: two block start markers in succession.')
+        stx.append(f'syntax error: two block start markers in succession at position {i}')
         return error, i, stx
 
     if label == 'block_end':
@@ -179,13 +180,13 @@ def emit_code(elt, fmt):
     for t in elt[1:]:
         label, m = t
         if label == 'text':
-            print('    ' + m.string[slice(*m.span())], end='')
+            print(m.string[slice(*m.span())], end='')
 
 def emit_comment(elt, fmt):
     for t in elt[1:]:
         label, m = t
         if label == 'text':
-            print(m.string[slice(*m.span())], end='')
+            print('    ' + m.string[slice(*m.span())], end='')
 
 if __name__ == '__main__':
     main()

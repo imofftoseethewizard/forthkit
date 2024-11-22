@@ -1,0 +1,3 @@
+: ALIGN
+    HERE @ ALIGNED HERE !
+;

@@ -1,0 +1,12 @@
+# -*- mode: sh; -*-
+
+. $FORTHKIT/conf/f79/defaults.rc
+
+. $FORTHKIT/conf/a32.rc
+. $FORTHKIT/conf/c4.rc
+. $FORTHKIT/conf/clang.rc
+
+export ADDRESS_MODEL=host
+export CONCURRENCY=single
+export EXECUTION_MODEL=switch
+export THREADING=direct
