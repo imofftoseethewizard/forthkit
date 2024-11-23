@@ -7,7 +7,7 @@ export FK_DEFINITIONS=" \
     $FORTHKIT/src/primitives/common/op/abort.h \
     $FORTHKIT/src/primitives/common/op/jump.h \
     $FORTHKIT/src/primitives/common/op/literal.h \
-    $FORTHKIT/src/primitives/common/contrib/reserve/reserve.h \
+    $FORTHKIT/src/primitives/common/fk/reserve/reserve.h \
     $FORTHKIT/src/primitives/common/core/align.h \
     $FORTHKIT/src/primitives/common/core/begin.h \
     $FORTHKIT/src/primitives/common/core/else.h \
@@ -16,7 +16,6 @@ export FK_DEFINITIONS=" \
     $FORTHKIT/src/primitives/common/core/if.h \
     $FORTHKIT/src/primitives/common/core/lshift.h \
     $FORTHKIT/src/primitives/common/core/repeat.h \
-    $FORTHKIT/src/primitives/common/core/state.h \
     $FORTHKIT/src/primitives/common/core/store_data.h \
     $FORTHKIT/src/primitives/common/core/swap.h \
     $FORTHKIT/src/primitives/common/core/then.h \
@@ -37,8 +36,8 @@ export FK_PRIMITIVES=" \
     $FORTHKIT/src/primitives/common/block/save-buffers.c \
     $FORTHKIT/src/primitives/common/block/scr.c \
     $FORTHKIT/src/primitives/common/block/update.c \
-    $FORTHKIT/src/primitives/common/contrib/reserve/reserve.c \
-    $FORTHKIT/src/primitives/common/contrib/reserve/top.c \
+    $FORTHKIT/src/primitives/common/fk/reserve/reserve.c \
+    $FORTHKIT/src/primitives/common/fk/reserve/top.c \
     $FORTHKIT/src/primitives/common/core/2divide.c \
     $FORTHKIT/src/primitives/common/core/2drop.c \
     $FORTHKIT/src/primitives/common/core/2dup.c \

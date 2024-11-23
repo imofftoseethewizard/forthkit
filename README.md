@@ -6,6 +6,11 @@ thereof.  It's currently in a rough state with little documentation,
 though it can create working FORTH-79, FORTH-83 (incomplete), and
 FORTH-94 (incomplete) languages.
 
+NOTE: this project and this readme is in an incoherent state at the
+moment.  There are large changes being made to the code generation
+technique and directory structure of this project.  For a coherent
+view of the prior paradigm, check out the `baseline` branch.
+
 ## Goals
 
 Forthkit will provide a toolkit for generating, building, and

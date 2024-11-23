@@ -10,13 +10,23 @@ from collections import namedtuple
 from pathlib import Path
 from pprint import *
 
-Env = namedtuple('Env', ('name', 'description',
-                         'address_model', 'concurrency', 'execution_model', 'thread_model',
-                         'definitions', 'primitives', 'compiled_words', 'library_words'))
+Env = namedtuple(
+    'Env',
+    (
+        'name', 'description',
+        'address_model', 'concurrency_model', 'execution_model', 'thread_model',
+        'definitions', 'primitives', 'compiled_words', 'library_words'
+    )
+)
 
-GenParams = namedtuple('GenParams', ('address_model', 'concurrency', 'execution_model', 'thread_model',
-                                     'definitions', 'primitives', 'compiled_words', 'library_words',
-                                     'base_name', 'target_dir'))
+GenParams = namedtuple(
+    'GenParams',
+    (
+        'address_model', 'concurrency_model', 'execution_model', 'thread_model',
+        'definitions', 'primitives', 'compiled_words', 'library_words',
+        'base_name', 'target_dir'
+    )
+)
 
 BuildParams = namedtuple('BuildParams', ('todo'))
 
@@ -34,10 +44,10 @@ ErrorData = namedtuple('ErrorData', ('id', 'symbol', 'desc'))
 
 templates = Path(__file__).parent / '../codegen/templates'
 
-address_models   = templates / 'address_models'
-evaluator        = templates / 'evaluator'
-execution_models = templates / 'execution_models'
-threading        = templates / 'threading'
+address_models = templates / 'address_models'
+concurrency    = templates / 'concurrency'
+execution      = templates / 'execution'
+threading      = templates / 'threading'
 
 def main():
 
@@ -52,25 +62,25 @@ def main():
 
 def get_env():
 
-    name            = os.environ.get('FK_NAME', 'Forthkit FORTH')
-    description     = os.environ.get('FK_DESCRIPTION', '')
+    name              = os.environ.get('FK_NAME', 'Forthkit FORTH')
+    description       = os.environ.get('FK_DESCRIPTION', '')
 
-    address_model   = parse_address_model(os.environ.get('FK_ADDRESS_MODEL', 'host'))
-    concurrency     = parse_concurrency(os.environ.get('FK_CONCURRENCY', 'single'))
-    execution_model = parse_execution_model(os.environ.get('FK_EXECUTION_MODEL', 'switch'))
-    thread_model    = parse_thread_model(os.environ.get('FK_THREAD_MODEL', 'indirect'))
+    address_model     = parse_address_model(os.environ.get('FK_ADDRESS_MODEL', 'host'))
+    concurrency_model = parse_concurrency_model(os.environ.get('FK_CONCURRENCY_MODEL', 'single'))
+    execution_model   = parse_execution_model(os.environ.get('FK_EXECUTION_MODEL', 'switch'))
+    thread_model      = parse_thread_model(os.environ.get('FK_THREAD_MODEL', 'indirect'))
 
-    definitions     = parse_definitions(os.environ.get('FK_DEFINITIONS', ''))
-    primitives      = parse_primitives(os.environ.get('FK_PRIMITIVES', ''))
-    compiled_words  = parse_compiled_words(os.environ.get('FK_COMPILED_WORDS', ''))
-    library_words   = parse_library_words(os.environ.get('FK_LIBRARY_WORDS', ''))
+    definitions       = parse_definitions(os.environ.get('FK_DEFINITIONS', ''))
+    primitives        = parse_primitives(os.environ.get('FK_PRIMITIVES', ''))
+    compiled_words    = parse_compiled_words(os.environ.get('FK_COMPILED_WORDS', ''))
+    library_words     = parse_library_words(os.environ.get('FK_LIBRARY_WORDS', ''))
 
-    target_dir      = os.environ.get('FK_TARGET_DIR', './')
-    base_name       = os.environ.get('FK_BASE_NAME', 'evaluator')
+    target_dir        = os.environ.get('FK_TARGET_DIR', './')
+    base_name         = os.environ.get('FK_BASE_NAME', 'evaluator')
 
     return Env(
         name, description,
-        address_model, concurrency, execution_model, thread_model,
+        address_model, concurrency_model, execution_model, thread_model,
         definitions, primitives, compiled_words, library_words
     )
 
@@ -99,13 +109,13 @@ def parse_address_model(s):
     except:
         raise InvalidConfigValue('FK_ADDRESS_MODEL', ('host', 'virtual'), s)
 
-def parse_concurrency(s):
+def parse_concurrency_model(s):
 
     try:
-        return std_concurrency[s.lower()]
+        return std_concurrency_model[s.lower()]
 
     except:
-        raise InvalidConfigValue('FK_CONCURRENCY', ('single', 'fibered'), s)
+        raise InvalidConfigValue('FK_CONCURRENCY_MODEL', ('single', 'fibered'), s)
 
 def parse_execution_model(s):
 
@@ -154,7 +164,7 @@ def create_parser():
     gen_parser.add_argument('-a', '--address-model', default='host',
                             choices=('h', 'v', 'host', 'virtual'))
 
-    gen_parser.add_argument('-c', '--concurrency', default='single',
+    gen_parser.add_argument('-c', '--concurrency_model', default='single',
                             choices=('f', 's', 'fibered', 'single'))
 
     gen_parser.add_argument('-e', '--execution-model', default='switch',
@@ -218,7 +228,7 @@ std_address_model = {
     'virtual': 'virtual',
 }
 
-std_concurrency = {
+std_concurrency_model = {
     'f':       'fibered',
     'fibered': 'fibered',
     's':       'single',
@@ -247,10 +257,10 @@ def cmd_generate(args, env):
 
     params = coalesce_generate_params(args, env)
 
-    concurrency     = params.concurrency
-    execution_model = params.execution_model
-    address_model   = params.address_model
-    thread_model    = params.thread_model
+    concurrency_model = params.concurrency_model
+    execution_model   = params.execution_model
+    address_model     = params.address_model
+    thread_model      = params.thread_model
 
     additional_defs = process_definitions(params.definitions)
     primitives      = process_primitives(params.primitives, execution_model, thread_model)
@@ -267,13 +277,13 @@ def cmd_generate(args, env):
     define_enter_h        = read(threading / thread_model / 'define_enter.c')
     word_structure_h      = read(threading / thread_model / 'word_structure.c')
 
-    evaluator_decls_h     = read(evaluator / concurrency / 'evaluator_decls.c')
+    evaluator_decls_h     = read(concurrency / concurrency_model / 'evaluator_decls.c')
 
     address_model_h       = read((address_models / address_model).with_suffix('.c'))
 
-    declare_init_evaluator_h = read(evaluator / concurrency / 'declare_init_evaluator.h')
+    declare_init_evaluator_h = read(concurrency / concurrency_model / 'declare_init_evaluator.h')
 
-    execution_model_decls = try_read(execution_models / execution_model / 'decls.c')
+    execution_model_decls = try_read(execution / execution_model / 'decls.c')
 
     h_values = {
         'additional_definitions': additional_defs,
@@ -286,19 +296,19 @@ def cmd_generate(args, env):
         'word_structure': word_structure_h,
     }
 
-    thread_step_c         = read(threading / thread_model / 'execution_models' / execution_model / 'thread_step.c')
+    thread_step_c         = read(threading / thread_model / 'execution' / execution_model / 'thread_step.c')
 
-    begin_bootstrap_c     = read(evaluator / concurrency / 'begin_bootstrap.c')
-    finish_bootstrap_c    = read(evaluator / concurrency / 'finish_bootstrap.c')
-    evaluator_core_c      = read(evaluator / concurrency / 'execution_models' / execution_model / 'evaluator_core.c')
-    init_evaluator_c      = read(evaluator / concurrency / 'init_evaluator.c')
-    prepare_evaluation_c  = read(evaluator / concurrency / 'prepare_evaluation.c')
+    begin_bootstrap_c     = read(concurrency / concurrency_model / 'begin_bootstrap.c')
+    finish_bootstrap_c    = read(concurrency / concurrency_model / 'finish_bootstrap.c')
+    evaluator_core_c      = read(concurrency / concurrency_model / 'execution' / execution_model / 'evaluator_core.c')
+    init_evaluator_c      = read(concurrency / concurrency_model / 'init_evaluator.c')
+    prepare_evaluation_c  = read(concurrency / concurrency_model / 'prepare_evaluation.c')
 
-    declare_primitives_c  = try_read(execution_models / execution_model / 'declare_primitives.c')
+    declare_primitives_c  = try_read(execution / execution_model / 'declare_primitives.c')
 
     evaluator_variables_c  = (
-        try_read(evaluator / concurrency / 'evaluator_variables.c') +
-        try_read(execution_models / execution_model / 'evaluator_variables.c') +
+        try_read(concurrency / concurrency_model / 'evaluator_variables.c') +
+        try_read(execution / execution_model / 'evaluator_variables.c') +
         try_read(threading / thread_model / 'evaluator_variables.c')
     )
 
@@ -336,22 +346,22 @@ def cmd_generate(args, env):
 
 def coalesce_generate_params(args, env):
 
-    raw_address_model   = args.address_model   or env.address_model
-    raw_concurrency     = args.concurrency     or env.concurrency
-    raw_execution_model = args.execution_model or env.execution_model
-    raw_thread_model    = args.thread_model    or env.thread_model
+    raw_address_model     = args.address_model     or env.address_model
+    raw_concurrency_model = args.concurrency_model or env.concurrency_model
+    raw_execution_model   = args.execution_model   or env.execution_model
+    raw_thread_model      = args.thread_model      or env.thread_model
 
-    address_model   = std_address_model[raw_address_model]
-    concurrency     = std_concurrency[raw_concurrency]
-    execution_model = std_execution_model[raw_execution_model]
-    thread_model    = std_thread_model[raw_thread_model]
+    address_model     = std_address_model[raw_address_model]
+    concurrency_model = std_concurrency_model[raw_concurrency_model]
+    execution_model   = std_execution_model[raw_execution_model]
+    thread_model      = std_thread_model[raw_thread_model]
 
     definitions    = env.definitions    + args.definitions
     primitives     = env.primitives     + args.primitives
     compiled_words = env.compiled_words + args.compiled_words
     library_words  = env.library_words  + args.library_words
 
-    return GenParams(address_model, concurrency, execution_model, thread_model,
+    return GenParams(address_model, concurrency_model, execution_model, thread_model,
                      definitions, primitives, compiled_words, library_words,
                      args.base_name, args.target_dir)
 
@@ -388,7 +398,7 @@ def process_primitives(primitive_paths, execution_model, thread_model):
         for path in primitive_paths
     ]
 
-    primitive_decl_tmpl = try_read(execution_models / execution_model / 'primitive_decl.c')
+    primitive_decl_tmpl = try_read(execution / execution_model / 'primitive_decl.c')
 
     if primitive_decl_tmpl:
 
@@ -400,7 +410,7 @@ def process_primitives(primitive_paths, execution_model, thread_model):
     else:
         decls = ''
 
-    primitive_impl_tmpl = read(execution_models / execution_model / 'primitive_impl.c')
+    primitive_impl_tmpl = read(execution / execution_model / 'primitive_impl.c')
 
     impls = '\n' + '\n'.join([
         fill_template(
@@ -587,7 +597,7 @@ def reformat(c_text):
 
     indent_cmd = 'indent --no-tabs -psl -kr -l128'.split()
     format_c_cmd = [
-        str(Path(__file__).parent.parent / 'codegen' / 'format_c'),
+        str(Path(__file__).parent / 'format_c'),
         'C'
     ]
 
