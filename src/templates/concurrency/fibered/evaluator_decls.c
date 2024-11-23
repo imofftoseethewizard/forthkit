@@ -4,7 +4,17 @@ TODO
 
   |*/
 
-#define _current() tp[ta_current]
+#define _base()         tp[ta_base]
+#define _context()      tp[ta_context]
+#define _current()      tp[ta_current]
+#define _forth()        tp[ta_forth]
+#define _state()        tp[ta_state]
+
+#define _set_base(x)    tp[ta_base] = (x)
+#define _set_context(x) tp[ta_context] = (x)
+#define _set_current(x) tp[ta_current] = (x)
+#define _set_state(x)   tp[ta_state] = (x)
+
 
 enum engine_attribute {
     /* attributes set by init_evaluator */

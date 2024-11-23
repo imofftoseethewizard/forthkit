@@ -31,8 +31,8 @@ compile `op_do_does`.
 At interpretation time, `do_does>` runs during the creation of a new
 word.  As left by `DOES>` at compile time, the location of the `DOES>`
 code is on the stack and the word being defined is available in
-`tp[ta_current]`. (TODO concurrency) Assuming it was created with
-`CREATE`, the body of the word will so far be
+`_current()`. Assuming it was created with `CREATE`, the body of the
+word will so far be
 
     op_literal
     <addr of cell below op_exit>

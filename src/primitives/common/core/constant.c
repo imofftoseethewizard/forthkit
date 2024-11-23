@@ -24,12 +24,11 @@ pr_constant:
     /* adds the word to the current vocabulary */
     _end_define_word();
 
-    // TODO threading
-
     /* Compile the word. It just puts a literal on the stack. */
-    _compile_pr(op_literal);
+    // TODO threading: replace op_literal with do_literal
+    _compile_pw(op_literal);
     _store_data(*sp++);
-    _compile_pr(op_exit);
+    _compile_pw(op_exit);
 
     _check_dictionary_bounds();
 }

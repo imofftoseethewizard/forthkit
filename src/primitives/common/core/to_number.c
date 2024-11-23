@@ -6,7 +6,7 @@ pr_to_number:
     register number base, digit, len, result;
     register char *s;
 
-    base = tp[ta_base];
+    base = _base();
     len = *sp;
     s = (char *)_to_ptr(*(sp+1));
     result = *(sp+2);

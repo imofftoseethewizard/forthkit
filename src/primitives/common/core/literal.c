@@ -11,8 +11,7 @@ which when later executed, will leave n on the stack.
 
 pr_literal:
 {
-	// TODO threading
-    _compile_pr(op_literal);
+    _compile_pw(op_literal);
     _store_data(*sp++);
     _check_dictionary_bounds();
 }

@@ -2,6 +2,5 @@
 
 pr_current:
 {
-	// TODO: concurrency
-    *--sp = _from_ptr(&tp[ta_current]);
+    *--sp = _from_ptr(&_current());
 }

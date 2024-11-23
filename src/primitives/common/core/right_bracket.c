@@ -2,6 +2,5 @@
 
 pr_right_bracket:
 {
-	// TODO concurrency
-    tp[ta_state] = 1;
+	_set_state(1);
 }

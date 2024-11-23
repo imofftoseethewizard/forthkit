@@ -14,7 +14,5 @@ different compilation vocabulary is established.
 
 pr_forth:
 {
-	// TODO concurrency
-
-    tp[ta_context] = _from_ptr(&tp[ta_forth]);
+	_set_context(_from_ptr(&_forth()));
 }

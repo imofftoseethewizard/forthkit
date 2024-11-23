@@ -14,8 +14,7 @@ is not terminated, execution continues to just after the corresponding
 
 pr_plus_loop:
 {
-	// TODO threading
-    _compile_pr(op_plus_loop);
+    _compile_pw(op_plus_loop);
     _store_data((char *)_to_ptr(*sp++) - dp);
 
     _check_dictionary_bounds();

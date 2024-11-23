@@ -12,6 +12,5 @@ radix. FORTH-79: {{2..70}}, FORTH-83: {{2..72}}, FORTH-94 and later:
 
 pr_base:
 {
-	// TODO: concurrency single
-    *--sp = _from_ptr(&tp[ta_base]);
+	*--sp = _from_ptr(&_base());
 }

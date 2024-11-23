@@ -19,7 +19,7 @@ pr_convert:
     register double_number result;
     register char *s;
 
-    base = tp[ta_base];
+    base = _base();
     s = (char *)_to_ptr(*sp);
     result = _to_high_word(*(sp+1)) | _to_low_word(*(sp+2));
 

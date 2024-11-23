@@ -13,9 +13,8 @@ equivalent function).  `sys` is balanced with its corresponding `:`.
 
 pr_semicolon:
 {
-	// TODO concurrency
-    _compile_pr(op_exit);
-    tp[ta_state] = 0;
+    _compile_pw(op_exit);
+    _set_state(0);
 
     _check_dictionary_bounds();
 }

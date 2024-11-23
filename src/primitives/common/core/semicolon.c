@@ -11,7 +11,7 @@ pr_semicolon:
      */
 
     _compile_pr(op_exit);
-    tp[ta_state] = 0;
+    _set_state(0);
 
     _end_define_word();
 

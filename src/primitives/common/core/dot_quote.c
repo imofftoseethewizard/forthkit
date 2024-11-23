@@ -20,12 +20,11 @@ read from the current input.
 
 pr_dot_quote:
 {
-	// TODO threading
     register char *source      = (char *)_to_ptr(e[ea_source_addr]);
     register cell source_len   = e[ea_source_len];
     register cell source_idx   = e[ea_source_idx] + 1; /* skip space after ." */
 
-    if (tp[ta_state]) {
+    if (_state()) {
 
         register cell *jump_offset = (cell *)dp + 3;
         register char *s, *s0 = dp + 4*sizeof(cell);

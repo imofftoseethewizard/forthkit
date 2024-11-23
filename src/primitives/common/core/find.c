@@ -25,12 +25,10 @@ pr_find:
     /* Save the length of the target string into k. */
     name_len = _string_len(name);
 
-    // TODO concurrency
-
     /* word will hold the address of the word being checked for a matching
        name.
     */
-    word = *_to_ptr(tp[ta_context]);
+    word = *_to_ptr(_context());
 
     while (word) {
         wordp = _to_ptr(word);

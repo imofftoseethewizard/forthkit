@@ -27,12 +27,12 @@ balanced with its corresponding ; .
 
 pr_colon:
 {
-	// TODO: threading and concurrency
-
-    tp[ta_context] = tp[ta_current];
-    tp[ta_state] = 1;
+	_set_context(_current());
+	_set_state(1);
 
     _store_word_name();
     _word_header(0);
+
+    // TODO review end_define_word
     _end_define_word();
 }

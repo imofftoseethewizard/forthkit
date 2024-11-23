@@ -13,6 +13,5 @@ pr_quit:
 {
     rp = rp0;
     ip = 0;
-    // TODO concurrency
-    tp[ta_state] = 0;
+    _set_state(0);
 }

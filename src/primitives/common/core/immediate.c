@@ -11,6 +11,5 @@ be executed when encountered during compilation rather than compiled.
 
 pr_immediate:
 {
-	// TODO concurrency
-    _set_word_flags(_to_ptr(*_to_ptr(tp[ta_current])), c_immediate);
+    _set_word_flags(_to_ptr(*_to_ptr(_current())), c_immediate);
 }

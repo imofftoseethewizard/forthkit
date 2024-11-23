@@ -11,6 +11,5 @@ vocabulary in the search order.
 
 pr_definitions:
 {
-	// TODO concurrency
-    tp[ta_current] = tp[ta_context];
+	_set_current(_context());
 }

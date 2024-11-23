@@ -23,8 +23,8 @@ pr_do_colon:
        or ;CODE .  sys is balanced with its corresponding ; .
      */
 
-    tp[ta_context] = tp[ta_current];
-    tp[ta_state] = 1;
+	_set_context(_current());
+	_set_state(1);
 
     _store_word_name();
     _word_header(0);

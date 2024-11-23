@@ -284,6 +284,16 @@ TODO
 
   |*/
 
+#define _end_define_word()                                       \
+	/* Add to current vocabulary.          */                    \
+	*_to_ptr(_current()) = *sp++;
+
+/*|
+
+TODO
+
+  |*/
+
 #define _next_word(x) *(_to_ptr(x) + 1)
 
 /*|
