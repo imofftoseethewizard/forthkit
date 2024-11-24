@@ -29,10 +29,10 @@ pr_dot_quote:
         register cell *jump_offset = (cell *)dp + 3;
         register char *s, *s0 = dp + 4*sizeof(cell);
 
-        _compile_pr(op_literal);
+        _compile_pw(op_literal);
         _store_data(_from_ptr(s0));
 
-        _compile_pr(op_jump);
+        _compile_pw(op_jump);
         _store_data(0);
 
         s = s0;
@@ -43,9 +43,9 @@ pr_dot_quote:
 
         dp = (char *)_align(s);
 
-        _compile_pr(op_literal);
+        _compile_pw(op_literal);
         _store_data(s - s0);
-        _compile_pr(pr_type);
+        _compile_pw(pr_type);
 
         _check_dictionary_bounds();
 

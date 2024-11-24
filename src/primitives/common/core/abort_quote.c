@@ -25,7 +25,7 @@ pr_abort_quote:
     register cell *jump_offset = (cell *)dp + 1;
     register char *s, *s0 = dp + 2*sizeof(cell);
 
-    _compile_pr(op_jump);
+    _compile_pw(op_jump);
     _store_data(0);
 
     s = s0;
@@ -41,9 +41,9 @@ pr_abort_quote:
 
     *jump_offset = (cell)(dp - (char *)jump_offset);
 
-    _compile_pr(op_literal);
+    _compile_pw(op_literal);
     _store_data(err_abort_message);
-    _compile_pr(op_abort);
+    _compile_pw(op_abort);
 
     _compile_then();
 

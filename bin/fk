@@ -274,16 +274,16 @@ def cmd_generate(args, env):
     error_code_defs_h = error_code_definitions(error_data)
     error_descs_c = error_descriptors(error_data)
 
-    define_enter_h        = read(threading / thread_model / 'define_enter.c')
-    word_structure_h      = read(threading / thread_model / 'word_structure.c')
+    define_enter_h        = read(threading / thread_model / 'define_enter.h')
+    word_structure_h      = read(threading / thread_model / 'word_structure.h')
 
-    evaluator_decls_h     = read(concurrency / concurrency_model / 'evaluator_decls.c')
+    evaluator_decls_h     = read(concurrency / concurrency_model / 'evaluator_decls.h')
 
-    address_model_h       = read((address_models / address_model).with_suffix('.c'))
+    address_model_h       = read((address_models / address_model).with_suffix('.h'))
 
     declare_init_evaluator_h = read(concurrency / concurrency_model / 'declare_init_evaluator.h')
 
-    execution_model_decls = try_read(execution / execution_model / 'decls.c')
+    execution_model_decls = try_read(execution / execution_model / 'decls.h')
 
     h_values = {
         'additional_definitions': additional_defs,
@@ -315,7 +315,6 @@ def cmd_generate(args, env):
     c_values = {
         'begin_bootstrap': begin_bootstrap_c,
         'compiled_word_definitions': compiled_words.word_defs,
-        'compiled_word_decls': '// TODO:compiled_word_decls',
         'declare_primitives': declare_primitives_c,
         'error_descriptors': error_descs_c,
         'evaluator_core': evaluator_core_c,

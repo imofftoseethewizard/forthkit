@@ -20,13 +20,13 @@ pr_2constant:
     _end_define_word();
 
     /* Compile the word. It just puts a literal on the stack. */
-    _compile_pr(op_2literal);
+    _compile_pw(op_2literal);
     _store_data(*(sp+1));
     _store_data(*sp);
 
     sp += 2;
 
-    _compile_pr(op_exit);
+    _compile_pw(op_exit);
 
     _check_dictionary_bounds();
 }

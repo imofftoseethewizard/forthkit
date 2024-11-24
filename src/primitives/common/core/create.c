@@ -23,11 +23,11 @@ pr_create:
     // TODO threading
 
     /* Compile the word. It just puts a literal on the stack. */
-    _compile_pr(op_literal);
+    _compile_pw(op_literal);
 
     /* dp + 2 is the location immediately after the exit below. */
     _store_data(_from_ptr((cell *)dp + 2));
-    _compile_pr(op_exit);
+    _compile_pw(op_exit);
 
     _end_define_word();
 

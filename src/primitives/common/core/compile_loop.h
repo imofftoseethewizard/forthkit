@@ -4,7 +4,7 @@
 #define _compile_loop()                      \
     do {                                     \
         register cell *xp = _to_ptr(*sp++);  \
-        _compile_pr(op_loop);                \
+        _compile_pw(op_loop);                \
         _store_data((char *)xp - dp);        \
         xp--;                                \
         *xp = _from_ptr(dp);                 \

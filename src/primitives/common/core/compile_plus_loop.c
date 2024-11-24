@@ -13,7 +13,7 @@ pr_compile_plus_loop:
 
     register cell *xp = _to_ptr(*sp++);
 
-    _compile_pr(op_plus_loop);
+    _compile_pw(op_plus_loop);
     _store_data((char *)xp - dp);
 
     /* move xp back to the address of the address of the first cell

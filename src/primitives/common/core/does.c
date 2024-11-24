@@ -64,10 +64,10 @@ to implement, it seems the better approach.
 pr_does:
 {
 	// TODO threading
-    _compile_pr(op_literal);
+    _compile_pw(op_literal);
     _store_data(_from_ptr((cell *)dp + 3));
-    _compile_pr(pr_do_does);
-    _compile_pr(op_exit);
+    _compile_pw(pr_do_does);
+    _compile_pw(op_exit);
 
     _check_dictionary_bounds();
 }

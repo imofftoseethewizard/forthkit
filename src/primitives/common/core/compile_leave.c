@@ -27,8 +27,8 @@ pr_leave:
        address of the start of the loop.
      */
 
-    _compile_pr(pr_unloop);
-    _compile_pr(op_jump);
+    _compile_pw(pr_unloop);
+    _compile_pw(op_jump);
     _store_data(leave_link);
     leave_link = _from_ptr(dp - sizeof(cell));
 }

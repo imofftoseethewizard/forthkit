@@ -4,7 +4,7 @@
    taken from the stack to complete its compilation.
 */
 #define _compile_jump_origin() \
-    _compile_pr(op_jump), *--sp = _from_ptr(dp), _store_data(0)
+    _compile_pw(op_jump), *--sp = _from_ptr(dp), _store_data(0)
 
 /* _compile_jump_target
  */

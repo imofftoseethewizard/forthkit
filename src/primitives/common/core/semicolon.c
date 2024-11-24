@@ -10,7 +10,7 @@ pr_semicolon:
          balanced with its corresponding : .
      */
 
-    _compile_pr(op_exit);
+    _compile_pw(op_exit);
     _set_state(0);
 
     _end_define_word();
