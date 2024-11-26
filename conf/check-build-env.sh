@@ -74,3 +74,13 @@ then
     echo "8 byte cells are incompatible with the i386 architecture. Use 2 or 4 instead." >&2
     exit 1
 fi
+
+if [[ -z $FK_STAGE ]]
+then
+    echo "FK_STAGE is unset or empty." >&2
+    exit 1
+elif [[ ! $FK_STAGE =~ ^(debug|checked|unsafe)$ ]]
+then
+    echo "FK_STAGE must be one of \"debug\", \"checked\" or \"unsafe\", not $FK_STAGE." >&2
+    exit 1
+fi

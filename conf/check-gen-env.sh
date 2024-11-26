@@ -52,16 +52,6 @@ then
     exit 1
 fi
 
-if [[ -z $FK_STAGE ]]
-then
-    echo "FK_STAGE is unset or empty." >&2
-    exit 1
-elif [[ ! $FK_STAGE =~ ^(debug|checked|unsafe)$ ]]
-then
-    echo "FK_STAGE must be one of \"debug\", \"checked\" or \"unsafe\", not $FK_STAGE." >&2
-    exit 1
-fi
-
 if [[ -z $FK_THREAD_MODEL ]]
 then
     echo "FK_THREAD_MODEL is unset or empty." >&2
