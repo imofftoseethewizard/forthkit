@@ -3,18 +3,24 @@
 # Sourcing this file will set up all environment variables required to
 # generate and build an evaluator library and its interpreters.
 
-$FORTHKIT/conf/check-gen-env.sh
-
-if [ $? == 0 ]
+if [[ -z $FORTHKIT ]]
 then
+    echo "FORTHKIT is unset." >&2
 
-    $FORTHKIT/conf/check-build-env.sh
+else
+    $FORTHKIT/conf/check-gen-env.sh
 
     if [ $? == 0 ]
     then
-        . $FORTHKIT/conf/arch/$FK_ARCH.rc
-        . $FORTHKIT/conf/arch/c$FK_CELL_SIZE.rc
-        . $FORTHKIT/conf/$FK_FAMILY/base.rc
-        . $FORTHKIT/conf/build/$FK_STAGE.rc
+
+        $FORTHKIT/conf/check-build-env.sh
+
+        if [ $? == 0 ]
+        then
+            . $FORTHKIT/conf/arch/$FK_ARCH.rc
+            . $FORTHKIT/conf/arch/c$FK_CELL_SIZE.rc
+            . $FORTHKIT/conf/$FK_FAMILY/base.rc
+            . $FORTHKIT/conf/build/$FK_STAGE.rc
+        fi
     fi
 fi

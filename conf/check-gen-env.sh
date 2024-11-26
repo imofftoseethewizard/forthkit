@@ -17,7 +17,7 @@ then
     exit 1
 elif [[ ! $FK_ADDRESS_MODEL =~ ^(host|virtual)$ ]]
 then
-    echo "FK_ADDRESS_MODEL must be one of \"host\" or \"virtual\", not $FK_ADDRESS_MODEL." >&2
+    echo "FK_ADDRESS_MODEL must be one of \"host\" or \"virtual\", not \"$FK_ADDRESS_MODEL\"." >&2
     exit 1
 fi
 
@@ -27,7 +27,7 @@ then
     exit 1
 elif [[ ! $FK_CONCURRENCY =~ ^(fibered|single)$ ]]
 then
-    echo "FK_CONCURRENCY must be one of \"fibered\" or \"single\", not $FK_CONCURRENCY." >&2
+    echo "FK_CONCURRENCY must be one of \"fibered\" or \"single\", not \"$FK_CONCURRENCY\"." >&2
     exit 1
 fi
 
@@ -38,7 +38,7 @@ then
 elif [[ ! $FK_EXECUTION_MODEL =~ ^(computed_goto|local_subroutine|switch)$ ]]
 then
     echo "FK_EXECUTION_MODEL must be one of \"computed_goto\", \"local_subroutine\"" >&2
-    echo "or \"switch\", not $FK_EXECUTION_MODEL." >&2
+    echo "or \"switch\", not \"$FK_EXECUTION_MODEL\"." >&2
     exit 1
 fi
 
@@ -48,7 +48,7 @@ then
     exit 1
 elif [[ ! $FK_FAMILY =~ ^(f79|f83|f94)$ ]]
 then
-    echo "FK_FAMILY must be one of \"f79\", \"f83\" or \"f94\", not $FK_FAMILY." >&2
+    echo "FK_FAMILY must be one of \"f79\", \"f83\" or \"f94\", not \"$FK_FAMILY\"." >&2
     exit 1
 fi
 
@@ -58,6 +58,6 @@ then
     exit 1
 elif [[ ! $FK_THREAD_MODEL =~ ^(direct|indirect)$ ]]
 then
-    echo "FK_THREAD_MODEL must be one of \"direct\" or \"indirect\", not $FK_THREAD_MODEL." >&2
+    echo "FK_THREAD_MODEL must be one of \"direct\" or \"indirect\", not \"$FK_THREAD_MODEL\"." >&2
     exit 1
 fi
