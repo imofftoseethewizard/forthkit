@@ -4,9 +4,17 @@
 # generate and build an evaluator library and its interpreters.
 
 $FORTHKIT/conf/check-gen-env.sh
-$FORTHKIT/conf/check-build-env.sh
 
-. $FORTHKIT/conf/arch/$FK_ARCH.rc
-. $FORTHKIT/conf/arch/c$FK_CELL_SIZE.rc
-. $FORTHKIT/conf/$FK_FAMILY/base.rc
-. $FORTHKIT/conf/build/$FK_STAGE.rc
+if [ $? == 0 ]
+then
+
+    $FORTHKIT/conf/check-build-env.sh
+
+    if [ $? == 0 ]
+    then
+        . $FORTHKIT/conf/arch/$FK_ARCH.rc
+        . $FORTHKIT/conf/arch/c$FK_CELL_SIZE.rc
+        . $FORTHKIT/conf/$FK_FAMILY/base.rc
+        . $FORTHKIT/conf/build/$FK_STAGE.rc
+    fi
+fi

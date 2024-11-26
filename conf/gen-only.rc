@@ -10,6 +10,10 @@
 # * `FK_FAMILY`
 # * `FK_THREAD_MODEL`
 
+
 $FORTHKIT/conf/check-gen-env.sh
 
-. $FORTHKIT/conf/$FK_FAMILY/base.rc
+if [ $? == 0 ]
+then
+    . $FORTHKIT/conf/$FK_FAMILY/base.rc
+fi
