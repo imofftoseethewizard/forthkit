@@ -1,0 +1,4 @@
+# -*- mode: sh; -*-
+
+export CELL_TYPE=short
+export DOUBLE_TYPE=long

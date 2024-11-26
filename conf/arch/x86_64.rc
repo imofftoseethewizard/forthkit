@@ -1,0 +1,5 @@
+# -*- mode: sh; -*-
+
+export CFLAGS=-fPIC
+export EVALUATOR_IMAGE_LDFLAGS=
+export LDFLAGS=-lreadline

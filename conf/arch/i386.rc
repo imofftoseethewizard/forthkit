@@ -2,3 +2,4 @@
 
 export CFLAGS=-m32
 export EVALUATOR_IMAGE_LDFLAGS="-m elf_i386"
+export LDFLAGS=-lreadline

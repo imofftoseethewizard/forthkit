@@ -1,0 +1,4 @@
+# -*- mode: sh; -*-
+
+export CELL_TYPE="long long int"
+export DOUBLE_TYPE=__int128

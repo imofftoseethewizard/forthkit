@@ -1,0 +1,15 @@
+# -*- mode: sh; -*-
+
+# Sourcing this file will set up all environment variables required to
+# generate the source for a specific evaluator variant.  Which variant
+# is determined by the following environment variables:
+#
+# * `FK_ADDRESS_MODEL`
+# * `FK_CONCURRENCY`
+# * `FK_EXECUTION_MODEL`
+# * `FK_FAMILY`
+# * `FK_THREAD_MODEL`
+
+$FORTHKIT/conf/check-gen-env.sh
+
+. $FORTHKIT/conf/$FK_FAMILY/base.rc
