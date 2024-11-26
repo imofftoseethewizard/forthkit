@@ -19,7 +19,7 @@ ea_source_len  CONSTANT #TIB
 
     BEGIN
         \ ( c-addr-last c-addr-current )
-        2dup >
+        2DUP >
     WHILE
             \ `41` is used here instead of `[CHAR] )` to minimize
             \ the amount of code before comments are fully

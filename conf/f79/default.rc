@@ -3,11 +3,19 @@
 export FK_NAME=FORTH-79
 export FK_DESCRIPTION="A very small configuration to test the fk command."
 
-export FK_DEFINITIONS=" \
-    $FORTHKIT/src/primitives/common/op/abort.h \
-    $FORTHKIT/src/primitives/common/op/jump.h \
-    $FORTHKIT/src/primitives/common/op/literal.h \
-    $FORTHKIT/src/primitives/common/fk/reserve/reserve.h \
+#<
+# `FK_DEFINITIONS` contains header material which provides definitions
+# common to two or more primitives, or which implements the
+# functionality of a primitive so that it may be used directly in C
+# code (as opposed to in a compiled word or library word).  For
+# example, `_reserve()` (defined in
+# `src/primitives/common/fk/reserve/reserve/h`) is used in
+# bootstrapping, but it's also the implementation of the Forthkit
+# extension word `reserve`, which allocates space in high memory,
+# analogous to `allot` for low memory.
+#>
+
+export FK_DEFINITIONS="\
     $FORTHKIT/src/primitives/common/core/align.h \
     $FORTHKIT/src/primitives/common/core/begin.h \
     $FORTHKIT/src/primitives/common/core/else.h \
@@ -20,15 +28,18 @@ export FK_DEFINITIONS=" \
     $FORTHKIT/src/primitives/common/core/swap.h \
     $FORTHKIT/src/primitives/common/core/then.h \
     $FORTHKIT/src/primitives/common/core/to_number.h \
-    $FORTHKIT/src/primitives/common/core/while.h \
     $FORTHKIT/src/primitives/common/core/until.h \
-    $FORTHKIT/src/primitives/common/core/variable.h \
+    $FORTHKIT/src/primitives/common/core/while.h \
+    $FORTHKIT/src/primitives/common/fk/reserve/reserve.h \
+    $FORTHKIT/src/primitives/common/op/abort.h \
+    $FORTHKIT/src/primitives/common/op/jump.h \
+    $FORTHKIT/src/primitives/common/op/literal.h \
     $FORTHKIT/src/primitives/f79/core/do.h \
     $FORTHKIT/src/primitives/f79/core/loop.h \
 "
 
 # words implemented directly in C
-export FK_PRIMITIVES=" \
+export FK_PRIMITIVES="\
     $FORTHKIT/src/primitives/common/block/blk.c \
     $FORTHKIT/src/primitives/common/block/buffer.c \
     $FORTHKIT/src/primitives/common/block/empty-buffers.c \
@@ -36,8 +47,6 @@ export FK_PRIMITIVES=" \
     $FORTHKIT/src/primitives/common/block/save-buffers.c \
     $FORTHKIT/src/primitives/common/block/scr.c \
     $FORTHKIT/src/primitives/common/block/update.c \
-    $FORTHKIT/src/primitives/common/fk/reserve/reserve.c \
-    $FORTHKIT/src/primitives/common/fk/reserve/top.c \
     $FORTHKIT/src/primitives/common/core/2divide.c \
     $FORTHKIT/src/primitives/common/core/2drop.c \
     $FORTHKIT/src/primitives/common/core/2dup.c \
@@ -56,12 +65,10 @@ export FK_PRIMITIVES=" \
     $FORTHKIT/src/primitives/common/core/c_move.c \
     $FORTHKIT/src/primitives/common/core/c_store.c \
     $FORTHKIT/src/primitives/common/core/compile.c \
-    $FORTHKIT/src/primitives/common/core/constant.c \
     $FORTHKIT/src/primitives/common/core/context.c \
     $FORTHKIT/src/primitives/common/core/convert.c \
     $FORTHKIT/src/primitives/common/core/count.c \
     $FORTHKIT/src/primitives/common/core/cr.c \
-    $FORTHKIT/src/primitives/common/core/create.c \
     $FORTHKIT/src/primitives/common/core/current.c \
     $FORTHKIT/src/primitives/common/core/d_lt.c \
     $FORTHKIT/src/primitives/common/core/d_plus.c \
@@ -70,8 +77,6 @@ export FK_PRIMITIVES=" \
     $FORTHKIT/src/primitives/common/core/definitions.c \
     $FORTHKIT/src/primitives/common/core/depth.c \
     $FORTHKIT/src/primitives/common/core/dnegate.c \
-    $FORTHKIT/src/primitives/common/core/do_does.c \
-    $FORTHKIT/src/primitives/common/core/does.c \
     $FORTHKIT/src/primitives/common/core/dot_quote.c \
     $FORTHKIT/src/primitives/common/core/drop.c \
     $FORTHKIT/src/primitives/common/core/dup.c \
@@ -137,20 +142,20 @@ export FK_PRIMITIVES=" \
     $FORTHKIT/src/primitives/common/core/u_lt.c \
     $FORTHKIT/src/primitives/common/core/u_times.c \
     $FORTHKIT/src/primitives/common/core/until.c \
-    $FORTHKIT/src/primitives/common/core/variable.c \
     $FORTHKIT/src/primitives/common/core/while.c \
     $FORTHKIT/src/primitives/common/core/word.c \
     $FORTHKIT/src/primitives/common/core/xor.c \
     $FORTHKIT/src/primitives/common/core/zero_eq.c \
     $FORTHKIT/src/primitives/common/core/zero_gt.c \
     $FORTHKIT/src/primitives/common/core/zero_lt.c \
-    $FORTHKIT/src/primitives/common/op/0branch.c \
+    $FORTHKIT/src/primitives/common/fk/reserve/reserve.c \
+    $FORTHKIT/src/primitives/common/fk/reserve/top.c \
+    $FORTHKIT/src/primitives/common/op/0branch.c \p
     $FORTHKIT/src/primitives/common/op/abort.c \
     $FORTHKIT/src/primitives/common/op/does.c \
     $FORTHKIT/src/primitives/common/op/exit.c \
     $FORTHKIT/src/primitives/common/op/jump.c \
     $FORTHKIT/src/primitives/common/op/literal.c \
-    $FORTHKIT/src/primitives/f79/core/colon.c \
     $FORTHKIT/src/primitives/f79/core/do.c \
     $FORTHKIT/src/primitives/f79/core/fill.c \
     $FORTHKIT/src/primitives/f79/core/leave.c \
@@ -163,13 +168,32 @@ export FK_PRIMITIVES=" \
     $FORTHKIT/src/primitives/f79/op/do.c \
     $FORTHKIT/src/primitives/f79/op/loop.c \
     $FORTHKIT/src/primitives/f79/op/plus_loop.c \
+    $FORTHKIT/src/primitives/f79/threading/$FK_THREAD_MODEL/core/colon.c \
+    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/constant.c \
+    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/create.c \
+    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/do_does.c \
+    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/does.c \
+    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/variable.c \
 "
 
-# words compiled using C macros
-export FK_COMPILED_WORDS=$FORTHKIT/src/compiled/core/interpret.c
+# include threading-specific primitives which exist in only one
+# thread model and can't be specified above.
 
-# words compiled from source using the evaluator
+. $FORTHKIT/conf/f79/threading/$FK_THREAD_MODEL.rc
+
+# words compiled using C macros.
+export FK_COMPILED_WORDS=" \
+    $FORTHKIT/src/compiled/core/colon.c \
+    $FORTHKIT/src/compiled/core/constant.c \
+    $FORTHKIT/src/compiled/core/create.c \
+    $FORTHKIT/src/compiled/core/interpret.c \
+    $FORTHKIT/src/compiled/core/variable.c \
+"
+
+# words compiled from source using the evaluator.  text_input.fs
+# should come first, since it defines paren comments.
 export FK_LIBRARY_WORDS=" \
+    $FORTHKIT/src/lib/common/core/text_input.fs \
     $FORTHKIT/src/lib/common/block/block.fs \
     $FORTHKIT/src/lib/common/block/list.fs \
     $FORTHKIT/src/lib/common/block/load.fs \
@@ -182,7 +206,6 @@ export FK_LIBRARY_WORDS=" \
     $FORTHKIT/src/lib/common/core/question_mark.fs \
     $FORTHKIT/src/lib/common/core/space.fs \
     $FORTHKIT/src/lib/common/core/spaces.fs \
-    $FORTHKIT/src/lib/common/core/text_input.fs \
     $FORTHKIT/src/lib/f79/79-standard.fs \
     $FORTHKIT/src/lib/f79/bracket_compile.fs \
     $FORTHKIT/src/lib/f79/bracket_tick.fs \

@@ -12,6 +12,10 @@ parameter field.  When `<name>` is subsequently executed, the address
 of the first byte of `<name>`'s parameter field is left on the stack.
 `CREATE` does not allocate space in `<name>`'s parameter field.
 
+Note that this primitive is not exposed as `CREATE` in the dictionary.
+There is a compiled word which first calls `32 WORD` and then this
+primitive.
+
   |*/
 
 
