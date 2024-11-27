@@ -41,6 +41,16 @@ then
     exit 1
 fi
 
+if [[ -z $FK_STAGE ]]
+then
+    echo "FK_STAGE is unset or empty." >&2
+    exit 1
+elif [[ ! $FK_STAGE =~ ^(debug|checked|unsafe)$ ]]
+then
+    echo "FK_STAGE must be one of \"debug\", \"checked\" or \"unsafe\", not \"$FK_STAGE\"." >&2
+    exit 1
+fi
+
 if [[ $CC == clang ]]
 then
     if [[ $FK_EXECUTION_MODEL != switch ]]
@@ -72,15 +82,5 @@ if [[ $FK_CELL_SIZE == 8 && $FK_ARCH == i386 ]]
 then
     echo "The cell size must be no larger than the architecture's address size." >&2
     echo "8 byte cells are incompatible with the i386 architecture. Use 2 or 4 instead." >&2
-    exit 1
-fi
-
-if [[ -z $FK_STAGE ]]
-then
-    echo "FK_STAGE is unset or empty." >&2
-    exit 1
-elif [[ ! $FK_STAGE =~ ^(debug|checked|unsafe)$ ]]
-then
-    echo "FK_STAGE must be one of \"debug\", \"checked\" or \"unsafe\", not \"$FK_STAGE\"." >&2
     exit 1
 fi

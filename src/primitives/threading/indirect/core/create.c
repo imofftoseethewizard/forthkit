@@ -37,7 +37,7 @@ pr_create:
 	_store_word_name();
 	_word_header(0);
 
-	_compile_pr(do_const);
+	_compile_pr(op_do_const);
     _store_data(_from_ptr((cell *)dp + 1));
 
     _end_define_word();

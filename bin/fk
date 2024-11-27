@@ -32,17 +32,17 @@ BuildParams = namedtuple('BuildParams', ('todo'))
 
 Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'block_comment', 'body'))
 
-Primitives = namedtuple('Primitives', ('count', 'decls', 'impls', 'registry', 'word_defs'))
+Primitives = namedtuple('Primitives', ('count', 'decls', 'impls', 'registry', 'word_defs', 'cw_decls'))
 
 CompiledWord = namedtuple('CompiledWord', ('word_name', 'is_immediate', 'label', 'block_comment', 'body'))
 
-CompiledWords = namedtuple('CompiledWords', ('count', 'registry', 'word_defs'))
+CompiledWords = namedtuple('CompiledWords', ('count', 'registry', 'word_defs', 'cw_decls'))
 
 LibraryWords = namedtuple('LibraryWords', ('count', 'word_defs'))
 
 ErrorData = namedtuple('ErrorData', ('id', 'symbol', 'desc'))
 
-templates = Path(__file__).parent / '../codegen/templates'
+templates = Path(__file__).parent / '../src/templates'
 
 address_models = templates / 'address_models'
 concurrency    = templates / 'concurrency'
@@ -285,9 +285,12 @@ def cmd_generate(args, env):
 
     execution_model_decls = try_read(execution / execution_model / 'decls.h')
 
+    cw_decls_h = '\n'.join([primitives.cw_decls, compiled_words.cw_decls])
+
     h_values = {
         'additional_definitions': additional_defs,
         'address_model': address_model_h,
+        'compiled_word_decls': cw_decls_h,
         'declare_init_evaluator': declare_init_evaluator_h,
         'define_enter': define_enter_h,
         'error_code_definitions': error_code_defs_h,
@@ -445,7 +448,14 @@ def process_primitives(primitive_paths, execution_model, thread_model):
         if p.word_name
     ])
 
-    return Primitives(len(primitives), decls, impls, registry, word_defs)
+    compiled_primitive_word_decl_tmpl  = read(templates / 'compiled_primitive_word_decl.h')
+
+    cw_decls ='\n'.join([
+        fill_template(compiled_primitive_word_decl_tmpl, { 'label': p.label })
+        for p in primitives
+    ])
+
+    return Primitives(len(primitives), decls, impls, registry, word_defs, cw_decls)
 
 primitive_re_text = r'\s*'.join([        # join all parts below with whitespace
     '',                                  # match whitespace at the beginning
@@ -496,18 +506,26 @@ def process_compiled_words(compiled_word_paths):
     compiled_word_def_tmpl = read(templates / 'compiled_word_def.c')
 
     word_defs = '\n'.join([
-        fill_template(compiled_word_def_tmpl,
-                      {
-                          'label': cw.label,
-                          'word_name': f'"{escape_for_c_string(cw.word_name)}"',
-                          'flags': 'c_immediate' if cw.is_immediate else '0',
-                          'body': cw.body,
-                      })
+        fill_template(
+            compiled_word_def_tmpl,
+            {
+                'label': cw.label,
+                'word_name': f'"{escape_for_c_string(cw.word_name)}"',
+                'flags': 'c_immediate' if cw.is_immediate else '0',
+                'body': cw.body,
+            })
         for cw in compiled_words
         if cw.word_name
     ])
 
-    return CompiledWords(len(compiled_words), registry, word_defs)
+    compiled_word_decl_tmpl  = read(templates / 'compiled_word_decl.h')
+
+    cw_decls ='\n'.join([
+        fill_template(compiled_word_decl_tmpl, { 'label': cw.label })
+        for cw in compiled_words
+    ])
+
+    return CompiledWords(len(compiled_words), registry, word_defs, cw_decls)
 
 compiled_word_re_text = r'\s*'.join([    # join all parts below with whitespace
     '',                                  # match whitespace at the beginning

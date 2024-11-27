@@ -26,9 +26,8 @@ pr_constant:
 
     /* Compile the word. It just puts a literal on the stack. */
 
-    _compile_pw(op_literal);
+    _compile_pw(op_do_const);
     _store_data(*sp++);
-    _compile_pw(op_exit);
 
     _check_dictionary_bounds();
 }

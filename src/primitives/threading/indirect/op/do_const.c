@@ -1,4 +1,4 @@
-pr_do_const:
+op_do_const:
 {
 	*--sp = *wp;
 }

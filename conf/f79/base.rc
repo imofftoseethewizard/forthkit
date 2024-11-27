@@ -9,7 +9,7 @@ export FK_DESCRIPTION="A very small configuration to test the fk command."
 # functionality of a primitive so that it may be used directly in C
 # code (as opposed to in a compiled word or library word).  For
 # example, `_reserve()` (defined in
-# `src/primitives/common/fk/reserve/reserve/h`) is used in
+# `src/primitives/common/fk/reserve/reserve.h`) is used in
 # bootstrapping, but it's also the implementation of the Forthkit
 # extension word `reserve`, which allocates space in high memory,
 # analogous to `allot` for low memory.
@@ -77,6 +77,8 @@ export FK_PRIMITIVES="\
     $FORTHKIT/src/primitives/common/core/definitions.c \
     $FORTHKIT/src/primitives/common/core/depth.c \
     $FORTHKIT/src/primitives/common/core/dnegate.c \
+    $FORTHKIT/src/primitives/common/core/do_does.c \
+    $FORTHKIT/src/primitives/common/core/does.c \
     $FORTHKIT/src/primitives/common/core/dot_quote.c \
     $FORTHKIT/src/primitives/common/core/drop.c \
     $FORTHKIT/src/primitives/common/core/dup.c \
@@ -123,7 +125,6 @@ export FK_PRIMITIVES="\
     $FORTHKIT/src/primitives/common/core/rshift.c \
     $FORTHKIT/src/primitives/common/core/state.c \
     $FORTHKIT/src/primitives/common/core/store.c \
-    $FORTHKIT/src/primitives/common/core/store_compiled.c \
     $FORTHKIT/src/primitives/common/core/store_data.c \
     $FORTHKIT/src/primitives/common/core/swap.c \
     $FORTHKIT/src/primitives/common/core/symmetric_divide.c \
@@ -150,12 +151,11 @@ export FK_PRIMITIVES="\
     $FORTHKIT/src/primitives/common/core/zero_lt.c \
     $FORTHKIT/src/primitives/common/fk/reserve/reserve.c \
     $FORTHKIT/src/primitives/common/fk/reserve/top.c \
-    $FORTHKIT/src/primitives/common/op/0branch.c \p
+    $FORTHKIT/src/primitives/common/op/0branch.c \
     $FORTHKIT/src/primitives/common/op/abort.c \
-    $FORTHKIT/src/primitives/common/op/does.c \
-    $FORTHKIT/src/primitives/common/op/exit.c \
     $FORTHKIT/src/primitives/common/op/jump.c \
     $FORTHKIT/src/primitives/common/op/literal.c \
+    $FORTHKIT/src/primitives/concurrency/$FK_CONCURRENCY/op/exit.c \
     $FORTHKIT/src/primitives/f79/core/do.c \
     $FORTHKIT/src/primitives/f79/core/fill.c \
     $FORTHKIT/src/primitives/f79/core/leave.c \
@@ -168,12 +168,10 @@ export FK_PRIMITIVES="\
     $FORTHKIT/src/primitives/f79/op/do.c \
     $FORTHKIT/src/primitives/f79/op/loop.c \
     $FORTHKIT/src/primitives/f79/op/plus_loop.c \
-    $FORTHKIT/src/primitives/f79/threading/$FK_THREAD_MODEL/core/colon.c \
     $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/constant.c \
     $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/create.c \
-    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/do_does.c \
-    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/does.c \
     $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/variable.c \
+    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/op/do_does.c \
 "
 
 # include threading-specific primitives which exist in only one

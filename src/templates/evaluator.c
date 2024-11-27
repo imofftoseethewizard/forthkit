@@ -199,6 +199,8 @@ create_data_image(cell *e, int *image_size)
     *image = e[ea_size];
     *image_size = sizeof(cell);
 
+    // TODO concurrency
+
     /* save task attributes */
     data = (char *)_to_ptr(e[ea_tasks]);
     image = add_data_block(

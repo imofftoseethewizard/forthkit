@@ -11,9 +11,15 @@
 # * `FK_THREAD_MODEL`
 
 
-$FORTHKIT/conf/check-gen-env.sh
-
-if [ $? == 0 ]
+if [[ -z $FORTHKIT ]]
 then
-    . $FORTHKIT/conf/$FK_FAMILY/base.rc
+    echo "FORTHKIT is unset." >&2
+
+else
+    $FORTHKIT/conf/check-gen-env.sh
+
+    if [ $? == 0 ]
+    then
+        . $FORTHKIT/conf/$FK_FAMILY/base.rc
+    fi
 fi

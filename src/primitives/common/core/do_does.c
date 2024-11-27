@@ -24,6 +24,6 @@ pr_do_does:
     register cell *word = _to_ptr(*_to_ptr(_current()));
     register cell *origp = _get_word_interpretation_ptr(word);
 
-    *origp = (cell)_from_pr(op_does);
+    *origp = (cell)_from_pr(op_do_does);
     *(origp + 1) = *sp++;
 }

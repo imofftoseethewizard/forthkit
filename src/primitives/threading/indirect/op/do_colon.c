@@ -1,4 +1,4 @@
-pr_do_colon:
+op_do_colon:
 {
     *--rp = _from_ptr(ip+1);
     ip = wp;

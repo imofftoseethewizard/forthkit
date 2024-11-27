@@ -1,4 +1,4 @@
-pr_do_does:
+op_do_does:
 {
     *--rp = _from_ptr(ip+1);
 

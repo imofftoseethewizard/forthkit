@@ -24,13 +24,10 @@
 	_compile_pr(label);                                          \
 	_end_define_word();
 
-/*|
-
-  TODO
-
-  |*/
-
-#define _compile_pw(label) (compiled_words[cw_ ## label])
+enum compiled_word {
+/*{ compiled_word_decls }*/
+    compiled_primitive_word_count
+};
 
 /*|
 
@@ -38,8 +35,4 @@
 
   |*/
 
-#define _compile_literal(x)                                      \
-	do {                                                         \
-		_compile_pw(op_literal);                                 \
-		_store_data(x);                                          \
-	} while (0)
+#define _compile_pw(label) _compile_cw(cw_ ## label)

@@ -63,7 +63,6 @@ to implement, it seems the better approach.
 
 pr_does:
 {
-	// TODO threading
     _compile_pw(op_literal);
     _store_data(_from_ptr((cell *)dp + 3));
     _compile_pw(pr_do_does);

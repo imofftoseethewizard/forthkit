@@ -4,6 +4,5 @@ export FK_PRIMITIVES="
     $FK_PRIMITIVES \
     $FORTHKIT/src/primitives/threading/indirect/op/do_colon.c \
     $FORTHKIT/src/primitives/threading/indirect/op/do_const.c \
-    $FORTHKIT/src/primitives/threading/indirect/op/do_does.c \
     $FORTHKIT/src/primitives/threading/indirect/op/do_var.c \
 "

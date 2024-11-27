@@ -6,7 +6,7 @@ the parameter field for the word defined by the word containing does>.
 
   |*/
 
-op_does:
+op_do_does:
 {
     *--sp = _from_ptr(ip + 2); /* skip over does> code addr, op_exit */
     ip = _to_ptr(*ip);
