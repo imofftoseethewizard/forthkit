@@ -19,16 +19,6 @@ Env = namedtuple(
     )
 )
 
-GenParams = namedtuple(
-    'GenParams',
-    (
-        'address_model', 'concurrency_model', 'execution_model', 'thread_model',
-        'definitions', 'primitives', 'compiled_words', 'library_words',
-        'base_name', 'target_dir'
-    )
-)
-
-BuildParams = namedtuple('BuildParams', ('todo'))
 
 Primitive = namedtuple('Primitive', ('word_name', 'is_immediate', 'label', 'block_comment', 'body'))
 
@@ -56,9 +46,7 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    # Look for cmd_* functions below to see what values args.command
-    # can have.
-    args.command(args, env)
+    generate(args, env)
 
 def get_env():
 
@@ -153,55 +141,8 @@ def parse_library_words(s):
 def create_parser():
     parser = argparse.ArgumentParser()
 
-    subparsers = parser.add_subparsers()
-
-    init_parser = subparsers.add_parser('init', help='initialize forthkit project')
-    init_parser.set_defaults(command='init')
-
-    gen_parser = subparsers.add_parser('gen', help='generate source files')
-    gen_parser.set_defaults(command=cmd_generate)
-
-    gen_parser.add_argument('-a', '--address-model',
-                            choices=('h', 'v', 'host', 'virtual'))
-
-    gen_parser.add_argument('-c', '--concurrency_model',
-                            choices=('f', 's', 'fibered', 'single'))
-
-    gen_parser.add_argument('-e', '--execution-model',
-                            choices=('g', 'l', 's', 'computed_goto', 'local_subroutine', 'switch'))
-
-    gen_parser.add_argument('-t', '--thread-model',
-                            choices=('d', 'i', 'direct', 'indirect'))
-
-    gen_parser.add_argument('-N', '--base-name', default='evaluator')
-    gen_parser.add_argument('-T', '--target-dir', default='./')
-    gen_parser.add_argument('-d', '--definitions', nargs='*', default=[])
-    gen_parser.add_argument('-p', '--primitives', nargs='*', default=[])
-    gen_parser.add_argument('-w', '--compiled-words', nargs='*', default=[])
-    gen_parser.add_argument('-l', '--library-words', nargs='*', default=[])
-
-    build_parser = subparsers.add_parser('build', help='build source files')
-    build_parser.set_defaults(command=cmd_build)
-
-    build_parser.add_argument('-b', '--bootstrap', default=False,
-                              type=parse_boolean_option)
-
-    build_parser.add_argument('-c', '--cell-type', default='int',
-                              choices=('short', 'int', 'long long'))
-
-    build_parser.add_argument('-d', '--double-type', default='long long',
-                              choices=('int', 'long long', '__int128'))
-
-    build_parser.add_argument('-N', '--base-name', default='evaluator')
-
-    build_parser.add_argument('-f', '--cflags')
-    build_parser.add_argument('-l', '--ldflags')
-
-    build_parser.add_argument('-S', '--source-dir', default='./')
-    build_parser.add_argument('-T', '--target-dir', default='./')
-
-    run_parser = subparsers.add_parser('run', help='run an interpreter')
-    run_parser.set_defaults(command='run')
+    parser.add_argument('-N', '--base-name', default='evaluator')
+    parser.add_argument('-T', '--target-dir', default='./')
 
     return parser
 
@@ -253,22 +194,17 @@ std_thread_model = {
     'indirect': 'indirect',
 }
 
-def cmd_generate(args, env):
+def generate(args, env):
 
-    print(args)
-    print(env)
-    params = coalesce_generate_params(args, env)
-    print(params)
+    concurrency_model = env.concurrency_model
+    execution_model   = env.execution_model
+    address_model     = env.address_model
+    thread_model      = env.thread_model
 
-    concurrency_model = params.concurrency_model
-    execution_model   = params.execution_model
-    address_model     = params.address_model
-    thread_model      = params.thread_model
-
-    additional_defs = process_definitions(params.definitions)
-    primitives      = process_primitives(params.primitives, execution_model, thread_model)
-    compiled_words  = process_compiled_words(params.compiled_words)
-    library_words   = process_library_words(params.library_words)
+    additional_defs = process_definitions(env.definitions)
+    primitives      = process_primitives(env.primitives, execution_model, thread_model)
+    compiled_words  = process_compiled_words(env.compiled_words)
+    library_words   = process_library_words(env.library_words)
 
     evaluator_h_tmpl = read(templates / 'evaluator.h')
     evaluator_c_tmpl = read(templates / 'evaluator.c')
@@ -305,8 +241,9 @@ def cmd_generate(args, env):
     thread_step_c         = read(threading / thread_model / 'execution' / execution_model / 'thread_step.c')
 
     begin_bootstrap_c     = read(concurrency / concurrency_model / 'begin_bootstrap.c')
-    finish_bootstrap_c    = read(concurrency / concurrency_model / 'finish_bootstrap.c')
+    create_data_image_c   = read(concurrency / concurrency_model / 'create_data_image.c')
     evaluator_core_c      = read(concurrency / concurrency_model / 'execution' / execution_model / 'evaluator_core.c')
+    finish_bootstrap_c    = read(concurrency / concurrency_model / 'finish_bootstrap.c')
     init_evaluator_c      = read(concurrency / concurrency_model / 'init_evaluator.c')
     prepare_evaluation_c  = read(concurrency / concurrency_model / 'prepare_evaluation.c')
 
@@ -321,6 +258,7 @@ def cmd_generate(args, env):
     c_values = {
         'begin_bootstrap': begin_bootstrap_c,
         'compiled_word_definitions': compiled_words.word_defs,
+        'create_data_image': create_data_image_c,
         'declare_primitives': declare_primitives_c,
         'error_descriptors': error_descs_c,
         'evaluator_core': evaluator_core_c,
@@ -346,29 +284,14 @@ def cmd_generate(args, env):
     h_path = base_path.with_suffix('.h')
     c_path = base_path.with_suffix('.c')
 
-    print(reformat(evaluator_h), file=open(h_path, 'w'))
-    print(reformat(evaluator_c), file=open(c_path, 'w'))
+    h_md_path = base_path.with_suffix('.h.md')
+    c_md_path = base_path.with_suffix('.c.md')
 
-def coalesce_generate_params(args, env):
+    print(reformat(evaluator_h, format='C'), file=open(h_path, 'w'))
+    print(reformat(evaluator_c, format='C'), file=open(c_path, 'w'))
 
-    raw_address_model     = args.address_model     or env.address_model
-    raw_concurrency_model = args.concurrency_model or env.concurrency_model
-    raw_execution_model   = args.execution_model   or env.execution_model
-    raw_thread_model      = args.thread_model      or env.thread_model
-
-    address_model     = std_address_model[raw_address_model]
-    concurrency_model = std_concurrency_model[raw_concurrency_model]
-    execution_model   = std_execution_model[raw_execution_model]
-    thread_model      = std_thread_model[raw_thread_model]
-
-    definitions    = env.definitions    + args.definitions
-    primitives     = env.primitives     + args.primitives
-    compiled_words = env.compiled_words + args.compiled_words
-    library_words  = env.library_words  + args.library_words
-
-    return GenParams(address_model, concurrency_model, execution_model, thread_model,
-                     definitions, primitives, compiled_words, library_words,
-                     args.base_name, args.target_dir)
+    print(reformat(evaluator_h, format='markdown'), file=open(h_md_path, 'w'))
+    print(reformat(evaluator_c, format='markdown'), file=open(c_md_path, 'w'))
 
 def load_error_data():
 
@@ -613,12 +536,12 @@ def fill_template(tmpl, values):
 
     return result
 
-def reformat(c_text):
+def reformat(c_text, format='C'):
 
     indent_cmd = 'indent --no-tabs -psl -kr -l128'.split()
     format_c_cmd = [
         str(Path(__file__).parent / 'format_c'),
-        'C'
+        format
     ]
 
     p = subprocess.run(indent_cmd, input=c_text, text=True, capture_output=True)
@@ -634,46 +557,6 @@ def reformat(c_text):
         exit(p.returncode)
 
     return p.stdout
-
-def cmd_build(args, env):
-
-    target_dir = args.target_dir
-    source_dir = args.source_dir
-    base_name = args.base_name
-    cell_type = args.cell_type
-    double_type = args.double_type
-
-    source_path = (Path(source_dir) / base_name).with_suffix('.c')
-
-    target_base_name = base_name
-
-    target_path = (Path(target_dir) / target_base_name).with_suffix('.o')
-
-    compile_cmd = [
-        'gcc',
-        '-D', f'CELL_TYPE={cell_type}',
-        '-D', f'DOUBLE_TYPE={double_type}',
-        '-c',
-        '-o', str(target_path),
-        str(source_path)
-    ]
-
-    p = subprocess.run(compile_cmd)
-    p.check_returncode()
-
-    target_base_name = f'bootstrap_{base_name}'
-
-    target_path = (Path(target_dir) / target_base_name).with_suffix('.o')
-
-    compile_cmd = [
-        'gcc',
-        '-D', f'CELL_TYPE={cell_type}',
-        '-D', f'DOUBLE_TYPE={double_type}',
-        '-c',
-        '-o', str(target_path),
-        str(source_path)
-    ]
-
 
 if __name__ == '__main__':
     main()

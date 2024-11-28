@@ -12,7 +12,7 @@ pr_variable:
     _compile_pw(op_exit);
 
     /* Leave space for the variable's value */
-    dp += sizeof(cell)
+    dp += sizeof(cell);
 
     _end_define_word();
 

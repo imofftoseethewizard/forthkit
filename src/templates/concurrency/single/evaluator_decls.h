@@ -8,12 +8,14 @@ TODO
 #define _context()      e[ea_context]
 #define _current()      e[ea_current]
 #define _forth()        e[ea_forth]
+#define _interpret()    e[ea_interpret]
 #define _state()        e[ea_state]
 
-#define _set_base(x)    e[ea_base] = (x)
-#define _set_context(x) e[ea_context] = (x)
-#define _set_current(x) e[ea_current] = (x)
-#define _set_state(x)   e[ea_state] = (x)
+#define _set_base(x)      e[ea_base]      = (x)
+#define _set_context(x)   e[ea_context]   = (x)
+#define _set_current(x)   e[ea_current]   = (x)
+#define _set_interpret(x) e[ea_interpret] = (x)
+#define _set_state(x)     e[ea_state]     = (x)
 
 enum engine_attribute {
     /* attributes set by init_evaluator */

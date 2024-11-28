@@ -21,13 +21,13 @@ then
     exit 1
 fi
 
-if [[ -z $FK_CONCURRENCY ]]
+if [[ -z $FK_CONCURRENCY_MODEL ]]
 then
-    echo "FK_CONCURRENCY is unset or empty." >&2
+    echo "FK_CONCURRENCY_MODEL is unset or empty." >&2
     exit 1
-elif [[ ! $FK_CONCURRENCY =~ ^(fibered|single)$ ]]
+elif [[ ! $FK_CONCURRENCY_MODEL =~ ^(fibered|single)$ ]]
 then
-    echo "FK_CONCURRENCY must be one of \"fibered\" or \"single\", not \"$FK_CONCURRENCY\"." >&2
+    echo "FK_CONCURRENCY_MODEL must be one of \"fibered\" or \"single\", not \"$FK_CONCURRENCY_MODEL\"." >&2
     exit 1
 fi
 

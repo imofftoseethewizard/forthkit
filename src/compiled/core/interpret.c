@@ -59,8 +59,8 @@ It's compiled line by line below.
 
 cw_interpret:
 {
-	// TODO concurrency
-	tp[ta_interpret] = _from_ptr(dp);
+	// Save code address for use by evaluate.
+	_set_interpret(_from_ptr(dp));
 
 	_compile_begin();
 

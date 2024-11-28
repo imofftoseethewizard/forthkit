@@ -155,7 +155,7 @@ export FK_PRIMITIVES="\
     $FORTHKIT/src/primitives/common/op/abort.c \
     $FORTHKIT/src/primitives/common/op/jump.c \
     $FORTHKIT/src/primitives/common/op/literal.c \
-    $FORTHKIT/src/primitives/concurrency/$FK_CONCURRENCY/op/exit.c \
+    $FORTHKIT/src/primitives/concurrency/$FK_CONCURRENCY_MODEL/op/exit.c \
     $FORTHKIT/src/primitives/f79/core/do.c \
     $FORTHKIT/src/primitives/f79/core/fill.c \
     $FORTHKIT/src/primitives/f79/core/leave.c \

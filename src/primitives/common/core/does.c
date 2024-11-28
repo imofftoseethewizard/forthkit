@@ -21,41 +21,45 @@ later executed, the address of `<name>`'s parameter field is placed on
 the stack and then the sequence of words between `DOES>` and `;` are
 executed.
 
-At compile time, `DOES> must capture the location of the code that
-follows `DOES>`. Keeping in mind that the compile-time context of
-`DOES>` is that we are compiling a new compiling word, and the address
-of the code after `DOES>` will be compiled into the new words defined
-with the word now being defined. The compile-time result should be to
-compile `op_do_does`.
+The compile-time context of `DOES>` is the compilation of a new
+defining word `<namex>`. `DOES>` captures the location of the code
+that will be compiled after `DOES>`, compiles a literal to put that
+address on the stack, and then compiles `pr_do_does` and `op_exit`.
+`op_exit` is required to ensure that the code which provides the
+interpretation semantics of words defined with `<namex>` is isolated
+from `<namex>`'s interpretation semantics.
 
-At interpretation time, `do_does>` runs during the creation of a new
-word.  As left by `DOES>` at compile time, the location of the `DOES>`
-code is on the stack and the word being defined is available in
-`_current()`. Assuming it was created with `CREATE`, the body of the
-word will so far be
+When `<namex>` is executed, `pr_do_does` replaces the interpretation
+semantics of the most recently defined word with `op_do_does` and the
+code address from the stack.  If the previously defined word was not
+defined with `CREATE`, then an ambiguous condition exists.  In the
+case of a direct-threaded interpreter, `CREATE` produces the following
+code
 
     op_literal
     <addr of cell below op_exit>
     op_exit
 
-to implement DOES>, this could either be replaced with
+to implement `DOES>`, this is replaced with
 
-    op_does
-    <offset to does> code>
+    op_do_does
+    <address of does> code>
     op_exit
 
-where op_does presumes that the parameter address
-immediately follows an exit.
+In indirect threading, this begins with
 
-    op_literal
-    <addr of cell below op_exit>
-    <does code>
+    op_do_const
+    <addr of next cell>
 
-The first may be slightly faster to execute, since there will be one
-less indirection and one less exit, ultimately, but it is a little
-more delicate to code. The first has the other advantage of being
-inherently relocatable for reloading images. Despite it being finicky
-to implement, it seems the better approach.
+and is replaced by
+
+    op_do_does
+    <address of does> code>
+
+where `op_do_does` puts the address after `op_exit` (direct threaded)
+or after the code offset (indirect threaded) on the stack when
+executing words defined with `<namex>`.  In both cases, `op_do_does`
+then jumps to the code address immediately following.
 
   |*/
 

@@ -377,3 +377,11 @@ bare interpreter has no memory image and no means to create one, and
 must be started with one specified on the command line.  The ordinary
 interpreter has the default bootstrap image bundled with it, but no
 bootstrapping code.
+
+## Configurations
+
+### Scratch
+
+. conf/gen-build.rc && bin/fk-gen
+gcc -c -D CELL_TYPE="long long" -D DOUBLE_TYPE="__int128" evaluator.c
+pandoc --css=styling.css evaluator.c.md -f markdown -t html5 --metadata title="test" -s --embed-resources -o evaluator.c.html

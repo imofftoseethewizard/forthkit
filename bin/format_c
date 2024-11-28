@@ -186,7 +186,10 @@ def emit_comment(elt, fmt):
     for t in elt[1:]:
         label, m = t
         if label == 'text':
-            print('    ' + m.string[slice(*m.span())], end='')
+            if fmt == 'markdown':
+                print(m.string[slice(*m.span())], end='')
+            else:
+                print('    ' + m.string[slice(*m.span())], end='')
 
 if __name__ == '__main__':
     main()
