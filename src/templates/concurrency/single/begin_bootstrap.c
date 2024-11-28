@@ -23,17 +23,17 @@
         for (register int i = 0; i < e[ea_buffer_count]; i++)
             *(_to_ptr(e[ea_buffer_map]) + i) = -1;
 
-		e[ea_ip] = 0;
+        e[ea_ip] = 0;
 
-		e[ea_bottom]      = _from_ptr(e);
-		e[ea_top]         = _from_ptr(top);
-		e[ea_dp]          = _from_ptr(&e[engine_attribute_count]);
-		e[ea_forth]       = 0;
-		e[ea_context]     = _from_ptr(&e[ea_forth]);
-		e[ea_current]     = _from_ptr(&e[ea_forth]);
-		e[ea_base]        = 10;
-		e[ea_state]       = 0;
-		e[ea_interpret]   = 0;
+        e[ea_bottom]      = _from_ptr(e);
+        e[ea_top]         = _from_ptr(top);
+        e[ea_dp]          = _from_ptr(&e[engine_attribute_count]);
+        e[ea_forth]       = 0;
+        e[ea_context]     = _from_ptr(&e[ea_forth]);
+        e[ea_current]     = _from_ptr(&e[ea_forth]);
+        e[ea_base]        = 10;
+        e[ea_state]       = 0;
+        e[ea_interpret]   = 0;
 
         e[ea_source_idx]  = 0;
         e[ea_source_len]  = 0;

@@ -2,46 +2,46 @@
 
 /*{ generation_details }*/
 
-	#include <errno.h>
-	#include <fcntl.h>
-	#include <stdlib.h>
-	#include <stdio.h>
-	#include <string.h>
-	#include <readline/readline.h>
-	#include <unistd.h>
+    #include <errno.h>
+    #include <fcntl.h>
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <readline/readline.h>
+    #include <unistd.h>
 
-	#include "evaluator.h"
+    #include "evaluator.h"
 
-	static void bootstrap_evaluator(cell *e);
+    static void bootstrap_evaluator(cell *e);
     static int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives);
 
 /*{ init_evaluator }*/
 
-	int
-	evaluate_source(cell *evaluator, const char *source, int storage_fd)
-	{
-		if (!evaluator)
-			return 0;
+    int
+    evaluate_source(cell *evaluator, const char *source, int storage_fd)
+    {
+        if (!evaluator)
+            return 0;
 
-		return evaluate(evaluator, source, storage_fd, NULL);
-	}
+        return evaluate(evaluator, source, storage_fd, NULL);
+    }
 
-	void
-	bootstrap_evaluator(cell *e)
-	{
-		/* signals to evaluate() that the evaluator's memory is uninitialized */
-		e[ea_top] = 0;
+    void
+    bootstrap_evaluator(cell *e)
+    {
+        /* signals to evaluate() that the evaluator's memory is uninitialized */
+        e[ea_top] = 0;
 
-		/* trigger bootstrap */
-		evaluate(e, "", -1, NULL);
-	}
+        /* trigger bootstrap */
+        evaluate(e, "", -1, NULL);
+    }
 
 int
 evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
 {
-	/*{ declare_primitives }*/
+    /*{ declare_primitives }*/
 
-	static cell internal_primitives[/*{ primitive_count }*/];
+    static cell internal_primitives[/*{ primitive_count }*/];
 
     int result = 0;
 
@@ -58,44 +58,44 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
     register cell *ip;
     register cell *rp;
 
-	/*{ evaluator_variables }*/
+    /*{ evaluator_variables }*/
 
     if (!evaluator) {
 
-	    if (primitives) {
+        if (primitives) {
 
-		    cell *prp = primitives;
+            cell *prp = primitives;
 
-		    /*{ initialize_primitive_registry }*/
-	    }
+            /*{ initialize_primitive_registry }*/
+        }
 
-	    return /*{ primitive_count }*/;
+        return /*{ primitive_count }*/;
     }
 
 #ifdef BOOTSTRAP
     if (!e[ea_top]) {
 
-	    /*{ begin_bootstrap }*/
+        /*{ begin_bootstrap }*/
 
         /*{ primitive_word_definitions }*/
 
         /*{ compiled_word_definitions }*/
 
-	    const char *library_word_definitions[] = {
-		    /*{ library_word_definitions }*/
-	    };
+        const char *library_word_definitions[] = {
+            /*{ library_word_definitions }*/
+        };
 
-	    for (int i = 0; i < /*{ library_word_count }*/; i++) {
+        for (int i = 0; i < /*{ library_word_count }*/; i++) {
 
-		    result = evaluate(evaluator, library_word_definitions[i], -1, NULL);
+            result = evaluate(evaluator, library_word_definitions[i], -1, NULL);
 
-		    if (result)
-			    break;
-	    }
+            if (result)
+                break;
+        }
 
-	    /*{ finish_bootstrap }*/
+        /*{ finish_bootstrap }*/
 
-	    return result;
+        return result;
     }
 #endif
 
@@ -230,8 +230,8 @@ create_primitives_table(cell *image, int image_size, cell *rt, int rt_size, int 
      * portion less any relocations. In practice it will be a lot less.
      */
 
-	cell *pt = malloc(image_size - rt_size);
-	cell *ptp = pt;
+    cell *pt = malloc(image_size - rt_size);
+    cell *ptp = pt;
 
     /* Get the evaluator's list of primitives. */
 

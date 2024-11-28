@@ -12,5 +12,5 @@ radix. FORTH-79: {{2..70}}, FORTH-83: {{2..72}}, FORTH-94 and later:
 
 pr_base:
 {
-	*--sp = _from_ptr(&_base());
+    *--sp = _from_ptr(&_base());
 }

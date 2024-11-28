@@ -10,5 +10,5 @@ Set the input-output numeric conversion base to ten.
 
 pr_decimal:
 {
-	_set_base(10);
+    _set_base(10);
 }

@@ -2,5 +2,5 @@
 
 pr_right_bracket:
 {
-	_set_state(1);
+    _set_state(1);
 }

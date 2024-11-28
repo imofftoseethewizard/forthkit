@@ -10,5 +10,5 @@
 
 pr_min:
 {
-	*++sp = (number)*(sp+1) > (number)*sp ? *sp : *(sp+1);
+    *++sp = (number)*(sp+1) > (number)*sp ? *sp : *(sp+1);
 }

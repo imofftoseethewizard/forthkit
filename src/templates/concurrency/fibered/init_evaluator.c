@@ -13,7 +13,7 @@ init_evaluator(
     cell task_count,
     cell word_buffer_size)
 {
-	/* transfer configuration to appropriate locations in evaluator image */
+    /* transfer configuration to appropriate locations in evaluator image */
     e[ea_buffer_count]         = buffer_count;
     e[ea_buffer_size]          = buffer_size;
     e[ea_fiber_count]          = fiber_count;

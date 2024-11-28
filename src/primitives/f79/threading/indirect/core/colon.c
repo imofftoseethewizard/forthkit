@@ -27,8 +27,8 @@ balanced with its corresponding ; .
 
 pr_colon:
 {
-	_set_context(_current());
-	_set_state(1);
+    _set_context(_current());
+    _set_state(1);
 
     _store_word_name();
     _word_header(0);

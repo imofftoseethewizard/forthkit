@@ -1,5 +1,5 @@
 
 pr_to_tmp:
 {
-	*++t_sp = *sp++;
+    *++t_sp = *sp++;
 }

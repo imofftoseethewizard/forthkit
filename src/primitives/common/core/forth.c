@@ -14,5 +14,5 @@ different compilation vocabulary is established.
 
 pr_forth:
 {
-	_set_context(_from_ptr(&_forth()));
+    _set_context(_from_ptr(&_forth()));
 }

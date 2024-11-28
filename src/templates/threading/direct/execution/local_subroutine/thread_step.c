@@ -1,4 +1,4 @@
 if (!_is_primitive(*ip))
-	_enter();
+    _enter();
 else
-	((native_word *)(_to_pv(*ip++)))();
+    ((native_word *)(_to_pv(*ip++)))();

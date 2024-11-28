@@ -17,7 +17,7 @@
 __first:
 
     if (0) {
-	    /*{ primitive_implementations }*/
+        /*{ primitive_implementations }*/
     }
 
     _next();

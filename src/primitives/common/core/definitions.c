@@ -11,5 +11,5 @@ vocabulary in the search order.
 
 pr_definitions:
 {
-	_set_current(_context());
+    _set_current(_context());
 }

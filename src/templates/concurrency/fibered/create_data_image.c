@@ -23,7 +23,7 @@ create_data_image(cell *e, int *image_size)
     /* save task dictionaries (and engine attributes with task 0) */
     for (register int i = 0; i < e[ea_task_count]; i++) {
 
-	    register cell *t = _to_task_ptr(i), length = _align(t[ta_dp] - t[ta_bottom]);
+        register cell *t = _to_task_ptr(i), length = _align(t[ta_dp] - t[ta_bottom]);
         char *data = (char *)_to_ptr(t[ta_bottom]);
 
         if (length == 0)

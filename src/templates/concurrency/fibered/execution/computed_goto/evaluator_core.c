@@ -19,7 +19,7 @@
 __first:
 
     if (0) {
-	    /*{ primitive_implementations }*/
+        /*{ primitive_implementations }*/
 
       op_end_fiber:
         {

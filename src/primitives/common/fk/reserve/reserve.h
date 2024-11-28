@@ -4,6 +4,6 @@
 // is the beginning of the reserved area.
 
 #define _reserve(x) \
-	(top -= (x), \
-	 top -= (int)top % sizeof(cell), \
-	 _from_ptr(top + sizeof(cell)))
+    (top -= (x), \
+     top -= (int)top % sizeof(cell), \
+     _from_ptr(top + sizeof(cell)))
