@@ -1,0 +1,8 @@
+#! /usr/bin/env bash
+
+if [[ $CONCURRENCY_MODEL == 'single' ]]
+then
+    echo $THREAD_MODEL-$EXECUTION_MODEL-$ADDRESS_MODEL
+else
+    echo $THREAD_MODEL-$CONCURRENCY_MODEL-$EXECUTION_MODEL-$ADDRESS_MODEL
+fi

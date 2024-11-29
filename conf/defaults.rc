@@ -1,12 +1,12 @@
 # -*- mode: sh; -*-
 
-export FK_ADDRESS_MODEL=virtual
-export FK_CONCURRENCY=single
-export FK_EXECUTION_MODEL=computed_goto
-export FK_FAMILY=f79
-export FK_THREAD_MODEL=indirect
+export ADDRESS_MODEL=virtual
+export CONCURRENCY_MODEL=single
+export EXECUTION_MODEL=computed-goto
+export FAMILY=f79
+export THREAD_MODEL=indirect
 
 export CC=gcc
-export FK_ARCH=i386
-export FK_CELL_SIZE=4
-export FK_STAGE=checked
+export ARCH=i386
+export CELL_SIZE=4
+export STAGE=checked

@@ -62,21 +62,21 @@ def main():
 
 def get_env():
 
-    name              = os.environ.get('FK_NAME', 'Forthkit FORTH')
-    description       = os.environ.get('FK_DESCRIPTION', '')
+    name              = os.environ.get('NAME', 'Forthkit FORTH')
+    description       = os.environ.get('DESCRIPTION', '')
 
-    address_model     = parse_address_model(os.environ.get('FK_ADDRESS_MODEL', 'host'))
-    concurrency_model = parse_concurrency_model(os.environ.get('FK_CONCURRENCY_MODEL', 'single'))
-    execution_model   = parse_execution_model(os.environ.get('FK_EXECUTION_MODEL', 'switch'))
-    thread_model      = parse_thread_model(os.environ.get('FK_THREAD_MODEL', 'indirect'))
+    address_model     = parse_address_model(os.environ.get('ADDRESS_MODEL', 'host'))
+    concurrency_model = parse_concurrency_model(os.environ.get('CONCURRENCY_MODEL', 'single'))
+    execution_model   = parse_execution_model(os.environ.get('EXECUTION_MODEL', 'switch'))
+    thread_model      = parse_thread_model(os.environ.get('THREAD_MODEL', 'indirect'))
 
-    definitions       = parse_definitions(os.environ.get('FK_DEFINITIONS', ''))
-    primitives        = parse_primitives(os.environ.get('FK_PRIMITIVES', ''))
-    compiled_words    = parse_compiled_words(os.environ.get('FK_COMPILED_WORDS', ''))
-    library_words     = parse_library_words(os.environ.get('FK_LIBRARY_WORDS', ''))
+    definitions       = parse_definitions(os.environ.get('DEFINITIONS', ''))
+    primitives        = parse_primitives(os.environ.get('PRIMITIVES', ''))
+    compiled_words    = parse_compiled_words(os.environ.get('COMPILED_WORDS', ''))
+    library_words     = parse_library_words(os.environ.get('LIBRARY_WORDS', ''))
 
-    target_dir        = os.environ.get('FK_TARGET_DIR', './')
-    base_name         = os.environ.get('FK_BASE_NAME', 'evaluator')
+    target_dir        = os.environ.get('TARGET_DIR', './')
+    base_name         = os.environ.get('BASE_NAME', 'evaluator')
 
     return Env(
         name, description,
@@ -107,7 +107,7 @@ def parse_address_model(s):
         return std_address_model[s.lower()]
 
     except:
-        raise InvalidConfigValue('FK_ADDRESS_MODEL', ('host', 'virtual'), s)
+        raise InvalidConfigValue('ADDRESS_MODEL', ('host', 'virtual'), s)
 
 def parse_concurrency_model(s):
 
@@ -115,7 +115,7 @@ def parse_concurrency_model(s):
         return std_concurrency_model[s.lower()]
 
     except:
-        raise InvalidConfigValue('FK_CONCURRENCY_MODEL', ('single', 'fibered'), s)
+        raise InvalidConfigValue('CONCURRENCY_MODEL', ('single', 'fibered'), s)
 
 def parse_execution_model(s):
 
@@ -124,7 +124,7 @@ def parse_execution_model(s):
 
     except:
         raise InvalidConfigValue(
-            'FK_EXECUTION_MODEL', ('computed-goto', 'local-subroutine', 'switch'), s)
+            'EXECUTION_MODEL', ('computed-goto', 'local-subroutine', 'switch'), s)
 
 def parse_thread_model(s):
 
@@ -132,7 +132,7 @@ def parse_thread_model(s):
         return std_thread_model[s.lower()]
 
     except:
-        raise InvalidConfigValue('FK_THREAD_MODEL', ('direct', 'indirect'), s)
+        raise InvalidConfigValue('THREAD_MODEL', ('direct', 'indirect'), s)
 
 def parse_definitions(s):
 
@@ -168,7 +168,7 @@ def create_parser():
                             choices=('f', 's', 'fibered', 'single'))
 
     gen_parser.add_argument('-e', '--execution-model',
-                            choices=('g', 'l', 's', 'computed_goto', 'local_subroutine', 'switch'))
+                            choices=('g', 'l', 's', 'computed-goto', 'local-subroutine', 'switch'))
 
     gen_parser.add_argument('-t', '--thread-model',
                             choices=('d', 'i', 'direct', 'indirect'))
@@ -236,12 +236,12 @@ std_concurrency_model = {
 }
 
 std_execution_model = {
-    'g':                'computed_goto',
-    'computed-goto':    'computed_goto',
-    'computed_goto':    'computed_goto',
-    'l':                'local_subroutine',
-    'local-subroutine': 'local_subroutine',
-    'local_subroutine': 'local_subroutine',
+    'g':                'computed-goto',
+    'computed-goto':    'computed-goto',
+    'computed-goto':    'computed-goto',
+    'l':                'local-subroutine',
+    'local-subroutine': 'local-subroutine',
+    'local-subroutine': 'local-subroutine',
     's':                'switch',
     'switch':           'switch',
 }

@@ -50,21 +50,21 @@ def main():
 
 def get_env():
 
-    name              = os.environ.get('FK_NAME', 'Forthkit FORTH')
-    description       = os.environ.get('FK_DESCRIPTION', '')
+    name              = os.environ.get('NAME', 'Forthkit FORTH')
+    description       = os.environ.get('DESCRIPTION', '')
 
-    address_model     = parse_address_model(os.environ.get('FK_ADDRESS_MODEL', 'host'))
-    concurrency_model = parse_concurrency_model(os.environ.get('FK_CONCURRENCY_MODEL', 'single'))
-    execution_model   = parse_execution_model(os.environ.get('FK_EXECUTION_MODEL', 'switch'))
-    thread_model      = parse_thread_model(os.environ.get('FK_THREAD_MODEL', 'indirect'))
+    address_model     = parse_address_model(os.environ.get('ADDRESS_MODEL', 'host'))
+    concurrency_model = parse_concurrency_model(os.environ.get('CONCURRENCY_MODEL', 'single'))
+    execution_model   = parse_execution_model(os.environ.get('EXECUTION_MODEL', 'switch'))
+    thread_model      = parse_thread_model(os.environ.get('THREAD_MODEL', 'indirect'))
 
-    definitions       = parse_definitions(os.environ.get('FK_DEFINITIONS', ''))
-    primitives        = parse_primitives(os.environ.get('FK_PRIMITIVES', ''))
-    compiled_words    = parse_compiled_words(os.environ.get('FK_COMPILED_WORDS', ''))
-    library_words     = parse_library_words(os.environ.get('FK_LIBRARY_WORDS', ''))
+    definitions       = parse_definitions(os.environ.get('C_DEFINITIONS', ''))
+    primitives        = parse_primitives(os.environ.get('PRIMITIVES', ''))
+    compiled_words    = parse_compiled_words(os.environ.get('COMPILED_WORDS', ''))
+    library_words     = parse_library_words(os.environ.get('LIBRARY_WORDS', ''))
 
-    target_dir        = os.environ.get('FK_TARGET_DIR', './')
-    base_name         = os.environ.get('FK_BASE_NAME', 'evaluator')
+    target_dir        = os.environ.get('TARGET_DIR', './')
+    base_name         = os.environ.get('BASE_NAME', 'evaluator')
 
     return Env(
         name, description,
@@ -95,7 +95,7 @@ def parse_address_model(s):
         return std_address_model[s.lower()]
 
     except:
-        raise InvalidConfigValue('FK_ADDRESS_MODEL', ('host', 'virtual'), s)
+        raise InvalidConfigValue('ADDRESS_MODEL', ('host', 'virtual'), s)
 
 def parse_concurrency_model(s):
 
@@ -103,7 +103,7 @@ def parse_concurrency_model(s):
         return std_concurrency_model[s.lower()]
 
     except:
-        raise InvalidConfigValue('FK_CONCURRENCY_MODEL', ('single', 'fibered'), s)
+        raise InvalidConfigValue('CONCURRENCY_MODEL', ('single', 'fibered'), s)
 
 def parse_execution_model(s):
 
@@ -112,7 +112,7 @@ def parse_execution_model(s):
 
     except:
         raise InvalidConfigValue(
-            'FK_EXECUTION_MODEL', ('computed-goto', 'local-subroutine', 'switch'), s)
+            'EXECUTION_MODEL', ('computed-goto', 'local-subroutine', 'switch'), s)
 
 def parse_thread_model(s):
 
@@ -120,7 +120,7 @@ def parse_thread_model(s):
         return std_thread_model[s.lower()]
 
     except:
-        raise InvalidConfigValue('FK_THREAD_MODEL', ('direct', 'indirect'), s)
+        raise InvalidConfigValue('THREAD_MODEL', ('direct', 'indirect'), s)
 
 def parse_definitions(s):
 
@@ -141,8 +141,12 @@ def parse_library_words(s):
 def create_parser():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-N', '--base-name', default='evaluator')
-    parser.add_argument('-T', '--target-dir', default='./')
+    parser.add_argument('-D', '--target-doc-dir')
+    parser.add_argument('-d', '--target-deps-dir')
+    parser.add_argument('-i', '--target-include-dir')
+    parser.add_argument('-n', '--base-name', default='evaluator')
+    parser.add_argument('-s', '--target-src-dir')
+    parser.add_argument('-t', '--target-dir', default='./')
 
     return parser
 
@@ -177,12 +181,12 @@ std_concurrency_model = {
 }
 
 std_execution_model = {
-    'g':                'computed_goto',
-    'computed-goto':    'computed_goto',
-    'computed_goto':    'computed_goto',
-    'l':                'local_subroutine',
-    'local-subroutine': 'local_subroutine',
-    'local_subroutine': 'local_subroutine',
+    'g':                'computed-goto',
+    'computed-goto':    'computed-goto',
+    'computed-goto':    'computed-goto',
+    'l':                'local-subroutine',
+    'local-subroutine': 'local-subroutine',
+    'local-subroutine': 'local-subroutine',
     's':                'switch',
     'switch':           'switch',
 }
@@ -279,19 +283,28 @@ def generate(args, env):
     evaluator_h = fill_template(evaluator_h_tmpl, h_values)
     evaluator_c = fill_template(evaluator_c_tmpl, c_values)
 
-    base_path = Path(args.target_dir) / args.base_name
+    base_dir = Path(args.target_dir)
 
-    h_path = base_path.with_suffix('.h')
-    c_path = base_path.with_suffix('.c')
+    include_base_dir = Path(args.target_include_dir) if args.target_include_dir else base_dir
+    src_base_dir     = Path(args.target_src_dir)     if args.target_src_dir     else base_dir
+    doc_base_dir     = Path(args.target_doc_dir)     if args.target_doc_dir     else base_dir
+    deps_base_dir    = Path(args.target_deps_dir)    if args.target_deps_dir    else base_dir
 
-    h_md_path = base_path.with_suffix('.h.md')
-    c_md_path = base_path.with_suffix('.c.md')
+    h_path    = (include_base_dir / args.base_name).with_suffix('.h')
+    c_path    = (src_base_dir     / args.base_name).with_suffix('.c')
+
+    h_md_path = (doc_base_dir     / args.base_name).with_suffix('.h.md')
+    c_md_path = (doc_base_dir     / args.base_name).with_suffix('.c.md')
+
+    deps_path = (deps_base_dir    / args.base_name).with_suffix('.deps')
 
     print(reformat(evaluator_h, format='C'), file=open(h_path, 'w'))
     print(reformat(evaluator_c, format='C'), file=open(c_path, 'w'))
 
     print(reformat(evaluator_h, format='markdown'), file=open(h_md_path, 'w'))
     print(reformat(evaluator_c, format='markdown'), file=open(c_md_path, 'w'))
+
+    print('\n'.join(sorted(opened_paths)), file=open(deps_path, 'w'))
 
 def load_error_data():
 
@@ -315,7 +328,7 @@ def error_descriptors(error_data):
 def process_definitions(definition_paths):
 
     return '\n'.join(
-        open(path).read()
+        read(path)
         for path in definition_paths
     )
 
@@ -401,7 +414,7 @@ primitive_re = re.compile(primitive_re_text, re.DOTALL)
 
 def parse_primitive(path):
 
-    text = open(path).read()
+    text = read(path)
 
     m = re.match(primitive_re, text)
 
@@ -471,7 +484,7 @@ compiled_word_re = re.compile(compiled_word_re_text, re.DOTALL)
 
 def parse_compiled_word(path):
 
-    text = open(path).read()
+    text = read(path)
 
     m = re.match(compiled_word_re, text)
 
@@ -490,13 +503,20 @@ def process_library_words(library_word_paths):
     lines = [
         line.rstrip().replace('\\', '\\\\').replace('"', '\\"')
         for path in library_word_paths or []
-        for line in open(path).readlines()
+        for line in read(path).split('\n')
     ]
 
     return LibraryWords(len(lines), ',\n'.join([f'"{line}"' for line in lines]))
 
 def read(path):
-    return path.open().read()
+
+    try:
+        text = open(path).read()
+        register_opened_path(path)
+        return text
+
+    except:
+        raise
 
 def try_read(path):
 
@@ -504,6 +524,12 @@ def try_read(path):
         return read(path)
     except:
         return ''
+
+opened_paths = []
+
+def register_opened_path(path):
+
+    opened_paths.append(str(Path(path).resolve()))
 
 def escape_for_c_string(v: str) -> str:
     escapes = {

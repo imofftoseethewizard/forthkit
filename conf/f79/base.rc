@@ -1,10 +1,10 @@
 # -*- mode: sh; -*-
 
-export FK_NAME=FORTH-79
-export FK_DESCRIPTION="A very small configuration to test the fk command."
+export NAME=FORTH-79
+export DESCRIPTION="A very small configuration to test the fk command."
 
 #<
-# `FK_DEFINITIONS` contains header material which provides definitions
+# `DEFINITIONS` contains header material which provides definitions
 # common to two or more primitives, or which implements the
 # functionality of a primitive so that it may be used directly in C
 # code (as opposed to in a compiled word or library word).  For
@@ -15,7 +15,7 @@ export FK_DESCRIPTION="A very small configuration to test the fk command."
 # analogous to `allot` for low memory.
 #>
 
-export FK_DEFINITIONS="\
+export C_DEFINITIONS="\
     $FORTHKIT/src/primitives/common/core/align.h \
     $FORTHKIT/src/primitives/common/core/begin.h \
     $FORTHKIT/src/primitives/common/core/else.h \
@@ -39,7 +39,7 @@ export FK_DEFINITIONS="\
 "
 
 # words implemented directly in C
-export FK_PRIMITIVES="\
+export PRIMITIVES="\
     $FORTHKIT/src/primitives/common/block/blk.c \
     $FORTHKIT/src/primitives/common/block/buffer.c \
     $FORTHKIT/src/primitives/common/block/empty-buffers.c \
@@ -155,7 +155,7 @@ export FK_PRIMITIVES="\
     $FORTHKIT/src/primitives/common/op/abort.c \
     $FORTHKIT/src/primitives/common/op/jump.c \
     $FORTHKIT/src/primitives/common/op/literal.c \
-    $FORTHKIT/src/primitives/concurrency/$FK_CONCURRENCY_MODEL/op/exit.c \
+    $FORTHKIT/src/primitives/concurrency/$CONCURRENCY_MODEL/op/exit.c \
     $FORTHKIT/src/primitives/f79/core/do.c \
     $FORTHKIT/src/primitives/f79/core/fill.c \
     $FORTHKIT/src/primitives/f79/core/leave.c \
@@ -168,19 +168,19 @@ export FK_PRIMITIVES="\
     $FORTHKIT/src/primitives/f79/op/do.c \
     $FORTHKIT/src/primitives/f79/op/loop.c \
     $FORTHKIT/src/primitives/f79/op/plus_loop.c \
-    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/constant.c \
-    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/create.c \
-    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/core/variable.c \
-    $FORTHKIT/src/primitives/threading/$FK_THREAD_MODEL/op/do_does.c \
+    $FORTHKIT/src/primitives/threading/$THREAD_MODEL/core/constant.c \
+    $FORTHKIT/src/primitives/threading/$THREAD_MODEL/core/create.c \
+    $FORTHKIT/src/primitives/threading/$THREAD_MODEL/core/variable.c \
+    $FORTHKIT/src/primitives/threading/$THREAD_MODEL/op/do_does.c \
 "
 
 # include threading-specific primitives which exist in only one
 # thread model and can't be specified above.
 
-. $FORTHKIT/conf/f79/threading/$FK_THREAD_MODEL.rc
+. $FORTHKIT/conf/f79/threading/$THREAD_MODEL.rc
 
 # words compiled using C macros.
-export FK_COMPILED_WORDS=" \
+export COMPILED_WORDS=" \
     $FORTHKIT/src/compiled/core/colon.c \
     $FORTHKIT/src/compiled/core/constant.c \
     $FORTHKIT/src/compiled/core/create.c \
@@ -190,7 +190,7 @@ export FK_COMPILED_WORDS=" \
 
 # words compiled from source using the evaluator.  text_input.fs
 # should come first, since it defines paren comments.
-export FK_LIBRARY_WORDS=" \
+export LIBRARY_WORDS=" \
     $FORTHKIT/src/lib/common/core/text_input.fs \
     $FORTHKIT/src/lib/common/block/block.fs \
     $FORTHKIT/src/lib/common/block/list.fs \

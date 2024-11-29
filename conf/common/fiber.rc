@@ -1,7 +1,7 @@
 # -*- mode: sh; -*-
 
 # words implemented directly in C
-FK_PRIMITIVES="$FK_PRIMITIVES \
+PRIMITIVES="$PRIMITIVES \
     $FORTHKIT/src/primitives/common/concurrency/fiber/braid.m4 \
     $FORTHKIT/src/primitives/common/concurrency/fiber/done.m4 \
     $FORTHKIT/src/primitives/common/concurrency/fiber/end.m4 \

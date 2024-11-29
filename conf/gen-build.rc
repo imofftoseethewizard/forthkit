@@ -17,10 +17,12 @@ else
 
         if [ $? == 0 ]
         then
-            . $FORTHKIT/conf/arch/$FK_ARCH.rc
-            . $FORTHKIT/conf/arch/c$FK_CELL_SIZE.rc
-            . $FORTHKIT/conf/$FK_FAMILY/base.rc
-            . $FORTHKIT/conf/build/$FK_STAGE.rc
+            . $FORTHKIT/conf/arch/$ARCH.rc
+            . $FORTHKIT/conf/arch/c$CELL_SIZE.rc
+            . $FORTHKIT/conf/$FAMILY/base.rc
+            . $FORTHKIT/conf/build/$STAGE.rc
         fi
     fi
 fi
+
+export ARCH_TAG=$($FORTHKIT/bin/arch-tag)

@@ -4,11 +4,11 @@
 # generate the source for a specific evaluator variant.  Which variant
 # is determined by the following environment variables:
 #
-# * `FK_ADDRESS_MODEL`
-# * `FK_CONCURRENCY`
-# * `FK_EXECUTION_MODEL`
-# * `FK_FAMILY`
-# * `FK_THREAD_MODEL`
+# * `ADDRESS_MODEL`
+# * `CONCURRENCY`
+# * `EXECUTION_MODEL`
+# * `FAMILY`
+# * `THREAD_MODEL`
 
 
 if [[ -z $FORTHKIT ]]
@@ -20,6 +20,8 @@ else
 
     if [ $? == 0 ]
     then
-        . $FORTHKIT/conf/$FK_FAMILY/base.rc
+        . $FORTHKIT/conf/$FAMILY/base.rc
     fi
 fi
+
+export VARIANT_TAG=$($FORTHKIT/bin/variant-tag)
