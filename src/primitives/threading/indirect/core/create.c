@@ -16,13 +16,13 @@ The implementation below implements the newly created word as a
 constant, returning the address of the next cell after the value
 stored, for example in a 4-byte cell implementation we might have
 
-    1000: pr_do_const
+    1000: op_do_const
     1004: 1008
     1008: ...
 
 This is functionally equivalent to
 
-    1000: pr_do_var
+    1000: op_do_var
     1004: ...
 
 in the sense that both will return the address of the cell marked with

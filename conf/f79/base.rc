@@ -168,8 +168,10 @@ export PRIMITIVES="\
     $FORTHKIT/src/primitives/f79/op/do.c \
     $FORTHKIT/src/primitives/f79/op/loop.c \
     $FORTHKIT/src/primitives/f79/op/plus_loop.c \
+    $FORTHKIT/src/primitives/f79/threading/$THREAD_MODEL/core/colon.c \
     $FORTHKIT/src/primitives/threading/$THREAD_MODEL/core/constant.c \
     $FORTHKIT/src/primitives/threading/$THREAD_MODEL/core/create.c \
+    $FORTHKIT/src/primitives/threading/$THREAD_MODEL/core/store_compiled.c \
     $FORTHKIT/src/primitives/threading/$THREAD_MODEL/core/variable.c \
     $FORTHKIT/src/primitives/threading/$THREAD_MODEL/op/do_does.c \
 "

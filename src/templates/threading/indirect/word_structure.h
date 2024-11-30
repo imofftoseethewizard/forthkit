@@ -7,7 +7,7 @@
 #define _define_constant(s, v)                                   \
     _info("defining constant %-16s %d\n", s, v);                 \
     _begin_define_word(s, 0);                                    \
-    _compile_pr(pr_dovar);                                       \
+    _compile_pr(op_do_var);                                      \
     _store_data(v);                                              \
     _end_define_word();
 
