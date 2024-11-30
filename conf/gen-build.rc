@@ -8,7 +8,7 @@ then
     echo "FORTHKIT is unset." >&2
 
 else
-    $FORTHKIT/conf/check-gen-env.sh
+    . $FORTHKIT/conf/gen-only.rc
 
     if [ $? == 0 ]
     then

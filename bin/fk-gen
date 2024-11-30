@@ -46,30 +46,31 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    generate(args, env)
+    if args.product == 'evaluator':
+        generate_evaluator(args, env)
+
+    elif args.product == 'interpreter':
+        generate_interpreter(args, env)
 
 def get_env():
 
-    name              = os.environ.get('NAME', 'Forthkit FORTH')
-    description       = os.environ.get('DESCRIPTION', '')
+    name                  = os.environ.get('NAME', 'Forthkit FORTH')
+    description           = os.environ.get('DESCRIPTION', '')
 
-    address_model     = parse_address_model(os.environ.get('ADDRESS_MODEL', 'host'))
-    concurrency_model = parse_concurrency_model(os.environ.get('CONCURRENCY_MODEL', 'single'))
-    execution_model   = parse_execution_model(os.environ.get('EXECUTION_MODEL', 'switch'))
-    thread_model      = parse_thread_model(os.environ.get('THREAD_MODEL', 'indirect'))
+    address_model         = parse_address_model(os.environ.get('ADDRESS_MODEL', 'host'))
+    concurrency_model     = parse_concurrency_model(os.environ.get('CONCURRENCY_MODEL', 'single'))
+    execution_model       = parse_execution_model(os.environ.get('EXECUTION_MODEL', 'switch'))
+    thread_model          = parse_thread_model(os.environ.get('THREAD_MODEL', 'indirect'))
 
-    definitions       = parse_definitions(os.environ.get('C_DEFINITIONS', ''))
-    primitives        = parse_primitives(os.environ.get('PRIMITIVES', ''))
-    compiled_words    = parse_compiled_words(os.environ.get('COMPILED_WORDS', ''))
-    library_words     = parse_library_words(os.environ.get('LIBRARY_WORDS', ''))
-
-    target_dir        = os.environ.get('TARGET_DIR', './')
-    base_name         = os.environ.get('BASE_NAME', 'evaluator')
+    definitions           = parse_definitions(os.environ.get('C_DEFINITIONS', ''))
+    primitives            = parse_primitives(os.environ.get('PRIMITIVES', ''))
+    compiled_words        = parse_compiled_words(os.environ.get('COMPILED_WORDS', ''))
+    library_words         = parse_library_words(os.environ.get('LIBRARY_WORDS', ''))
 
     return Env(
         name, description,
         address_model, concurrency_model, execution_model, thread_model,
-        definitions, primitives, compiled_words, library_words
+        definitions, primitives, compiled_words, library_words,
     )
 
 class InvalidConfigValue(Exception):
@@ -144,9 +145,11 @@ def create_parser():
     parser.add_argument('-D', '--target-doc-dir')
     parser.add_argument('-d', '--target-deps-dir')
     parser.add_argument('-i', '--target-include-dir')
-    parser.add_argument('-n', '--base-name', default='evaluator')
+    parser.add_argument('-n', '--evaluator-base-name', default='evaluator')
+    parser.add_argument('-N', '--interpreter-base-name', default='interpreter')
     parser.add_argument('-s', '--target-src-dir')
     parser.add_argument('-t', '--target-dir', default='./')
+    parser.add_argument('-p', '--product', choices=['evaluator', 'interpreter'])
 
     return parser
 
@@ -198,7 +201,9 @@ std_thread_model = {
     'indirect': 'indirect',
 }
 
-def generate(args, env):
+def generate_evaluator(args, env):
+
+    clear_opened_path_registry()
 
     concurrency_model = env.concurrency_model
     execution_model   = env.execution_model
@@ -290,19 +295,57 @@ def generate(args, env):
     doc_base_dir     = Path(args.target_doc_dir)     if args.target_doc_dir     else base_dir
     deps_base_dir    = Path(args.target_deps_dir)    if args.target_deps_dir    else base_dir
 
-    h_path    = (include_base_dir / args.base_name).with_suffix('.h')
-    c_path    = (src_base_dir     / args.base_name).with_suffix('.c')
+    h_path    = (include_base_dir / args.evaluator_base_name).with_suffix('.h')
+    c_path    = (src_base_dir     / args.evaluator_base_name).with_suffix('.c')
 
-    h_md_path = (doc_base_dir     / args.base_name).with_suffix('.h.md')
-    c_md_path = (doc_base_dir     / args.base_name).with_suffix('.c.md')
+    h_md_path = (doc_base_dir     / args.evaluator_base_name).with_suffix('.h.md')
+    c_md_path = (doc_base_dir     / args.evaluator_base_name).with_suffix('.c.md')
 
-    deps_path = (deps_base_dir    / args.base_name).with_suffix('.deps')
+    deps_path = (deps_base_dir    / args.evaluator_base_name).with_suffix('.deps')
 
     print(reformat(evaluator_h, format='C'), file=open(h_path, 'w'))
     print(reformat(evaluator_c, format='C'), file=open(c_path, 'w'))
 
     print(reformat(evaluator_h, format='markdown'), file=open(h_md_path, 'w'))
     print(reformat(evaluator_c, format='markdown'), file=open(c_md_path, 'w'))
+
+    print('\n'.join(sorted(opened_paths)), file=open(deps_path, 'w'))
+
+def generate_interpreter(args, env):
+
+    #clear_opened_path_registry()
+
+    concurrency_model = env.concurrency_model
+
+    interpreter_c_tmpl = read(templates / 'interpreter.c')
+
+    interpreter_cli_options_c         = read(concurrency / concurrency_model / 'interpreter_cli_options.c')
+    interpreter_option_help_c         = read(concurrency / concurrency_model / 'interpreter_option_help.c')
+    interpreter_init_evaluator_c      = read(concurrency / concurrency_model / 'interpreter_init_evaluator.c')
+    process_interpreter_cli_options_c = read(concurrency / concurrency_model / 'process_interpreter_cli_options.c')
+
+    c_values = {
+        'interpreter_cli_options':         interpreter_cli_options_c,
+        'interpreter_option_help':         interpreter_option_help_c,
+        'interpreter_init_evaluator':      interpreter_init_evaluator_c,
+        'process_interpreter_cli_options': process_interpreter_cli_options_c,
+    }
+
+    interpreter_c = fill_template(interpreter_c_tmpl, c_values)
+
+    base_dir = Path(args.target_dir)
+
+    doc_base_dir  = Path(args.target_doc_dir)  if args.target_doc_dir  else base_dir
+    src_base_dir  = Path(args.target_src_dir)  if args.target_src_dir  else base_dir
+    deps_base_dir = Path(args.target_deps_dir) if args.target_deps_dir else base_dir
+
+    c_path    = (src_base_dir / args.interpreter_base_name).with_suffix('.c')
+    c_md_path = (doc_base_dir / args.interpreter_base_name).with_suffix('.c.md')
+
+    deps_path = (deps_base_dir / args.interpreter_base_name).with_suffix('.deps')
+
+    print(reformat(interpreter_c, format='C'),        file=open(c_path, 'w'))
+    print(reformat(interpreter_c, format='markdown'), file=open(c_md_path, 'w'))
 
     print('\n'.join(sorted(opened_paths)), file=open(deps_path, 'w'))
 
@@ -530,6 +573,11 @@ opened_paths = []
 def register_opened_path(path):
 
     opened_paths.append(str(Path(path).resolve()))
+
+def clear_opened_path_registry():
+
+    global opened_paths
+    opened_paths = []
 
 def escape_for_c_string(v: str) -> str:
     escapes = {

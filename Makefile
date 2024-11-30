@@ -2,16 +2,14 @@
 #   from shell env (generally)
 #     FORTHKIT
 #     FAMILY
-#     VARIANT_TAG
-#     ARCH_TAG
 #     ADDRESS_MODEL
 #     CONCURRENCY_MODEL
 #     EXECUTION_MODEL
+#     THREAD_MODEL
 #     C_DEFINITIONS
+#     PRIMITIVES
 #     COMPILED_WORDS
 #     LIBRARY_WORDS
-#     PRIMITIVES
-#     THREAD_MODEL
 #
 # Usage
 #   $ export FORTHKIT=~/src/forthkit
@@ -19,6 +17,8 @@
 #   $ export VARIANT_TAG=rel-switch-a32-c4-l1
 #   $ cd $SOURCE
 #   $ source spec/$VARIANT_TAG.rc && make all
+
+SHELL = bash
 
 BUILD   = ${FORTHKIT}/build/${FAMILY}/${VARIANT_TAG}
 
@@ -29,7 +29,6 @@ LIB	= ${BUILD}/${ARCH_TAG}/lib
 SRC     = ${BUILD}/src
 
 BARE_INTERPRETER	= ${BIN}/bare-interpreter
-BOOTSTRAP_EVALUATOR_C	= ${SRC}/bootstrap-evaluator.c
 BOOTSTRAP_EVALUATOR_O	= ${LIB}/bootstrap-evaluator.o
 BOOTSTRAP_INTERPRETER	= ${BIN}/bootstrap-interpreter
 ERRORS_C                = ${SRC}/errors.c
@@ -42,44 +41,59 @@ EVALUATOR_O		= ${LIB}/evaluator.o
 EVALUATOR_IMAGE		= ${LIB}/evaluator.fi
 EVALUATOR_IMAGE_O	= ${LIB}/evaluator.fi.o
 INTERPRETER		= ${BIN}/interpreter
+INTERPRETER_C		= ${SRC}/interpreter.c
+INTERPRETER_DEPS	= ${BUILD}/interpreter.deps
 
 CFLAGS += -I${INCLUDE}
+CFLAGS += -D EVALUATOR_FAMILY_NAME=\"${FAMILY}\"
 CFLAGS += -D "CELL_TYPE=${CELL_TYPE}" -D "DOUBLE_TYPE=${DOUBLE_TYPE}"
 CFLAGS += -D LOG=${LOG} -D TRACE=${TRACE} -D VERBOSE=${VERBOSE}
 CFLAGS += -D DEBUG=${DEBUG} -D BOUNDS_CHECKING=${BOUNDS_CHECKING}
 
-# build dir and deps file will not exist at first run, `mkdir -p` and `touch`
-# ensure this doesn't fail and block make.
-DEPS = $(shell mkdir -p ${BUILD} && touch ${EVALUATOR_DEPS} && cat ${EVALUATOR_DEPS})
+EVALUATOR_DEP_LIST   = $(if $(wildcard ${EVALUATOR_DEPS}),   $(shell cat ${EVALUATOR_DEPS}))
+INTERPRETER_DEP_LIST = $(if $(wildcard ${INTERPRETER_DEPS}), $(shell cat ${INTERPRETER_DEPS}))
 
 ${BIN} ${BUILD} ${INCLUDE} ${LIB} ${SRC} ${DOC}:
 	mkdir -p $@
 
-${EVALUATOR_C} ${EVALUATOR_H} : ${DEPS} ${SRC}
+${EVALUATOR_C} ${EVALUATOR_H} : ${EVALUATOR_DEP_LIST} ${SRC} ${INCLUDE} ${DOC}
 	$(shell \
 		. conf/gen-build.rc && \
 		bin/fk-gen \
+			--product evaluator \
 			--target-deps-dir ${BUILD} \
 			--target-doc-dir ${DOC} \
 			--target-src-dir ${SRC} \
 			--target-include-dir ${INCLUDE} \
-			--base-name evaluator \
+			--evaluator-base-name evaluator \
+	)
+
+${INTERPRETER_C} : ${INTERPRETER_DEP_LIST} ${SRC} ${INCLUDE} ${DOC}
+	$(shell \
+		. conf/gen-build.rc && \
+		bin/fk-gen \
+			--product interpreter \
+			--target-deps-dir ${BUILD} \
+			--target-doc-dir ${DOC} \
+			--target-src-dir ${SRC} \
+			--target-include-dir ${INCLUDE} \
+			--interpreter-base-name interpreter \
 	)
 
 ${BOOTSTRAP_EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${LIB}
-	${CC} ${CFLAGS} -D BOOTSTRAP=1 -o $@ -c ${BOOTSTRAP_EVALUATOR_C}
+	${CC} ${CFLAGS} -D BOOTSTRAP=1 -o $@ -c ${EVALUATOR_C}
 
-${BOOTSTRAP_INTERPRETER} : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${BIN} interpreter.c
-	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${BOOTSTRAP_EVALUATOR_O}
+${BOOTSTRAP_INTERPRETER} : ${EVALUATOR_H} ${BOOTSTRAP_EVALUATOR_O} ${BIN} ${INTERPRETER_C}
+	${CC} ${CFLAGS} -o $@ ${INTERPRETER_C} ${LDFLAGS} ${BOOTSTRAP_EVALUATOR_O}
 
 ${EVALUATOR_O} : ${EVALUATOR_C} ${EVALUATOR_H} ${LIB}
 	${CC} ${CFLAGS} -o $@ -c ${EVALUATOR_C}
 
-${BARE_INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${BIN} interpreter.c
-	${CC} ${CFLAGS} -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_O}
+${BARE_INTERPRETER} : ${EVALUATOR_H} ${EVALUATOR_O} ${BIN} ${INTERPRETER_C}
+	${CC} ${CFLAGS} -o $@ ${INTERPRETER_C} ${LDFLAGS} ${EVALUATOR_O}
 
-${INTERPRETER} : ${EVALUATOR_IMAGE_O} ${EVALUATOR_H} ${EVALUATOR_O} ${BIN} interpreter.c
-	${CC} ${CFLAGS} -D BUNDLED=1 -o $@ interpreter.c ${LDFLAGS} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
+${INTERPRETER} : ${EVALUATOR_IMAGE_O} ${EVALUATOR_H} ${EVALUATOR_O} ${BIN} ${INTERPRETER_C}
+	${CC} ${CFLAGS} -D BUNDLED=1 -o $@ ${INTERPRETER_C} ${LDFLAGS} ${EVALUATOR_IMAGE_O} ${EVALUATOR_O}
 
 ${EVALUATOR_IMAGE} : ${BOOTSTRAP_INTERPRETER} ${BUNDLED_WORDS}
 	${BOOTSTRAP_INTERPRETER} -q -C $@ ${BUNDLED_WORDS} || echo "$@:" "error: failed to build image"
@@ -97,6 +111,6 @@ deps : ${BUILD}
 all : ${BARE_INTERPRETER} ${BOOTSTRAP_INTERPRETER} ${INTERPRETER}
 
 clean :
-	rm -f ${EVALUATOR_H} ${EVALUATOR_O} ${INTERPRETER}
+	rm -f ${EVALUATOR_H} ${EVALUATOR_C} ${INTERPRETER_C}
 
 .PHONY : all deps
