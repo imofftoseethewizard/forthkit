@@ -23,3 +23,5 @@ __first:
     _next();
 
 __last:
+
+    _save_evaluator_state();

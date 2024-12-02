@@ -7,3 +7,8 @@
     (top -= (x), \
      top -= (int)top % sizeof(cell), \
      _from_ptr(top + sizeof(cell)))
+
+#define _reserve_stack(x) \
+    (top -= (x), \
+     top -= (int)top % sizeof(cell), \
+     _from_ptr(top + (x) + sizeof(cell)))
