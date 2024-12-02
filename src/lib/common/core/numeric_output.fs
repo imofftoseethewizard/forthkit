@@ -32,11 +32,11 @@ CREATE digits compile-digits
 
 : #S ( ud -- 0 0 )
 
-    ( ud is converted appending each resultant character into the   )
-    ( pictured numeric output string until the quotient -- see # -- )
-    ( is zero.  A single zero is added to the output string if the  )
-    ( number was initially zero. Typically used between <# and      )
-    ( #> .                                                          )
+    \ ud is converted appending each resultant character into the
+    \ pictured numeric output string until the quotient -- see # --
+    \ is zero.  A single zero is added to the output string if the
+    \ number was initially zero. Typically used between <# and
+    \ #> .
 
     #
     BEGIN
@@ -48,29 +48,29 @@ CREATE digits compile-digits
 
 : SIGN ( n -- )
 
-    ( If n is negative, an ASCII "-" is appended to the pictured )
-    ( numeric output string.  Typically used between <# and #> . )
+    \ If n is negative, an ASCII "-" is appended to the pictured
+    \ numeric output string.  Typically used between <# and #> .
 
-    (    0< IF [CHAR] - HOLD THEN )
+    \    0< IF [CHAR] - HOLD THEN
     0< IF [CHAR] - HOLD THEN
 ;
 
 : U. ( u -- )
 
-    ( "u-dot"                                                      )
-    ( Display u converted according to BASE in a free field format )
-    ( with one trailing blank.                                     )
+    \ "u-dot"
+    \ Display u converted according to BASE in a free field format
+    \ with one trailing blank.
 
     0 <# #S #> TYPE SPACE
 ;
 
 : . ( n -- )
 
-    ( .  "dot"                                                      )
-    (                                                               )
-    ( Display n converted according to BASE in a free field format  )
-    ( with one trailing blank and with a leading minus sign if n is )
-    ( negative.                                                     )
+    \ .  "dot"
+    \
+    \ Display n converted according to BASE in a free field format
+    \ with one trailing blank and with a leading minus sign if n is
+    \ negative.
 
 
     DUP 0< IF [CHAR] - EMIT THEN

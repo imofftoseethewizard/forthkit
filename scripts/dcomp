@@ -10,9 +10,9 @@ if __name__ == '__main__':
         if line.startswith('defining ') or line.startswith('operator '):
             try:
                 _, key, value = re.split(' +', line.strip())
+                symbols[key] = value
             except:
                 print(line)
-            symbols[key] = value
         else:
             for key, value in symbols.items():
                 try:

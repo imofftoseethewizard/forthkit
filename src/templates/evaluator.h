@@ -29,9 +29,9 @@ codes.
 
   |*/
 
-    enum error_codes {
-        /*{ error_code_definitions }*/
-    };
+	enum error_codes {
+		/*{ error_code_definitions }*/
+	};
 
 /*|
 
@@ -40,7 +40,7 @@ Given an error code, return the associated message.  This is useful
 
   |*/
 
-    extern const char *error_message(number code);
+	extern const char *error_message(number code);
 
 /*|
 
@@ -50,7 +50,7 @@ that appears in Forth code.
 
   |*/
 
-    extern int error_code(const char *symbol);
+	extern int error_code(const char *symbol);
 
 /*|
 
@@ -170,10 +170,10 @@ performing the reverse operation to those above.
 
   |*/
 
-    #define _from_high_word(x) ((x) >> (sizeof(number)*8))
-    #define _from_low_word(x)  ((x) & (((double_number)1 << (sizeof(number)*8)) - 1))
-    #define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
-    #define _to_low_word(x)    ((double_number)(x))
+	#define _from_high_word(x) ((x) >> (sizeof(number)*8))
+	#define _from_low_word(x)  ((x) & (((double_number)1 << (sizeof(number)*8)) - 1))
+	#define _to_high_word(x)   (((double_number)(x)) << (sizeof(number)*8))
+	#define _to_low_word(x)    ((double_number)(x))
 
 /*|
 
@@ -285,8 +285,8 @@ TODO
   |*/
 
 #define _end_define_word()                                       \
-    /* Add to current vocabulary.          */                    \
-    *_to_ptr(_current()) = *sp++;
+	/* Add to current vocabulary.          */                    \
+	*_to_ptr(_current()) = *sp++;
 
 /*|
 
@@ -326,6 +326,11 @@ TODO
 TODO
 
   |*/
+
+enum compiled_word {
+/*{ compiled_word_decls }*/
+    compiled_primitive_word_count
+};
 
 /*{ word_structure }*/
 
@@ -401,17 +406,6 @@ do {                                                                     \
                                                                          \
     _debug("\n");                                                        \
 } while(0)
-
-#define _print_registers()                                               \
-do {                                                                     \
-    _debug("ip: %8lx; *ip: %8lx, *(ip+1): %8lx, rp: %8lx, *rp: %8lx, sp: %8lx, *sp: %8lx, dp: %8lx src: %.*s\n",  \
-           _from_ptr(ip), ip?*ip:0, ip?*(ip+1):0,        \
-           _from_ptr(rp), rp?*rp:0,                      \
-           _from_ptr(sp), sp?*sp:0,                      \
-           (long)_from_ptr(dp),                          \
-           e[ea_source_len]-e[ea_source_idx], \
-           (char *)_to_ptr(e[ea_source_addr]) + e[ea_source_idx]);      \
-} while (0)
 
 #else
 

@@ -2,5 +2,5 @@
 
 pr_state:
 {
-    _state();
+    *--sp = _from_ptr(&_state());
 }

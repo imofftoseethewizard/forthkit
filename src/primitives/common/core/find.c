@@ -12,8 +12,7 @@ immediate attribute, `n` is set to one.  If the word is non-immediate,
 
   |*/
 
-// FIND
-
+// <find>
 pr_find:
 {
     register cell *name, word, *wordp, *word_name_cs;
@@ -49,6 +48,7 @@ pr_find:
         }
         word = _next_word(word);
     }
+
 
     if (!word) {
         *--sp = 0;

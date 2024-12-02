@@ -15,6 +15,16 @@
     static void bootstrap_evaluator(cell *e);
     static int evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives);
 
+    typedef struct {
+        number code;
+        const char *symbol;
+        const char *message;
+    } error_descriptor;
+
+    static const error_descriptor error_descriptors[] = {
+    /*{ error_descriptors }*/
+    };
+
 /*{ init_evaluator }*/
 
     int
@@ -77,6 +87,10 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
 
         /*{ begin_bootstrap }*/
 
+        for (int i = 0; i < sizeof(error_descriptors)/sizeof(error_descriptor); i++) {
+            _define_constant(error_descriptors[i].symbol, error_descriptors[i].code);
+        }
+
         /*{ primitive_word_definitions }*/
 
         /*{ compiled_word_definitions }*/
@@ -85,6 +99,8 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
             /*{ library_word_definitions }*/
         };
 
+        /*{ finish_bootstrap }*/
+
         for (int i = 0; i < /*{ library_word_count }*/; i++) {
 
             result = evaluate(evaluator, library_word_definitions[i], -1, NULL);
@@ -92,8 +108,6 @@ evaluate(cell *evaluator, const char *source, int storage_fd, cell *primitives)
             if (result)
                 break;
         }
-
-        /*{ finish_bootstrap }*/
 
         return result;
     }
@@ -404,16 +418,6 @@ load_evaluator_image(const char *image0, int image_size)
 
     return e;
 }
-
-typedef struct {
-    number code;
-    const char *symbol;
-    const char *message;
-} error_descriptor;
-
-static const error_descriptor error_descriptors[] = {
-/*{ error_descriptors }*/
-};
 
 const char *
 error_message(number code)

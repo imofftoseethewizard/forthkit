@@ -188,6 +188,7 @@ export COMPILED_WORDS=" \
     $FORTHKIT/src/compiled/core/create.c \
     $FORTHKIT/src/compiled/core/interpret.c \
     $FORTHKIT/src/compiled/core/variable.c \
+    $FORTHKIT/src/compiled/core/word.c \
 "
 
 # words compiled from source using the evaluator.  text_input.fs
@@ -199,17 +200,17 @@ export LIBRARY_WORDS=" \
     $FORTHKIT/src/lib/common/block/load.fs \
     $FORTHKIT/src/lib/common/core/abort.fs \
     $FORTHKIT/src/lib/common/core/bl.fs \
-    $FORTHKIT/src/lib/common/core/bracket_char.fs \
     $FORTHKIT/src/lib/common/core/char.fs \
+    $FORTHKIT/src/lib/f79/find.fs \
+    $FORTHKIT/src/lib/f79/tick.fs \
+    $FORTHKIT/src/lib/f79/bracket_compile.fs \
+    $FORTHKIT/src/lib/common/core/bracket_char.fs \
+    $FORTHKIT/src/lib/common/core/space.fs \
     $FORTHKIT/src/lib/common/core/numeric_output.fs \
     $FORTHKIT/src/lib/common/core/query.fs \
     $FORTHKIT/src/lib/common/core/question_mark.fs \
-    $FORTHKIT/src/lib/common/core/space.fs \
     $FORTHKIT/src/lib/common/core/spaces.fs \
     $FORTHKIT/src/lib/f79/79-standard.fs \
-    $FORTHKIT/src/lib/f79/bracket_compile.fs \
     $FORTHKIT/src/lib/f79/bracket_tick.fs \
-    $FORTHKIT/src/lib/f79/find.fs \
     $FORTHKIT/src/lib/f79/forget.fs \
-    $FORTHKIT/src/lib/f79/tick.fs \
 "

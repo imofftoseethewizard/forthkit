@@ -1,1 +1,6 @@
 # -*- mode: sh; -*-
+
+export PRIMITIVES="\
+    $PRIMITIVES \
+    src/primitives/threading/direct/op/enter.c \
+"

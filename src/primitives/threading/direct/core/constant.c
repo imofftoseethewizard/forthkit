@@ -12,8 +12,6 @@ the stack.
 
   |*/
 
-// CONSTANT
-
 pr_constant:
 {
     _store_word_name();

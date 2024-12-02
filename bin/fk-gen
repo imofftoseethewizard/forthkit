@@ -422,12 +422,12 @@ def process_primitives(primitive_paths, execution_model, thread_model):
             primitive_word_def_tmpl,
             {
                 'label':     p.label,
-                'word_name': f'"{escape_for_c_string(p.word_name)}"',
+                'word_name': f'"{escape_for_c_string(p.word_name or p.label)}"',
                 'flags':     'c_immediate' if p.is_immediate else '0',
             }
         )
         for p in primitives
-        if p.word_name
+#        if p.word_name
     ])
 
     compiled_primitive_word_decl_tmpl  = read(templates / 'compiled_primitive_word_decl.h')

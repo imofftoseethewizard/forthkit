@@ -24,11 +24,6 @@
     _compile_pr(label);                                          \
     _end_define_word();
 
-enum compiled_word {
-/*{ compiled_word_decls }*/
-    compiled_primitive_word_count
-};
-
 /*|
 
   TODO
@@ -36,3 +31,5 @@ enum compiled_word {
   |*/
 
 #define _compile_pw(label) _compile_cw(cw_ ## label)
+
+#define _end_compiled_word() _end_define_word()
