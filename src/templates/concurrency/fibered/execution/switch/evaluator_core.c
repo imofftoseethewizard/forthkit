@@ -8,6 +8,8 @@
         _debug("loaded fiber %d\n", *fp);
         _print_registers();
 
+        /*{ init_thread_step }*/
+
         while (ip && steps && !result) {
 
             if (steps > 0) steps -= 1;

@@ -85,7 +85,6 @@ export PRIMITIVES="\
     $FORTHKIT/src/primitives/common/core/else.c \
     $FORTHKIT/src/primitives/common/core/emit.c \
     $FORTHKIT/src/primitives/common/core/eq.c \
-    $FORTHKIT/src/primitives/common/core/execute.c \
     $FORTHKIT/src/primitives/common/core/fetch.c \
     $FORTHKIT/src/primitives/common/core/find.c \
     $FORTHKIT/src/primitives/common/core/forth.c \

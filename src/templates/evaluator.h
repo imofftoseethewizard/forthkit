@@ -304,9 +304,6 @@ TODO
 
 #define _compiled_word_ref(l) e[e[ea_size] / sizeof(cell) - l - 1]
 #define _register_compiled_word(l) _compiled_word_ref(l) = _from_ptr(dp)
-#define _define_compiled_word(s, l, flags)                        \
-        _begin_define_word(s, flags);                             \
-        _register_compiled_word(l)
 
 /*|
 
@@ -356,9 +353,7 @@ TODO
 
 /*|
 
-.. c:macro: _enter
-
-The
+TODO
 
   |*/
 

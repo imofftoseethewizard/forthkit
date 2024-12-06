@@ -23,6 +23,7 @@ pr_do_colon:
        or ;CODE .  sys is balanced with its corresponding ; .
      */
 
+    _debug("pr_do_colon\n");
     _set_context(_current());
     _set_state(1);
 

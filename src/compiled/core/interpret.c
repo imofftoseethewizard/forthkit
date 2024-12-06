@@ -66,51 +66,51 @@ cw_interpret:
 
     _compile_literal(32);
     _compile_literal(_from_ptr(&e[ea_word_buffer0]));
-    _compile_pr(pr_fetch);
-    _compile_pr(pr_word);
-    _compile_pr(pr_query_dup);
+    _compile_pw(pr_fetch);
+    _compile_pw(pr_word);
+    _compile_pw(pr_query_dup);
 
     _compile_while();
 
-    _compile_pr(pr_find);
-    _compile_pr(pr_dup);
+    _compile_pw(pr_find);
+    _compile_pw(pr_dup);
 
     _compile_if();
 
-    _compile_pr(pr_zero_gt);
-    _compile_pr(pr_state);
-    _compile_pr(pr_fetch);
-    _compile_pr(pr_zero_eq);
-    _compile_pr(pr_or);
+    _compile_pw(pr_zero_gt);
+    _compile_pw(pr_state);
+    _compile_pw(pr_fetch);
+    _compile_pw(pr_zero_eq);
+    _compile_pw(pr_or);
 
     _compile_if();
-    _compile_pr(pr_execute);
+    _compile_pw(pr_execute);
     _compile_else();
-    _compile_pr(pr_store_compiled);
+    _compile_pw(pr_store_compiled);
     _compile_then();
 
     _compile_else();
 
-    _compile_pr(pr_over);
-    _compile_pr(pr_count);
-    _compile_pr(pr_to_number);
+    _compile_pw(pr_over);
+    _compile_pw(pr_count);
+    _compile_pw(pr_to_number);
 
-    _compile_pr(pr_zero_eq);
+    _compile_pw(pr_zero_eq);
     _compile_if();
 
-    _compile_pr(pr_drop);
-    _compile_pr(pr_swap);
-    _compile_pr(pr_drop);
-    _compile_pr(pr_state);
-    _compile_pr(pr_fetch);
+    _compile_pw(pr_drop);
+    _compile_pw(pr_swap);
+    _compile_pw(pr_drop);
+    _compile_pw(pr_state);
+    _compile_pw(pr_fetch);
     _compile_if();
-    _compile_pr(pr_literal);
+    _compile_pw(pr_literal);
     _compile_then();
 
     _compile_else();
 
     _compile_literal(err_undefined_word);
-    _compile_pr(op_abort);
+    _compile_pw(op_abort);
 
     _compile_then();
 

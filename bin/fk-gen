@@ -222,14 +222,15 @@ def generate_evaluator(args, env):
     error_code_defs_h = error_code_definitions(error_data)
     error_descs_c = error_descriptors(error_data)
 
-    define_enter_h        = read(threading / thread_model / 'define_enter.h')
-    word_structure_h      = read(threading / thread_model / 'word_structure.h')
+    define_enter_h           = read(threading / thread_model / 'define_enter.h')
+    word_structure_h         = read(threading / thread_model / 'word_structure.h')
 
-    evaluator_decls_h     = read(concurrency / concurrency_model / 'evaluator_decls.h')
-
-    address_model_h       = read((address_models / address_model).with_suffix('.h'))
-
+    evaluator_decls_h        = read(concurrency / concurrency_model / 'evaluator_decls.h')
     declare_init_evaluator_h = read(concurrency / concurrency_model / 'declare_init_evaluator.h')
+
+    define_print_registers_h = read(concurrency / concurrency_model / 'threading' / thread_model / 'define_print_registers.h')
+
+    address_model_h          = read((address_models / address_model).with_suffix('.h'))
 
     execution_model_decls = try_read(execution / execution_model / 'decls.h')
 
@@ -241,6 +242,7 @@ def generate_evaluator(args, env):
         'compiled_word_decls': cw_decls_h,
         'declare_init_evaluator': declare_init_evaluator_h,
         'define_enter': define_enter_h,
+        'define_print_registers': define_print_registers_h,
         'error_code_definitions': error_code_defs_h,
         'evaluator_decls': evaluator_decls_h,
         'execution_model_decls': execution_model_decls,
@@ -257,6 +259,7 @@ def generate_evaluator(args, env):
     prepare_evaluation_c  = read(concurrency / concurrency_model / 'prepare_evaluation.c')
 
     declare_primitives_c  = try_read(execution / execution_model / 'declare_primitives.c')
+    init_thread_step_c    = try_read(threading / thread_model / 'execution' / execution_model / 'init_thread_step.c')
 
     evaluator_variables_c  = (
         try_read(concurrency / concurrency_model / 'evaluator_variables.c') +
@@ -274,6 +277,7 @@ def generate_evaluator(args, env):
         'evaluator_variables': evaluator_variables_c,
         'finish_bootstrap': finish_bootstrap_c,
         'init_evaluator': init_evaluator_c,
+        'init_thread_step': init_thread_step_c,
         'initialize_primitive_registry': primitives.registry,
         'library_word_count': str(library_words.count),
         'library_word_definitions': library_words.word_defs,

@@ -33,8 +33,10 @@ pr_colon:
     _store_word_name();
     _word_header(0);
 
+    _debug("defining %-16s %lx\n", (char *)_to_ptr(*(sp-1)), (long)_from_ptr(dp)); \
+
     // Adds word to `CURRENT`
     _end_define_word();
 
-    _compile_pw(op_do_colon);
+    _compile_pr(op_do_colon);
 }

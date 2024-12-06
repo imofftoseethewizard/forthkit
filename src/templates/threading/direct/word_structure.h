@@ -33,6 +33,11 @@
 
 #define _compile_pw(label) _compile_pr(label)
 
+#define _define_compiled_word(s, l, flags)                        \
+        _begin_define_word(s, flags);                             \
+        _info("defining %-16s %lx\n", s, (long)_from_ptr(dp));    \
+        _register_compiled_word(l)
+
 #define _end_compiled_word() \
     _end_define_word(); \
     _compile_pr(op_exit)

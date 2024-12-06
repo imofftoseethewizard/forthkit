@@ -1,6 +1,7 @@
 op_do_colon:
 {
-    *--rp = _from_ptr(ip+1);
+    _debug("op_do_colon\n");
+    *--rp = _from_ptr(ip);
     ip = wp;
     _check_return_stack_bounds();
 }

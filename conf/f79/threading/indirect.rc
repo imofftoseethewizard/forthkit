@@ -2,6 +2,7 @@
 
 export PRIMITIVES="
     $PRIMITIVES \
+    $FORTHKIT/src/primitives/threading/indirect/execution_model/$EXECUTION_MODEL/core/execute.c \
     $FORTHKIT/src/primitives/threading/indirect/op/do_colon.c \
     $FORTHKIT/src/primitives/threading/indirect/op/do_const.c \
     $FORTHKIT/src/primitives/threading/indirect/op/do_var.c \

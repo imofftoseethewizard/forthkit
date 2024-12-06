@@ -11,8 +11,6 @@ stack.
 
 pr_execute:
 {
-    *--rp = _from_ptr(ip);
-    ip = _to_ptr(*sp++);
-
-    _check_return_stack_bounds();
+    wp = _to_ptr(*sp++);
+    ((native_word *) (_to_pv(*wp++))) ();
 }

@@ -2,5 +2,6 @@
 
 export PRIMITIVES="\
     $PRIMITIVES \
-    src/primitives/threading/direct/op/enter.c \
+    $FORTHKIT/src/primitives/threading/direct/core/execute.c \
+    $FORTHKIT/src/primitives/threading/direct/op/enter.c \
 "

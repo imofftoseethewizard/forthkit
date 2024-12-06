@@ -1,0 +1,10 @@
+init_evaluator(
+    e,
+    buffer_count,
+    buffer_size,
+    evaluator_size,
+    pad_buffer_size,
+    parameter_stack_size,
+    return_stack_size,
+    source_size,
+    word_buffer_size);

@@ -1,5 +1,7 @@
     /*{ prepare_evaluation }*/
 
+    /*{ init_thread_step }*/
+
     while (ip && !result) {
 
         _trace("early main loop: ");
