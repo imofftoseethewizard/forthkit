@@ -38,3 +38,15 @@
         } while (0)
 
 #endif
+
+#define _print_fiber_stack()                                             \
+do {                                                                     \
+    register cell *fpx = fp0;                                            \
+                                                                         \
+    _debug("fiber stack: ");                                             \
+                                                                         \
+    while (fp < fpx)                                                     \
+        _debug("%d ", (int)*--fpx);                                      \
+                                                                         \
+    _debug("\n");                                                        \
+} while(0)
