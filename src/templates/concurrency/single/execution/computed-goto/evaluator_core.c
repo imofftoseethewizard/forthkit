@@ -6,9 +6,7 @@
         _check_parameter_stack_bounds();  \
         _print_stack();                   \
                                           \
-        _trace("early main loop: ");      \
-                                          \
-        /*{ thread_step }*/       \
+        /*{ thread_step }*/               \
     }                                     \
     while (1)
 
@@ -19,6 +17,8 @@ __first:
     if (0) {
         /*{ primitive_implementations }*/
     }
+
+    /*{ init_thread_step }*/
 
     _next();
 

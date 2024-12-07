@@ -8,8 +8,6 @@
                                           \
         if (steps > 0) steps -= 1;        \
                                           \
-        _trace("early main loop: ");      \
-                                          \
         /*{ thread_step }*/               \
     }                                     \
     while (1)

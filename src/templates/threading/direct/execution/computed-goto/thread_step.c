@@ -1,3 +1,4 @@
+_trace("early main loop: ");              \
 if (!_is_primitive(*ip))          \
     goto op_enter; \
 else \

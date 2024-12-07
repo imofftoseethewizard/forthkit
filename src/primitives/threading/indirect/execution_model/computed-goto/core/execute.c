@@ -11,6 +11,6 @@ stack.
 
 pr_execute:
 {
-    wp = *sp++;
+    wp = _to_ptr(*sp++);
     goto *(cell *)_to_pv(*wp++);
 }
