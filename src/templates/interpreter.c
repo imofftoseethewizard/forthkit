@@ -160,7 +160,7 @@ create_image(cell *e0, int argc, char *argv[])
     bytes_written = fwrite(image, 1, image_size, file);
 
     if (bytes_written != image_size) {
-        fprintf(stderr, "failed to write all %d bytes to \"%s\" (only %d) with errno %d\n", image_size, create_image_path, bytes_written, errno);
+        fprintf(stderr, "failed to write all %d bytes to \"%s\" (only %lu) with errno %d\n", image_size, create_image_path, (long unsigned int)bytes_written, errno);
         exit(2);
     }
 

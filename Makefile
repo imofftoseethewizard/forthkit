@@ -26,6 +26,7 @@ BIN	= ${BUILD}/${ARCH_TAG}/bin
 DOC	= ${BUILD}/doc
 INCLUDE = ${BUILD}/include
 LIB	= ${BUILD}/${ARCH_TAG}/lib
+LOGS	= ${BUILD}/${ARCH_TAG}/log
 SRC     = ${BUILD}/src
 
 BARE_INTERPRETER	= ${BIN}/bare-interpreter
@@ -50,10 +51,12 @@ CFLAGS += -D CELL_SIZE=${CELL_SIZE} -D "CELL_TYPE=${CELL_TYPE}" -D "DOUBLE_TYPE=
 CFLAGS += -D LOG=${LOG} -D TRACE=${TRACE} -D VERBOSE=${VERBOSE}
 CFLAGS += -D DEBUG=${DEBUG} -D BOUNDS_CHECKING=${BOUNDS_CHECKING}
 
+LDFLAGS += -z noexecstack
+
 EVALUATOR_DEP_LIST   = $(if $(wildcard ${EVALUATOR_DEPS}),   $(shell cat ${EVALUATOR_DEPS}))
 INTERPRETER_DEP_LIST = $(if $(wildcard ${INTERPRETER_DEPS}), $(shell cat ${INTERPRETER_DEPS}))
 
-${BIN} ${BUILD} ${INCLUDE} ${LIB} ${SRC} ${DOC}:
+${BIN} ${BUILD} ${DOC} ${INCLUDE} ${LIB} ${LOGS} ${SRC}:
 	mkdir -p $@
 
 ${EVALUATOR_C} ${EVALUATOR_H} : ${EVALUATOR_DEP_LIST} ${SRC} ${INCLUDE} ${DOC}
@@ -109,6 +112,9 @@ deps : ${BUILD}
 	ls ${FORTHKIT}/interpreters/*.m4	>> ${BUILD}/deps.txt
 
 all : ${BARE_INTERPRETER} ${BOOTSTRAP_INTERPRETER} ${INTERPRETER}
+
+log-%: ${LOGS}
+	@make $* >${LOGS}/$*.log 2>&1
 
 clean :
 	rm -rf ${BUILD}

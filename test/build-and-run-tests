@@ -1,0 +1,107 @@
+#! /usr/bin/env bash
+
+cd $(dirname $0)/..
+
+export STAGE=checked
+
+function build-all() {
+
+    . conf/gen-build.rc
+    make log-all >/dev/null 2>&1
+
+    if [ $? -ne 0 ]; then
+
+        echo "$(date '+%Y-%m-%d %H:%M:%S'): build failed for $FAMILY/$VARIANT_TAG/$ARCH_TAG" >>$FORTHKIT/log/build.log
+
+    fi
+
+}
+
+for family in f79; do
+
+    export FAMILY=$family
+
+    for thread_model in direct indirect; do
+
+        export THREAD_MODEL=$thread_model
+
+        for concurrency_model in fibered single; do
+
+            export CONCURRENCY_MODEL=$concurrency_model
+            export CC=gcc
+
+            for execution_model in computed-goto local-subroutine switch; do
+
+                export EXECUTION_MODEL=$execution_model
+
+                export ADDRESS_MODEL=virtual
+
+                for arch in i386 x86_64; do
+
+                    export ARCH=$arch
+
+                    for cell_size in 2 4 8; do
+
+                        if [[ $arch == i386 && $cell_size == 8 ]]; then
+                            continue
+                        fi
+
+                        export CELL_SIZE=$cell_size
+
+                        build-all
+
+                    done
+
+                done
+
+                export ADDRESS_MODEL=host
+
+                export ARCH=i386
+                export CELL_SIZE=4
+
+                build-all
+
+                export ARCH=x86_64
+                export CELL_SIZE=8
+
+                build-all
+
+            done
+
+            export CC=clang
+            export EXECUTION_MODEL=switch
+
+            for arch in i386 x86_64; do
+
+                export ADDRESS_MODEL=virtual
+
+                export ARCH=$arch
+
+                for cell_size in 2 4 8; do
+
+                    if [[ $arch == i386 && $cell_size == 8 ]]; then
+                        continue
+                    fi
+
+                    export CELL_SIZE=$cell_size
+
+                    build-all
+
+                done
+
+                export ADDRESS_MODEL=host
+
+                export ARCH=i386
+                export CELL_SIZE=4
+
+                build-all
+
+                export ARCH=x86_64
+                export CELL_SIZE=8
+
+                build-all
+
+            done
+        done
+    done
+done

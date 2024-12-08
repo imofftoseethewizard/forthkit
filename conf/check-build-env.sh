@@ -70,7 +70,7 @@ then
         required_size=8
     fi
 
-    if [[ $CELL_SIZE != required_size ]]
+    if [ $CELL_SIZE != $required_size ]
     then
         echo "With the host address model, the cell size must match the address size." >&2
         echo "For $ARCH, this must be $required_size, not \"$CELL_SIZE\"." >&2
