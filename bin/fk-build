@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+
+cd $(dirname $0)/..
+
+. conf/gen-build.rc
+
+make log-all >/dev/null 2>&1
+
+if [ $? -ne 0 ]; then
+
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): build failed for $FAMILY/$VARIANT_TAG/$ARCH_TAG" >>$FORTHKIT/log/build.log
+
+fi
+
+if [[ $STAGE == debug ]]; then
+
+    make dcomp-log-all
+
+fi

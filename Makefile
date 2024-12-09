@@ -23,6 +23,7 @@ SHELL = bash
 BUILD   = ${FORTHKIT}/build/${FAMILY}/${VARIANT_TAG}
 
 BIN	= ${BUILD}/${ARCH_TAG}/bin
+CONF	= ${BUILD}/${ARCH_TAG}/conf
 DOC	= ${BUILD}/doc
 INCLUDE = ${BUILD}/include
 LIB	= ${BUILD}/${ARCH_TAG}/lib
@@ -32,6 +33,7 @@ SRC     = ${BUILD}/src
 BARE_INTERPRETER	= ${BIN}/bare-interpreter
 BOOTSTRAP_EVALUATOR_O	= ${LIB}/bootstrap-evaluator.o
 BOOTSTRAP_INTERPRETER	= ${BIN}/bootstrap-interpreter
+ENV_RC                  = ${CONF}/env.rc
 ERRORS_C                = ${SRC}/errors.c
 ERRORS_H                = ${INCLUDE}/errors.h
 ERRORS_O		= ${LIB}/errors.o
@@ -56,8 +58,11 @@ LDFLAGS += -z noexecstack
 EVALUATOR_DEP_LIST   = $(if $(wildcard ${EVALUATOR_DEPS}),   $(shell cat ${EVALUATOR_DEPS}))
 INTERPRETER_DEP_LIST = $(if $(wildcard ${INTERPRETER_DEPS}), $(shell cat ${INTERPRETER_DEPS}))
 
-${BIN} ${BUILD} ${DOC} ${INCLUDE} ${LIB} ${LOGS} ${SRC}:
+${BIN} ${CONF} ${BUILD} ${DOC} ${INCLUDE} ${LIB} ${LOGS} ${SRC}:
 	mkdir -p $@
+
+${ENV_RC} : ${CONF}
+	bin/fk-env >${ENV_RC}
 
 ${EVALUATOR_C} ${EVALUATOR_H} : ${EVALUATOR_DEP_LIST} ${SRC} ${INCLUDE} ${DOC}
 	$(shell \
@@ -111,10 +116,14 @@ deps : ${BUILD}
 	ls ${FORTHKIT}/interpreters/*.h		>> ${BUILD}/deps.txt
 	ls ${FORTHKIT}/interpreters/*.m4	>> ${BUILD}/deps.txt
 
-all : ${BARE_INTERPRETER} ${BOOTSTRAP_INTERPRETER} ${INTERPRETER}
+all : ${ENV_RC} ${BARE_INTERPRETER} ${BOOTSTRAP_INTERPRETER} ${INTERPRETER}
 
 log-%: ${LOGS}
 	@make $* >${LOGS}/$*.log 2>&1
+	bin/dcomp <${LOGS}/$*.log >${LOGS}/$*.dcomp.log
+
+dcomp-log-%: ${LOGS}
+	bin/dcomp <${LOGS}/$*.log >${LOGS}/$*.dcomp.log
 
 clean :
 	rm -rf ${BUILD}

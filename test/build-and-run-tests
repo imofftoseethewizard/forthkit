@@ -4,6 +4,9 @@ cd $(dirname $0)/..
 
 export STAGE=checked
 
+failed=0
+total=0
+
 function build-all() {
 
     . conf/gen-build.rc
@@ -12,9 +15,11 @@ function build-all() {
     if [ $? -ne 0 ]; then
 
         echo "$(date '+%Y-%m-%d %H:%M:%S'): build failed for $FAMILY/$VARIANT_TAG/$ARCH_TAG" >>$FORTHKIT/log/build.log
+        ((failed++))
 
     fi
 
+    ((total++))
 }
 
 for family in f79; do
@@ -89,19 +94,30 @@ for family in f79; do
 
                 done
 
-                export ADDRESS_MODEL=host
-
-                export ARCH=i386
-                export CELL_SIZE=4
-
-                build-all
-
-                export ARCH=x86_64
-                export CELL_SIZE=8
-
-                build-all
-
             done
+
+            export ADDRESS_MODEL=host
+
+            export ARCH=i386
+            export CELL_SIZE=4
+
+            build-all
+
+            export ARCH=x86_64
+            export CELL_SIZE=8
+
+            build-all
+
         done
     done
 done
+
+if [[ $failed == 0 ]]; then
+
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): $total builds succeeded." >>$FORTHKIT/log/build.log
+
+else
+
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): $failed of $total builds failed." >>$FORTHKIT/log/build.log
+
+fi
